@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- CORE STYLES --- */
+        /* --- 1. BASE STYLES --- */
         :root {
             --primary: #2563eb;
             --bg: #f3f4f6;
@@ -25,12 +25,12 @@
         }
 
         body {
-            background: var(--bg);
+            background-color: var(--bg);
             color: var(--text);
             min-height: 100vh;
         }
 
-        /* Navbar & Layout */
+        /* --- 2. LAYOUT & NAVBAR --- */
         .navbar {
             background: var(--card);
             padding: 1rem;
@@ -54,6 +54,7 @@
             border: none;
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
+            cursor: pointer;
         }
 
         .container {
@@ -62,20 +63,19 @@
             padding: 0 1rem;
         }
 
-        /* Tabs */
+        /* --- 3. TABS & CARDS --- */
         .tabs {
             display: flex;
             gap: 0.5rem;
             overflow-x: auto;
             padding-bottom: 1rem;
-            margin-bottom: 1rem;
         }
 
         .tab-btn {
             background: var(--card);
-            border: none;
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
+            border: none;
             white-space: nowrap;
             cursor: pointer;
         }
@@ -85,11 +85,11 @@
             color: white;
         }
 
-        /* Content Grid */
         .content-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
+            margin-top: 1rem;
         }
 
         .card {
@@ -103,14 +103,17 @@
             padding: 1rem;
         }
 
-        /* --- VIDEO CONTAINER & SHIELD --- */
+        /* --- 4. THE VIDEO PLAYER (CORE LOGIC) --- */
         .video-container {
             position: relative;
             width: 100%;
             height: 0;
             padding-bottom: 56.25%;
-            /* 16:9 Aspect Ratio */
+            /* 16:9 Ratio */
             background: #000;
+            overflow: hidden;
+            /* GPU Hack to force shields to stay on top */
+            transform: translateZ(0);
         }
 
         .video-container iframe {
@@ -123,49 +126,68 @@
             z-index: 1;
         }
 
-        /* THE TARGETED SHIELD */
-        .smart-shield {
+        /* --- 5. INTELLIGENT SHIELDS (The "Trap") --- */
+        /* Common Shield Properties */
+        .shield {
             position: absolute;
+            z-index: 9999;
+            background: transparent;
+            /* INVISIBLE */
+            /* background: rgba(255,0,0,0.3); */
+            /* UNCOMMENT THIS LINE TO SEE SHIELDS FOR TESTING */
+            pointer-events: auto;
+            /* Catches the click */
+        }
+
+        /* --- MOBILE MODE (Portrait) --- */
+        /* Top Left: Blocks Channel Name. Width 40% ensures it NEVER touches the Gear (Top Right) */
+        .shield-tl {
             top: 0;
             left: 0;
-            width: 80%;
-            /* Blocks the Title/Channel (Left Side) */
             height: 60px;
-            /* Covers just the top header */
-            z-index: 20;
-            /* Sits ON TOP of video */
-
-            /* Changing to transparent for production */
-            background-color: transparent;
-
-            /* Cursor */
-            cursor: default;
+            width: 40%;
         }
 
-        /* Note Styles */
-        .note-icon {
-            height: 150px;
-            background: #e0f2fe;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: var(--primary);
+        /* Bottom Left: Blocks Share Button */
+        .shield-bl {
+            bottom: 0;
+            left: 0;
+            height: 15%;
+            width: 30%;
         }
 
-        .pdf-btn {
-            display: block;
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--primary);
-            color: white;
-            text-align: center;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            margin-top: 0.5rem;
+        /* Bottom Right: Blocks YouTube Logo. Width 30% ensures it doesn't block Timeline */
+        .shield-br {
+            bottom: 0;
+            right: 0;
+            height: 15%;
+            width: 30%;
         }
 
-        /* Modal */
+        /* --- DESKTOP/LANDSCAPE MODE OVERRIDE --- */
+        /* When screen is wide (Laptop), controls move. We adjust shields. */
+        @media (min-width: 768px) {
+
+            /* Channel name is smaller on desktop */
+            .shield-tl {
+                width: 20%;
+            }
+
+            /* Share button is small on desktop */
+            .shield-bl {
+                width: 100px;
+                height: 50px;
+            }
+
+            /* CRITICAL: On Desktop, Gear is at Bottom Right. */
+            /* We shrink this shield to ONLY cover the Logo (far corner), leaving Gear open */
+            .shield-br {
+                width: 60px;
+                height: 50px;
+            }
+        }
+
+        /* --- 6. PDF MODAL --- */
         .modal {
             display: none;
             position: fixed;
@@ -174,7 +196,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
+            z-index: 10000;
             padding: 1rem;
         }
 
@@ -198,13 +220,37 @@
             border: none;
             cursor: pointer;
             z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .pdf-frame {
             width: 100%;
             height: 100%;
             border: none;
+        }
+
+        .pdf-btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            text-align: center;
             border-radius: 0.5rem;
+            text-decoration: none;
+            margin-top: 0.5rem;
+        }
+
+        .note-icon {
+            height: 150px;
+            background: #e0f2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
         }
     </style>
 </head>
@@ -216,7 +262,7 @@
     </nav>
 
     <div class="container">
-        <div class="tabs">
+        <div class="tabs" id="subjectTabs">
             <button class="tab-btn active" onclick="switchSubject('anatomy')">Anatomy</button>
             <button class="tab-btn" onclick="switchSubject('physiology')">Physiology</button>
             <button class="tab-btn" onclick="switchSubject('biochemistry')">Biochemistry</button>
@@ -228,7 +274,7 @@
 
     <div id="pdfModal" class="modal">
         <div class="modal-content">
-            <button class="close-modal" onclick="closePdfModal()">X</button>
+            <button class="close-modal" onclick="closePdfModal()"><i class="fas fa-times"></i></button>
             <iframe id="pdfViewer" class="pdf-frame" src=""></iframe>
         </div>
     </div>
@@ -237,7 +283,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // --- PASTE YOUR FIREBASE CONFIG HERE ---
+        // --- PASTE FIREBASE CONFIG HERE ---
         const firebaseConfig = {
             apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
             authDomain: "samvad-bafaa.firebaseapp.com",
@@ -252,139 +298,133 @@
         const auth = getAuth(app);
 
         onAuthStateChanged(auth, (user) => {
-            if (user) loadContent('anatomy');
-            else window.location.href = 'index.html';
+            if (user) { loadContent('anatomy'); }
+            else { window.location.href = 'index.html'; }
         });
 
         window.handleLogout = () => signOut(auth).then(() => window.location.href = 'index.html');
     </script>
 
     <script>
-        // --- YOUR DATA ---
+        // --- CONTENT DATA ---
         const mbbsData = {
             anatomy: {
-                videos: [],
-                notes: []
+                videos: [
+                    { title: "Upper Limb - Brachial Plexus", link: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+                ],
+                notes: [
+                    { title: "Upper Limb Notes", link: "https://drive.google.com/file/d/YOUR_FILE_ID/view" }
+                ]
             },
-            physiology: {
-                videos: [],
-                notes: []
-            },
-            biochemistry: {
-                videos: [],
-                notes: []
-            },
+            physiology: { videos: [], notes: [] },
+            biochemistry: { videos: [], notes: [] },
             ent: {
                 videos: [
-                    {
-                        title: "Basics of Ear",
-                        link: "https://youtu.be/SZQcPzTh12M"
-                    }
+                    { title: "Basics of Ear", link: "https://youtu.be/SZQcPzTh12M" }
                 ],
                 notes: []
             },
             community_medicine: {
                 videos: [],
                 notes: [
-                    {
-                        title: "Park Book",
-                        link: "https://drive.google.com/file/d/19H8gSDqAbwOTOPZaPO3An3sybeDEPUzs/preview"
-                    }
+                    { title: "Park Book", link: "https://drive.google.com/file/d/19H8gSDqAbwOTOPZaPO3An3sybeDEPUzs/preview" }
                 ]
             }
         };
 
-        function switchSubject(sub) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            // Helper to activate button regardless of event object availability
-            const clickedBtn = event ? event.target : document.querySelector(`.tab-btn[onclick*="${sub}"]`);
-            if (clickedBtn) clickedBtn.classList.add('active');
-            loadContent(sub);
+        let currentSubject = 'anatomy';
+
+        // --- TABS LOGIC ---
+        function switchSubject(subject) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(subject.split('_')[0])) btn.classList.add('active');
+            });
+            currentSubject = subject;
+            loadContent(subject);
         }
 
-        function loadContent(sub) {
-            const grid = document.getElementById('contentArea');
-            grid.innerHTML = '';
-            const data = mbbsData[sub];
+        // --- LOAD CONTENT ---
+        function loadContent(subject) {
+            const container = document.getElementById('contentArea');
+            container.innerHTML = '';
+            const data = mbbsData[subject];
             if (!data) return;
 
-            // Render Videos
-            data.videos.forEach(v => {
-                const el = document.createElement('div');
-                el.className = 'card';
-                el.innerHTML = renderVideo(v.link, v.title);
-                grid.appendChild(el);
+            // Load Videos
+            data.videos.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = renderVideo(video.link, video.title);
+                container.appendChild(card);
             });
 
-            // Render Notes
-            data.notes.forEach(n => {
-                const el = document.createElement('div');
-                el.className = 'card';
-                el.innerHTML = `
-                    <div class="note-icon"><i class="fas fa-file-pdf"></i></div>
-                    <div class="card-content">
-                        <h3>${n.title}</h3>
-                        <a href="#" onclick="openPdf('${n.link}'); return false;" class="pdf-btn">Read Note</a>
-                    </div>`;
-                grid.appendChild(el);
+            // Load Notes
+            data.notes.forEach(note => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = renderNote(note.link, note.title);
+                container.appendChild(card);
             });
 
             if (data.videos.length === 0 && data.notes.length === 0) {
-                grid.innerHTML = '<div style="padding: 2rem; color: var(--text);">No content available.</div>';
+                container.innerHTML = '<div style="padding: 2rem; color: var(--text);">No content available.</div>';
             }
         }
 
-        // --- FINAL FIX: NARROW SHIELD + SUPER PERMISSION ---
+        // --- MASTER VIDEO RENDERER (The Fix) ---
         function renderVideo(link, title) {
-            // 1. Smart URL Converter
+            // 1. Clean URL Logic
             let id = link;
             if (link.includes('v=')) id = link.split('v=')[1].split('&')[0];
             else if (link.includes('youtu.be/')) id = link.split('youtu.be/')[1].split('?')[0];
             else if (link.includes('embed/')) id = link.split('embed/')[1].split('?')[0];
 
-            // 2. The Link 
+            // 2. URL Parameters
             const url = `https://www.youtube.com/embed/${id}?rel=0&controls=1&playsinline=1&modestbranding=1`;
 
             return `
-                <div class="video-container" style="position: relative; overflow: hidden; transform: translateZ(0);">
-                    
-                    <div style="
-                        position: absolute; top: 0; left: 0;
-                        width: 50%; height: 60px;
-                        background: transparent; /* INVISIBLE */
-                        z-index: 9999; pointer-events: auto;
-                    "></div>
-
-                    <div style="
-                        position: absolute; bottom: 0; left: 0;
-                        width: 100%; height: 15%; 
-                        background: transparent; /* INVISIBLE */
-                        z-index: 9999; pointer-events: auto;
-                    "></div>
-                    
-                    <iframe 
+                <div class="video-container">
+                    <div class="shield shield-tl"></div> <div class="shield shield-bl"></div> <div class="shield shield-br"></div> <iframe 
                         src="${url}" 
                         title="${title}"
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-                        /* THE KEY: Added 'allow-popups-to-escape-sandbox' */
+                        /* SUPER PERMISSIONS: Everything needed for Mobile Gear */
                         sandbox="allow-forms allow-scripts allow-same-origin allow-presentation allow-popups allow-modals allow-popups-to-escape-sandbox"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
                 </div>
-                <div class="card-content"><h3>${title}</h3></div>
+                <div class="card-content">
+                    <div class="card-title">${title}</div>
+                </div>
             `;
         }
 
-        // --- PDF PREVIEWER ---
-        function openPdf(url) {
-            const clean = url.replace(/\/view.*/, '/preview').replace(/\/edit.*/, '/preview');
-            document.getElementById('pdfViewer').src = clean;
-            document.getElementById('pdfModal').style.display = 'block';
+        // --- NOTE RENDERER ---
+        function renderNote(link, title) {
+            return `
+                <div class="note-icon"><i class="fas fa-file-pdf"></i></div>
+                <div class="card-content">
+                    <div class="card-title">${title}</div>
+                    <a href="#" onclick="openPdf('${link}'); return false;" class="pdf-btn">Read Notes</a>
+                </div>
+            `;
         }
+
+        // --- PDF VIEWER ---
+        function openPdf(url) {
+            const modal = document.getElementById('pdfModal');
+            const viewer = document.getElementById('pdfViewer');
+            let cleanUrl = url.replace(/\/view.*/, '/preview').replace(/\/edit.*/, '/preview');
+            viewer.src = cleanUrl;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
         function closePdfModal() {
             document.getElementById('pdfModal').style.display = 'none';
             document.getElementById('pdfViewer').src = '';
+            document.body.style.overflow = 'auto';
         }
     </script>
 </body>
