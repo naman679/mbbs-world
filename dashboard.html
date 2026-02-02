@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBBS World - Dashboard</title>
+    <title>MBBS World - Secure Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. BASE STYLES --- */
+        /* --- 1. CLEAN RESET --- */
         :root {
             --primary: #2563eb;
             --bg: #f3f4f6;
@@ -54,6 +54,7 @@
             border: none;
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
+            cursor: pointer;
         }
 
         .container {
@@ -62,6 +63,7 @@
             padding: 0 1rem;
         }
 
+        /* --- 3. TABS --- */
         .tabs {
             display: flex;
             gap: 0.5rem;
@@ -75,6 +77,7 @@
             border-radius: 0.5rem;
             border: none;
             white-space: nowrap;
+            cursor: pointer;
         }
 
         .tab-btn.active {
@@ -100,85 +103,64 @@
             padding: 1rem;
         }
 
-        /* --- 3. VIDEO CONTAINER --- */
-        .video-container {
+        /* --- 4. SECURE VIDEO PLAYER (The Core) --- */
+        .video-wrapper {
             position: relative;
             width: 100%;
             padding-bottom: 56.25%;
             /* 16:9 Aspect Ratio */
             background: #000;
             overflow: hidden;
-            transform: translateZ(0);
-            /* Forces GPU rendering for shields */
         }
 
-        .video-container iframe {
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             border: 0;
-            z-index: 1;
+            /* CRITICAL: This disables ALL interaction with the YouTube player */
+            pointer-events: none;
         }
 
-        /* --- 4. SMART SHIELDS (Responsive Logic) --- */
-        .shield {
-            position: absolute;
-            z-index: 9999;
-            /* TEST MODE: Red Color. Change to 'transparent' when done! */
-            background: rgba(255, 0, 0, 0.4);
-            pointer-events: auto;
+        /* --- 5. CUSTOM CONTROLS (The Remote) --- */
+        .custom-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f1f5f9;
+            border-top: 1px solid #e2e8f0;
         }
 
-        /* DEFAULT (Portrait Mobile) */
-        /* Top Left: 45% covers name, leaves Gear (Top Right) open */
-        .shield-tl {
-            top: 0;
-            left: 0;
-            height: 60px;
-            width: 45%;
+        .ctrl-btn {
+            background: white;
+            color: var(--text);
+            border: 1px solid #cbd5e1;
+            padding: 0.6rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
         }
 
-        /* Bottom Left: Blocks Share */
-        .shield-bl {
-            bottom: 0;
-            left: 0;
-            height: 15%;
-            width: 25%;
+        .ctrl-btn:active {
+            transform: scale(0.95);
+            background: #e2e8f0;
         }
 
-        /* Bottom Right: Blocks Logo */
-        .shield-br {
-            bottom: 0;
-            right: 0;
-            height: 15%;
-            width: 25%;
+        .ctrl-btn.primary {
+            background: var(--primary);
+            color: white;
+            border: none;
         }
 
-        /* LANDSCAPE MODE (Rotated Phone or Laptop) */
-        /* When screen is wide, we shrink the shields so they don't block the center */
-        @media (min-width: 600px) and (orientation: landscape),
-        (min-width: 768px) {
-            .shield-tl {
-                width: 25%;
-            }
-
-            /* Name is smaller on wide screen */
-            .shield-bl {
-                width: 15%;
-                height: 50px;
-            }
-
-            .shield-br {
-                width: 15%;
-                height: 50px;
-            }
-
-            /* Only blocks far corner */
-        }
-
-        /* --- 5. PDF MODAL --- */
+        /* --- 6. PDF & MODAL --- */
         .modal {
             display: none;
             position: fixed;
@@ -271,7 +253,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // --- PASTE FIREBASE CONFIG HERE ---
+        // --- FIREBASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
             authDomain: "samvad-bafaa.firebaseapp.com",
@@ -337,10 +319,11 @@
             const data = mbbsData[subject];
             if (!data) return;
 
-            data.videos.forEach(video => {
+            data.videos.forEach((video, index) => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = renderVideo(video.link, video.title);
+                // Pass index to create unique IDs for every video
+                card.innerHTML = renderVideo(video.link, video.title, index);
                 container.appendChild(card);
             });
 
@@ -350,53 +333,84 @@
                 card.innerHTML = renderNote(note.link, note.title);
                 container.appendChild(card);
             });
-
-            if (data.videos.length === 0 && data.notes.length === 0) {
-                container.innerHTML = '<div style="padding: 2rem; color: var(--text);">No content available.</div>';
-            }
         }
 
-        // --- FINAL "SUPER SANDBOX" RENDERER ---
-        function renderVideo(link, title) {
-            // 1. Smart URL Converter
+        // --- SECURE VIDEO RENDERER & CONTROLS ---
+        function renderVideo(link, title, index) {
             let id = link;
             if (link.includes('v=')) id = link.split('v=')[1].split('&')[0];
             else if (link.includes('youtu.be/')) id = link.split('youtu.be/')[1].split('?')[0];
             else if (link.includes('embed/')) id = link.split('embed/')[1].split('?')[0];
 
-            // 2. The Link 
-            const url = `https://www.youtube.com/embed/${id}?rel=0&controls=1&playsinline=1&modestbranding=1&fs=0`;
+            // enablejsapi=1: Allows us to use buttons
+            // controls=0: Hides YouTube bar
+            // modestbranding=1: Minimal logo
+            // origin: Required for postMessage to work securely
+            const url = `https://www.youtube.com/embed/${id}?enablejsapi=1&controls=0&rel=0&modestbranding=1&playsinline=1&origin=${window.location.origin}`;
+            const iframeId = `player-${index}`;
 
             return `
-                <div class="video-container">
-                    <div class="shield shield-tl"></div>
-                    <div class="shield shield-bl"></div>
-                    <div class="shield shield-br"></div>
-                    
+                <div class="video-wrapper">
                     <iframe 
+                        id="${iframeId}"
                         src="${url}" 
                         title="${title}"
-                        /* THE FIX: We put sandbox back, but added 'allow-scripts' to fix the error */
-                        /* We also kept 'allow-popups' and 'allow-forms' so the GEAR works */
-                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms allow-modals allow-popups-to-escape-sandbox"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
                 </div>
-                <div class="card-content">
-                    <div class="card-title">${title}</div>
+                
+                <div class="custom-controls">
+                    <button class="ctrl-btn primary" onclick="togglePlay('${iframeId}')"><i class="fas fa-play"></i> Play</button>
+                    <button class="ctrl-btn" onclick="sendCommand('${iframeId}', 'pauseVideo')"><i class="fas fa-pause"></i> Pause</button>
+                    <button class="ctrl-btn" onclick="toggleSpeed('${iframeId}')"><i class="fas fa-tachometer-alt"></i> <span id="speed-${iframeId}">1x</span></button>
                 </div>
+                
+                <div class="card-content"><div class="card-title">${title}</div></div>
             `;
         }
 
+        // --- REMOTE CONTROL LOGIC ---
+        function sendCommand(iframeId, func, args) {
+            const iframe = document.getElementById(iframeId);
+            if (iframe) {
+                iframe.contentWindow.postMessage(JSON.stringify({
+                    "event": "command",
+                    "func": func,
+                    "args": args || []
+                }), "*");
+            }
+        }
+
+        window.sendCommand = sendCommand; // Explicitly expose to window
+
+        window.toggleSpeed = function (id) {
+            const span = document.getElementById(`speed-${id}`);
+            let current = span.innerText;
+            let rate = 1;
+            if (current === '1x') { rate = 1.5; current = '1.5x'; }
+            else if (current === '1.5x') { rate = 2; current = '2x'; }
+            else { rate = 1; current = '1x'; }
+
+            sendCommand(id, 'setPlaybackRate', [rate]);
+            span.innerText = current;
+        };
+
+        window.togglePlay = function (id) {
+            // 1. Play
+            sendCommand(id, 'playVideo');
+
+            // 2. Smart Quality (Request HD, but allow fallback)
+            setTimeout(() => {
+                sendCommand(id, 'setPlaybackQuality', ['hd720']);
+            }, 500);
+        };
+
+        // --- NOTE RENDERER & PDF ---
         function renderNote(link, title) {
-            return `
-                <div class="note-icon"><i class="fas fa-file-pdf"></i></div>
-                <div class="card-content">
-                    <div class="card-title">${title}</div>
-                    <a href="#" onclick="openPdf('${link}'); return false;" class="pdf-btn">Read Notes</a>
-                </div>
-            `;
+            return `<div class="note-icon"><i class="fas fa-file-pdf"></i></div>
+                    <div class="card-content"><div class="card-title">${title}</div>
+                    <a href="#" onclick="openPdf('${link}'); return false;" class="pdf-btn">Read Notes</a></div>`;
         }
 
         function openPdf(url) {
@@ -413,6 +427,9 @@
             document.getElementById('pdfViewer').src = '';
             document.body.style.overflow = 'auto';
         }
+
+        window.openPdf = openPdf;
+        window.closePdfModal = closePdfModal;
     </script>
 </body>
 
