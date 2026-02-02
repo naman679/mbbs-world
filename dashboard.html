@@ -334,7 +334,7 @@
             }
         }
 
-        // --- FINAL FUNCTIONAL VIDEO RENDERER ---
+        // --- FINAL FIX: NARROW SHIELD + SUPER PERMISSION ---
         function renderVideo(link, title) {
             // 1. Smart URL Converter
             let id = link;
@@ -343,7 +343,6 @@
             else if (link.includes('embed/')) id = link.split('embed/')[1].split('?')[0];
 
             // 2. The Link 
-            // 'playsinline=1' stops iOS from forcing full screen (which breaks shields)
             const url = `https://www.youtube.com/embed/${id}?rel=0&controls=1&playsinline=1&modestbranding=1`;
 
             return `
@@ -351,7 +350,7 @@
                     
                     <div style="
                         position: absolute; top: 0; left: 0;
-                        width: 75%; height: 60px;
+                        width: 50%; height: 60px;
                         background: transparent; /* INVISIBLE */
                         z-index: 9999; pointer-events: auto;
                     "></div>
@@ -367,8 +366,8 @@
                         src="${url}" 
                         title="${title}"
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-                        /* THE KEY: 'allow-popups' and 'allow-forms' makes the Gear work */
-                        sandbox="allow-forms allow-scripts allow-same-origin allow-presentation allow-popups allow-modals"
+                        /* THE KEY: Added 'allow-popups-to-escape-sandbox' */
+                        sandbox="allow-forms allow-scripts allow-same-origin allow-presentation allow-popups allow-modals allow-popups-to-escape-sandbox"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
