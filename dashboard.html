@@ -412,19 +412,9 @@
         // --- THE FIXED VIDEO RENDERER ---
         function renderVideo(link, title) {
             // 1. Clean the URL
-            // We use 'controls=1' to force standard buttons
-            // We REMOVE 'modestbranding' because it sometimes breaks the Gear icon on mobile
+            // 'controls=1' ensures the gear icon is visible
+            // 'rel=0' shows related videos from the SAME channel only (less distraction)
             let embedUrl = link;
-
-            // Basic YouTuBe ID extraction (preserving existing ID extraction logic while updating params)
-            if (link.includes('watch?v=')) {
-                const videoId = link.split('v=')[1].split('&')[0];
-                embedUrl = `https://www.youtube.com/embed/${videoId}`;
-            } else if (link.includes('youtu.be/')) {
-                const videoId = link.split('youtu.be/')[1].split('?')[0];
-                embedUrl = `https://www.youtube.com/embed/${videoId}`;
-            }
-
             if (embedUrl.includes('?')) {
                 embedUrl += '&rel=0&controls=1&playsinline=1';
             } else {
@@ -436,9 +426,7 @@
                     <iframe 
                         src="${embedUrl}" 
                         title="${title}"
-                        /* SANDBOX: We keep this strict to block the Channel Name redirect */
                         sandbox="allow-scripts allow-same-origin allow-presentation"
-                        /* ALLOW: We REMOVED 'web-share' so the share button is less active */
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
                         loading="lazy">
@@ -477,7 +465,7 @@
             const viewer = document.getElementById('pdfViewer');
 
             // Convert /view to /preview for cleaner interface
-            let cleanUrl = url.replace(/\/view.*$/, '/preview').replace(/\/edit.*$/, '/preview');
+            let cleanUrl = url.replace(/\/view.*/, '/preview').replace(/\/edit.*/, '/preview');
             // Basic fix if it doesn't match the regex but is a drive link
             if (url.includes('drive.google.com') && !cleanUrl.includes('/preview')) {
                 // Fallback if the user pasted a non-view link? 
