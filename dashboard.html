@@ -356,17 +356,15 @@
             }
         }
 
-        // --- THE MASTER VIDEO RENDERER ---
+        // --- FINAL "SUPER SANDBOX" RENDERER ---
         function renderVideo(link, title) {
-            // 1. Convert URL
+            // 1. Smart URL Converter
             let id = link;
             if (link.includes('v=')) id = link.split('v=')[1].split('&')[0];
             else if (link.includes('youtu.be/')) id = link.split('youtu.be/')[1].split('?')[0];
             else if (link.includes('embed/')) id = link.split('embed/')[1].split('?')[0];
 
-            // 2. Build URL
-            // fs=0 -> DISABLES native fullscreen button (Force landscape rotation instead)
-            // playsinline=1 -> Keeps video in the box
+            // 2. The Link 
             const url = `https://www.youtube.com/embed/${id}?rel=0&controls=1&playsinline=1&modestbranding=1&fs=0`;
 
             return `
@@ -378,8 +376,9 @@
                     <iframe 
                         src="${url}" 
                         title="${title}"
-                        /* PRISON BREAK: No sandbox attribute. */
-                        /* This guarantees the GEAR works. Shields provide the security. */
+                        /* THE FIX: We put sandbox back, but added 'allow-scripts' to fix the error */
+                        /* We also kept 'allow-popups' and 'allow-forms' so the GEAR works */
+                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms allow-modals allow-popups-to-escape-sandbox"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
