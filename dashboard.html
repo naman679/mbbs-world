@@ -342,7 +342,7 @@
             anatomy: { videos: [{ title: "Upper Limb - Brachial Plexus", link: "dQw4w9WgXcQ" }], notes: [{ title: "Upper Limb Notes", link: "https://drive.google.com/file/d/YOUR_FILE_ID/view" }] },
             physiology: { videos: [], notes: [] },
             biochemistry: { videos: [], notes: [] },
-            ent: { videos: [{ title: "Basics of Ear", link: "3eC2Qc-R2-Y" }], notes: [] },
+            ent: { videos: [{ title: "Basics of Ear", link: "SZQcPzTh12M" }], notes: [] },
             community_medicine: {
                 videos: [],
                 notes: [
@@ -445,22 +445,32 @@
         };
 
         function createPlayer(uid, videoId) {
+            // FIX: Ensure we don't have whitespace in ID
+            const cleanId = videoId.trim();
+
             players[uid] = new YT.Player(uid, {
                 height: '100%',
                 width: '100%',
-                videoId: videoId,
+                videoId: cleanId,
                 playerVars: {
-                    'controls': 0, // Hide YouTube Controls
-                    'disablekb': 1, // Disable Keyboard
-                    'modestbranding': 1,
-                    'rel': 0,
-                    'playsinline': 1
+                    'controls': 0,       // Hide YouTube Controls
+                    'disablekb': 1,      // Disable Keyboard
+                    'modestbranding': 1, // Minimal Logo
+                    'rel': 0,            // No related videos at end
+                    'playsinline': 1,    // Play inside div (no fullscreen force)
+                    'origin': window.location.origin // <--- THE CRITICAL FIX
                 },
                 events: {
                     'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError // Added Error Handling
                 }
             });
+        }
+
+        // Add this small function to catch errors in the console
+        function onPlayerError(event) {
+            console.error("YouTube Player Error:", event.data);
         }
 
         function onPlayerReady(event) {
