@@ -173,31 +173,46 @@
         .subject-tabs {
             display: none;
             gap: 0.8rem;
-            overflow-x: auto;
             padding-bottom: 1.5rem;
-            scrollbar-width: none;
         }
 
         .subject-tabs.visible {
             display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .subject-tab {
             background: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 50px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
             border: 1px solid rgba(0, 0, 0, 0.05);
-            white-space: nowrap;
             cursor: pointer;
             color: var(--text-light);
             font-weight: 500;
             transition: 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .subject-tab::after {
+            content: '\f105';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            opacity: 0.5;
         }
 
         .subject-tab.active {
             background: var(--primary);
             color: white;
-            transform: scale(1.05);
+            border-color: transparent;
+        }
+
+        .subject-tab.active::after {
+            opacity: 1;
         }
 
         /* --- CONTENT RENDERERS --- */
@@ -237,8 +252,78 @@
         .video-wrapper {
             position: relative;
             width: 100%;
+            height: 0;
             padding-bottom: 56.25%;
             background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .chapter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .chapter-card {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: 0.3s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chapter-card:hover {
+            transform: translateX(10px);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .chapter-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(79, 70, 229, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.5rem 1rem;
+            background: var(--text-light);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            transition: 0.3s;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background: var(--text-main);
         }
 
         .glass-shield {
@@ -538,31 +623,57 @@
         };
 
         let currentView = 'home';
-        let currentSubject = 'anatomy';
+        let currentSubject = null;
+        let selectedChapterIdx = null;
         let players = {};
         let pendingPlayers = [];
 
         function navigate(view) {
             currentView = view;
+            currentSubject = null;
+            selectedChapterIdx = null;
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             document.getElementById(`nav-${view}`).classList.add('active');
 
             const subjectNav = document.getElementById('subjectNav');
-            if (view === 'home') {
-                subjectNav.classList.remove('visible');
-                renderHome();
-            } else {
-                subjectNav.classList.add('visible');
-                renderContent();
-            }
+            subjectNav.classList.remove('visible'); // Hide the tab nav always, we use vertical index now
+
+            if (view === 'home') renderHome();
+            else renderSubjectList();
+        }
+
+        function renderSubjectList() {
+            const area = document.getElementById('contentArea');
+            area.innerHTML = `
+                <div class="welcome-section" style="padding: 1rem 0;">
+                    <h1><i class="fas ${getViewIcon()}"></i> Select Subject</h1>
+                    <p>Select a subject to browse ${currentView}.</p>
+                </div>
+                <div class="chapter-list">
+                    ${Object.keys(mbbsData).map(subj => {
+                const name = subj.replace('_', ' ').toUpperCase();
+                return `
+                        <div class="chapter-card" onclick="setSubject('${subj}')">
+                            <div class="chapter-icon"><i class="fas fa-book-medical"></i></div>
+                            <div style="flex-grow:1; font-weight:600;">${name}</div>
+                            <i class="fas fa-chevron-right" style="opacity:0.3;"></i>
+                        </div>`;
+            }).join('')}
+                </div>
+            `;
+        }
+
+        function getViewIcon() {
+            if (currentView === 'videos') return 'fa-play-circle';
+            if (currentView === 'notes') return 'fa-file-pdf';
+            if (currentView === 'qbank') return 'fa-tasks';
+            if (currentView === 'pyq') return 'fa-history';
+            return 'fa-folder';
         }
 
         function setSubject(subject) {
             currentSubject = subject;
-            document.querySelectorAll('.subject-tab').forEach(t => {
-                t.classList.remove('active');
-                if (t.innerText.toLowerCase().includes(subject.split('_')[0])) t.classList.add('active');
-            });
+            selectedChapterIdx = null;
             renderContent();
         }
 
@@ -586,19 +697,53 @@
             area.innerHTML = '';
             players = {}; pendingPlayers = [];
             const data = mbbsData[currentSubject];
+            const subjectName = currentSubject.replace('_', ' ').toUpperCase();
+
+            // Header with Back Button
+            const header = document.createElement('div');
+            header.innerHTML = `
+                <button class="back-btn" onclick="renderSubjectList()"><i class="fas fa-arrow-left"></i> Back to Subjects</button>
+                <div class="section-title"><i class="fas fa-folder-open"></i> ${subjectName} - ${currentView.toUpperCase()}</div>
+            `;
+            area.appendChild(header);
 
             if (currentView === 'videos') {
-                if (data.videos.length > 0) {
-                    addSectionHeader(area, "Video Lectures", "fa-play");
-                    data.videos.forEach((v, i) => renderVideoCard(area, v, i));
-                }
-                if (data.keyPoints.length > 0) {
-                    addSectionHeader(area, "Mastery Notes", "fa-lightbulb");
-                    data.keyPoints.forEach(kp => {
-                        const card = document.createElement('div'); card.className = 'card';
-                        card.innerHTML = `<div class="card-content"><div class="card-title" style="color:var(--primary)">${kp.title}</div><div class="keypoint-content">${kp.content}</div></div>`;
-                        area.appendChild(card);
+                if (selectedChapterIdx === null) {
+                    // Show Chapter List
+                    const list = document.createElement('div');
+                    list.className = 'chapter-list';
+                    data.videos.forEach((v, idx) => {
+                        const item = document.createElement('div');
+                        item.className = 'chapter-card';
+                        item.onclick = () => { selectedChapterIdx = idx; renderContent(); };
+                        item.innerHTML = `
+                            <div class="chapter-icon"><i class="fas fa-play"></i></div>
+                            <div style="flex-grow:1; font-weight:500;">Chapter ${idx + 1}: ${v.title}</div>
+                            <i class="fas fa-circle-play" style="color:var(--primary); font-size:1.2rem;"></i>
+                        `;
+                        list.appendChild(item);
                     });
+                    area.appendChild(list);
+
+                    // Add Key Points below chapters if any
+                    if (data.keyPoints.length > 0) {
+                        addSectionHeader(area, "Mastery Notes", "fa-lightbulb");
+                        data.keyPoints.forEach(kp => {
+                            const card = document.createElement('div'); card.className = 'card';
+                            card.innerHTML = `<div class="card-content"><div class="card-title" style="color:var(--primary)">${kp.title}</div><div class="keypoint-content">${kp.content}</div></div>`;
+                            area.appendChild(card);
+                        });
+                    }
+                } else {
+                    // Show Specific Video
+                    const backToChapters = document.createElement('button');
+                    backToChapters.className = 'back-btn';
+                    backToChapters.style.background = 'var(--primary)';
+                    backToChapters.innerHTML = `<i class="fas fa-list"></i> Back to Chapters`;
+                    backToChapters.onclick = () => { selectedChapterIdx = null; renderContent(); };
+                    area.appendChild(backToChapters);
+
+                    renderVideoCard(area, data.videos[selectedChapterIdx], selectedChapterIdx);
                 }
             } else if (currentView === 'notes') {
                 renderFileGrid(area, data.notes, "Reference Notes", "fa-file-pdf");
