@@ -4,18 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBBS World - Premium Dashboard</title>
+    <title>MBBS World - Interactive Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. MODERN THEME VARIABLES --- */
         :root {
             --primary: #4f46e5;
-            /* Modern Indigo */
             --primary-dark: #4338ca;
             --accent: #06b6d4;
-            /* Cyan accent */
             --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
             --card-bg: rgba(255, 255, 255, 0.95);
             --text-main: #1e293b;
@@ -39,18 +36,17 @@
             overflow-x: hidden;
         }
 
-        /* --- 2. GLASS NAVBAR --- */
+        /* --- NAVIGATION --- */
         .navbar {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(12px);
-            /* Blur Effect */
-            padding: 1rem 2rem;
+            padding: 0.8rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: var(--shadow-sm);
         }
@@ -58,98 +54,158 @@
         .nav-brand {
             color: var(--primary);
             font-weight: 700;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             display: flex;
             align-items: center;
             gap: 10px;
-            letter-spacing: -0.5px;
+            cursor: pointer;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.1);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .logout-btn {
             background: #ef4444;
             color: white;
             border: none;
-            padding: 0.6rem 1.5rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-        }
-
-        .logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
         }
 
         .container {
             max-width: 1200px;
-            margin: 2rem auto;
+            margin: 1.5rem auto;
             padding: 0 1.5rem;
         }
 
-        /* --- 3. ANIMATED TABS --- */
-        .tabs {
-            display: flex;
-            gap: 1rem;
-            overflow-x: auto;
-            padding-bottom: 1rem;
-            scrollbar-width: none;
-            /* Hide scrollbar Firefox */
+        /* --- HOME VIEW (WELCOME) --- */
+        .welcome-section {
+            text-align: center;
+            padding: 3rem 1rem;
+            animation: fadeIn 0.8s ease;
         }
 
-        .tabs::-webkit-scrollbar {
+        .welcome-section h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .welcome-section p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+        }
+
+        .portal-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--shadow-md);
+        }
+
+        .portal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .portal-card i {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .portal-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .portal-card p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* --- SUBJECT TABS (Dynamic) --- */
+        .subject-tabs {
             display: none;
+            gap: 0.8rem;
+            overflow-x: auto;
+            padding-bottom: 1.5rem;
+            scrollbar-width: none;
         }
 
-        /* Hide scrollbar Chrome */
+        .subject-tabs.visible {
+            display: flex;
+        }
 
-        .tab-btn {
+        .subject-tab {
             background: white;
-            padding: 0.8rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 50px;
             border: 1px solid rgba(0, 0, 0, 0.05);
             white-space: nowrap;
             cursor: pointer;
             color: var(--text-light);
             font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-sm);
+            transition: 0.3s;
         }
 
-        .tab-btn:hover {
-            transform: translateY(-2px);
-            color: var(--primary);
-        }
-
-        .tab-btn.active {
+        .subject-tab.active {
             background: var(--primary);
             color: white;
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
             transform: scale(1.05);
-            border-color: transparent;
         }
 
-        /* --- 4. GRID & ANIMATIONS --- */
+        /* --- CONTENT RENDERERS --- */
         .content-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 2rem;
-            margin-top: 1.5rem;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            margin-top: 1rem;
         }
 
         .card {
@@ -158,36 +214,18 @@
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: var(--shadow-md);
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeInUp 0.6s ease forwards;
+            transition: 0.3s;
         }
 
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
         }
 
-        .card-content {
-            padding: 1.5rem;
-        }
-
-        .card-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: var(--text-main);
-            margin-bottom: 0.5rem;
-        }
-
-        /* --- 5. SECTION HEADERS --- */
         .section-title {
             grid-column: 1 / -1;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            color: var(--text-main);
-            margin-top: 2rem;
-            margin-bottom: 1rem;
+            margin: 1.5rem 0 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--primary);
             display: flex;
@@ -195,20 +233,12 @@
             gap: 10px;
         }
 
-        /* --- 6. SECURE VIDEO PLAYER --- */
+        /* Video Elements */
         .video-wrapper {
             position: relative;
             width: 100%;
             padding-bottom: 56.25%;
             background: #000;
-        }
-
-        .video-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
         }
 
         .glass-shield {
@@ -221,10 +251,8 @@
             background: transparent;
         }
 
-        /* --- 7. PREMIUM CONTROLS --- */
         .custom-controls {
-            padding: 1rem 1.5rem;
-            background: #fff;
+            padding: 1rem;
             border-top: 1px solid #f1f5f9;
             display: flex;
             flex-direction: column;
@@ -235,157 +263,54 @@
             width: 100%;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .timeline {
             flex-grow: 1;
-            -webkit-appearance: none;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 10px;
+            height: 5px;
             cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .timeline:hover {
-            background: #cbd5e1;
-        }
-
-        .timeline::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            background: var(--primary);
-            border-radius: 50%;
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .timeline::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
         }
 
         .time-display {
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 0.7rem;
             color: var(--text-light);
-            background: #f1f5f9;
-            padding: 2px 8px;
-            border-radius: 4px;
-            min-width: 85px;
+            min-width: 80px;
             text-align: center;
         }
 
         .buttons-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .left-btns,
-        .right-btns {
-            display: flex;
-            gap: 0.8rem;
         }
 
         .ctrl-btn {
-            background: #f8fafc;
-            border: none;
-            color: var(--text-main);
-            width: 38px;
-            height: 38px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
+            border: none;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .ctrl-btn:hover {
-            background: white;
-            transform: scale(1.1);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            color: var(--primary);
+            transition: 0.2s;
         }
 
         .ctrl-btn.primary {
             background: var(--primary);
             color: white;
-            width: 45px;
-            height: 45px;
-            font-size: 1rem;
-            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4);
         }
 
-        .ctrl-btn.primary:hover {
-            background: var(--primary-dark);
-            transform: scale(1.1);
-        }
-
-        .ctrl-btn.wide {
-            width: auto;
-            padding: 0 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            gap: 5px;
-        }
-
-        /* --- 8. FULLSCREEN OVERLAYS --- */
-        .card:fullscreen,
-        .card:-webkit-full-screen {
-            background: black;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .card:fullscreen .video-wrapper,
-        .card:-webkit-full-screen .video-wrapper {
-            height: 100vh;
-            padding-bottom: 0;
-        }
-
-        .card:fullscreen .custom-controls,
-        .card:-webkit-full-screen .custom-controls {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            z-index: 20;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(5px);
-        }
-
-        .card:fullscreen .card-content,
-        .card:-webkit-full-screen .card-content {
-            display: none;
-        }
-
-        /* --- 9. PDF & KEY POINTS --- */
-        .note-icon {
-            height: 160px;
-            background: linear-gradient(135deg, #e0e7ff 0%, #fae8ff 100%);
+        /* File Elements */
+        .file-icon {
+            height: 140px;
+            background: linear-gradient(135deg, #e0e7ff, #fae8ff);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
+            font-size: 3.5rem;
             color: var(--primary);
-            transition: transform 0.3s;
         }
 
-        .card:hover .note-icon {
-            transform: scale(1.05);
-        }
-
-        .pdf-btn {
+        .file-btn {
             display: block;
-            width: 100%;
             padding: 0.8rem;
             background: var(--text-main);
             color: white;
@@ -393,29 +318,14 @@
             border-radius: 12px;
             margin-top: 1rem;
             text-decoration: none;
-            font-weight: 500;
-            transition: 0.3s;
+            font-size: 0.9rem;
         }
 
-        .pdf-btn:hover {
+        .file-btn:hover {
             background: var(--primary);
         }
 
-        .keypoint-content {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: var(--text-light);
-        }
-
-        .keypoint-content ul {
-            padding-left: 1.2rem;
-        }
-
-        .keypoint-content li {
-            margin-bottom: 0.5rem;
-        }
-
-        /* --- MODAL --- */
+        /* MODAL */
         .modal {
             display: none;
             position: fixed;
@@ -423,72 +333,124 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(5px);
-            z-index: 10000;
-            padding: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10001;
+            padding: 1rem;
         }
 
         .modal-content {
             background: white;
             width: 100%;
             height: 100%;
-            border-radius: 20px;
+            border-radius: 15px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         .close-modal {
             position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
+            top: 1rem;
+            right: 1rem;
             background: #ef4444;
             color: white;
-            width: 40px;
-            height: 40px;
+            border: none;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
-            border: none;
             cursor: pointer;
-            z-index: 10;
-            font-size: 1.2rem;
-            transition: transform 0.2s;
+            z-index: 100;
         }
 
-        .close-modal:hover {
-            transform: rotate(90deg);
-        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
 
-        .pdf-frame {
-            width: 100%;
-            height: 100%;
-            border: none;
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 
 <body>
     <nav class="navbar">
-        <div class="nav-brand"><i class="fas fa-heartbeat" style="color: #ef4444;"></i> MBBS World</div>
-        <button onclick="handleLogout()" class="logout-btn">Logout</button>
+        <div class="nav-brand" onclick="navigate('home')"><i class="fas fa-heartbeat" style="color:#ef4444"></i> MBBS
+            World</div>
+        <div class="main-nav">
+            <a href="#" class="nav-link" id="nav-home" onclick="navigate('home')"><i class="fas fa-home"></i> Home</a>
+            <a href="#" class="nav-link" id="nav-videos" onclick="navigate('videos')"><i class="fas fa-play-circle"></i>
+                Videos</a>
+            <a href="#" class="nav-link" id="nav-notes" onclick="navigate('notes')"><i class="fas fa-file-pdf"></i>
+                Notes</a>
+            <a href="#" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i class="fas fa-tasks"></i>
+                Q-Bank</a>
+            <a href="#" class="nav-link" id="nav-pyq" onclick="navigate('pyq')"><i class="fas fa-history"></i> PYQ</a>
+        </div>
+        <div class="user-menu">
+            <span id="userName" style="font-weight:600; font-size:0.9rem"></span>
+            <button onclick="handleLogout()" class="logout-btn">Logout</button>
+        </div>
     </nav>
 
     <div class="container">
-        <div class="tabs" id="subjectTabs">
-            <button class="tab-btn active" onclick="switchSubject('anatomy')">Anatomy</button>
-            <button class="tab-btn" onclick="switchSubject('physiology')">Physiology</button>
-            <button class="tab-btn" onclick="switchSubject('biochemistry')">Biochemistry</button>
-            <button class="tab-btn" onclick="switchSubject('ent')">ENT</button>
-            <button class="tab-btn" onclick="switchSubject('community_medicine')">Community Medicine</button>
+        <!-- Subjects Nav (Contextual) -->
+        <div class="subject-tabs" id="subjectNav">
+            <button class="subject-tab" onclick="setSubject('anatomy')">Anatomy</button>
+            <button class="subject-tab" onclick="setSubject('physiology')">Physiology</button>
+            <button class="subject-tab" onclick="setSubject('biochemistry')">Biochemistry</button>
+            <button class="subject-tab" onclick="setSubject('pharmacology')">Pharma</button>
+            <button class="subject-tab" onclick="setSubject('pathology')">Patho</button>
+            <button class="subject-tab" onclick="setSubject('microbiology')">Micro</button>
+            <button class="subject-tab" onclick="setSubject('fmt')">FMT</button>
+            <button class="subject-tab" onclick="setSubject('ent')">ENT</button>
+            <button class="subject-tab" onclick="setSubject('ophthalmology')">Ophtha</button>
+            <button class="subject-tab" onclick="setSubject('community_medicine')">PSM</button>
+            <button class="subject-tab" onclick="setSubject('medicine')">Medicine</button>
+            <button class="subject-tab" onclick="setSubject('surgery')">Surgery</button>
+            <button class="subject-tab" onclick="setSubject('obg')">OBG</button>
+            <button class="subject-tab" onclick="setSubject('pediatrics')">Pedia</button>
+            <button class="subject-tab" onclick="setSubject('orthopedics')">Ortho</button>
+            <button class="subject-tab" onclick="setSubject('dermatology')">Derma</button>
+            <button class="subject-tab" onclick="setSubject('anesthesia')">Anesthesia</button>
+            <button class="subject-tab" onclick="setSubject('psychiatry')">Psychiatry</button>
+            <button class="subject-tab" onclick="setSubject('qbank_special')"
+                style="background:var(--accent); color:white;">Master Q-Bank</button>
         </div>
 
-        <div class="content-grid" id="contentArea"></div>
+        <div id="contentArea">
+            <!-- Home View (Default) -->
+            <div class="welcome-section">
+                <h1>Welcome, <span id="welcomeName">Student</span>!</h1>
+                <p>What would you like to study today?</p>
+                <div class="portal-grid">
+                    <div class="portal-card" onclick="navigate('videos')"><i class="fas fa-video"></i>
+                        <h3>Video Lectures</h3>
+                        <p>Premium video content with summary notes.</p>
+                    </div>
+                    <div class="portal-card" onclick="navigate('notes')"><i class="fas fa-book"></i>
+                        <h3>Notes PDF</h3>
+                        <p>Standard textbook reference material.</p>
+                    </div>
+                    <div class="portal-card" onclick="navigate('qbank')"><i class="fas fa-graduation-cap"></i>
+                        <h3>Question Bank</h3>
+                        <p>Test your knowledge with practice files.</p>
+                    </div>
+                    <div class="portal-card" onclick="navigate('pyq')"><i class="fas fa-file-invoice"></i>
+                        <h3>PYQ - HTML</h3>
+                        <p>Previous Year Questions in HTML format.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div id="pdfModal" class="modal">
+    <div id="fileModal" class="modal">
         <div class="modal-content">
-            <button class="close-modal" onclick="closePdfModal()"><i class="fas fa-times"></i></button>
-            <iframe id="pdfViewer" class="pdf-frame" src=""></iframe>
+            <button class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <iframe id="fileViewer" style="width:100%; height:100%; border:none;" src=""></iframe>
         </div>
     </div>
 
@@ -496,7 +458,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // --- RESTORED FIREBASE KEYS ---
         const firebaseConfig = {
             apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
             authDomain: "samvad-bafaa.firebaseapp.com",
@@ -511,7 +472,10 @@
         const auth = getAuth(app);
 
         onAuthStateChanged(auth, (user) => {
-            if (user) { loadContent('anatomy'); } else { window.location.href = 'index.html'; }
+            if (user) {
+                document.getElementById('userName').innerText = user.displayName || user.email;
+                document.getElementById('welcomeName').innerText = user.displayName?.split(' ')[0] || "Student";
+            } else { window.location.href = 'index.html'; }
         });
 
         window.handleLogout = () => signOut(auth).then(() => window.location.href = 'index.html');
@@ -520,11 +484,16 @@
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
-        // --- DATA ---
+        // --- DATA ENGINE ---
         const mbbsData = {
-            anatomy: { videos: [], keyPoints: [], notes: [] },
-            physiology: { videos: [], keyPoints: [], notes: [] },
-            biochemistry: { videos: [], keyPoints: [], notes: [] },
+            anatomy: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Anatomy PYQ", link: "papers/anant_pyq.html" }] },
+            physiology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Physiology PYQ", link: "papers/physio_pyq.html" }] },
+            biochemistry: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Biochemistry PYQ", link: "papers/biochem_pyq.html" }] },
+            pharmacology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Pharmacology PYQ", link: "papers/pharma_pyq.html" }] },
+            pathology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Pathology PYQ", link: "papers/patho_pyq.html" }] },
+            microbiology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Microbiology PYQ", link: "papers/micro_pyq.html" }] },
+            fmt: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "FMT PYQ", link: "papers/fmt_pyq.html" }] },
+            community_medicine: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Community Medicine PYQ", link: "papers/psm_pyq.html" }] },
             ent: {
                 videos: [
                     { title: "Basics of Ear", link: "SZQcPzTh12M" },
@@ -548,286 +517,195 @@
                     { title: "Serous Otitis Media", link: "9L2fSYvpJIE" }
                 ],
                 keyPoints: [
-                    {
-                        title: "Quick Notes: Anatomy of Ear",
-                        content: `
-                            <ul>
-                                <li><strong>External Ear:</strong> Pinna (6 hillocks of His), External Auditory Canal (outer 1/3 cartilage, inner 2/3 bone).</li>
-                                <li><strong>Middle Ear:</strong> Boundaries (Lateral: TM, Medial: Promontory), Contents (Ossicles, Stapedius, Tensor Tympani).</li>
-                                <li><strong>Inner Ear:</strong> Cochlea (Hearing), Vestibule/Canals (Balance).</li>
-                            </ul>
-                        `
-                    },
-                    {
-                        title: "Key Points: Clinical Embryology of Inner Ear",
-                        content: `
-                            <ul>
-                                <li><strong>Origin:</strong> Ectodermal Otic Placode.</li>
-                                <li><strong>Ductus Reuniens:</strong> Connects Saccule to Cochlear Duct.</li>
-                                <li><strong>Aplasias:</strong> Michel (Complete), Mondini (Partial), Scheibe (Cochleosaccular).</li>
-                            </ul>
-                        `
-                    },
-                    {
-                        title: "Key Points: Embryology of Middle & External Ear",
-                        content: `
-                            <ul>
-                                <li><strong>1st Pharyngeal Arch:</strong> Malleus (head/neck), Incus (body).</li>
-                                <li><strong>2nd Pharyngeal Arch:</strong> Stapes (except footplate), Malleus (manubrium), Incus (long process).</li>
-                                <li><strong>Eustachian Tube:</strong> Derived from the 1st Pharyngeal Pouch.</li>
-                                <li><strong>Pinna:</strong> Develops from 6 Auricular Hillocks (1-3 from 1st arch, 4-6 from 2nd arch).</li>
-                            </ul>
-                        `
-                    },
-                    {
-                        title: "Key Points: Clinical Anatomy of External & Middle Ear",
-                        content: `
-                            <ul>
-                                <li><strong>EAC:</strong> ~24mm. Fissures of Santorini allow spread of infection to parotid.</li>
-                                <li><strong>Tympanic Membrane:</strong> 3 layers. Pars Tensa vs Pars Flaccida.</li>
-                                <li><strong>Middle Ear Spaces:</strong> Epitympanum, Mesotympanum, Hypotympanum. Prussak's space is critical in cholesteatoma.</li>
-                            </ul>
-                        `
-                    },
-                    {
-                        title: "Key Points: Audiology (PTA & BERA)",
-                        content: `
-                            <ul>
-                                <li><strong>Pure Tone Audiometry (PTA):</strong> Determines hearing threshold. Air-Bone Gap > 15dB indicates Conductive Hearing Loss.</li>
-                                <li><strong>Impedance Audiometry:</strong> Type A (Normal), Type B (Fluid/SOM), Type C (Eustachian tube dysfunction).</li>
-                                <li><strong>BERA:</strong> Objective test. Wave V is most stable. Used for neonatal screening and site-of-lesion for Acoustic Neuroma.</li>
-                            </ul>
-                        `
-                    },
-                    {
-                        title: "Key Points: Vestibular Physiology & Vertigo",
-                        content: `
-                            <ul>
-                                <li><strong>Balance:</strong> Maintained by Semicircular Canals (Angular acceleration) and Otolith Organs (Linear acceleration).</li>
-                                <li><strong>Nystagmus:</strong> Involuntary eye movement. Direction is defined by the fast component.</li>
-                                <li><strong>Vertigo:</strong> BPPV is the most common cause (diagnosed by Dix-Hallpike maneuver, treated by Epley maneuver).</li>
-                            </ul>
-                        `
-                    },
-                    {
-                        title: "Key Points: Clinical Otology (Infections)",
-                        content: `
-                            <ul>
-                                <li><strong>External Ear:</strong> Otitis Externa (Swimmer's ear), Otomycosis (Fungal - Aspergillus/Candida).</li>
-                                <li><strong>Acute Otitis Media (ASOM):</strong> Stages (Hyperemia, Exudation, Suppuration, Resolution/Complication).</li>
-                                <li><strong>Serous Otitis Media (SOM):</strong> Non-suppurative fluid. Result of Eustachian tube block. Treatment: Grommet insertion.</li>
-                            </ul>
-                        `
-                    }
+                    { title: "Categorical Mastery: Ear Anatomy", content: "..." },
+                    { title: "Categorical Mastery: Audiology", content: "..." },
+                    { title: "Categorical Mastery: Vestibular & Diseases", content: "..." }
                 ],
-                notes: []
+                notes: [],
+                qbank: [],
+                pyq: [{ title: "ENT PYQ", link: "papers/ent_pyq.html" }]
             },
-            community_medicine: { videos: [], keyPoints: [], notes: [] }
+            ophthalmology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [] },
+            medicine: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "General Medicine PYQ", link: "papers/medicine_pyq.html" }] },
+            surgery: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [] },
+            obg: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "OBG PYQ", link: "papers/obg_pqy.html" }] },
+            pediatrics: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Pediatrics PYQ", link: "papers/pedia_pyq.html" }] },
+            orthopedics: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Orthopedics PYQ", link: "papers/ortho_pyq.html" }] },
+            dermatology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Dermatology PYQ", link: "papers/derma_pyq.html" }] },
+            anesthesia: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Anesthesia PYQ", link: "papers/anesthesia_pyq.html" }] },
+            psychiatry: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Psychiatry PYQ", link: "papers/psyc_pyq.html" }] },
+            qbank_special: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Professional Exams Master Q-Bank", link: "papers/MBBS Professional Exams (1st - 3rd Year) Q-Bank.html" }] }
         };
 
+        let currentView = 'home';
         let currentSubject = 'anatomy';
         let players = {};
         let pendingPlayers = [];
 
-        function switchSubject(subject) {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.textContent.toLowerCase().includes(subject.split('_')[0])) btn.classList.add('active');
-            });
-            currentSubject = subject;
-            loadContent(subject);
+        function navigate(view) {
+            currentView = view;
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.getElementById(`nav-${view}`).classList.add('active');
+
+            const subjectNav = document.getElementById('subjectNav');
+            if (view === 'home') {
+                subjectNav.classList.remove('visible');
+                renderHome();
+            } else {
+                subjectNav.classList.add('visible');
+                renderContent();
+            }
         }
 
-        function loadContent(subject) {
-            const container = document.getElementById('contentArea');
-            container.innerHTML = '';
+        function setSubject(subject) {
+            currentSubject = subject;
+            document.querySelectorAll('.subject-tab').forEach(t => {
+                t.classList.remove('active');
+                if (t.innerText.toLowerCase().includes(subject.split('_')[0])) t.classList.add('active');
+            });
+            renderContent();
+        }
+
+        function renderHome() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="welcome-section">
+                    <h1>Welcome Back, <span id="welcomeNameHome">${document.getElementById('welcomeName').innerText}</span>!</h1>
+                    <p>Select a category to start your learning journey.</p>
+                    <div class="portal-grid">
+                        <div class="portal-card" onclick="navigate('videos')"><i class="fas fa-video"></i><h3>Video Lectures</h3><p>Watch and learn with integrated summaries.</p></div>
+                        <div class="portal-card" onclick="navigate('notes')"><i class="fas fa-book"></i><h3>Notes PDF</h3><p>Access high-quality study materials.</p></div>
+                        <div class="portal-card" onclick="navigate('qbank')"><i class="fas fa-graduation-cap"></i><h3>Question Bank</h3><p>Practice for your exams.</p></div>
+                        <div class="portal-card" onclick="navigate('pyq')"><i class="fas fa-history"></i><h3>PYQ - HTML</h3><p>Check previous year questions.</p></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderContent() {
+            const area = document.getElementById('contentArea');
+            area.innerHTML = '';
             players = {}; pendingPlayers = [];
-            const data = mbbsData[subject];
-            if (!data) return;
+            const data = mbbsData[currentSubject];
 
-            // 1. VIDEOS SECTION
-            if (data.videos.length > 0) {
-                addSectionHeader(container, "Video Lectures", "fa-video");
-                data.videos.forEach((video, index) => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.style.animationDelay = `${index * 0.1}s`;
-
-                    let videoId = video.link;
-                    if (video.link.includes('v=')) videoId = video.link.split('v=')[1].split('&')[0];
-                    else if (video.link.includes('youtu.be/')) videoId = video.link.split('youtu.be/')[1].split('?')[0];
-
-                    const uniqueId = `yt-player-${index}`;
-                    card.innerHTML = renderPlayerHTML(uniqueId, video.title);
-                    container.appendChild(card);
-
-                    if (window.YT && window.YT.Player) { createPlayer(uniqueId, videoId); }
-                    else { pendingPlayers.push({ id: uniqueId, videoId: videoId }); }
-                });
+            if (currentView === 'videos') {
+                if (data.videos.length > 0) {
+                    addSectionHeader(area, "Video Lectures", "fa-play");
+                    data.videos.forEach((v, i) => renderVideoCard(area, v, i));
+                }
+                if (data.keyPoints.length > 0) {
+                    addSectionHeader(area, "Mastery Notes", "fa-lightbulb");
+                    data.keyPoints.forEach(kp => {
+                        const card = document.createElement('div'); card.className = 'card';
+                        card.innerHTML = `<div class="card-content"><div class="card-title" style="color:var(--primary)">${kp.title}</div><div class="keypoint-content">${kp.content}</div></div>`;
+                        area.appendChild(card);
+                    });
+                }
+            } else if (currentView === 'notes') {
+                renderFileGrid(area, data.notes, "Reference Notes", "fa-file-pdf");
+            } else if (currentView === 'qbank') {
+                renderFileGrid(area, data.qbank, "Question Bank Files", "fa-tasks");
+            } else if (currentView === 'pyq') {
+                renderFileGrid(area, data.pyq, "Previous Year Papers (HTML)", "fa-history", true);
             }
 
-            // 2. KEY POINTS SECTION (AI Generated)
-            if (data.keyPoints && data.keyPoints.length > 0) {
-                addSectionHeader(container, "Important Key Points", "fa-lightbulb");
-                data.keyPoints.forEach((kp, index) => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.style.animationDelay = `${(data.videos.length + index) * 0.1}s`;
-                    card.innerHTML = renderKeyPoint(kp.title, kp.content);
-                    container.appendChild(card);
-                });
-            }
+            if (area.innerHTML === '') area.innerHTML = '<div style="text-align:center; padding:5rem; color:var(--text-light)">No content available for this subject yet.</div>';
+        }
 
-            // 3. PDF LIBRARY SECTION
-            if (data.notes.length > 0) {
-                addSectionHeader(container, "PDF Library", "fa-file-pdf");
-                data.notes.forEach((note, index) => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.style.animationDelay = `${(data.videos.length + (data.keyPoints?.length || 0) + index) * 0.1}s`;
-                    card.innerHTML = renderNote(note.link, note.title);
+        function renderVideoCard(container, video, index) {
+            const card = document.createElement('div'); card.className = 'card';
+            let vid = video.link;
+            const uid = `yt-${index}`;
+            card.innerHTML = `
+                <div class="video-wrapper"><div id="${uid}"></div><div class="glass-shield"></div></div>
+                <div class="custom-controls">
+                    <div class="timeline-container"><input type="range" class="timeline" id="seek-${uid}" min="0" value="0" oninput="userSeek('${uid}', this.value)"><span class="time-display" id="time-${uid}">0:00 / 0:00</span></div>
+                    <div class="buttons-row">
+                        <button class="ctrl-btn primary" onclick="controlPlayer('${uid}', 'play')"><i class="fas fa-play"></i></button>
+                        <button class="ctrl-btn" onclick="controlPlayer('${uid}', 'pause')"><i class="fas fa-pause"></i></button>
+                        <button class="ctrl-btn" onclick="toggleFullScreen(this)"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+                <div class="card-content"><div class="card-title">${video.title}</div></div>
+            `;
+            container.appendChild(card);
+            if (window.YT && window.YT.Player) createPlayer(uid, vid); else pendingPlayers.push({ id: uid, vid: vid });
+        }
+
+        function renderFileGrid(container, items, title, icon, isHtml = false) {
+            if (items.length > 0) {
+                addSectionHeader(container, title, icon);
+                items.forEach((item, idx) => {
+                    const card = document.createElement('div'); card.className = 'card';
+                    // We generate a unique ID to retrieve content safely
+                    const contentId = isHtml ? `html-content-${currentSubject}-${idx}` : null;
+                    if (isHtml) { card.dataset.content = item.content; }
+
+                    card.innerHTML = `
+                        <div class="file-icon"><i class="fas ${isHtml ? 'fa-code' : 'fa-file-pdf'}"></i></div>
+                        <div class="card-content"><div class="card-title">${item.title}</div>
+                        <button onclick="openFile(this.closest('.card').dataset.content || '${item.link}', ${isHtml})" class="file-btn" style="width:100%; border:none; cursor:pointer;">
+                            ${isHtml ? 'Open Paper' : 'Read PDF'}
+                        </button></div>
+                    `;
                     container.appendChild(card);
                 });
             }
         }
 
         function addSectionHeader(container, text, icon) {
-            const header = document.createElement('h3');
-            header.className = 'section-title';
-            header.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
-            container.appendChild(header);
+            const h = document.createElement('h3'); h.className = 'section-title';
+            h.innerHTML = `<i class="fas ${icon}"></i> ${text}`; container.appendChild(h);
         }
 
-        function renderKeyPoint(title, content) {
-            return `
-                <div class="card-content">
-                    <div class="card-title" style="color: var(--primary);">${title}</div>
-                    <div class="keypoint-content">${content}</div>
-                </div>
-            `;
-        }
-
-        function renderPlayerHTML(uid, title) {
-            return `
-                <div class="video-wrapper">
-                    <div id="${uid}" class="video-placeholder"></div>
-                    <div class="glass-shield"></div>
-                </div>
-                <div class="custom-controls">
-                    <div class="timeline-container">
-                        <input type="range" class="timeline" id="seek-${uid}" min="0" value="0" step="1" oninput="userSeek('${uid}', this.value)">
-                        <span class="time-display" id="time-${uid}">0:00 / 0:00</span>
-                    </div>
-                    <div class="buttons-row">
-                        <div class="left-btns">
-                            <button class="ctrl-btn primary" onclick="controlPlayer('${uid}', 'play')"><i class="fas fa-play"></i></button>
-                            <button class="ctrl-btn" onclick="controlPlayer('${uid}', 'pause')"><i class="fas fa-pause"></i></button>
-                        </div>
-                        <div class="right-btns">
-                             <button class="ctrl-btn wide" onclick="toggleSpeed('${uid}')"><i class="fas fa-tachometer-alt"></i> <span id="spd-${uid}">1x</span></button>
-                             <button class="ctrl-btn" onclick="toggleFullScreen(this)"><i class="fas fa-expand"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-content"><div class="card-title">${title}</div></div>
-            `;
-        }
-
-        window.onYouTubeIframeAPIReady = function () {
-            pendingPlayers.forEach(p => createPlayer(p.id, p.videoId));
-            pendingPlayers = [];
-        };
-
-        function createPlayer(uid, videoId) {
-            const cleanId = videoId.trim();
+        // --- PLAYER ENGINE ---
+        window.onYouTubeIframeAPIReady = () => { pendingPlayers.forEach(p => createPlayer(p.id, p.vid)); pendingPlayers = []; };
+        function createPlayer(uid, vid) {
             players[uid] = new YT.Player(uid, {
-                height: '100%', width: '100%', videoId: cleanId,
+                height: '100%', width: '100%', videoId: vid.trim(),
                 playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
-                events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange, 'onError': onPlayerError }
+                events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
             });
         }
-        function onPlayerError(event) { console.error("Player Error:", event.data); }
-
-        function onPlayerReady(event) {
-            const player = event.target;
-            const uid = player.getIframe().id;
-            const duration = player.getDuration();
-            const range = document.getElementById(`seek-${uid}`);
-            if (range) range.max = duration;
-            updateTimeDisplay(uid, 0, duration);
-        }
-
-        let progressIntervals = {};
-        function onPlayerStateChange(event) {
-            const player = event.target;
-            const uid = player.getIframe().id;
-            if (event.data == YT.PlayerState.PLAYING) {
-                player.setPlaybackQuality('hd720');
-                stopInterval(uid);
-                progressIntervals[uid] = setInterval(() => {
-                    if (!player.getCurrentTime) return;
-                    const currentTime = player.getCurrentTime();
-                    const duration = player.getDuration();
-                    const range = document.getElementById(`seek-${uid}`);
-                    if (range) range.value = currentTime;
-                    updateTimeDisplay(uid, currentTime, duration);
+        function onReady(e, uid) { document.getElementById(`seek-${uid}`).max = e.target.getDuration(); updateClock(uid, 0, e.target.getDuration()); }
+        function onStateChange(e, uid) {
+            if (e.data == YT.PlayerState.PLAYING) {
+                e.target.setPlaybackQuality('hd720');
+                if (players[uid].timer) clearInterval(players[uid].timer);
+                players[uid].timer = setInterval(() => {
+                    const t = e.target.getCurrentTime();
+                    document.getElementById(`seek-${uid}`).value = t;
+                    updateClock(uid, t, e.target.getDuration());
                 }, 1000);
-            } else { stopInterval(uid); }
+            } else clearInterval(players[uid].timer);
         }
-        function stopInterval(uid) { if (progressIntervals[uid]) { clearInterval(progressIntervals[uid]); delete progressIntervals[uid]; } }
-        function updateTimeDisplay(uid, current, total) {
-            const display = document.getElementById(`time-${uid}`);
-            if (display) display.innerText = `${formatTime(current)} / ${formatTime(total)}`;
-        }
-        function formatTime(seconds) {
-            const m = Math.floor(seconds / 60);
-            const s = Math.floor(seconds % 60);
-            return `${m}:${s < 10 ? '0' : ''}${s}`;
-        }
+        function updateClock(uid, curr, dur) { document.getElementById(`time-${uid}`).innerText = `${fmt(curr)} / ${fmt(dur)}`; }
+        function fmt(s) { const m = Math.floor(s / 60); const sc = Math.floor(s % 60); return `${m}:${sc < 10 ? '0' : ''}${sc}`; }
 
-        window.controlPlayer = function (uid, action) {
-            if (!players[uid]) return;
-            if (action === 'play') players[uid].playVideo();
-            if (action === 'pause') players[uid].pauseVideo();
+        window.controlPlayer = (uid, a) => players[uid][a + 'Video']();
+        window.userSeek = (uid, v) => players[uid].seekTo(v, true);
+        window.toggleFullScreen = (btn) => {
+            const c = btn.closest('.card');
+            if (!document.fullscreenElement) c.requestFullscreen(); else document.exitFullscreen();
         };
-        window.userSeek = function (uid, value) {
-            if (!players[uid]) return;
-            players[uid].seekTo(value, true);
-        };
-        window.toggleSpeed = function (uid) {
-            if (!players[uid]) return;
-            const span = document.getElementById(`spd-${uid}`);
-            let current = span.innerText;
-            rate = 1;
-            if (current === '1x') { rate = 1.5; current = '1.5x'; } else if (current === '1.5x') { rate = 2; current = '2x'; } else { rate = 1; current = '1x'; }
-            players[uid].setPlaybackRate(rate);
-            span.innerText = current;
-        };
-        window.toggleFullScreen = function (btn) {
-            const card = btn.closest('.card');
-            if (!document.fullscreenElement) {
-                if (card.requestFullscreen) card.requestFullscreen();
-                else if (card.webkitRequestFullscreen) card.webkitRequestFullscreen();
-                btn.innerHTML = '<i class="fas fa-compress"></i>';
+
+        // --- FILE ENGINE ---
+        window.openFile = (urlOrContent, isHtml) => {
+            const viewer = document.getElementById('fileViewer');
+            if (isHtml) {
+                viewer.src = ""; // Clear src
+                viewer.srcdoc = urlOrContent; // Load raw HTML
             } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-                btn.innerHTML = '<i class="fas fa-expand"></i>';
+                viewer.srcdoc = ""; // Clear srcdoc
+                viewer.src = urlOrContent.replace(/\/view.*/, '/preview').replace(/\/edit.*/, '/preview');
             }
+            document.getElementById('fileModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         };
-
-        function renderNote(link, title) {
-            return `<div class="note-icon"><i class="fas fa-file-pdf"></i></div>
-                    <div class="card-content"><div class="card-title">${title}</div>
-                    <a href="#" onclick="openPdf('${link}'); return false;" class="pdf-btn">Read Notes</a></div>`;
-        }
-        function openPdf(url) {
-            const modal = document.getElementById('pdfModal');
-            document.getElementById('pdfViewer').src = url.replace(/\/view.*/, '/preview').replace(/\/edit.*/, '/preview');
-            modal.style.display = 'block'; document.body.style.overflow = 'hidden';
-        }
-        function closePdfModal() {
-            document.getElementById('pdfModal').style.display = 'none'; document.getElementById('pdfViewer').src = ''; document.body.style.overflow = 'auto';
-        }
+        window.closeModal = () => {
+            document.getElementById('fileModal').style.display = 'none';
+            document.getElementById('fileViewer').src = '';
+            document.body.style.overflow = 'auto';
+        };
     </script>
 </body>
 
