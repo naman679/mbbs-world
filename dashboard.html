@@ -5,713 +5,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MBBS World - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary: #0d47a1;
-            --primary-light: #e3f2fd;
-            --text-dark: #333;
-            --text-muted: #666;
-            --border: #ddd;
-            --bg: #f9f9f9;
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --background-color: #f3f4f6;
+            --card-color: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --success-color: #10b981;
         }
 
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            background-color: var(--bg);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-            /* Prevent body scroll, handle in containers */
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            min-height: 100vh;
         }
 
         /* Navbar */
         .navbar {
-            background: white;
-            padding: 0 1rem;
-            height: 60px;
+            background-color: var(--card-color);
+            padding: 1rem 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            z-index: 20;
-            flex-shrink: 0;
-        }
-
-        .nav-left {
-            display: flex;
             align-items: center;
-            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .hamburger {
-            display: none;
+        .nav-brand {
             font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .brand {
-            font-weight: 600;
-            font-size: 1.25rem;
-            color: var(--primary);
+            font-weight: 700;
+            color: var(--primary-color);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
         }
 
-        .top-tabs {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            font-size: 1rem;
-            color: var(--text-muted);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .tab-btn.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-
-        .user-menu {
+        .nav-user {
             display: flex;
             align-items: center;
             gap: 1rem;
-            font-size: 0.9rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
         }
 
         .logout-btn {
-            text-decoration: none;
-            color: #d32f2f;
-        }
-
-        /* Main Layout */
-        .app-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background: white;
-            border-right: 1px solid var(--border);
-            overflow-y: auto;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            padding: 1rem 0;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar-title {
-            padding: 0 1.5rem;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .subject-item {
-            padding: 10px 1.5rem;
+            padding: 0.5rem 1rem;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
             cursor: pointer;
-            color: var(--text-dark);
-            font-size: 0.95rem;
-            transition: background 0.2s;
-            border-left: 3px solid transparent;
-        }
-
-        .subject-item:hover {
-            background-color: var(--primary-light);
-        }
-
-        .subject-item.active {
-            background-color: var(--primary-light);
-            border-left-color: var(--primary);
-            color: var(--primary);
             font-weight: 500;
+            transition: background-color 0.2s;
         }
 
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 2rem;
-            overflow-y: auto;
+        .logout-btn:hover {
+            background-color: #dc2626;
         }
 
-        .content-header {
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
             margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
         }
 
-        .content-title {
-            margin: 0;
-            font-size: 1.75rem;
-            color: var(--text-dark);
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--card-color);
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
-        .content-subtitle {
-            color: var(--text-muted);
-            margin-top: 0.5rem;
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
         }
 
-        /* Dynamic Grid */
+        /* Content Grid */
         .content-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
         }
 
-        .data-card {
-            background: white;
-            border-radius: 8px;
-            padding: 1.25rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        /* Card Styles */
+        .card {
+            background: var(--card-color);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s;
-            border: 1px solid #eee;
         }
 
-        .data-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        .card:hover {
+            transform: translateY(-2px);
         }
 
-        .card-icon {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .card-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .card-desc {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-
-        .card-action {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            margin-top: 1rem;
-        }
-
-        .card-long-desc {
-            font-size: 0.9rem;
-            color: #555;
-            margin-top: 0.5rem;
-            line-height: 1.4;
-        }
-
-        .card-long-desc.closed {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .read-more-btn {
-            font-size: 0.8rem;
-            color: var(--primary);
-            cursor: pointer;
-            display: inline-block;
-            margin-top: 4px;
-            font-weight: 500;
-        }
-
-        .read-more-btn:hover {
-            text-decoration: underline;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .hamburger {
-                display: block;
-            }
-
-            .sidebar {
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                transform: translateX(-100%);
-                z-index: 30;
-                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            }
-
-            .sidebar.mobile-open {
-                transform: translateX(0);
-            }
-
-            .top-tabs {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: white;
-                height: 60px;
-                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-                justify-content: space-around;
-                z-index: 25;
-                padding: 0;
-            }
-
-            .tab-btn {
-                flex-direction: column;
-                font-size: 0.75rem;
-                padding: 8px;
-                gap: 2px;
-                border-bottom: none;
-                border-top: 3px solid transparent;
-            }
-
-            .tab-btn.active {
-                border-top-color: var(--primary);
-            }
-
-            .main-content {
-                padding-bottom: 80px;
-            }
-
-            /* Space for bottom tabs */
-
-            .overlay {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.3);
-                z-index: 29;
-            }
-
-            .overlay.active {
-                display: block;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-    <nav class="navbar">
-        <div class="nav-left">
-            <ion-icon name="menu-outline" class="hamburger" onclick="toggleSidebar()"></ion-icon>
-            <div class="brand">
-                <ion-icon name="medkit"></ion-icon> MBBS World
-            </div>
-        </div>
-
-        <div class="top-tabs" id="topTabs">
-            <button class="tab-btn active" onclick="switchTab('home')">
-                <ion-icon name="home-outline"></ion-icon> Home
-            </button>
-            <button class="tab-btn" onclick="switchTab('videos')">
-                <ion-icon name="videocam-outline"></ion-icon> Videos
-            </button>
-            <button class="tab-btn" onclick="switchTab('notes')">
-                <ion-icon name="document-text-outline"></ion-icon> Notes
-            </button>
-            <button class="tab-btn" onclick="switchTab('qbank')">
-                <ion-icon name="help-circle-outline"></ion-icon> Question Bank
-            </button>
-        </div>
-
-        <div class="user-menu">
-            <span>Student</span>
-            <a href="index.html" class="logout-btn"><ion-icon name="log-out-outline"></ion-icon></a>
-        </div>
-    </nav>
-
-    <div class="app-container">
-        <div class="overlay" onclick="toggleSidebar()"></div>
-
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar" style="display: none;">
-            <div class="sidebar-title">MBBS Subjects</div>
-            <div id="subjectList">
-                <!-- Dynamically populated by JS -->
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <main class="main-content">
-
-            <!-- Home Dashboard View -->
-            <div id="homeView">
-                <div class="welcome-banner">
-                    <h1>Welcome back, Future Doctor! 👋</h1>
-                    <p>Track your progress and access thousands of resources below. Select a subject tab to start
-                        studying.</p>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card blue">
-                        <div class="stat-icon"><ion-icon name="videocam"></ion-icon></div>
-                        <div class="stat-info">
-                            <div class="stat-number" id="count-videos">0</div>
-                            <div class="stat-label">Total Videos</div>
-                        </div>
-                    </div>
-                    <div class="stat-card green">
-                        <div class="stat-icon"><ion-icon name="book"></ion-icon></div>
-                        <div class="stat-info">
-                            <div class="stat-number" id="count-notes">0</div>
-                            <div class="stat-label">Study Notes</div>
-                        </div>
-                    </div>
-                    <div class="stat-card orange">
-                        <div class="stat-icon"><ion-icon name="help-circle"></ion-icon></div>
-                        <div class="stat-info">
-                            <div class="stat-number" id="count-quests">0</div>
-                            <div class="stat-label">Questions</div>
-                        </div>
-                    </div>
-                    <div class="stat-card purple">
-                        <div class="stat-icon"><ion-icon name="people"></ion-icon></div>
-                        <div class="stat-info">
-                            <div class="stat-number">500+</div>
-                            <div class="stat-label">Registered Students</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Subject Content View -->
-            <div id="contentView" style="display: none;">
-                <div class="content-header">
-                    <h1 class="content-title" id="pageTitle">Anatomy - Videos</h1>
-                    <p class="content-subtitle" id="pageSubtitle">Select a subject and tab to view content.</p>
-                </div>
-                <div class="content-grid" id="contentGrid">
-                    <!-- Content will be injected here -->
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Additional CSS for Home View -->
-    <style>
-        .welcome-banner {
-            background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
-            color: white;
-            padding: 2.5rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 15px rgba(13, 71, 161, 0.2);
-        }
-
-        .welcome-banner h1 {
-            margin: 0 0 0.5rem 0;
-            font-size: 2rem;
-        }
-
-        .welcome-banner p {
-            margin: 0;
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            border: 1px solid #eee;
-        }
-
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: white;
-        }
-
-        .stat-card.blue .stat-icon {
-            background: #2196f3;
-            box-shadow: 0 4px 10px rgba(33, 150, 243, 0.3);
-        }
-
-        .stat-card.green .stat-icon {
-            background: #4caf50;
-            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
-        }
-
-        .stat-card.orange .stat-icon {
-            background: #ff9800;
-            box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
-        }
-
-        .stat-card.purple .stat-icon {
-            background: #9c27b0;
-            box-shadow: 0 4px 10px rgba(156, 39, 176, 0.3);
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #333;
-            line-height: 1;
-        }
-
-        .stat-label {
-            color: #777;
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
-    </style>
-
-    <!-- PDF Preview Modal -->
-    <div id="pdfModal" class="pdf-modal">
-        <div class="pdf-container">
-            <span class="close-pdf" onclick="closePdf()">&times;</span>
-            <a id="external-pdf-link" href="#" target="_blank" class="fallback-link">⚠️ File not loading? Open in New
-                Tab</a>
-            <a id="download-pdf-btn" href="#" target="_blank" class="download-link" style="display: none;">⬇️ Download
-                PDF</a>
-            <iframe id="pdfFrame" src="" oncontextmenu="return false;"></iframe>
-        </div>
-    </div>
-
-    <!-- Video Player Modal -->
-    <div id="videoModal" class="pdf-modal">
-        <div class="pdf-container"
-            style="background: black; display: flex; align-items: center; justify-content: center;">
-            <span class="close-pdf" onclick="closeVideo()">&times;</span>
-            <div class="video-container">
-                <iframe id="videoFrame" src="" frameborder="0"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
-                    sandbox="allow-scripts allow-same-origin allow-presentation">
-                </iframe>
-            </div>
-        </div>
-    </div>
-
-    <!-- ... styles ... -->
-
-    <script>
-        // ... previous code ...
-
-        function formatDriveLink(url) {
-            if (!url) return "";
-            if (url.includes("drive.google.com")) {
-                return url.replace(/\/view.*$/, '/preview').replace(/\/edit.*$/, '/preview');
-            }
-            return url;
-        }
-
-        // NEW: Video Link Formatter (Robust Regex + Params)
-        function getVideoEmbedLink(url) {
-            if (!url) return "";
-
-            // Regex to match YouTube Video IDs from various URL formats
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
-
-            if (match && match[2].length === 11) {
-                // Append params for security/cleanliness (Modest Branding, No Related Videos, No Annotations)
-                return `https://www.youtube.com/embed/${match[2]}?modestbranding=1&rel=0&iv_load_policy=3`;
-            } else {
-                // Return original if no match found (or handle error)
-                return url;
-            }
-        }
-
-        function openVideo(link) {
-            const modal = document.getElementById('videoModal');
-            const iframe = document.getElementById('videoFrame');
-            if (link) {
-                iframe.src = getVideoEmbedLink(link);
-                modal.style.display = 'flex';
-            }
-        }
-
-        function closeVideo() {
-            const modal = document.getElementById('videoModal');
-            const iframe = document.getElementById('videoFrame');
-            modal.style.display = 'none';
-            iframe.src = ""; // Stop playback
-        }
-
-        function openPdf(link, allowDownload) {
-            const modal = document.getElementById('pdfModal');
-            const iframe = document.getElementById('pdfFrame');
-            const externalBtn = document.getElementById('external-pdf-link');
-            const downloadBtn = document.getElementById('download-pdf-btn');
-
-            if (link) {
-                // 1. Iframe
-                iframe.src = formatDriveLink(link);
-
-                // 2. Fallback Link
-                let viewLink = link;
-                if (viewLink.includes("drive.google.com") && viewLink.includes("/preview")) {
-                    viewLink = viewLink.replace("/preview", "/view");
-                }
-                externalBtn.href = viewLink;
-
-                // 3. Selective Download Button
-                if (allowDownload) {
-                    downloadBtn.href = viewLink; // Opens standard view which allows download
-                    downloadBtn.style.display = 'block';
-                } else {
-                    downloadBtn.style.display = 'none';
-                    downloadBtn.href = '#';
-                }
-
-                modal.style.display = 'flex';
-            }
-        }
-
-        function closePdf() {
-            const modal = document.getElementById('pdfModal');
-            const iframe = document.getElementById('pdfFrame');
-            modal.style.display = 'none';
-            iframe.src = "";
-        }
-
-        window.onclick = function (event) {
-            const pdfModal = document.getElementById('pdfModal');
-            const videoModal = document.getElementById('videoModal');
-            if (event.target == pdfModal) closePdf();
-            if (event.target == videoModal) closeVideo();
-        }
-
-        // ... rest of code ...
-    </script>
-
-    <style>
-        /* PDF Modal Styles */
-        .pdf-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pdf-container {
-            width: 90%;
-            height: 90%;
-            background: white;
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .pdf-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            padding-top: 40px;
-            /* Space for top bar items */
-            box-sizing: border-box;
-        }
-
-        .close-pdf {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            color: #fff;
-            font-size: 24px;
-            /* Adjusted size */
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 1002;
-            background: #d32f2f;
-            width: 36px;
-            height: 36px;
-            line-height: 36px;
-            text-align: center;
-            border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .close-pdf:hover {
-            background: #b71c1c;
-            transform: scale(1.1);
-        }
-
-        .fallback-link {
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            z-index: 1002;
-            background: rgba(255, 193, 7, 0.9);
-            /* Amber background */
-            color: #333;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: background 0.2s;
-        }
-
-        .fallback-link:hover {
-            background: #ffb300;
-        }
-    </style>
-
-    <style>
-        /* ... previous styles ... */
-
-        /* Video Shield Styles */
+        /* VIDEO CONTAINER - The Important Part */
         .video-container {
             position: relative;
             width: 100%;
             height: 0;
             padding-bottom: 56.25%;
             /* 16:9 Aspect Ratio */
-            /* overflow: hidden; Removed to ensure controls are not cut off */
+            background: #000;
+            overflow: hidden;
         }
 
         .video-container iframe {
@@ -720,264 +154,354 @@
             left: 0;
             width: 100%;
             height: 100%;
+            border: 0;
         }
 
+        .card-content {
+            padding: 1.5rem;
+        }
 
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
 
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: #666;
-            font-size: 1.2rem;
-            grid-column: 1 / -1;
-            /* Span full width of grid */
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* PDF Viewer Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .modal-content {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            height: 100%;
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #ef4444;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pdf-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .pdf-button {
+            display: inline-block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            grid-column: 1 / -1;
         }
     </style>
+</head>
 
-    <script>
-        // 19 MBBS Subjects
-        const subjects = [
-            "Anatomy", "Physiology", "Biochemistry",
-            "Pathology", "Pharmacology", "Microbiology",
-            "Forensic Medicine", "Community Medicine",
-            "General Medicine", "General Surgery", "Obstetrics & Gynaecology", "Paediatrics",
-            "Ophthalmology", "ENT", "Dermatology", "Psychiatry", "Anaesthesiology", "Radiology", "Orthopaedics"
-        ];
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-stethoscope"></i>
+            MBBS World
+        </div>
+        <div class="nav-user">
+            <img id="userAvatar" src="" alt="User" class="user-avatar" style="display: none;">
+            <button onclick="handleLogout()" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
 
-        // Global Data Object
-        const mbbsData = {};
+    <div class="container">
+        <div class="tabs" id="subjectTabs">
+            <button class="tab-btn active" onclick="switchSubject('anatomy')">Anatomy</button>
+            <button class="tab-btn" onclick="switchSubject('physiology')">Physiology</button>
+            <button class="tab-btn" onclick="switchSubject('biochemistry')">Biochemistry</button>
+            <button class="tab-btn" onclick="switchSubject('ent')">ENT</button>
+            <button class="tab-btn" onclick="switchSubject('community_medicine')">Community Medicine</button>
+        </div>
 
-        // 1. Initialize Empty Structure (CLEAN DATA)
-        subjects.forEach(sub => {
-            mbbsData[sub] = { videos: [], notes: [], qbank: [] };
+        <div class="content-grid" id="contentArea">
+            <div class="loading">Loading content...</div>
+        </div>
+    </div>
+
+    <div id="pdfModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closePdfModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <iframe id="pdfViewer" class="pdf-frame" src=""></iframe>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
+            authDomain: "samvad-bafaa.firebaseapp.com",
+            projectId: "samvad-bafaa",
+            storageBucket: "samvad-bafaa.firebasestorage.app",
+            messagingSenderId: "131803431466",
+            appId: "1:131803431466:web:b7b107308ea7197f013953",
+            measurementId: "G-M90SYY2MP9"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Check authentication status
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                const avatar = document.getElementById('userAvatar');
+                if (user.photoURL) {
+                    avatar.src = user.photoURL;
+                    avatar.style.display = 'block';
+                }
+                loadContent('anatomy'); // Load default subject
+            } else {
+                // User is signed out
+                // window.location.href = 'index.html';
+                // For dev/demo, allowing bypass if no user, but the user requested logout logic.
+                // Re-enabling redirect:
+                window.location.href = 'index.html';
+            }
         });
 
-        // ---------------------------------------------------------
-        // CUSTOM CONTENT INJECTION (Your Real Data)
-        // ---------------------------------------------------------
-
-        // PSM (Community Medicine)
-        if (mbbsData["Community Medicine"]) {
-            mbbsData["Community Medicine"].notes.push({
-                title: "Park Book",
-                desc: "Standard Textbook (Downloadable)",
-                type: "note",
-                allow_download: true,
-                preview_link: "https://drive.google.com/file/d/19H8gSDqAbwOTOPZaPO3An3sybeDEPUzs/preview",
-                description: "The gold standard textbook for Preventive and Social Medicine. Essential for understanding epidemiology, health administration, and community health concepts throughout the MBBS curriculum."
+        // Expose logout function to window
+        window.handleLogout = () => {
+            signOut(auth).then(() => {
+                window.location.href = 'index.html';
+            }).catch((error) => {
+                console.error('Logout error:', error);
             });
-        }
+        };
+    </script>
 
-        // ENT
-        if (mbbsData["ENT"]) {
-            mbbsData["ENT"].videos.push({
-                title: "Basics of Ear",
-                desc: "ENT Lecture",
-                type: "video",
-                link: "https://youtu.be/SZQcPzTh12M", // Auto-embed will handle this
-                description: "A comprehensive introduction to the Anatomy of the Ear. Covers the external, middle, and inner ear structures, including the tympanic membrane and ossicles. Perfect foundation for understanding hearing loss pathologies."
-            });
-        }
-
-        // State
-        let currentSubject = "Anatomy";
-        let currentTab = "home"; // Default is home
-
-        // Initialize
-        function init() {
-            const list = document.getElementById('subjectList');
-            subjects.forEach(sub => {
-                const div = document.createElement('div');
-                div.className = `subject-item ${sub === currentSubject ? 'active' : ''}`;
-                div.textContent = sub;
-                div.onclick = () => {
-                    // If on home tab, clicking sidebar should switch to videos (or last active tab)
-                    if (currentTab === 'home') switchTab('videos');
-                    selectSubject(sub);
-                    if (window.innerWidth <= 768) toggleSidebar();
-                };
-                list.appendChild(div);
-            });
-
-            updateDashboardStats(); // Count items
-            switchTab('home'); // Ensure home is default
-        }
-
-        function selectSubject(sub) {
-            currentSubject = sub;
-            document.querySelectorAll('.subject-item').forEach(el => {
-                el.classList.toggle('active', el.textContent === sub);
-            });
-            renderContent();
-        }
-
-        function switchTab(tab) {
-            currentTab = tab;
-
-            // UI Updates
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
-            const btns = document.querySelectorAll('.tab-btn');
-            // Simplified active class check matching updated DOM or using index map
-            // Assuming order: Home (0), Videos (1), Notes (2), QBank (3)
-            const tabMap = { 'home': 0, 'videos': 1, 'notes': 2, 'qbank': 3 };
-            if (btns[tabMap[tab]]) btns[tabMap[tab]].classList.add('active');
-
-            // Layout Switching
-            const sidebar = document.getElementById('sidebar');
-            const homeView = document.getElementById('homeView');
-            const contentView = document.getElementById('contentView');
-
-            if (tab === 'home') {
-                sidebar.style.display = 'none';
-                homeView.style.display = 'block';
-                contentView.style.display = 'none';
-            } else {
-                sidebar.style.display = 'flex'; // Show sidebar for study tabs
-                homeView.style.display = 'none';
-                contentView.style.display = 'block';
-                renderContent();
+    <script>
+        // Content Database
+        const mbbsData = {
+            anatomy: {
+                videos: [],
+                notes: []
+            },
+            physiology: {
+                videos: [],
+                notes: []
+            },
+            biochemistry: {
+                videos: [],
+                notes: []
+            },
+            ent: {
+                videos: [
+                    {
+                        title: "Basics of Ear",
+                        link: "https://youtu.be/SZQcPzTh12M"
+                    }
+                ],
+                notes: []
+            },
+            community_medicine: {
+                videos: [],
+                notes: [
+                    {
+                        title: "Park Book",
+                        link: "https://drive.google.com/file/d/19H8gSDqAbwOTOPZaPO3An3sybeDEPUzs/preview"
+                    }
+                ]
             }
+        };
+
+        let currentSubject = 'anatomy';
+
+        function switchSubject(subject) {
+            // Update tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                // Simple check for text content or attribute could be better, but this matches the onclick arg
+                if (btn.getAttribute('onclick').includes(subject)) btn.classList.add('active');
+            });
+
+            currentSubject = subject;
+            loadContent(subject);
         }
 
-        function updateDashboardStats() {
-            let totalVideos = 0;
-            let totalNotes = 0;
-            let totalQuizzes = 0;
+        function loadContent(subject) {
+            const container = document.getElementById('contentArea');
+            container.innerHTML = ''; // Clear existing content
 
-            for (const sub in mbbsData) {
-                totalVideos += mbbsData[sub].videos.length;
-                totalNotes += mbbsData[sub].notes.length;
-                totalQuizzes += mbbsData[sub].qbank.length;
-            }
+            const data = mbbsData[subject];
 
-            // Animate numbers (simple text update for now)
-            document.getElementById('count-videos').textContent = totalVideos;
-            document.getElementById('count-notes').textContent = totalNotes;
-            document.getElementById('count-quests').textContent = totalQuizzes;
-        }
+            if (!data) return;
 
-        function filterContent(category, subject) {
-            return mbbsData[subject][category] || [];
-        }
-
-        function renderContent() {
-            if (currentTab === 'home') return;
-
-            const tabName = currentTab.charAt(0).toUpperCase() + currentTab.slice(1);
-            document.getElementById('pageTitle').textContent = `${currentSubject} - ${tabName}`;
-
-            const grid = document.getElementById('contentGrid');
-            grid.innerHTML = '';
-
-            const data = filterContent(currentTab, currentSubject);
-
-            // 3. New Empty State Message
-            if (data.length === 0) {
-                grid.innerHTML = '<div class="empty-state">🚀 Coming Soon! Content is being uploaded.</div>';
-                return;
-            }
-
-            data.forEach(item => {
+            // Render Videos
+            data.videos.forEach(video => {
                 const card = document.createElement('div');
-                card.className = 'data-card';
-
-                let iconName = 'document-text-outline';
-                let btnText = 'Open File';
-                let clickAction = 'href="#"';
-
-                if (currentTab === 'videos') {
-                    iconName = 'play-circle-outline';
-                    btnText = 'Watch Now';
-                    // Use openVideo
-                    clickAction = `href="javascript:void(0)" onclick="openVideo('${item.link}')"`;
-                } else if (currentTab === 'notes') {
-                    iconName = 'eye-outline';
-                    btnText = '👁️ Read Note';
-                    // Using onclick to open modal
-                    clickAction = `href="javascript:void(0)" onclick="openPdf('${item.preview_link}', ${item.allow_download || false})"`;
-                } else if (currentTab === 'qbank') {
-                    iconName = 'help-circle-outline';
-                    btnText = 'Start Quiz';
-                }
-
-                // If it's not a note, generic href (or logic to play video later)
-
-                // Description Logic
-                let descHtml = `<div class="card-desc">${item.desc || ''}</div>`;
-                if (item.description) {
-                    descHtml += `
-                        <div class="card-long-desc closed" id="desc-${item.link}">
-                            ${item.description}
-                        </div>
-                        <span class="read-more-btn" onclick="toggleDesc(this)">Read More</span>
-                    `;
-                }
-
-                card.innerHTML = `
-                <ion-icon name="${iconName}" class="card-icon"></ion-icon>
-                <div class="card-title">${item.title}</div>
-                ${descHtml}
-                <a ${clickAction} class="card-action">${btnText}</a>
-            `;
-                grid.appendChild(card);
+                card.className = 'card';
+                card.innerHTML = renderVideo(video.link, video.title);
+                container.appendChild(card);
             });
-        }
 
-        function toggleDesc(btn) {
-            const descDiv = btn.previousElementSibling;
-            descDiv.classList.toggle('closed');
-            btn.textContent = descDiv.classList.contains('closed') ? 'Read More' : 'Show Less';
-        }
+            // Render Notes
+            data.notes.forEach(note => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = renderNote(note.link, note.title);
+                container.appendChild(card);
+            });
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('mobile-open');
-            document.querySelector('.overlay').classList.toggle('active');
-        }
-
-        function formatDriveLink(url) {
-            if (!url) return "";
-            // Check if it's a Google Drive link
-            if (url.includes("drive.google.com")) {
-                // Replace /view or /edit (and anything after them) with /preview
-                return url.replace(/\/view.*$/, '/preview').replace(/\/edit.*$/, '/preview');
-            }
-            return url;
-        }
-
-        function openPdf(link) {
-            const modal = document.getElementById('pdfModal');
-            const iframe = document.getElementById('pdfFrame');
-            if (link) {
-                // Apply the formatting to ensure we get a preview link
-                iframe.src = formatDriveLink(link);
-                modal.style.display = 'flex';
+            if (data.videos.length === 0 && data.notes.length === 0) {
+                container.innerHTML = '<div class="loading">No content available for this subject yet.</div>';
             }
         }
 
-        function closePdf() {
+        // --- THE FIXED VIDEO RENDERER ---
+        function renderVideo(link, title) {
+            // Ensure proper embed URL parameters
+            let embedUrl = link;
+
+            // Basic YouTuBe ID extraction (simple version as requested in template)
+            // But let's use the one that deals with standard watch URLs too if the user pastes them
+            if (link.includes('watch?v=')) {
+                const videoId = link.split('v=')[1].split('&')[0];
+                embedUrl = `https://www.youtube.com/embed/${videoId}`;
+            } else if (link.includes('youtu.be/')) {
+                const videoId = link.split('youtu.be/')[1].split('?')[0];
+                embedUrl = `https://www.youtube.com/embed/${videoId}`;
+            }
+
+            if (!embedUrl.includes('?')) {
+                embedUrl += '?modestbranding=1&rel=0';
+            } else {
+                embedUrl += '&modestbranding=1&rel=0';
+            }
+
+            return `
+                <div class="video-container">
+                    <iframe 
+                        src="${embedUrl}" 
+                        title="${title}"
+                        sandbox="allow-scripts allow-same-origin allow-presentation"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        loading="lazy">
+                    </iframe>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">${title}</div>
+                    <div class="card-meta">
+                        <i class="fab fa-youtube"></i> Video Lecture
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- THE FIXED NOTE RENDERER ---
+        function renderNote(link, title) {
+            return `
+                <div style="height: 200px; background: #e0f2fe; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--primary-color);">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">${title}</div>
+                    <div class="card-meta">
+                        <i class="fas fa-book-reader"></i> PDF Note
+                    </div>
+                    <a href="#" onclick="openPdf('${link}'); return false;" class="pdf-button">
+                        Read Notes
+                    </a>
+                </div>
+            `;
+        }
+
+        // --- FIXED PDF OPENER (FORCES PREVIEW MODE) ---
+        function openPdf(url) {
             const modal = document.getElementById('pdfModal');
-            const iframe = document.getElementById('pdfFrame');
+            const viewer = document.getElementById('pdfViewer');
+
+            // Convert /view to /preview for cleaner interface
+            let cleanUrl = url.replace(/\/view.*$/, '/preview').replace(/\/edit.*$/, '/preview');
+            // Basic fix if it doesn't match the regex but is a drive link
+            if (url.includes('drive.google.com') && !cleanUrl.includes('/preview')) {
+                // Fallback if the user pasted a non-view link? 
+                // The regex handles view.*? and edit.*?, usually sufficient.
+            }
+
+            viewer.src = cleanUrl;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Stop background scrolling
+        }
+
+        function closePdfModal() {
+            const modal = document.getElementById('pdfModal');
+            const viewer = document.getElementById('pdfViewer');
             modal.style.display = 'none';
-            iframe.src = ""; // Stop loading/playing
+            viewer.src = '';
+            document.body.style.overflow = 'auto';
         }
 
-        // Close modal if clicking outside container
+        // Close modal if clicking outside
         window.onclick = function (event) {
             const modal = document.getElementById('pdfModal');
             if (event.target == modal) {
-                closePdf();
+                closePdfModal();
             }
         }
-
-        init();
-
     </script>
-
 </body>
 
 </html>
