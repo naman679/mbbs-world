@@ -411,11 +411,12 @@
 
         // --- THE FIXED VIDEO RENDERER ---
         function renderVideo(link, title) {
-            // Ensure proper embed URL parameters
+            // 1. Clean the URL
+            // We use 'controls=1' to force standard buttons
+            // We REMOVE 'modestbranding' because it sometimes breaks the Gear icon on mobile
             let embedUrl = link;
 
-            // Basic YouTuBe ID extraction (simple version as requested in template)
-            // But let's use the one that deals with standard watch URLs too if the user pastes them
+            // Basic YouTuBe ID extraction (preserving existing ID extraction logic while updating params)
             if (link.includes('watch?v=')) {
                 const videoId = link.split('v=')[1].split('&')[0];
                 embedUrl = `https://www.youtube.com/embed/${videoId}`;
@@ -424,10 +425,10 @@
                 embedUrl = `https://www.youtube.com/embed/${videoId}`;
             }
 
-            if (!embedUrl.includes('?')) {
-                embedUrl += '?modestbranding=1&rel=0';
+            if (embedUrl.includes('?')) {
+                embedUrl += '&rel=0&controls=1&playsinline=1';
             } else {
-                embedUrl += '&modestbranding=1&rel=0';
+                embedUrl += '?rel=0&controls=1&playsinline=1';
             }
 
             return `
@@ -435,8 +436,10 @@
                     <iframe 
                         src="${embedUrl}" 
                         title="${title}"
+                        /* SANDBOX: We keep this strict to block the Channel Name redirect */
                         sandbox="allow-scripts allow-same-origin allow-presentation"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        /* ALLOW: We REMOVED 'web-share' so the share button is less active */
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
                         loading="lazy">
                     </iframe>
