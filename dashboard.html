@@ -280,6 +280,41 @@
             font-size: 3rem;
             color: var(--primary);
         }
+
+
+        /* --- 7. FULLSCREEN MODE (Landscape Toolbar) --- */
+        .card:fullscreen,
+        .card:-webkit-full-screen {
+            background: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card:fullscreen .video-wrapper,
+        .card:-webkit-full-screen .video-wrapper {
+            height: 100vh;
+            padding-bottom: 0;
+            /* Remove 16:9 constraint */
+        }
+
+        .card:fullscreen .custom-controls,
+        .card:-webkit-full-screen .custom-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 20;
+            /* Float above video */
+            background: rgba(248, 250, 252, 0.9);
+            /* Translucent White */
+        }
+
+        .card:fullscreen .card-content,
+        .card:-webkit-full-screen .card-content {
+            display: none;
+            /* Hide title in fullscreen */
+        }
     </style>
 </head>
 
