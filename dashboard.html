@@ -157,6 +157,22 @@
             border: 0;
         }
 
+        /* HALF-SHIELD: Blocks the Top-Left (Channel Name/Avatar) */
+        .video-shield-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 65%;
+            /* Covers Title & Channel Name */
+            height: 60px;
+            /* Covers just the top header */
+            z-index: 10;
+            background: transparent;
+            /* Invisible wall */
+            pointer-events: auto;
+            /* Captures clicks */
+        }
+
         .card-content {
             padding: 1.5rem;
         }
@@ -435,15 +451,20 @@
                 videoId = link;
             }
 
-            // Construct the clean Force-Embed URL
-            const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&controls=1&playsinline=1`;
+            // Construct the clean Force-Embed URL with modestbranding
+            const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&controls=1&playsinline=1&modestbranding=1`;
 
             return `
                 <div class="video-container">
+                    <!-- THE HALF-SHIELD: Blocks Top-Left clicks (Channel) -->
+                    <div class="video-shield-left"></div>
+                    
                     <iframe 
                         src="${embedUrl}" 
                         title="${title}"
-                        sandbox="allow-scripts allow-same-origin allow-presentation"
+                        /* SANDBOX: Allow Popups for Settings, but restricted otherwise */
+                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
+                        /* ALLOW: Standard media permissions, NO web-share */
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
                         loading="lazy">
