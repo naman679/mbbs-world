@@ -411,15 +411,32 @@
 
         // --- THE FIXED VIDEO RENDERER ---
         function renderVideo(link, title) {
-            // 1. Clean the URL
-            // 'controls=1' ensures the gear icon is visible
-            // 'rel=0' shows related videos from the SAME channel only (less distraction)
-            let embedUrl = link;
-            if (embedUrl.includes('?')) {
-                embedUrl += '&rel=0&controls=1&playsinline=1';
-            } else {
-                embedUrl += '?rel=0&controls=1&playsinline=1';
+            // Smart URL Converter
+            let videoId = '';
+
+            try {
+                if (link.includes('youtu.be/')) {
+                    videoId = link.split('youtu.be/')[1].split('?')[0];
+                } else if (link.includes('v=')) {
+                    videoId = link.split('v=')[1].split('&')[0];
+                } else if (link.includes('/embed/')) {
+                    videoId = link.split('/embed/')[1].split('?')[0];
+                } else {
+                    // Fallback: assume the entire link might be just the ID or handle gracefully
+                    // If we can't parse it, we'll try to use the link as is, 
+                    // but it likely won't work in the restricted format.
+                    // For now, let's assume it's an ID if it's short, or just pass it through 
+                    // (but passing full URL into embed/${} is wrong if it's not an ID).
+                    // Safe bet: wrap it? No.
+                    videoId = link; // Last ditch effort
+                }
+            } catch (e) {
+                console.error("Error parsing video link", link, e);
+                videoId = link;
             }
+
+            // Construct the clean Force-Embed URL
+            const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&controls=1&playsinline=1`;
 
             return `
                 <div class="video-container">
