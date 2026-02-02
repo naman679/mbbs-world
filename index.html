@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBBS Portal - Student Login</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --primary-color: #0d47a1;
+            /* Deep Medical Blue */
+            --accent-color: #00bcd4;
+            /* Cyan/Teal */
+            --bg-color: #f0f2f5;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .login-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            /* Soft, elevated shadow */
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .login-container h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .login-container p {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .login-btn {
+            background-color: white;
+            color: #555;
+            border: 1px solid #ddd;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .login-btn:hover {
+            background-color: #f8f9fa;
+            border-color: #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-btn img {
+            margin-right: 12px;
+        }
+
+        #error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            display: none;
+            border: 1px solid #ffcdd2;
+        }
+
+        .footer-text {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <!-- SVG Icon for Stethoscope -->
+        <div class="logo-icon">
+            <img src="https://img.icons8.com/color/96/000000/stethoscope.png" alt="Medical Logo" width="60" height="60">
+        </div>
+        <h1>MBBS World</h1>
+        <p>Exclusive Student Portal</p>
+
+        <button id="google-signin-btn" class="login-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"
+                width="20" height="20">
+            Continue with Google
+        </button>
+
+        <div id="error-message"></div>
+
+        <div class="footer-text">
+            Secure Access &bull; Verified Students Only
+        </div>
+    </div>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <script>
+        // TO USER: REPLACE THIS CONFIG WITH YOUR FIREBASE WEB PROJECT CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
+            authDomain: "samvad-bafaa.firebaseapp.com",
+            projectId: "samvad-bafaa",
+            storageBucket: "samvad-bafaa.firebasestorage.app",
+            messagingSenderId: "131803431466",
+            appId: "1:131803431466:web:b7b107308ea7197f013953",
+            measurementId: "G-M90SYY2MP9"
+        };
+
+        // Initialize Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+        } catch (e) {
+            console.error("Firebase initialization failed. Did you update the config?", e);
+            document.getElementById('error-message').textContent = "System Error: Firebase config not set.";
+            document.getElementById('error-message').style.display = 'block';
+        }
+
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        document.getElementById('google-signin-btn').addEventListener('click', () => {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = "";
+
+            const btn = document.getElementById('google-signin-btn');
+            btn.style.opacity = "0.7";
+            btn.innerHTML = 'Signing in...';
+
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    // Static Site Mode: Bypass backend verification
+                    // In a real app, you would send the token to a server.
+                    // Here, we just redirect to the dashboard.
+                    console.log("Logged in as:", result.user.email);
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    console.error(error);
+                    errorDiv.textContent = error.message;
+                    errorDiv.style.display = 'block';
+                    btn.style.opacity = "1";
+                    btn.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" width="20" height="20"> Continue with Google';
+                });
+        });
+    </script>
+
+</body>
+
+</html>
