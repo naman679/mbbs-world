@@ -379,31 +379,143 @@
             color: white;
         }
 
+        .speed-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .speed-btn {
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            background: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        .speed-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .speed-btn:hover:not(.active) {
+            background: #e5e7eb;
+        }
+
         /* File Elements */
-        .file-icon {
-            height: 140px;
-            background: linear-gradient(135deg, #e0e7ff, #fae8ff);
+        .file-btn:hover {
+            background: var(--primary);
+        }
+
+        /* --- ADVANCED VIDEO CONTROLS --- */
+        .video-wrapper {
+            position: relative;
+            touch-action: manipulation;
+        }
+
+        .tap-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            cursor: pointer;
+            display: flex;
+        }
+
+        .tap-side {
+            width: 50%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Seek Feedback Animation */
+        .seek-feedback {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3.5rem;
-            color: var(--primary);
-        }
-
-        .file-btn {
-            display: block;
-            padding: 0.8rem;
-            background: var(--text-main);
+            font-size: 1.5rem;
             color: white;
-            text-align: center;
-            border-radius: 12px;
-            margin-top: 1rem;
-            text-decoration: none;
-            font-size: 0.9rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
         }
 
-        .file-btn:hover {
-            background: var(--primary);
+        .seek-left {
+            left: 10%;
+        }
+
+        .seek-right {
+            right: 10%;
+        }
+
+        .seek-feedback.active {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        /* Landscape/Fullscreen Overlay */
+        .video-controls-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            padding: 0 1rem;
+            justify-content: space-between;
+            color: white;
+        }
+
+        .video-controls-overlay.visible {
+            display: flex;
+        }
+
+        .overlay-back {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .speed-row-overlay {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* LANDSCAPE SPECIFIC */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .video-controls-overlay {
+                height: 50px;
+            }
+
+            .speed-btn {
+                padding: 2px 6px;
+                font-size: 0.7rem;
+            }
         }
 
         /* MODAL */
@@ -621,6 +733,13 @@
 </head>
 
 <body>
+    <div id="landscapeOverlay" class="video-controls-overlay">
+        <button class="overlay-back" onclick="exitLandscape()"><i class="fas fa-arrow-left"></i> Back</button>
+        <div class="speed-row-overlay" id="overlaySpeedRow">
+            <!-- Dynamic Speed Buttons -->
+        </div>
+    </div>
+
     <nav class="navbar">
         <div class="nav-brand" onclick="navigate('home')"><i class="fas fa-heartbeat" style="color:#ef4444"></i> MBBS
             World</div>
@@ -797,6 +916,8 @@
             currentView = 'home';
             currentSubject = null;
             selectedChapterIdx = null;
+            window.activePlayerId = null;
+            updateOrientation();
             updateNavActive('home');
             renderHome();
         };
@@ -805,6 +926,8 @@
             currentView = type;
             currentSubject = null;
             selectedChapterIdx = null;
+            window.activePlayerId = null;
+            updateOrientation();
             updateNavActive(type);
             renderSubjectList();
         };
@@ -909,6 +1032,8 @@
             const area = document.getElementById('contentArea');
             area.innerHTML = '';
             players = {}; pendingPlayers = [];
+            window.activePlayerId = null;
+            updateOrientation();
             const data = mbbsData[currentSubject];
             const subjectName = currentSubject.replace('_', ' ').toUpperCase();
 
@@ -1000,13 +1125,28 @@
             let vid = video.link;
             const uid = `yt-${index}`;
             card.innerHTML = `
-                <div class="video-wrapper"><div id="${uid}"></div><div class="glass-shield"></div></div>
+                <div class="video-wrapper">
+                    <div id="${uid}"></div>
+                    <div class="glass-shield"></div>
+                    <div class="tap-overlay" onclick="handleTap(event, '${uid}')">
+                        <div class="tap-side" id="tap-left-${uid}"></div>
+                        <div class="tap-side" id="tap-right-${uid}"></div>
+                    </div>
+                    <div id="seek-left-${uid}" class="seek-feedback seek-left"><i class="fas fa-backward"></i> -10s</div>
+                    <div id="seek-right-${uid}" class="seek-feedback seek-right">+10s <i class="fas fa-forward"></i></div>
+                </div>
                 <div class="custom-controls">
                     <div class="timeline-container"><input type="range" class="timeline" id="seek-${uid}" min="0" value="0" oninput="userSeek('${uid}', this.value)"><span class="time-display" id="time-${uid}">0:00 / 0:00</span></div>
                     <div class="buttons-row">
                         <button class="ctrl-btn primary" onclick="controlPlayer('${uid}', 'play')"><i class="fas fa-play"></i></button>
                         <button class="ctrl-btn" onclick="controlPlayer('${uid}', 'pause')"><i class="fas fa-pause"></i></button>
                         <button class="ctrl-btn" onclick="toggleFullScreen(this)"><i class="fas fa-expand"></i></button>
+                    </div>
+                    <div class="speed-row" id="speed-row-${uid}">
+                        <button class="speed-btn" onclick="changeSpeed(0.5, '${uid}')">0.5x</button>
+                        <button class="speed-btn active" onclick="changeSpeed(1, '${uid}')">Normal</button>
+                        <button class="speed-btn" onclick="changeSpeed(1.5, '${uid}')">1.5x</button>
+                        <button class="speed-btn" onclick="changeSpeed(2, '${uid}')">2x</button>
                     </div>
                 </div>
                 <div class="card-content"><div class="card-title">${video.title}</div></div>
@@ -1019,6 +1159,86 @@
             const h = document.createElement('h3'); h.className = 'section-title';
             h.innerHTML = `<i class="fas ${icon}"></i> ${text}`; container.appendChild(h);
         }
+
+        // --- ADVANCED VIDEO LOGIC ---
+        let lastTapTime = 0;
+        window.handleTap = (e, uid) => {
+            const now = Date.now();
+            const delay = now - lastTapTime;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const width = rect.width;
+
+            if (delay < 300) {
+                // Double Tap Detected
+                if (x < width * 0.4) {
+                    seekBy(-10, uid);
+                    showSeekFeedback('left', uid);
+                } else if (x > width * 0.6) {
+                    seekBy(10, uid);
+                    showSeekFeedback('right', uid);
+                }
+            } else {
+                // Single Tap -> Pass to Play/Pause
+                const player = players[uid];
+                if (player) {
+                    const state = player.getPlayerState();
+                    if (state === YT.PlayerState.PLAYING) player.pauseVideo();
+                    else player.playVideo();
+                }
+            }
+            lastTapTime = now;
+        };
+
+        function seekBy(seconds, uid) {
+            const p = players[uid];
+            if (p) {
+                const now = p.getCurrentTime();
+                p.seekTo(now + seconds, true);
+            }
+        }
+
+        function showSeekFeedback(side, uid) {
+            const el = document.getElementById(`seek-${side}-${uid}`);
+            if (el) {
+                el.classList.add('active');
+                setTimeout(() => el.classList.remove('active'), 500);
+            }
+        }
+
+        // ORIENTATION / FULLSCREEN OVERLAY
+        window.activePlayerId = null;
+        function updateOrientation() {
+            const overlay = document.getElementById('landscapeOverlay');
+            if (window.innerHeight < window.innerWidth && window.activePlayerId) {
+                overlay.classList.add('visible');
+                updateOverlaySpeedButtons();
+            } else {
+                overlay.classList.remove('visible');
+            }
+        }
+        window.addEventListener('resize', updateOrientation);
+        window.addEventListener('orientationchange', updateOrientation);
+
+        function updateOverlaySpeedButtons() {
+            const container = document.getElementById('overlaySpeedRow');
+            const currentSpeed = localStorage.getItem('preferred_speed') || 1;
+            const speeds = [0.5, 1, 1.5, 2];
+
+            container.innerHTML = speeds.map(s => `
+                <button class="speed-btn ${parseFloat(currentSpeed) === s ? 'active' : ''}" 
+                        onclick="changeSpeed(${s}, '${activePlayerId}')">
+                    ${s === 1 ? 'Normal' : s + 'x'}
+                </button>
+            `).join('');
+        }
+
+        window.exitLandscape = () => {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+            document.getElementById('landscapeOverlay').classList.remove('visible');
+        };
 
         // --- PLAYER ENGINE ---
         window.onYouTubeIframeAPIReady = () => { pendingPlayers.forEach(p => createPlayer(p.id, p.vid)); pendingPlayers = []; };
@@ -1041,12 +1261,18 @@
             if (savedTime) {
                 e.target.seekTo(parseFloat(savedTime), true);
             }
+
+            // APPLY PREFERRED SPEED
+            const preferredSpeed = localStorage.getItem('preferred_speed') || 1;
+            changeSpeed(parseFloat(preferredSpeed), uid);
         }
         function onStateChange(e, uid) {
             const vidData = e.target.getVideoData();
             const videoId = vidData.video_id;
 
             if (e.data == YT.PlayerState.PLAYING) {
+                window.activePlayerId = uid;
+                updateOrientation();
                 e.target.setPlaybackQuality('hd720');
                 if (players[uid].timer) clearInterval(players[uid].timer);
                 players[uid].timer = setInterval(() => {
@@ -1070,9 +1296,31 @@
 
         window.controlPlayer = (uid, a) => players[uid][a + 'Video']();
         window.userSeek = (uid, v) => players[uid].seekTo(v, true);
+
+        window.changeSpeed = (rate, uid) => {
+            if (players[uid] && players[uid].setPlaybackRate) {
+                players[uid].setPlaybackRate(rate);
+                // Persistence
+                localStorage.setItem('preferred_speed', rate);
+                // UI Update Primary
+                const row = document.getElementById(`speed-row-${uid}`);
+                if (row) {
+                    row.querySelectorAll('.speed-btn').forEach(btn => {
+                        btn.classList.toggle('active', parseFloat(btn.innerText) === rate || (rate === 1 && btn.innerText === 'Normal'));
+                    });
+                }
+                // UI Update Overlay
+                updateOverlaySpeedButtons();
+            }
+        };
+
         window.toggleFullScreen = (btn) => {
             const c = btn.closest('.card');
-            if (!document.fullscreenElement) c.requestFullscreen(); else document.exitFullscreen();
+            if (!document.fullscreenElement) {
+                c.requestFullscreen().then(updateOrientation).catch(e => console.error(e));
+            } else {
+                document.exitFullscreen();
+            }
         };
 
         // --- FILE ENGINE ---
