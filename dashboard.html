@@ -902,7 +902,6 @@
                 Notes</a>
             <a href="#" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i class="fas fa-tasks"></i>
                 Q-Bank</a>
-            <a href="#" class="nav-link" id="nav-pyq" onclick="navigate('pyq')"><i class="fas fa-history"></i> PYQ</a>
         </div>
         <div class="user-menu">
             <span id="userName" style="font-weight:600; font-size:0.9rem"></span>
@@ -930,10 +929,6 @@
                         <h3>Question Bank</h3>
                         <p>Test your knowledge with practice files.</p>
                     </div>
-                    <div class="portal-card" onclick="navigate('pyq')"><i class="fas fa-file-invoice"></i>
-                        <h3>PYQ - HTML</h3>
-                        <p>Previous Year Questions in HTML format.</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -952,7 +947,7 @@
                 <i class="fas fa-times"></i>
             </button>
             <iframe id="fileViewer" style="width:100%; height:100%; border:none;" src="" allow="autoplay"
-                sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+                sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation allow-popups-to-escape-sandbox"></iframe>
             <a id="pdfRepairLink" href="#" target="_blank" class="pdf-repair-link">
                 <i class="fas fa-tools"></i> Trouble viewing? Open in Drive
             </a>
@@ -1032,7 +1027,7 @@
                     const typeKey = type.toLowerCase().trim();
 
                     if (!mbbsData[subKey]) {
-                        mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [] };
+                        mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [] };
                     }
 
                     const item = { title, link, platform: platformName };
@@ -1044,8 +1039,6 @@
                         mbbsData[subKey].notes.push(item);
                     } else if (typeKey === 'qbank') {
                         mbbsData[subKey].qbank.push(item);
-                    } else if (typeKey === 'pyq') {
-                        mbbsData[subKey].pyq.push(item);
                     } else if (typeKey === 'keypoints' || typeKey === 'keypoint') {
                         mbbsData[subKey].keyPoints.push({ title, content: link, platform: platformName });
                     }
@@ -1177,7 +1170,6 @@
                 if (currentView === 'qbank') {
                     return data.qbank && data.qbank.some(item => item.platform === currentPlatform);
                 }
-                if (currentView === 'pyq') return data.pyq && data.pyq.length > 0;
                 return false;
             });
 
@@ -1210,7 +1202,6 @@
             if (currentView === 'videos') return 'fa-play-circle';
             if (currentView === 'notes') return 'fa-file-pdf';
             if (currentView === 'qbank') return 'fa-tasks';
-            if (currentView === 'pyq') return 'fa-history';
             return 'fa-folder';
         }
 
@@ -1240,11 +1231,6 @@
                             <i class="fas fa-graduation-cap"></i>
                             <h3>❓ Question Bank</h3>
                             <p>Test your knowledge with MCQs.</p>
-                        </div>
-                        <div class="portal-card" onclick="filterCategory('pyq')">
-                            <i class="fas fa-file-invoice"></i>
-                            <h3>📜 PYQ Papers</h3>
-                            <p>Previous Year Questions (HTML).</p>
                         </div>
                     </div>
                 </div>
@@ -1322,18 +1308,16 @@
                     renderVideoCard(area, data.videos[selectedChapterIdx], selectedChapterIdx);
                 }
             } else {
-                // Notes, QBank, PYQ all use same Chapter List logic now
                 const list = document.createElement('div');
                 list.className = 'chapter-list';
-                const items = currentView === 'notes' ? data.notes : (currentView === 'qbank' ? data.qbank.filter(i => i.platform === currentPlatform) : data.pyq);
-                const isHtml = currentView === 'pyq';
+                const items = currentView === 'notes' ? data.notes : data.qbank.filter(i => i.platform === currentPlatform);
 
                 items.forEach((item, idx) => {
                     const card = document.createElement('div');
                     card.className = 'chapter-card';
-                    card.onclick = () => openFile(isHtml ? item.content || item.link : item.link, isHtml);
+                    card.onclick = () => openFile(item.link);
                     card.innerHTML = `
-                        <div class="chapter-icon"><i class="fas ${isHtml ? 'fa-code' : 'fa-file-pdf'}"></i></div>
+                        <div class="chapter-icon"><i class="fas fa-file-pdf"></i></div>
                         <div style="flex-grow:1; font-weight:500;">${item.title}</div>
                         <i class="fas fa-external-link-alt" style="opacity:0.5;"></i>
                     `;
@@ -1582,45 +1566,36 @@
             const match = url.match(/\/d\/([^\/?#]+)|id=([^\/&#?]+)/);
             const fileId = match ? (match[1] || match[2]) : null;
             if (fileId) {
-                // High-compatibility Google Docs Viewer Engine
-                const downloadLink = `https://drive.google.com/uc?export=download&id=${fileId}`;
-                return `https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(downloadLink)}`;
+                // Official Preview Engine - Gold standard for stability
+                return `https://drive.google.com/file/d/${fileId}/preview`;
             }
             return url;
         }
 
-        window.openFile = (urlOrContent, isHtml) => {
+        window.openFile = (urlOrContent) => {
             const viewer = document.getElementById('fileViewer');
             const loader = document.getElementById('pdfLoader');
             const repair = document.getElementById('pdfRepairLink');
 
-            // Reset UI
+            // --- NUCLEAR RESET ---
+            // We MUST remove srcdoc explicitly, otherwise it blocks new PDF src loads
+            viewer.removeAttribute('srcdoc');
             viewer.src = "about:blank";
-            viewer.srcdoc = "";
             loader.style.display = 'block';
             if (repair) repair.style.display = 'none';
 
-            if (isHtml) {
-                loader.style.display = 'none';
-                if (urlOrContent.trim().startsWith('<')) {
-                    viewer.src = ""; // Clear src if using srcdoc
-                    viewer.srcdoc = urlOrContent;
-                } else {
-                    viewer.src = urlOrContent;
-                }
-            } else {
-                const link = formatDriveLink(urlOrContent);
-                viewer.src = link;
-                if (repair) repair.href = urlOrContent;
+            const link = formatDriveLink(urlOrContent);
+            viewer.src = link;
+            if (repair) repair.href = urlOrContent;
 
-                // Smart Transition
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    if (repair && urlOrContent.includes('drive.google.com')) {
-                        repair.style.display = 'block';
-                    }
-                }, 4000); // 4 seconds for heavy GView engine
-            }
+            // Smart Timeout: Ensure loader disappears regardless of Google's speed
+            setTimeout(() => {
+                loader.style.display = 'none';
+                if (repair && urlOrContent.includes('drive.google.com')) {
+                    repair.style.display = 'block';
+                }
+            }, 3000);
+
             document.getElementById('fileModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
         };
