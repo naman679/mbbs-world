@@ -658,22 +658,6 @@
             margin: 0 auto 10px;
         }
 
-        .pdf-repair-link {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            text-decoration: none;
-            display: none;
-            z-index: 100;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
@@ -948,9 +932,6 @@
             </button>
             <iframe id="fileViewer" style="width:100%; height:100%; border:none;" src="" allow="autoplay"
                 sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation allow-popups-to-escape-sandbox"></iframe>
-            <a id="pdfRepairLink" href="#" target="_blank" class="pdf-repair-link">
-                <i class="fas fa-tools"></i> Trouble viewing? Open in Drive
-            </a>
         </div>
     </div>
 
@@ -1575,25 +1556,18 @@
         window.openFile = (urlOrContent) => {
             const viewer = document.getElementById('fileViewer');
             const loader = document.getElementById('pdfLoader');
-            const repair = document.getElementById('pdfRepairLink');
 
             // --- NUCLEAR RESET ---
-            // We MUST remove srcdoc explicitly, otherwise it blocks new PDF src loads
             viewer.removeAttribute('srcdoc');
             viewer.src = "about:blank";
             loader.style.display = 'block';
-            if (repair) repair.style.display = 'none';
 
             const link = formatDriveLink(urlOrContent);
             viewer.src = link;
-            if (repair) repair.href = urlOrContent;
 
             // Smart Timeout: Ensure loader disappears regardless of Google's speed
             setTimeout(() => {
                 loader.style.display = 'none';
-                if (repair && urlOrContent.includes('drive.google.com')) {
-                    repair.style.display = 'block';
-                }
             }, 3000);
 
             document.getElementById('fileModal').style.display = 'block';
