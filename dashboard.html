@@ -357,7 +357,8 @@
 
         .custom-controls {
             position: absolute;
-            bottom: 15px;
+            bottom: 70px;
+            /* Adjusted to float over video in portrait */
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
@@ -564,9 +565,11 @@
             }
 
             .custom-controls {
-                bottom: 20px !important;
-                width: 80%;
+                bottom: 5px !important;
+                /* Move to bottom of card overlaying title */
+                width: 95%;
                 padding: 5px 15px;
+                max-width: none;
             }
 
             .video-controls-overlay {
@@ -1256,32 +1259,32 @@
                     </div>
                     <div id="seek-left-${uid}" class="seek-feedback seek-left"><i class="fas fa-backward"></i> -10s</div>
                     <div id="seek-right-${uid}" class="seek-feedback seek-right">+10s <i class="fas fa-forward"></i></div>
+                </div>
 
-                    <!-- Moved inside wrapper for perfect layering -->
-                    <div class="custom-controls">
-                        <div class="timeline-container">
-                            <input type="range" class="timeline" id="seek-${uid}" min="0" value="0" oninput="userSeek('${uid}', this.value)">
-                            <span class="time-display" id="time-${uid}">0:00 / 0:00</span>
+                <!-- Moved outside wrapper for landscape flexibility -->
+                <div class="custom-controls">
+                    <div class="timeline-container">
+                        <input type="range" class="timeline" id="seek-${uid}" min="0" value="0" oninput="userSeek('${uid}', this.value)">
+                        <span class="time-display" id="time-${uid}">0:00 / 0:00</span>
+                    </div>
+                    <div class="buttons-row">
+                        <button class="ctrl-btn primary" id="toggle-${uid}" onclick="togglePlayPause('${uid}')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="ctrl-btn" onclick="seekBy(-10, '${uid}')">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                        <button class="ctrl-btn" onclick="seekBy(10, '${uid}')">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                        <div class="speed-row" id="speed-row-${uid}">
+                            <button class="speed-btn active" onclick="changeSpeed(1, '${uid}')">1x</button>
+                            <button class="speed-btn" onclick="changeSpeed(1.5, '${uid}')">1.5x</button>
+                            <button class="speed-btn" onclick="changeSpeed(2, '${uid}')">2x</button>
                         </div>
-                        <div class="buttons-row">
-                            <button class="ctrl-btn primary" id="toggle-${uid}" onclick="togglePlayPause('${uid}')">
-                                <i class="fas fa-play"></i>
-                            </button>
-                            <button class="ctrl-btn" onclick="seekBy(-10, '${uid}')">
-                                <i class="fas fa-undo"></i>
-                            </button>
-                            <button class="ctrl-btn" onclick="seekBy(10, '${uid}')">
-                                <i class="fas fa-redo"></i>
-                            </button>
-                            <div class="speed-row" id="speed-row-${uid}">
-                                <button class="speed-btn active" onclick="changeSpeed(1, '${uid}')">1x</button>
-                                <button class="speed-btn" onclick="changeSpeed(1.5, '${uid}')">1.5x</button>
-                                <button class="speed-btn" onclick="changeSpeed(2, '${uid}')">2x</button>
-                            </div>
-                            <button class="ctrl-btn" onclick="toggleFullScreen(this)">
-                                <i class="fas fa-expand"></i>
-                            </button>
-                        </div>
+                        <button class="ctrl-btn" onclick="toggleFullScreen(this)">
+                            <i class="fas fa-expand"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="card-content"><div class="card-title">${video.title}</div></div>
@@ -1474,6 +1477,17 @@
         };
 
         // --- FILE ENGINE ---
+        function formatDriveLink(url) {
+            if (!url.includes('drive.google.com')) return url;
+            // Extract the file ID and reconstruct as a preview link
+            const match = url.match(/\/d\/([^\/]+)/);
+            if (match && match[1]) {
+                return `https://drive.google.com/file/d/${match[1]}/preview`;
+            }
+            // Fallback for other formats
+            return url.replace(/\/view.*/, '/preview').replace(/\/edit.*/, '/preview');
+        }
+
         window.openFile = (urlOrContent, isHtml) => {
             const viewer = document.getElementById('fileViewer');
             if (isHtml) {
@@ -1488,7 +1502,7 @@
                 }
             } else {
                 viewer.srcdoc = "";
-                viewer.src = urlOrContent.replace(/\/view.*/, '/preview').replace(/\/edit.*/, '/preview');
+                viewer.src = formatDriveLink(urlOrContent);
             }
             document.getElementById('fileModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
