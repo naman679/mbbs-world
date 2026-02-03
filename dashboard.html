@@ -693,10 +693,18 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
+        let userSessionName = "Student";
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                document.getElementById('userName').innerText = user.displayName || user.email;
-                document.getElementById('welcomeName').innerText = user.displayName?.split(' ')[0] || "Student";
+                const name = user.displayName || user.email;
+                const firstName = user.displayName?.split(' ')[0] || "Student";
+                userSessionName = firstName;
+                document.getElementById('userName').innerText = name;
+                // Update welcome name if it exists in the current view
+                const mainWelcome = document.getElementById('welcomeName');
+                if (mainWelcome) mainWelcome.innerText = firstName;
+                const homeWelcome = document.getElementById('welcomeNameHome');
+                if (homeWelcome) homeWelcome.innerText = firstName;
             } else { window.location.href = 'index.html'; }
         });
 
@@ -847,7 +855,7 @@
         function renderHome() {
             document.getElementById('contentArea').innerHTML = `
                 <div class="welcome-section">
-                    <h1>Welcome Back, <span id="welcomeNameHome">${document.getElementById('welcomeName').innerText}</span>!</h1>
+                    <h1>Welcome Back, <span id="welcomeNameHome">${userSessionName}</span>!</h1>
                     <p>What would you like to study today?</p>
                     <div class="portal-grid">
                         <div class="portal-card" onclick="filterCategory('videos')">
