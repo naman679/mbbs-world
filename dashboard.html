@@ -565,6 +565,62 @@
                 height: 30px;
             }
         }
+
+        .subject-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+            max-height: 60vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .subject-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .subject-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .subject-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #333;
+            text-transform: capitalize;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .subject-item:hover,
+        .subject-item.active {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+            border-color: transparent;
+        }
+
+        .subject-item::after {
+            content: '\f105';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 1.2rem;
+            opacity: 0.6;
+        }
     </style>
 </head>
 
@@ -580,7 +636,6 @@
                 Notes</a>
             <a href="#" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i class="fas fa-tasks"></i>
                 Q-Bank</a>
-            <a href="#" class="nav-link" id="nav-pyq" onclick="navigate('pyq')"><i class="fas fa-history"></i> PYQ</a>
         </div>
         <div class="user-menu">
             <span id="userName" style="font-weight:600; font-size:0.9rem"></span>
@@ -589,30 +644,7 @@
     </nav>
 
     <div class="container">
-        <!-- Subjects Nav (Contextual) -->
-        <div class="subject-tabs" id="subjectNav">
-            <button class="subject-tab" onclick="setSubject('anatomy')">Anatomy</button>
-            <button class="subject-tab" onclick="setSubject('physiology')">Physiology</button>
-            <button class="subject-tab" onclick="setSubject('biochemistry')">Biochemistry</button>
-            <button class="subject-tab" onclick="setSubject('pharmacology')">Pharma</button>
-            <button class="subject-tab" onclick="setSubject('pathology')">Patho</button>
-            <button class="subject-tab" onclick="setSubject('microbiology')">Micro</button>
-            <button class="subject-tab" onclick="setSubject('fmt')">FMT</button>
-            <button class="subject-tab" onclick="setSubject('ent')">ENT</button>
-            <button class="subject-tab" onclick="setSubject('ophthalmology')">Ophtha</button>
-            <button class="subject-tab" onclick="setSubject('community_medicine')">PSM</button>
-            <button class="subject-tab" onclick="setSubject('medicine')">Medicine</button>
-            <button class="subject-tab" onclick="setSubject('surgery')">Surgery</button>
-            <button class="subject-tab" onclick="setSubject('obg')">OBG</button>
-            <button class="subject-tab" onclick="setSubject('pediatrics')">Pedia</button>
-            <button class="subject-tab" onclick="setSubject('orthopedics')">Ortho</button>
-            <button class="subject-tab" onclick="setSubject('dermatology')">Derma</button>
-            <button class="subject-tab" onclick="setSubject('anesthesia')">Anesthesia</button>
-            <button class="subject-tab" onclick="setSubject('psychiatry')">Psychiatry</button>
-            <button class="subject-tab" onclick="setSubject('qbank_special')"
-                style="background:var(--accent); color:white;">Master Q-Bank</button>
-        </div>
-
+        <!-- Main Content Area -->
         <div id="contentArea">
             <!-- Home View (Default) -->
             <div class="welcome-section">
@@ -679,7 +711,7 @@
     <script>
         // --- DATA ENGINE ---
         let mbbsData = {};
-        const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oD0BX4WhhLDL6e6WybIEXmvbiroBMBiGASJ2r-HdxlIOmDFqaWpUEMdDydPUHVOQNsOGGbgJR6O/pub?output=csv";
+        const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oDOBX4WhhLDL6e6WyblEXmvbiroBMBiGASJ2r-HdxllOmDFqaWpUEMdDydPUHVOQnSOGGbgJR6O/pub?output=csv";
 
         async function fetchSheetData() {
             try {
@@ -743,32 +775,42 @@
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             document.getElementById(`nav-${view}`).classList.add('active');
 
-            const subjectNav = document.getElementById('subjectNav');
-            subjectNav.classList.remove('visible'); // Hide the tab nav always, we use vertical index now
-
             if (view === 'home') renderHome();
             else renderSubjectList();
         }
 
         function renderSubjectList() {
             const area = document.getElementById('contentArea');
+
+            // Filter subjects that actually have content for the current view
+            const filteredSubjects = Object.keys(mbbsData).filter(subj => {
+                const data = mbbsData[subj];
+                if (currentView === 'videos') return data.videos && data.videos.length > 0;
+                if (currentView === 'notes') return data.notes && data.notes.length > 0;
+                if (currentView === 'qbank') return data.qbank && data.qbank.length > 0;
+                return false;
+            });
+
             area.innerHTML = `
                 <div class="welcome-section" style="padding: 1rem 0;">
+                    <button class="back-btn" onclick="navigate('home')"><i class="fas fa-arrow-left"></i> Back to Categories</button>
                     <h1><i class="fas ${getViewIcon()}"></i> Select Subject</h1>
-                    <p>Select a subject to browse ${currentView}.</p>
+                    <p>Browsing ${currentView.toUpperCase()} content</p>
                 </div>
-                <div class="chapter-list">
-                    ${Object.keys(mbbsData).map(subj => {
-                const name = subj.replace('_', ' ').toUpperCase();
+                <div class="subject-sidebar">
+                    ${filteredSubjects.map(subj => {
+                const name = subj.replace(/_/g, ' ').toUpperCase();
                 return `
-                        <div class="chapter-card" onclick="setSubject('${subj}')">
-                            <div class="chapter-icon"><i class="fas fa-book-medical"></i></div>
-                            <div style="flex-grow:1; font-weight:600;">${name}</div>
-                            <i class="fas fa-chevron-right" style="opacity:0.3;"></i>
-                        </div>`;
+                            <div class="subject-item" onclick="setSubject('${subj}')">
+                                <span>${name}</span>
+                            </div>`;
             }).join('')}
                 </div>
             `;
+
+            if (filteredSubjects.length === 0) {
+                area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No ${currentView} available yet.</div>`;
+            }
         }
 
         function getViewIcon() {
@@ -789,12 +831,23 @@
             document.getElementById('contentArea').innerHTML = `
                 <div class="welcome-section">
                     <h1>Welcome Back, <span id="welcomeNameHome">${document.getElementById('welcomeName').innerText}</span>!</h1>
-                    <p>Select a category to start your learning journey.</p>
+                    <p>What would you like to study today?</p>
                     <div class="portal-grid">
-                        <div class="portal-card" onclick="navigate('videos')"><i class="fas fa-video"></i><h3>Video Lectures</h3><p>Watch and learn with integrated summaries.</p></div>
-                        <div class="portal-card" onclick="navigate('notes')"><i class="fas fa-book"></i><h3>Notes PDF</h3><p>Access high-quality study materials.</p></div>
-                        <div class="portal-card" onclick="navigate('qbank')"><i class="fas fa-graduation-cap"></i><h3>Question Bank</h3><p>Practice for your exams.</p></div>
-                        <div class="portal-card" onclick="navigate('pyq')"><i class="fas fa-history"></i><h3>PYQ - HTML</h3><p>Check previous year questions.</p></div>
+                        <div class="portal-card" onclick="navigate('videos')">
+                            <i class="fas fa-video"></i>
+                            <h3>🎬 Video Lectures</h3>
+                            <p>High-quality medical video content.</p>
+                        </div>
+                        <div class="portal-card" onclick="navigate('notes')">
+                            <i class="fas fa-book"></i>
+                            <h3>📝 Study Notes</h3>
+                            <p>Standard textbook reference PDFs.</p>
+                        </div>
+                        <div class="portal-card" onclick="navigate('qbank')">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h3>❓ Question Bank</h3>
+                            <p>Test your knowledge with practice MCQ.</p>
+                        </div>
                     </div>
                 </div>
             `;
@@ -807,11 +860,14 @@
             const data = mbbsData[currentSubject];
             const subjectName = currentSubject.replace('_', ' ').toUpperCase();
 
-            // Header with Back Button
+            // Header with Back Buttons
             const header = document.createElement('div');
             header.innerHTML = `
-                <button class="back-btn" onclick="renderSubjectList()"><i class="fas fa-arrow-left"></i> Back to Subjects</button>
-                <div class="section-title"><i class="fas fa-folder-open"></i> ${subjectName} - ${currentView.toUpperCase()}</div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button class="back-btn" onclick="navigate('home')"><i class="fas fa-home"></i> Back to Categories</button>
+                    <button class="back-btn" style="background:var(--primary)" onclick="renderSubjectList()"><i class="fas fa-arrow-left"></i> Back to Subjects</button>
+                </div>
+                <div class="section-title"><i class="fas fa-folder-open"></i> ${subjectName}</div>
             `;
             area.appendChild(header);
 
@@ -863,12 +919,25 @@
 
                     renderVideoCard(area, data.videos[selectedChapterIdx], selectedChapterIdx);
                 }
-            } else if (currentView === 'notes') {
-                renderFileGrid(area, data.notes, "Reference Notes", "fa-file-pdf");
-            } else if (currentView === 'qbank') {
-                renderFileGrid(area, data.qbank, "Question Bank Files", "fa-tasks");
-            } else if (currentView === 'pyq') {
-                renderFileGrid(area, data.pyq, "Previous Year Papers (HTML)", "fa-history", true);
+            } else {
+                // Notes, QBank, PYQ all use same Chapter List logic now
+                const list = document.createElement('div');
+                list.className = 'chapter-list';
+                const items = currentView === 'notes' ? data.notes : (currentView === 'qbank' ? data.qbank : data.pyq);
+                const isHtml = currentView === 'pyq';
+
+                items.forEach((item, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'chapter-card';
+                    card.onclick = () => openFile(isHtml ? item.content || item.link : item.link, isHtml);
+                    card.innerHTML = `
+                        <div class="chapter-icon"><i class="fas ${isHtml ? 'fa-code' : 'fa-file-pdf'}"></i></div>
+                        <div style="flex-grow:1; font-weight:500;">${item.title}</div>
+                        <i class="fas fa-external-link-alt" style="opacity:0.5;"></i>
+                    `;
+                    list.appendChild(card);
+                });
+                area.appendChild(list);
             }
 
             if (area.innerHTML === '') area.innerHTML = '<div style="text-align:center; padding:5rem; color:var(--text-light)">No content available for this subject yet.</div>';
@@ -892,27 +961,6 @@
             `;
             container.appendChild(card);
             if (window.YT && window.YT.Player) createPlayer(uid, vid); else pendingPlayers.push({ id: uid, vid: vid });
-        }
-
-        function renderFileGrid(container, items, title, icon, isHtml = false) {
-            if (items.length > 0) {
-                addSectionHeader(container, title, icon);
-                items.forEach((item, idx) => {
-                    const card = document.createElement('div'); card.className = 'card';
-                    // We generate a unique ID to retrieve content safely
-                    const contentId = isHtml ? `html-content-${currentSubject}-${idx}` : null;
-                    if (isHtml) { card.dataset.content = item.content; }
-
-                    card.innerHTML = `
-                        <div class="file-icon"><i class="fas ${isHtml ? 'fa-code' : 'fa-file-pdf'}"></i></div>
-                        <div class="card-content"><div class="card-title">${item.title}</div>
-                        <button onclick="openFile(this.closest('.card').dataset.content || '${item.link}', ${isHtml})" class="file-btn" style="width:100%; border:none; cursor:pointer;">
-                            ${isHtml ? 'Open Paper' : 'Read PDF'}
-                        </button></div>
-                    `;
-                    container.appendChild(card);
-                });
-            }
         }
 
         function addSectionHeader(container, text, icon) {
