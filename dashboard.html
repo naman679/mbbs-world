@@ -457,6 +457,114 @@
                 transform: translateY(0);
             }
         }
+
+        /* --- MOBILE RESPONSIVENESS FIXES --- */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.8rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .nav-brand {
+                font-size: 1.1rem;
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 5px;
+            }
+
+            .main-nav {
+                width: 100%;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 5px 0;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                gap: 5px;
+            }
+
+            .main-nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-link {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.8rem;
+                white-space: nowrap;
+            }
+
+            .user-menu {
+                width: 100%;
+                justify-content: center;
+                padding-top: 5px;
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .welcome-section {
+                padding: 1.5rem 0.5rem;
+            }
+
+            .welcome-section h1 {
+                font-size: 1.6rem;
+            }
+
+            .welcome-section p {
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .portal-grid {
+                gap: 1rem;
+                grid-template-columns: 1fr;
+            }
+
+            .portal-card {
+                padding: 1.5rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+                margin-top: 1rem;
+            }
+
+            .section-title {
+                font-size: 1rem;
+            }
+
+            .chapter-card {
+                padding: 1rem;
+                gap: 10px;
+                font-size: 0.9rem;
+            }
+
+            .chapter-icon {
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portal-card i {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .portal-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .modal {
+                padding: 0.5rem;
+            }
+
+            .close-modal {
+                top: 0.5rem;
+                right: 0.5rem;
+                width: 30px;
+                height: 30px;
+            }
+        }
     </style>
 </head>
 
@@ -570,57 +678,57 @@
 
     <script>
         // --- DATA ENGINE ---
-        const mbbsData = {
-            anatomy: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Anatomy PYQ", link: "papers/anant_pyq.html" }] },
-            physiology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Physiology PYQ", link: "papers/physio_pyq.html" }] },
-            biochemistry: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Biochemistry PYQ", link: "papers/biochem_pyq.html" }] },
-            pharmacology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Pharmacology PYQ", link: "papers/pharma_pyq.html" }] },
-            pathology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Pathology PYQ", link: "papers/patho_pyq.html" }] },
-            microbiology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Microbiology PYQ", link: "papers/micro_pyq.html" }] },
-            fmt: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "FMT PYQ", link: "papers/fmt_pyq.html" }] },
-            community_medicine: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Community Medicine PYQ", link: "papers/psm_pyq.html" }] },
-            ent: {
-                videos: [
-                    { title: "Basics of Ear", link: "SZQcPzTh12M" },
-                    { title: "Clinical Embryology of Inner Ear", link: "SjchvPK7Pcs" },
-                    { title: "Embryology of Middle and External Ear", link: "YC6mqZHeJYY" },
-                    { title: "Clinical Anatomy of External Ear", link: "haNcfMNQBik" },
-                    { title: "Clinical Anatomy of Middle Ear (Part 1)", link: "sXmdYGCgh_M" },
-                    { title: "Clinical Anatomy of Middle Ear (Part 2)", link: "Rum796f-Xbs" },
-                    { title: "Clinical Anatomy of Inner Ear", link: "HCcX-tTMe9I" },
-                    { title: "Nerve Supply of Ear", link: "x7fnsHrCTJY" },
-                    { title: "Audiology and Tuning Fork", link: "tvGZe1DxLjM" },
-                    { title: "Audiology and PTA", link: "9mOBHLagiSM" },
-                    { title: "Audiology Part 3", link: "Wn89jrUOTh0" },
-                    { title: "Audiology Part 4 BERA", link: "KimtIUk9maw" },
-                    { title: "Vestibular Physiology", link: "-l46FTjet7s" },
-                    { title: "Vertigo and Vestibular Function", link: "VxsaZkZTn8A" },
-                    { title: "Disease of Pinna", link: "5R6AYr16nas" },
-                    { title: "Disease of External Auditory Canal", link: "DwAB8MbAtRM" },
-                    { title: "Condition of Tympanic Membrane", link: "P4NdOAwfwS4" },
-                    { title: "Acute Otitis Media", link: "6vdxKfBf3Pc" },
-                    { title: "Serous Otitis Media", link: "9L2fSYvpJIE" }
-                ],
-                keyPoints: [
-                    { title: "Categorical Mastery: Ear Anatomy", content: "..." },
-                    { title: "Categorical Mastery: Audiology", content: "..." },
-                    { title: "Categorical Mastery: Vestibular & Diseases", content: "..." }
-                ],
-                notes: [],
-                qbank: [],
-                pyq: [{ title: "ENT PYQ", link: "papers/ent_pyq.html" }]
-            },
-            ophthalmology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [] },
-            medicine: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "General Medicine PYQ", link: "papers/medicine_pyq.html" }] },
-            surgery: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [] },
-            obg: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "OBG PYQ", link: "papers/obg_pqy.html" }] },
-            pediatrics: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Pediatrics PYQ", link: "papers/pedia_pyq.html" }] },
-            orthopedics: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Orthopedics PYQ", link: "papers/ortho_pyq.html" }] },
-            dermatology: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Dermatology PYQ", link: "papers/derma_pyq.html" }] },
-            anesthesia: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Anesthesia PYQ", link: "papers/anesthesia_pyq.html" }] },
-            psychiatry: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Psychiatry PYQ", link: "papers/psyc_pyq.html" }] },
-            qbank_special: { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [{ title: "Professional Exams Master Q-Bank", link: "papers/MBBS Professional Exams (1st - 3rd Year) Q-Bank.html" }] }
-        };
+        let mbbsData = {};
+        const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oD0BX4WhhLDL6e6WybIEXmvbiroBMBiGASJ2r-HdxlIOmDFqaWpUEMdDydPUHVOQNsOGGbgJR6O/pub?output=csv";
+
+        async function fetchSheetData() {
+            try {
+                const response = await fetch(SHEET_URL);
+                const text = await response.text();
+                const lines = text.split(/\r?\n/).filter(line => line.trim() !== "");
+
+                mbbsData = {};
+                lines.slice(1).forEach(line => {
+                    const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+                    if (cols.length < 4) return;
+
+                    const [subj, type, title, link] = cols;
+                    const subKey = subj.toLowerCase().trim().replace(/ /g, '_');
+                    const typeKey = type.toLowerCase().trim();
+
+                    if (!mbbsData[subKey]) {
+                        mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [] };
+                    }
+
+                    if (typeKey === 'videos' || typeKey === 'video') {
+                        let vidId = link;
+                        if (link.includes('v=')) vidId = link.split('v=')[1].split('&')[0];
+                        else if (link.includes('youtu.be/')) vidId = link.split('youtu.be/')[1].split('?')[0];
+                        mbbsData[subKey].videos.push({ title, link: vidId.trim() });
+                    } else if (typeKey === 'notes') {
+                        mbbsData[subKey].notes.push({ title, link });
+                    } else if (typeKey === 'qbank') {
+                        mbbsData[subKey].qbank.push({ title, link });
+                    } else if (typeKey === 'pyq') {
+                        mbbsData[subKey].pyq.push({ title, link });
+                    } else if (typeKey === 'keypoints' || typeKey === 'keypoint') {
+                        mbbsData[subKey].keyPoints.push({ title, content: link });
+                    }
+                });
+
+                // Re-render based on current view after data is loaded
+                if (currentView === 'home') renderHome();
+                else if (currentSubject) renderContent();
+                else renderSubjectList();
+
+            } catch (e) {
+                console.error("CSV Fetch Error:", e);
+                document.getElementById('contentArea').innerHTML = `<div style="text-align:center; padding:5rem; color:red;">Failed to load curriculum data. Please check your internet or Google Sheet link.</div>`;
+            }
+        }
+
+        // Initial Fetch
+        fetchSheetData();
 
         let currentView = 'home';
         let currentSubject = null;
@@ -713,13 +821,23 @@
                     const list = document.createElement('div');
                     list.className = 'chapter-list';
                     data.videos.forEach((v, idx) => {
+                        const vidId = v.link; // Link is our ID
+                        const isDone = localStorage.getItem('completed_' + vidId) === 'true';
+
                         const item = document.createElement('div');
                         item.className = 'chapter-card';
+                        if (isDone) item.style.borderLeft = "4px solid #10b981";
+
                         item.onclick = () => { selectedChapterIdx = idx; renderContent(); };
                         item.innerHTML = `
-                            <div class="chapter-icon"><i class="fas fa-play"></i></div>
-                            <div style="flex-grow:1; font-weight:500;">Chapter ${idx + 1}: ${v.title}</div>
-                            <i class="fas fa-circle-play" style="color:var(--primary); font-size:1.2rem;"></i>
+                            <div class="chapter-icon" style="${isDone ? 'background:rgba(16, 185, 129, 0.1); color:#10b981;' : ''}">
+                                <i class="fas ${isDone ? 'fa-check-circle' : 'fa-play'}"></i>
+                            </div>
+                            <div style="flex-grow:1; font-weight:500;">
+                                Chapter ${idx + 1}: ${v.title}
+                                ${isDone ? '<span style="font-size:0.7rem; background:#10b981; color:white; padding:2px 6px; border-radius:4px; margin-left:8px;">DONE</span>' : ''}
+                            </div>
+                            <i class="fas fa-circle-play" style="color:${isDone ? '#10b981' : 'var(--primary)'}; font-size:1.2rem;"></i>
                         `;
                         list.appendChild(item);
                     });
@@ -811,15 +929,39 @@
                 events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
             });
         }
-        function onReady(e, uid) { document.getElementById(`seek-${uid}`).max = e.target.getDuration(); updateClock(uid, 0, e.target.getDuration()); }
+        function onReady(e, uid) {
+            const dur = e.target.getDuration();
+            document.getElementById(`seek-${uid}`).max = dur;
+            updateClock(uid, 0, dur);
+
+            // RESUME LOGIC
+            const vidData = e.target.getVideoData();
+            const videoId = vidData.video_id;
+            const savedTime = localStorage.getItem('resume_' + videoId);
+            if (savedTime) {
+                e.target.seekTo(parseFloat(savedTime), true);
+            }
+        }
         function onStateChange(e, uid) {
+            const vidData = e.target.getVideoData();
+            const videoId = vidData.video_id;
+
             if (e.data == YT.PlayerState.PLAYING) {
                 e.target.setPlaybackQuality('hd720');
                 if (players[uid].timer) clearInterval(players[uid].timer);
                 players[uid].timer = setInterval(() => {
                     const t = e.target.getCurrentTime();
+                    const d = e.target.getDuration();
                     document.getElementById(`seek-${uid}`).value = t;
-                    updateClock(uid, t, e.target.getDuration());
+                    updateClock(uid, t, d);
+
+                    // SAVE PROGRESS
+                    localStorage.setItem('resume_' + videoId, t);
+
+                    // TRACK COMPLETION (90%)
+                    if (d > 0 && t > (d * 0.9)) {
+                        localStorage.setItem('completed_' + videoId, 'true');
+                    }
                 }, 1000);
             } else clearInterval(players[uid].timer);
         }
@@ -837,10 +979,17 @@
         window.openFile = (urlOrContent, isHtml) => {
             const viewer = document.getElementById('fileViewer');
             if (isHtml) {
-                viewer.src = ""; // Clear src
-                viewer.srcdoc = urlOrContent; // Load raw HTML
+                // If it looks like raw HTML code (starts with < or is very long), use srcdoc
+                if (urlOrContent.trim().startsWith('<')) {
+                    viewer.src = "";
+                    viewer.srcdoc = urlOrContent;
+                } else {
+                    // It's a file path or URL
+                    viewer.srcdoc = "";
+                    viewer.src = urlOrContent;
+                }
             } else {
-                viewer.srcdoc = ""; // Clear srcdoc
+                viewer.srcdoc = "";
                 viewer.src = urlOrContent.replace(/\/view.*/, '/preview').replace(/\/edit.*/, '/preview');
             }
             document.getElementById('fileModal').style.display = 'block';
