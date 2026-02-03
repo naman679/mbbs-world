@@ -1582,8 +1582,9 @@
             const match = url.match(/\/d\/([^\/?#]+)|id=([^\/&#?]+)/);
             const fileId = match ? (match[1] || match[2]) : null;
             if (fileId) {
-                // Official Preview Link - Highest reliability for site embedding
-                return `https://drive.google.com/file/d/${fileId}/preview`;
+                // High-compatibility Google Docs Viewer Engine
+                const downloadLink = `https://drive.google.com/uc?export=download&id=${fileId}`;
+                return `https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(downloadLink)}`;
             }
             return url;
         }
@@ -1593,33 +1594,32 @@
             const loader = document.getElementById('pdfLoader');
             const repair = document.getElementById('pdfRepairLink');
 
-            // Clean Slate
+            // Reset UI
             viewer.src = "about:blank";
+            viewer.srcdoc = "";
             loader.style.display = 'block';
             if (repair) repair.style.display = 'none';
 
             if (isHtml) {
                 loader.style.display = 'none';
                 if (urlOrContent.trim().startsWith('<')) {
-                    viewer.src = "";
+                    viewer.src = ""; // Clear src if using srcdoc
                     viewer.srcdoc = urlOrContent;
                 } else {
-                    viewer.srcdoc = "";
                     viewer.src = urlOrContent;
                 }
             } else {
-                viewer.srcdoc = "";
                 const link = formatDriveLink(urlOrContent);
                 viewer.src = link;
                 if (repair) repair.href = urlOrContent;
 
-                // Smart Timeout: Hide loader after 3s even if document is slow
-                // This prevents "stuck" white screen feeling
+                // Smart Transition
                 setTimeout(() => {
                     loader.style.display = 'none';
-                    // Show repair link as fallback
-                    if (repair && urlOrContent.includes('drive.google.com')) repair.style.display = 'block';
-                }, 3000);
+                    if (repair && urlOrContent.includes('drive.google.com')) {
+                        repair.style.display = 'block';
+                    }
+                }, 4000); // 4 seconds for heavy GView engine
             }
             document.getElementById('fileModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
