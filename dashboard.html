@@ -693,12 +693,12 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        let userSessionName = "Student";
+        window.userSessionName = "Student";
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 const name = user.displayName || user.email;
                 const firstName = user.displayName?.split(' ')[0] || "Student";
-                userSessionName = firstName;
+                window.userSessionName = firstName;
                 document.getElementById('userName').innerText = name;
                 // Update welcome name if it exists in the current view
                 const mainWelcome = document.getElementById('welcomeName');
@@ -877,7 +877,7 @@
         function renderHome() {
             document.getElementById('contentArea').innerHTML = `
                 <div class="welcome-section">
-                    <h1>Welcome Back, <span id="welcomeNameHome">${userSessionName}</span>!</h1>
+                    <h1>Welcome Back, <span id="welcomeNameHome">${window.userSessionName || 'Student'}</span>!</h1>
                     <p>What would you like to study today?</p>
                     <div class="portal-grid">
                         <div class="portal-card" onclick="filterCategory('videos')">
