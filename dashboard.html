@@ -230,6 +230,8 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: var(--shadow-md);
             transition: 0.3s;
+            position: relative;
+            /* Fixed: Added relative for absolute children */
         }
 
         .card:hover {
@@ -328,16 +330,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 10;
+            z-index: 1;
+            /* Lowered z-index */
             background: transparent;
-        }
-
-        .custom-controls {
-            padding: 1rem;
-            border-top: 1px solid #f1f5f9;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
         }
 
         .timeline-container {
@@ -477,9 +472,9 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: calc(100% - 60px);
+            height: calc(100% - 70px);
             /* Leave room for floating toolbar */
-            z-index: 5;
+            z-index: 2;
             cursor: pointer;
             display: flex;
         }
@@ -1261,30 +1256,32 @@
                     </div>
                     <div id="seek-left-${uid}" class="seek-feedback seek-left"><i class="fas fa-backward"></i> -10s</div>
                     <div id="seek-right-${uid}" class="seek-feedback seek-right">+10s <i class="fas fa-forward"></i></div>
-                </div>
-                <div class="custom-controls">
-                    <div class="timeline-container">
-                        <input type="range" class="timeline" id="seek-${uid}" min="0" value="0" oninput="userSeek('${uid}', this.value)">
-                        <span class="time-display" id="time-${uid}">0:00 / 0:00</span>
-                    </div>
-                    <div class="buttons-row">
-                        <button class="ctrl-btn primary" id="toggle-${uid}" onclick="togglePlayPause('${uid}')">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <button class="ctrl-btn" onclick="seekBy(-10, '${uid}')">
-                            <i class="fas fa-undo"></i>
-                        </button>
-                        <button class="ctrl-btn" onclick="seekBy(10, '${uid}')">
-                            <i class="fas fa-redo"></i>
-                        </button>
-                        <div class="speed-row" id="speed-row-${uid}">
-                            <button class="speed-btn active" onclick="changeSpeed(1, '${uid}')">1x</button>
-                            <button class="speed-btn" onclick="changeSpeed(1.5, '${uid}')">1.5x</button>
-                            <button class="speed-btn" onclick="changeSpeed(2, '${uid}')">2x</button>
+
+                    <!-- Moved inside wrapper for perfect layering -->
+                    <div class="custom-controls">
+                        <div class="timeline-container">
+                            <input type="range" class="timeline" id="seek-${uid}" min="0" value="0" oninput="userSeek('${uid}', this.value)">
+                            <span class="time-display" id="time-${uid}">0:00 / 0:00</span>
                         </div>
-                        <button class="ctrl-btn" onclick="toggleFullScreen(this)">
-                            <i class="fas fa-expand"></i>
-                        </button>
+                        <div class="buttons-row">
+                            <button class="ctrl-btn primary" id="toggle-${uid}" onclick="togglePlayPause('${uid}')">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="ctrl-btn" onclick="seekBy(-10, '${uid}')">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button class="ctrl-btn" onclick="seekBy(10, '${uid}')">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                            <div class="speed-row" id="speed-row-${uid}">
+                                <button class="speed-btn active" onclick="changeSpeed(1, '${uid}')">1x</button>
+                                <button class="speed-btn" onclick="changeSpeed(1.5, '${uid}')">1.5x</button>
+                                <button class="speed-btn" onclick="changeSpeed(2, '${uid}')">2x</button>
+                            </div>
+                            <button class="ctrl-btn" onclick="toggleFullScreen(this)">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-content"><div class="card-title">${video.title}</div></div>
