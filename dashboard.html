@@ -416,7 +416,24 @@
         /* --- ADVANCED VIDEO CONTROLS --- */
         .video-wrapper {
             position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            /* 16:9 Aspect Ratio */
+            background: #000;
+            overflow: hidden;
+            border-radius: 8px 8px 0 0;
             touch-action: manipulation;
+        }
+
+        .video-wrapper iframe,
+        .video-wrapper object,
+        .video-wrapper embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         .tap-overlay {
@@ -507,7 +524,13 @@
         }
 
         /* LANDSCAPE SPECIFIC */
-        @media (orientation: landscape) and (max-height: 500px) {
+        @media (orientation: landscape) {
+            .video-wrapper {
+                max-height: 80vh !important;
+                padding-bottom: 0 !important;
+                height: 80vh !important;
+            }
+
             .video-controls-overlay {
                 height: 50px;
             }
@@ -871,10 +894,8 @@
                     }
 
                     if (typeKey === 'videos' || typeKey === 'video') {
-                        let vidId = link;
-                        if (link.includes('v=')) vidId = link.split('v=')[1].split('&')[0];
-                        else if (link.includes('youtu.be/')) vidId = link.split('youtu.be/')[1].split('?')[0];
-                        mbbsData[subKey].videos.push({ title, link: vidId.trim() });
+                        const vidId = getYoutubeVideoId(link);
+                        mbbsData[subKey].videos.push({ title, link: vidId });
                     } else if (typeKey === 'notes') {
                         mbbsData[subKey].notes.push({ title, link });
                     } else if (typeKey === 'qbank') {
@@ -903,6 +924,13 @@
                     </div>
                 `;
             }
+        }
+
+        function getYoutubeVideoId(url) {
+            if (!url) return "";
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : url;
         }
 
         let currentView = 'home';
