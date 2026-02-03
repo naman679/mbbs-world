@@ -722,10 +722,22 @@
         async function fetchSheetData() {
             try {
                 const response = await fetch(SHEET_URL);
-                const text = await response.text();
-                const lines = text.split(/\r?\n/).filter(line => line.trim() !== "");
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                let text = await response.text();
 
-                allData = lines.slice(1); // Store raw lines
+                // Remove Byte Order Mark (BOM) if present
+                text = text.replace(/^\uFEFF/, '');
+
+                // If it looks like HTML (Google login page or error), it's not a published CSV
+                if (text.includes('<!DOCTYPE html>') || text.includes('<html>')) {
+                    throw new Error("Invalid CSV format. Please ensure your Google Sheet is 'Published to the Web' as a CSV.");
+                }
+
+                console.log("Sheet data fetched successfully");
+                const lines = text.split(/\r?\n/).filter(line => line.trim() !== "");
+                if (lines.length < 2) throw new Error("Spreadsheet is empty or has no data rows.");
+
+                allData = lines.slice(1);
                 mbbsData = {};
                 allData.forEach(line => {
                     const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
@@ -760,7 +772,17 @@
 
             } catch (e) {
                 console.error("CSV Fetch Error:", e);
-                document.getElementById('contentArea').innerHTML = `<div style="text-align:center; padding:5rem; color:red;">Failed to load curriculum data. Please check your internet or Google Sheet link.</div>`;
+                document.getElementById('contentArea').innerHTML = `
+                    <div style="text-align:center; padding:5rem;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:#ef4444; margin-bottom:1rem;"></i>
+                        <h2 style="color:#ef4444; margin-bottom:0.5rem;">Data Load Failure</h2>
+                        <p style="color:var(--text-light); max-width:500px; margin:0 auto;">${e.message}</p>
+                        <div style="margin-top:2rem; font-size:0.9rem; color:var(--text-light)">
+                            <p>Please ensure your Google Sheet is <b>Published to the Web</b>:</p>
+                            <p>File -> Share -> Publish to the Web -> Link -> <b>CSV</b></p>
+                        </div>
+                    </div>
+                `;
             }
         }
 
