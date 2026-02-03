@@ -902,10 +902,7 @@
                 <i class="fas fa-times"></i>
             </button>
             <iframe id="fileViewer" style="width:100%; height:100%; border:none;" src="" allow="autoplay"
-                sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
-            <a id="pdfFallbackLink" href="#" target="_blank" class="pdf-fallback">
-                <i class="fas fa-external-link-alt"></i> PDF not loading? Click here to open in a new tab
-            </a>
+                sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
         </div>
     </div>
 
@@ -1540,11 +1537,9 @@
 
         window.openFile = (urlOrContent, isHtml) => {
             const viewer = document.getElementById('fileViewer');
-            const fallback = document.getElementById('pdfFallbackLink');
 
             // Anti-Ghosting cleanup
             viewer.src = "about:blank";
-            if (fallback) fallback.style.display = 'none';
 
             if (isHtml) {
                 if (urlOrContent.trim().startsWith('<')) {
@@ -1558,19 +1553,6 @@
                 viewer.srcdoc = "";
                 const link = formatDriveLink(urlOrContent);
                 viewer.src = link;
-
-                // 1s Force Load Logic to prevent white screen hangs
-                setTimeout(() => {
-                    // If it's a Drive PDF and still show about:blank or similar, trigger reload
-                    if (link.includes('drive.google.com') && viewer.src.includes('preview')) {
-                        viewer.src = link + (link.includes('?') ? '&' : '?') + 'reload=true';
-                    }
-                }, 1000);
-
-                if (fallback && urlOrContent.includes('drive.google.com')) {
-                    fallback.href = urlOrContent;
-                    fallback.style.display = 'block';
-                }
             }
             document.getElementById('fileModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
@@ -1591,8 +1573,6 @@
             if (document.fullscreenElement) document.exitFullscreen();
             document.getElementById('fileModal').style.display = 'none';
             document.getElementById('fileViewer').src = 'about:blank';
-            const fallback = document.getElementById('pdfFallbackLink');
-            if (fallback) fallback.style.display = 'none';
             document.body.style.overflow = 'auto';
         };
     </script>
