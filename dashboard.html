@@ -362,40 +362,58 @@
 
         .buttons-row {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 0;
         }
 
         .ctrl-btn {
-            width: 35px;
-            height: 35px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             border: none;
             cursor: pointer;
             transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            background: #f3f4f6;
+            color: #4b5563;
         }
 
         .ctrl-btn.primary {
             background: var(--primary);
             color: white;
+            width: 38px;
+            height: 38px;
+            font-size: 1rem;
+        }
+
+        .ctrl-btn:hover {
+            opacity: 0.8;
+            transform: scale(1.1);
         }
 
         .speed-row {
             display: flex;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 4px;
             justify-content: center;
+            flex-wrap: nowrap;
         }
 
         .speed-btn {
-            padding: 4px 10px;
-            font-size: 0.75rem;
+            padding: 4px 6px;
+            font-size: 0.7rem;
             background: #f3f4f6;
             color: #4b5563;
             border: 1px solid #d1d5db;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             transition: 0.2s;
             font-weight: 500;
+            white-space: nowrap;
         }
 
         .speed-btn.active {
@@ -1164,17 +1182,28 @@
                     <div id="seek-right-${uid}" class="seek-feedback seek-right">+10s <i class="fas fa-forward"></i></div>
                 </div>
                 <div class="custom-controls">
-                    <div class="timeline-container"><input type="range" class="timeline" id="seek-${uid}" min="0" value="0" oninput="userSeek('${uid}', this.value)"><span class="time-display" id="time-${uid}">0:00 / 0:00</span></div>
-                    <div class="buttons-row">
-                        <button class="ctrl-btn primary" onclick="controlPlayer('${uid}', 'play')"><i class="fas fa-play"></i></button>
-                        <button class="ctrl-btn" onclick="controlPlayer('${uid}', 'pause')"><i class="fas fa-pause"></i></button>
-                        <button class="ctrl-btn" onclick="toggleFullScreen(this)"><i class="fas fa-expand"></i></button>
+                    <div class="timeline-container">
+                        <input type="range" class="timeline" id="seek-${uid}" min="0" value="0" oninput="userSeek('${uid}', this.value)">
+                        <span class="time-display" id="time-${uid}">0:00 / 0:00</span>
                     </div>
-                    <div class="speed-row" id="speed-row-${uid}">
-                        <button class="speed-btn" onclick="changeSpeed(0.5, '${uid}')">0.5x</button>
-                        <button class="speed-btn active" onclick="changeSpeed(1, '${uid}')">Normal</button>
-                        <button class="speed-btn" onclick="changeSpeed(1.5, '${uid}')">1.5x</button>
-                        <button class="speed-btn" onclick="changeSpeed(2, '${uid}')">2x</button>
+                    <div class="buttons-row">
+                        <button class="ctrl-btn primary" id="toggle-${uid}" onclick="togglePlayPause('${uid}')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="ctrl-btn" onclick="seekBy(-10, '${uid}')">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                        <button class="ctrl-btn" onclick="seekBy(10, '${uid}')">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                        <div class="speed-row" id="speed-row-${uid}">
+                            <button class="speed-btn active" onclick="changeSpeed(1, '${uid}')">1x</button>
+                            <button class="speed-btn" onclick="changeSpeed(1.5, '${uid}')">1.5x</button>
+                            <button class="speed-btn" onclick="changeSpeed(2, '${uid}')">2x</button>
+                        </div>
+                        <button class="ctrl-btn" onclick="toggleFullScreen(this)">
+                            <i class="fas fa-expand"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="card-content"><div class="card-title">${video.title}</div></div>
@@ -1207,15 +1236,19 @@
                     showSeekFeedback('right', uid);
                 }
             } else {
-                // Single Tap -> Pass to Play/Pause
-                const player = players[uid];
-                if (player) {
-                    const state = player.getPlayerState();
-                    if (state === YT.PlayerState.PLAYING) player.pauseVideo();
-                    else player.playVideo();
-                }
+                // Single Tap -> Pass to Toggle
+                togglePlayPause(uid);
             }
             lastTapTime = now;
+        };
+
+        window.togglePlayPause = (uid) => {
+            const p = players[uid];
+            if (p) {
+                const state = p.getPlayerState();
+                if (state === YT.PlayerState.PLAYING) p.pauseVideo();
+                else p.playVideo();
+            }
         };
 
         function seekBy(seconds, uid) {
@@ -1301,6 +1334,7 @@
             if (e.data == YT.PlayerState.PLAYING) {
                 window.activePlayerId = uid;
                 updateOrientation();
+                updatePlayPauseIcon(uid, true);
                 e.target.setPlaybackQuality('hd720');
                 if (players[uid].timer) clearInterval(players[uid].timer);
                 players[uid].timer = setInterval(() => {
@@ -1317,7 +1351,17 @@
                         localStorage.setItem('completed_' + videoId, 'true');
                     }
                 }, 1000);
-            } else clearInterval(players[uid].timer);
+            } else {
+                clearInterval(players[uid].timer);
+                updatePlayPauseIcon(uid, false);
+            }
+        }
+
+        function updatePlayPauseIcon(uid, isPlaying) {
+            const btn = document.getElementById(`toggle-${uid}`);
+            if (btn) {
+                btn.innerHTML = `<i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>`;
+            }
         }
         function updateClock(uid, curr, dur) { document.getElementById(`time-${uid}`).innerText = `${fmt(curr)} / ${fmt(dur)}`; }
         function fmt(s) { const m = Math.floor(s / 60); const sc = Math.floor(s % 60); return `${m}:${sc < 10 ? '0' : ''}${sc}`; }
