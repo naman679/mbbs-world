@@ -1480,13 +1480,15 @@
         // --- FILE ENGINE ---
         function formatDriveLink(url) {
             if (!url.includes('drive.google.com')) return url;
-            // Extract the file ID
-            const match = url.match(/\/d\/([^\/]+)/);
-            const fileId = match ? match[1] : null;
+
+            // Improved regex to capture the ID from /d/ or id= formats
+            const match = url.match(/\/d\/([^\/?]+)|id=([^\/&]+)/);
+            const fileId = match ? (match[1] || match[2]) : null;
 
             if (fileId) {
-                // Wrap in official Google Viewer with universal compatibility
-                return `https://docs.google.com/gview?embedded=true&url=https://drive.google.com/uc?id=${fileId}`;
+                // Use the direct export link wrapped in gview for maximum compatibility
+                const directLink = `https://drive.google.com/uc?export=download&id=${fileId}`;
+                return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(directLink)}`;
             }
             return url;
         }
