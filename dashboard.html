@@ -360,12 +360,30 @@
             text-align: center;
         }
 
+        .custom-controls {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 450px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 8px 15px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            transition: 0.3s;
+        }
+
         .buttons-row {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             align-items: center;
-            gap: 5px;
-            padding: 5px 0;
+            gap: 15px;
+            padding: 2px 0;
         }
 
         .ctrl-btn {
@@ -459,7 +477,8 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: calc(100% - 60px);
+            /* Leave room for floating toolbar */
             z-index: 5;
             cursor: pointer;
             display: flex;
@@ -547,6 +566,12 @@
                 max-height: 80vh !important;
                 padding-bottom: 0 !important;
                 height: 80vh !important;
+            }
+
+            .custom-controls {
+                bottom: 20px !important;
+                width: 80%;
+                padding: 5px 15px;
             }
 
             .video-controls-overlay {
@@ -903,25 +928,28 @@
                     const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
                     if (cols.length < 4) return;
 
-                    const [subj, type, title, link] = cols;
+                    const [subj, type, title, link, platform] = cols;
                     const subKey = subj.toLowerCase().trim().replace(/ /g, '_');
+                    const platformName = platform ? platform.trim() : "Other";
                     const typeKey = type.toLowerCase().trim();
 
                     if (!mbbsData[subKey]) {
                         mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], pyq: [] };
                     }
 
+                    const item = { title, link, platform: platformName };
+
                     if (typeKey === 'videos' || typeKey === 'video') {
                         const vidId = getYoutubeVideoId(link);
-                        mbbsData[subKey].videos.push({ title, link: vidId });
+                        mbbsData[subKey].videos.push({ title, link: vidId, platform: platformName });
                     } else if (typeKey === 'notes') {
-                        mbbsData[subKey].notes.push({ title, link });
+                        mbbsData[subKey].notes.push(item);
                     } else if (typeKey === 'qbank') {
-                        mbbsData[subKey].qbank.push({ title, link });
+                        mbbsData[subKey].qbank.push(item);
                     } else if (typeKey === 'pyq') {
-                        mbbsData[subKey].pyq.push({ title, link });
+                        mbbsData[subKey].pyq.push(item);
                     } else if (typeKey === 'keypoints' || typeKey === 'keypoint') {
-                        mbbsData[subKey].keyPoints.push({ title, content: link });
+                        mbbsData[subKey].keyPoints.push({ title, content: link, platform: platformName });
                     }
                 });
 
@@ -953,6 +981,7 @@
 
         let currentView = 'home';
         let currentSubject = null;
+        let currentPlatform = null;
         let selectedChapterIdx = null;
         let players = {};
         let pendingPlayers = [];
@@ -970,11 +999,56 @@
 
         window.filterCategory = (type) => {
             currentView = type;
+            currentPlatform = null;
             currentSubject = null;
             selectedChapterIdx = null;
             window.activePlayerId = null;
             updateOrientation();
             updateNavActive(type);
+
+            if (type === 'qbank') {
+                renderPlatforms();
+            } else {
+                renderSubjectList();
+            }
+        };
+
+        function renderPlatforms() {
+            const area = document.getElementById('contentArea');
+            const platforms = new Set();
+
+            Object.values(mbbsData).forEach(subj => {
+                subj.qbank.forEach(item => {
+                    if (item.platform) platforms.add(item.platform);
+                });
+            });
+
+            const platformList = Array.from(platforms).sort();
+
+            area.innerHTML = `
+                <div class="welcome-section" style="padding: 1rem 0;">
+                    <button class="back-btn" onclick="showMainMenu()"><i class="fas fa-arrow-left"></i> Back to Categories</button>
+                    <h1><i class="fas fa-layer-group"></i> Select Platform</h1>
+                    <p>Choose a Question Bank provider</p>
+                </div>
+                <div class="portal-grid" style="margin-top:1rem;">
+                    ${platformList.map(p => `
+                        <div class="portal-card" onclick="setPlatform('${p}')">
+                            <i class="fas fa-university"></i>
+                            <h3>${p}</h3>
+                            <p>Browse content from ${p}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            if (platformList.length === 0) {
+                area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No platforms found in Question Bank.</div>`;
+            }
+        }
+
+        window.setPlatform = (platform) => {
+            currentPlatform = platform;
             renderSubjectList();
         };
 
@@ -997,21 +1071,26 @@
         function renderSubjectList() {
             const area = document.getElementById('contentArea');
 
-            // Filter subjects that actually have content for the current view
+            // Filter subjects that actually have content for the current view and platform
             const filteredSubjects = Object.keys(mbbsData).filter(subj => {
                 const data = mbbsData[subj];
                 if (currentView === 'videos') return data.videos && data.videos.length > 0;
                 if (currentView === 'notes') return data.notes && data.notes.length > 0;
-                if (currentView === 'qbank') return data.qbank && data.qbank.length > 0;
+                if (currentView === 'qbank') {
+                    return data.qbank && data.qbank.some(item => item.platform === currentPlatform);
+                }
                 if (currentView === 'pyq') return data.pyq && data.pyq.length > 0;
                 return false;
             });
 
+            const backAction = currentView === 'qbank' ? 'renderPlatforms()' : 'showMainMenu()';
+            const backLabel = currentView === 'qbank' ? 'Back to Platforms' : 'Back to Categories';
+
             area.innerHTML = `
                 <div class="welcome-section" style="padding: 1rem 0;">
-                    <button class="back-btn" onclick="showMainMenu()"><i class="fas fa-arrow-left"></i> Back to Categories</button>
+                    <button class="back-btn" onclick="${backAction}"><i class="fas fa-arrow-left"></i> ${backLabel}</button>
                     <h1><i class="fas ${getViewIcon()}"></i> Select Subject</h1>
-                    <p>Browsing ${currentView.toUpperCase()} content</p>
+                    <p>Browsing ${currentView.toUpperCase()} ${currentPlatform ? `(${currentPlatform})` : ''}</p>
                 </div>
                 <div class="subject-sidebar">
                     ${filteredSubjects.map(subj => {
@@ -1085,12 +1164,14 @@
 
             // Header with Back Buttons
             const header = document.createElement('div');
+            const subjectLabel = currentPlatform ? `${currentSubject.replace(/_/g, ' ').toUpperCase()} (${currentPlatform})` : currentSubject.replace(/_/g, ' ').toUpperCase();
+
             header.innerHTML = `
                 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                    <button class="back-btn" onclick="showMainMenu()"><i class="fas fa-home"></i> Back to Categories</button>
+                    <button class="back-btn" onclick="showMainMenu()"><i class="fas fa-home"></i> Home</button>
                     <button class="back-btn" style="background:var(--primary)" onclick="renderSubjectList()"><i class="fas fa-arrow-left"></i> Back to Subjects</button>
                 </div>
-                <div class="section-title"><i class="fas fa-folder-open"></i> ${subjectName}</div>
+                <div class="section-title"><i class="fas fa-folder-open"></i> ${subjectLabel}</div>
             `;
             area.appendChild(header);
 
@@ -1146,7 +1227,7 @@
                 // Notes, QBank, PYQ all use same Chapter List logic now
                 const list = document.createElement('div');
                 list.className = 'chapter-list';
-                const items = currentView === 'notes' ? data.notes : (currentView === 'qbank' ? data.qbank : data.pyq);
+                const items = currentView === 'notes' ? data.notes : (currentView === 'qbank' ? data.qbank.filter(i => i.platform === currentPlatform) : data.pyq);
                 const isHtml = currentView === 'pyq';
 
                 items.forEach((item, idx) => {
