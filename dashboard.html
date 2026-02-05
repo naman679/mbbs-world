@@ -1254,13 +1254,85 @@
         let currentSubject = null;
         let currentPlatform = null;
         let selectedChapterIdx = null;
+        let currentQuizFilter = 'all';
         let players = {};
         let pendingPlayers = [];
+        let navHistory = [];
+
+        function pushNavState() {
+            navHistory.push({
+                view: currentView,
+                subject: currentSubject,
+                platform: currentPlatform,
+                chapterIdx: selectedChapterIdx,
+                quizFilter: currentQuizFilter,
+                scrollPos: window.scrollY
+            });
+        }
+
+        window.goBack = () => {
+            if (navHistory.length === 0) {
+                showMainMenu();
+                return;
+            }
+
+            // Cleanup before restoring state to save bandwidth
+            cleanupIframes();
+
+            const prevState = navHistory.pop();
+            currentView = prevState.view;
+            currentSubject = prevState.subject;
+            currentPlatform = prevState.platform;
+            selectedChapterIdx = prevState.chapterIdx;
+            currentQuizFilter = prevState.quizFilter;
+
+            // Re-render based on restored state
+            if (currentView === 'home') {
+                showMainMenu(true); // Don't push to history again
+            } else if (currentView === 'qbank' && !currentPlatform) {
+                filterCategory('qbank', true);
+            } else if (currentView === 'qbank' && currentPlatform && !currentSubject) {
+                renderContent(true);
+            } else {
+                renderContent(true);
+            }
+
+            // Restore scroll position after rendering
+            setTimeout(() => {
+                window.scrollTo(0, prevState.scrollPos);
+            }, 50);
+        };
+
+        function cleanupIframes() {
+            // Stop any playing YouTube videos
+            Object.values(players).forEach(p => {
+                if (p && p.stopVideo) p.stopVideo();
+            });
+            players = {};
+            pendingPlayers = [];
+            window.activePlayerId = null;
+
+            // Clear Quiz/PDF Iframe
+            const viewer = document.getElementById('fileViewer');
+            if (viewer) {
+                viewer.src = '';
+                // Force detach to kill hidden scripts
+                const parent = viewer.parentNode;
+                const newViewer = viewer.cloneNode(true);
+                parent.replaceChild(newViewer, viewer);
+            }
+
+            // Close modal if open
+            const modal = document.getElementById('fileModal');
+            if (modal) modal.style.display = 'none';
+        }
 
         // UI State Controllers
-        window.showMainMenu = () => {
+        window.showMainMenu = (isBack = false) => {
+            if (!isBack) pushNavState();
             currentView = 'home';
             currentSubject = null;
+            currentPlatform = null;
             selectedChapterIdx = null;
             window.activePlayerId = null;
             updateOrientation();
@@ -1268,11 +1340,13 @@
             renderHome();
         };
 
-        window.filterCategory = (type) => {
+        window.filterCategory = (type, isBack = false) => {
+            if (!isBack) pushNavState();
             currentView = type;
             currentPlatform = null;
             currentSubject = null;
             selectedChapterIdx = null;
+            currentQuizFilter = 'all';
             window.activePlayerId = null;
             updateOrientation();
             updateNavActive(type);
@@ -1298,7 +1372,7 @@
 
             area.innerHTML = `
                 <div class="welcome-section" style="padding: 1rem 0;">
-                    <button class="back-btn" onclick="showMainMenu()"><i class="fas fa-arrow-left"></i> Back to Categories</button>
+                    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
                     <h1><i class="fas fa-layer-group"></i> Select Platform</h1>
                     <p>Choose a Question Bank provider</p>
                 </div>
@@ -1319,6 +1393,7 @@
         }
 
         window.setPlatform = (platform) => {
+            pushNavState();
             currentPlatform = platform;
             renderSubjectList();
         };
@@ -1355,12 +1430,9 @@
                 return false;
             });
 
-            const backAction = (currentView === 'qbank' || currentView === 'quizzes') ? 'renderPlatforms()' : 'showMainMenu()';
-            const backLabel = (currentView === 'qbank' || currentView === 'quizzes') ? 'Back to Platforms' : 'Back to Categories';
-
             area.innerHTML = `
                 <div class="welcome-section" style="padding: 1rem 0;">
-                    <button class="back-btn" onclick="${backAction}"><i class="fas fa-arrow-left"></i> ${backLabel}</button>
+                    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
                     <h1><i class="fas ${getViewIcon()}"></i> Select Subject</h1>
                     <p>Browsing ${currentView.toUpperCase()} ${currentPlatform ? `(${currentPlatform})` : ''}</p>
                 </div>
@@ -1388,8 +1460,17 @@
             return 'fa-folder';
         }
 
-        function setSubject(subject) {
-            currentSubject = subject;
+        function setSubject(subjectName) {
+            pushNavState();
+
+            if (!subjectName || subjectName.toLowerCase() === 'premium') {
+                currentSubject = 'premium';
+            } else {
+                // Normalize for key-based lookup in mbbsData
+                // This aligns with item.Subject.toLowerCase() === subjectName.toLowerCase() logic
+                currentSubject = subjectName.toLowerCase().trim().replace(/ /g, '_');
+            }
+
             selectedChapterIdx = null;
             renderContent();
         }
@@ -1425,9 +1506,12 @@
             `;
         }
 
-        function renderContent() {
+        function renderContent(isBack = false) {
             const area = document.getElementById('contentArea');
             area.innerHTML = '';
+
+            // Cleanup on every content render to ensure no background players
+            Object.values(players).forEach(p => p && p.stopVideo && p.stopVideo());
             players = {}; pendingPlayers = [];
             window.activePlayerId = null;
             updateOrientation();
@@ -1436,7 +1520,7 @@
             const header = document.createElement('div');
             header.innerHTML = `
                 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 1.5rem;">
-                    <button class="back-btn" onclick="showMainMenu()"><i class="fas fa-home"></i> Home</button>
+                    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
                     <h1 style="margin:0; font-size:1.5rem;"><i class="fas ${getViewIcon()}"></i> ${currentView.toUpperCase()}</h1>
                 </div>
             `;
@@ -1451,14 +1535,6 @@
 
                 const data = mbbsData[currentSubject];
                 if (selectedChapterIdx === null) {
-                    // Back button to subject list
-                    const backToSub = document.createElement('button');
-                    backToSub.className = 'back-btn';
-                    backToSub.style.marginBottom = '1rem';
-                    backToSub.innerHTML = `<i class="fas fa-arrow-left"></i> Back to Subjects`;
-                    backToSub.onclick = () => { currentSubject = null; renderContent(); };
-                    area.appendChild(backToSub);
-
                     // Show Chapter List
                     const list = document.createElement('div');
                     list.className = 'chapter-list';
@@ -1468,7 +1544,11 @@
                         const item = document.createElement('div');
                         item.className = 'chapter-card';
                         if (isDone) item.style.borderLeft = "4px solid #10b981";
-                        item.onclick = () => { selectedChapterIdx = idx; renderContent(); };
+                        item.onclick = () => {
+                            pushNavState();
+                            selectedChapterIdx = idx;
+                            renderContent();
+                        };
                         item.innerHTML = `
                             <div class="chapter-icon" style="${isDone ? 'background:rgba(16, 185, 129, 0.1); color:#10b981;' : ''}">
                                 <i class="fas ${isDone ? 'fa-check-circle' : 'fa-play'}"></i>
@@ -1506,27 +1586,13 @@
                     <div class="subject-subnav">
                         ${MBBS_SUBJECTS.map(s => {
                     const key = s.toLowerCase().replace(/ /g, '_');
-                    const isActive = currentSubject === key;
-                    return `<div class="subnav-item ${isActive ? 'active' : ''}" onclick="setSubNavTopic('${key}')">${s}</div>`;
+                    const isActive = currentSubject === key || (currentSubject && currentSubject.toLowerCase() === s.toLowerCase());
+                    return `<div class="subnav-item ${isActive ? 'active' : ''}" onclick="setSubject('${s}')">${s}</div>`;
                 }).join('')}
-                        <div class="subnav-item premium ${currentSubject === 'premium' ? 'active' : ''}" onclick="setSubNavTopic('premium')">👑 Premium</div>
+                        <div class="subnav-item premium ${currentSubject === 'premium' ? 'active' : ''}" onclick="setSubject('premium')">👑 Premium</div>
                     </div>
                 `;
                 area.appendChild(subNavContainer);
-
-                // Filter Bar (for Quizzes only)
-                if (currentView === 'quizzes') {
-                    const filterBar = document.createElement('div');
-                    filterBar.innerHTML = `
-                        <div class="quiz-filter-bar" style="margin-top:0;">
-                            <button class="filter-btn active" onclick="setQuizFilter('all', this)">All</button>
-                            <button class="filter-btn" onclick="setQuizFilter('gt', this)">Grand Tests</button>
-                            <button class="filter-btn" onclick="setQuizFilter('pyq', this)">Sub. PYQs</button>
-                            <button class="filter-btn" onclick="setQuizFilter('btr', this)">BTR Quizzes</button>
-                        </div>
-                    `;
-                    area.appendChild(filterBar);
-                }
 
                 const list = document.createElement('div');
                 list.className = 'chapter-list';
@@ -1552,14 +1618,7 @@
             }
         }
 
-        window.setQuizFilter = (filter, btn) => {
-            // Update active state
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderItems(filter);
-        };
-
-        function renderItems(filter) {
+        function renderItems() {
             const container = document.getElementById('quiz-list-container');
             if (!container) return;
             container.innerHTML = '';
@@ -1571,11 +1630,12 @@
             if (currentView === 'notes') {
                 items = data.notes;
             } else if (currentView === 'quizzes') {
-                items = data.quizzes.filter(i => filter === 'all' || i.type.includes(filter));
+                // Show all quizzes for this subject (GT, BTR, etc.)
+                items = data.quizzes;
             } else if (currentView === 'qbank') {
                 const classic = data.qbank.filter(i => i.platform === currentPlatform);
                 const quizItems = data.quizzes.filter(i => i.platform === currentPlatform);
-                items = (filter === 'all') ? [...classic, ...quizItems] : quizItems.filter(i => i.type.includes(filter));
+                items = [...classic, ...quizItems];
             }
 
             items.forEach((item, idx) => {
@@ -1845,20 +1905,16 @@
         };
 
         window.openQuiz = (url) => {
+            pushNavState(); // Save list state before opening modal
             const viewer = document.getElementById('fileViewer');
             const loader = document.getElementById('pdfLoader');
 
-            // RESET
             viewer.removeAttribute('srcdoc');
             viewer.src = "about:blank";
             loader.style.display = 'block';
-
-            // Loading the raw GitHub HTML link directly
             viewer.src = url;
 
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 3000);
+            setTimeout(() => { loader.style.display = 'none'; }, 3000);
 
             document.getElementById('fileModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
@@ -1877,51 +1933,44 @@
         function formatDriveLink(url) {
             if (!url || !url.includes('drive.google.com')) return url;
             const match = url.match(/\/d\/([^\/?#]+)|id=([^\/&#?]+)/);
-            const fileId = match ? (match[1] || match[2]) : null;
-            if (fileId) {
-                // Official Preview Engine - Gold standard for stability
-                return `https://drive.google.com/file/d/${fileId}/preview`;
-            }
-            return url;
+            const id = (match && (match[1] || match[2])) ? (match[1] || match[2]) : "";
+            return id ? `https://drive.google.com/file/d/${id}/preview` : url;
         }
 
         window.openFile = (urlOrContent) => {
+            pushNavState(); // Save list state before opening modal
             const viewer = document.getElementById('fileViewer');
             const loader = document.getElementById('pdfLoader');
-
-            // --- NUCLEAR RESET ---
             viewer.removeAttribute('srcdoc');
             viewer.src = "about:blank";
             loader.style.display = 'block';
 
-            const link = formatDriveLink(urlOrContent);
-            viewer.src = link;
+            if (urlOrContent.startsWith('http')) {
+                viewer.src = formatDriveLink(urlOrContent);
+            } else {
+                viewer.srcdoc = urlOrContent;
+            }
 
-            // Smart Timeout: Ensure loader disappears regardless of Google's speed
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 3000);
-
+            setTimeout(() => { loader.style.display = 'none'; }, 2000);
             document.getElementById('fileModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
         };
 
         window.togglePdfFullScreen = () => {
-            const content = document.querySelector('.modal-content');
-            if (!document.fullscreenElement) {
-                content.requestFullscreen().catch(err => {
-                    alert(`Error attempting to enable full-screen mode: ${err.message}`);
-                });
-            } else {
-                document.exitFullscreen();
-            }
+            const f = document.getElementById('fileModal');
+            if (!document.fullscreenElement) f.requestFullscreen();
+            else document.exitFullscreen();
         };
 
         window.closeModal = () => {
-            if (document.fullscreenElement) document.exitFullscreen();
-            document.getElementById('fileModal').style.display = 'none';
-            document.getElementById('fileViewer').src = 'about:blank';
-            document.body.style.overflow = 'auto';
+            // Close via goBack to restore previous list state and scroll Position
+            if (navHistory.length > 0) {
+                goBack();
+            } else {
+                cleanupIframes();
+                document.getElementById('fileModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
         };
     </script>
 </body>
