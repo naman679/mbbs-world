@@ -1100,10 +1100,13 @@
 
         function getYoutubeVideoId(url) {
             if (!url) return "";
-            if (url.length === 11 && !url.includes('.')) return url; // Already an ID
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+            url = url.trim();
+            if (url.length === 11 && !url.includes('.') && !url.includes('/')) return url;
+            // Regex to strictly capture only 11 characters after any of the YouTube URL prefixes
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/|live\/)([^#\&\?]{11}).*/;
             const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : url;
+            const id = (match && match[2].length === 11) ? match[2] : url;
+            return id;
         }
 
         let currentView = 'home';
@@ -1569,8 +1572,10 @@
         window.onYouTubeIframeAPIReady = () => { pendingPlayers.forEach(p => createPlayer(p.id, p.vid)); pendingPlayers = []; };
         function createPlayer(uid, vid) {
             const cleanVidId = getYoutubeVideoId(vid);
+            console.log('Playing Video ID:', cleanVidId); // Debug log for browser console
+
             players[uid] = new YT.Player(uid, {
-                height: '100%', width: '100%', videoId: cleanVidId.trim(),
+                height: '100%', width: '100%', videoId: cleanVidId,
                 playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
                 events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
             });
