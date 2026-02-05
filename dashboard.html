@@ -668,6 +668,58 @@
             }
         }
 
+        /* --- QUIZ INTELLIGENCE STYLES --- */
+        .quiz-filter-bar {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0 20px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .quiz-filter-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            background: white;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+        }
+
+        .platform-badge {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 10px;
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            text-transform: uppercase;
+        }
+
+        .chapter-card .quiz-type-icon {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-right: 5px;
+        }
+
         .pdf-fallback {
             position: absolute;
             bottom: 10px;
@@ -1008,10 +1060,10 @@
                     const typeKey = type.toLowerCase().trim();
 
                     if (!mbbsData[subKey]) {
-                        mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [] };
+                        mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], quizzes: [] };
                     }
 
-                    const item = { title, link, platform: platformName };
+                    const item = { title, link, platform: platformName, type: typeKey };
 
                     if (typeKey === 'videos' || typeKey === 'video') {
                         const vidId = getYoutubeVideoId(link);
@@ -1020,6 +1072,8 @@
                         mbbsData[subKey].notes.push(item);
                     } else if (typeKey === 'qbank') {
                         mbbsData[subKey].qbank.push(item);
+                    } else if (typeKey.includes('quiz')) {
+                        mbbsData[subKey].quizzes.push(item);
                     } else if (typeKey === 'keypoints' || typeKey === 'keypoint') {
                         mbbsData[subKey].keyPoints.push({ title, content: link, platform: platformName });
                     }
@@ -1149,7 +1203,9 @@
                 if (currentView === 'videos') return data.videos && data.videos.length > 0;
                 if (currentView === 'notes') return data.notes && data.notes.length > 0;
                 if (currentView === 'qbank') {
-                    return data.qbank && data.qbank.some(item => item.platform === currentPlatform);
+                    const hasClassic = data.qbank && data.qbank.some(item => item.platform === currentPlatform);
+                    const hasQuizzes = data.quizzes && data.quizzes.some(item => item.platform === currentPlatform);
+                    return hasClassic || hasQuizzes;
                 }
                 return false;
             });
@@ -1289,25 +1345,86 @@
                     renderVideoCard(area, data.videos[selectedChapterIdx], selectedChapterIdx);
                 }
             } else {
+                // --- QUIZ & NOTES LOGIC ---
+                const quizContainer = document.createElement('div');
+                if (currentView === 'qbank') {
+                    quizContainer.innerHTML = `
+                        <div class="quiz-filter-bar">
+                            <button class="filter-btn active" onclick="setQuizFilter('all', this)">All</button>
+                            <button class="filter-btn" onclick="setQuizFilter('gt', this)">Grand Tests</button>
+                            <button class="filter-btn" onclick="setQuizFilter('pyq', this)">Sub. PYQs</button>
+                            <button class="filter-btn" onclick="setQuizFilter('btr', this)">BTR Quizzes</button>
+                        </div>
+                    `;
+                    area.appendChild(quizContainer);
+                }
+
                 const list = document.createElement('div');
                 list.className = 'chapter-list';
-                const items = currentView === 'notes' ? data.notes : data.qbank.filter(i => i.platform === currentPlatform);
-
-                items.forEach((item, idx) => {
-                    const card = document.createElement('div');
-                    card.className = 'chapter-card';
-                    card.onclick = () => openFile(item.link);
-                    card.innerHTML = `
-                        <div class="chapter-icon"><i class="fas fa-file-pdf"></i></div>
-                        <div style="flex-grow:1; font-weight:500;">${item.title}</div>
-                        <i class="fas fa-external-link-alt" style="opacity:0.5;"></i>
-                    `;
-                    list.appendChild(card);
-                });
+                list.id = 'quiz-list-container';
                 area.appendChild(list);
+
+                // Initial render
+                renderItems('all');
             }
 
             if (area.innerHTML === '') area.innerHTML = '<div style="text-align:center; padding:5rem; color:var(--text-light)">No content available for this subject yet.</div>';
+        }
+
+        window.setQuizFilter = (filter, btn) => {
+            // Update active state
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderItems(filter);
+        };
+
+        function renderItems(filter) {
+            const container = document.getElementById('quiz-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const data = mbbsData[currentSubject];
+            let items = [];
+
+            if (currentView === 'notes') {
+                items = data.notes;
+            } else if (currentView === 'qbank') {
+                // Combine classic QBank and new Quizzes
+                const classic = data.qbank.filter(i => i.platform === currentPlatform);
+                const quizItems = data.quizzes.filter(i => i.platform === currentPlatform);
+
+                if (filter === 'all') {
+                    items = [...classic, ...quizItems];
+                } else {
+                    // Search for parts of the typeKey to be more flexible (e.g., 'gt' in 'quiz-gt' or 'gt-quiz')
+                    items = quizItems.filter(i => i.type.includes(filter));
+                }
+            }
+
+            items.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = 'chapter-card';
+                card.onclick = () => openFile(item.link);
+
+                const isQuiz = item.type && item.type.includes('quiz');
+                const icon = isQuiz ? 'fa-lightbulb' : 'fa-file-pdf';
+                const typeLabel = item.type.includes('gt') ? 'GT' : (item.type.includes('pyq') ? 'PYQ' : (item.type.includes('btr') ? 'BTR' : ''));
+
+                card.innerHTML = `
+                    <div class="chapter-icon"><i class="fas ${icon}"></i></div>
+                    <div style="flex-grow:1; font-weight:500;">
+                        ${typeLabel ? `<span class="quiz-type-icon">[${typeLabel}]</span> ` : ''}
+                        ${item.title}
+                        ${item.platform ? `<span class="platform-badge">${item.platform}</span>` : ''}
+                    </div>
+                    <i class="fas fa-external-link-alt" style="opacity:0.5;"></i>
+                `;
+                container.appendChild(card);
+            });
+
+            if (items.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--text-light)">No items match this filter.</div>`;
+            }
         }
 
         function renderVideoCard(container, video, index) {
