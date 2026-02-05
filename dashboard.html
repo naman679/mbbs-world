@@ -1191,6 +1191,7 @@
                     const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
                     if (cols.length < 4) return;
 
+                    const [subj, type, title, link, platform] = cols;
                     const subjectInput = subj ? subj.trim() : "Other";
                     const isPremium = subjectInput.toLowerCase() === "other" || !subjectInput;
                     const cleanSubject = isPremium ? "Premium" : subjectInput;
