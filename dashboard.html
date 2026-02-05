@@ -668,6 +668,106 @@
             }
         }
 
+        /* --- QUIZ INTELLIGENCE STYLES --- */
+        .quiz-filter-bar {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0 20px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .quiz-filter-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            background: white;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+        }
+
+        .platform-badge {
+            background: rgba(109, 40, 217, 0.1);
+            color: #7c3aed;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+            border: 1px solid rgba(109, 40, 217, 0.2);
+        }
+
+        .subject-badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 8px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .sub-nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            background: white;
+            padding: 5px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .sub-nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sub-nav-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-width: 100px;
+        }
+
+        .sub-nav-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .sub-nav-tab i {
+            margin-right: 8px;
+        }
+
+        .chapter-card .quiz-type-icon {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-right: 5px;
+        }
+
         .pdf-fallback {
             position: absolute;
             bottom: 10px;
@@ -687,6 +787,84 @@
         .pdf-fallback:hover {
             background: white;
             text-decoration: underline;
+        }
+
+        /* --- PREMIUM NAVIGATION STYLES --- */
+        .subject-subnav-container {
+            position: sticky;
+            top: 70px;
+            /* Below navbar */
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            margin: -20px -20px 20px -20px;
+            /* Offset container padding */
+            padding: 10px 20px;
+        }
+
+        .subject-subnav {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 5px;
+        }
+
+        .subject-subnav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .subnav-item {
+            white-space: nowrap;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .subnav-item:hover {
+            background: rgba(79, 70, 229, 0.05);
+            color: var(--primary);
+        }
+
+        .subnav-item.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+        }
+
+        .subnav-item.premium {
+            color: #b45309;
+            /* Golden brown */
+            border: 1px dashed #fbbf24;
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        .subnav-item.premium.active {
+            background: linear-gradient(135deg, #fbbf24, #d97706);
+            color: white;
+            border: none;
+        }
+
+        .premium-lock {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #fbbf24;
+            font-size: 0.9rem;
+            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.2));
+        }
+
+        .chapter-card.is-premium {
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            background: linear-gradient(to right, white, rgba(251, 191, 36, 0.05));
         }
 
         @keyframes fadeIn {
@@ -884,6 +1062,8 @@
                 Videos</a>
             <a href="#" class="nav-link" id="nav-notes" onclick="navigate('notes')"><i class="fas fa-file-pdf"></i>
                 Notes</a>
+            <a href="#" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')"><i class="fas fa-lightbulb"></i>
+                Quizzes</a>
             <a href="#" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i class="fas fa-tasks"></i>
                 Q-Bank</a>
         </div>
@@ -978,6 +1158,15 @@
         let mbbsData = {}; // Structured data
         const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oD0BX4WhhLDL6e6WybIEXmvbiroBMBiGASJ2r-HdxlIOmDFqaWpUEMdDydPUHVOQNsOGGbgJR6O/pub?output=csv";
 
+        const MBBS_SUBJECTS = [
+            "Anatomy", "Physiology", "Biochemistry",
+            "Pharmacology", "Pathology", "Microbiology",
+            "Forensic Medicine", "Community Medicine",
+            "Medicine", "Surgery", "OBGY", "Pediatrics",
+            "ENT", "Ophthalmology", "Orthopedics",
+            "Dermatology", "Psychiatry", "Radiology", "Anaesthesia"
+        ];
+
         async function fetchSheetData() {
             try {
                 const response = await fetch(SHEET_URL);
@@ -1003,25 +1192,31 @@
                     if (cols.length < 4) return;
 
                     const [subj, type, title, link, platform] = cols;
-                    const subKey = subj.toLowerCase().trim().replace(/ /g, '_');
+                    const subjectInput = subj ? subj.trim() : "Other";
+                    const isPremium = subjectInput.toLowerCase() === "other" || !subjectInput;
+                    const cleanSubject = isPremium ? "Premium" : subjectInput;
+                    const subKey = isPremium ? "premium" : cleanSubject.toLowerCase().trim().replace(/ /g, '_');
+
                     const platformName = platform ? platform.trim() : "Other";
                     const typeKey = type.toLowerCase().trim();
 
                     if (!mbbsData[subKey]) {
-                        mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [] };
+                        mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], quizzes: [] };
                     }
 
-                    const item = { title, link, platform: platformName };
+                    const item = { title, link, platform: platformName, type: typeKey, subjectName: cleanSubject, isPremium };
 
                     if (typeKey === 'videos' || typeKey === 'video') {
                         const vidId = getYoutubeVideoId(link);
-                        mbbsData[subKey].videos.push({ title, link: vidId, platform: platformName });
+                        mbbsData[subKey].videos.push({ title, link: vidId, platform: platformName, subjectName: cleanSubject, isPremium });
                     } else if (typeKey === 'notes') {
                         mbbsData[subKey].notes.push(item);
                     } else if (typeKey === 'qbank') {
                         mbbsData[subKey].qbank.push(item);
+                    } else if (typeKey.includes('quiz')) {
+                        mbbsData[subKey].quizzes.push(item);
                     } else if (typeKey === 'keypoints' || typeKey === 'keypoint') {
-                        mbbsData[subKey].keyPoints.push({ title, content: link, platform: platformName });
+                        mbbsData[subKey].keyPoints.push({ title, content: link, platform: platformName, subjectName: cleanSubject, isPremium });
                     }
                 });
 
@@ -1046,9 +1241,13 @@
 
         function getYoutubeVideoId(url) {
             if (!url) return "";
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+            url = url.trim();
+            if (url.length === 11 && !url.includes('.') && !url.includes('/')) return url;
+            // Regex to strictly capture only 11 characters after any of the YouTube URL prefixes
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/|live\/)([^#\&\?]{11}).*/;
             const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : url;
+            const id = (match && match[2].length === 11) ? match[2] : url;
+            return id;
         }
 
         let currentView = 'home';
@@ -1148,14 +1347,16 @@
                 const data = mbbsData[subj];
                 if (currentView === 'videos') return data.videos && data.videos.length > 0;
                 if (currentView === 'notes') return data.notes && data.notes.length > 0;
+                if (currentView === 'quizzes') return data.quizzes && data.quizzes.length > 0;
                 if (currentView === 'qbank') {
-                    return data.qbank && data.qbank.some(item => item.platform === currentPlatform);
+                    const hasClassic = data.qbank && data.qbank.some(item => item.platform === currentPlatform);
+                    return hasClassic;
                 }
                 return false;
             });
 
-            const backAction = currentView === 'qbank' ? 'renderPlatforms()' : 'showMainMenu()';
-            const backLabel = currentView === 'qbank' ? 'Back to Platforms' : 'Back to Categories';
+            const backAction = (currentView === 'qbank' || currentView === 'quizzes') ? 'renderPlatforms()' : 'showMainMenu()';
+            const backLabel = (currentView === 'qbank' || currentView === 'quizzes') ? 'Back to Platforms' : 'Back to Categories';
 
             area.innerHTML = `
                 <div class="welcome-section" style="padding: 1rem 0;">
@@ -1182,6 +1383,7 @@
         function getViewIcon() {
             if (currentView === 'videos') return 'fa-play-circle';
             if (currentView === 'notes') return 'fa-file-pdf';
+            if (currentView === 'quizzes') return 'fa-lightbulb';
             if (currentView === 'qbank') return 'fa-tasks';
             return 'fa-folder';
         }
@@ -1208,6 +1410,11 @@
                             <h3>📝 Study Notes</h3>
                             <p>Standard textbook reference PDFs.</p>
                         </div>
+                        <div class="portal-card" onclick="filterCategory('quizzes')">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>🧠 Specialized Quizzes</h3>
+                            <p>Interactive HTML medical quizzes.</p>
+                        </div>
                         <div class="portal-card" onclick="filterCategory('qbank')">
                             <i class="fas fa-graduation-cap"></i>
                             <h3>❓ Question Bank</h3>
@@ -1224,35 +1431,43 @@
             players = {}; pendingPlayers = [];
             window.activePlayerId = null;
             updateOrientation();
-            const data = mbbsData[currentSubject];
-            const subjectName = currentSubject.replace('_', ' ').toUpperCase();
 
-            // Header with Back Buttons
+            // Header Section
             const header = document.createElement('div');
-            const subjectLabel = currentPlatform ? `${currentSubject.replace(/_/g, ' ').toUpperCase()} (${currentPlatform})` : currentSubject.replace(/_/g, ' ').toUpperCase();
-
             header.innerHTML = `
-                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 1.5rem;">
                     <button class="back-btn" onclick="showMainMenu()"><i class="fas fa-home"></i> Home</button>
-                    <button class="back-btn" style="background:var(--primary)" onclick="renderSubjectList()"><i class="fas fa-arrow-left"></i> Back to Subjects</button>
+                    <h1 style="margin:0; font-size:1.5rem;"><i class="fas ${getViewIcon()}"></i> ${currentView.toUpperCase()}</h1>
                 </div>
-                <div class="section-title"><i class="fas fa-folder-open"></i> ${subjectLabel}</div>
             `;
             area.appendChild(header);
 
             if (currentView === 'videos') {
+                // --- VIDEOS LOGIC (Subject Grid First) ---
+                if (!currentSubject) {
+                    renderSubjectList();
+                    return;
+                }
+
+                const data = mbbsData[currentSubject];
                 if (selectedChapterIdx === null) {
+                    // Back button to subject list
+                    const backToSub = document.createElement('button');
+                    backToSub.className = 'back-btn';
+                    backToSub.style.marginBottom = '1rem';
+                    backToSub.innerHTML = `<i class="fas fa-arrow-left"></i> Back to Subjects`;
+                    backToSub.onclick = () => { currentSubject = null; renderContent(); };
+                    area.appendChild(backToSub);
+
                     // Show Chapter List
                     const list = document.createElement('div');
                     list.className = 'chapter-list';
                     data.videos.forEach((v, idx) => {
-                        const vidId = v.link; // Link is our ID
+                        const vidId = v.link;
                         const isDone = localStorage.getItem('completed_' + vidId) === 'true';
-
                         const item = document.createElement('div');
                         item.className = 'chapter-card';
                         if (isDone) item.style.borderLeft = "4px solid #10b981";
-
                         item.onclick = () => { selectedChapterIdx = idx; renderContent(); };
                         item.innerHTML = `
                             <div class="chapter-icon" style="${isDone ? 'background:rgba(16, 185, 129, 0.1); color:#10b981;' : ''}">
@@ -1260,54 +1475,148 @@
                             </div>
                             <div style="flex-grow:1; font-weight:500;">
                                 Chapter ${idx + 1}: ${v.title}
-                                ${isDone ? '<span style="font-size:0.7rem; background:#10b981; color:white; padding:2px 6px; border-radius:4px; margin-left:8px;">DONE</span>' : ''}
                             </div>
                             <i class="fas fa-circle-play" style="color:${isDone ? '#10b981' : 'var(--primary)'}; font-size:1.2rem;"></i>
                         `;
                         list.appendChild(item);
                     });
                     area.appendChild(list);
-
-                    // Add Key Points below chapters if any
-                    if (data.keyPoints.length > 0) {
-                        addSectionHeader(area, "Mastery Notes", "fa-lightbulb");
-                        data.keyPoints.forEach(kp => {
-                            const card = document.createElement('div'); card.className = 'card';
-                            card.innerHTML = `<div class="card-content"><div class="card-title" style="color:var(--primary)">${kp.title}</div><div class="keypoint-content">${kp.content}</div></div>`;
-                            area.appendChild(card);
-                        });
-                    }
                 } else {
-                    // Show Specific Video
-                    const backToChapters = document.createElement('button');
-                    backToChapters.className = 'back-btn';
-                    backToChapters.style.background = 'var(--primary)';
-                    backToChapters.innerHTML = `<i class="fas fa-list"></i> Back to Chapters`;
-                    backToChapters.onclick = () => { selectedChapterIdx = null; renderContent(); };
-                    area.appendChild(backToChapters);
-
                     renderVideoCard(area, data.videos[selectedChapterIdx], selectedChapterIdx);
                 }
-            } else {
+            } else if (currentView === 'notes' || currentView === 'quizzes') {
+                // --- PREMIUM SUBJECT BAR SYSTEM ---
+                const subNavContainer = document.createElement('div');
+                subNavContainer.className = 'subject-subnav-container';
+
+                // Determine which subjects have content for this view
+                const activeSubjects = MBBS_SUBJECTS.filter(s => {
+                    const key = s.toLowerCase().replace(/ /g, '_');
+                    return mbbsData[key] && mbbsData[key][currentView].length > 0;
+                });
+                const hasPremium = mbbsData['premium'] && mbbsData['premium'][currentView].length > 0;
+
+                // Auto-set first subject if none selected
+                if (!currentSubject) {
+                    if (activeSubjects.length > 0) currentSubject = activeSubjects[0].toLowerCase().replace(/ /g, '_');
+                    else if (hasPremium) currentSubject = 'premium';
+                }
+
+                subNavContainer.innerHTML = `
+                    <div class="subject-subnav">
+                        ${MBBS_SUBJECTS.map(s => {
+                    const key = s.toLowerCase().replace(/ /g, '_');
+                    const isActive = currentSubject === key;
+                    return `<div class="subnav-item ${isActive ? 'active' : ''}" onclick="setSubNavTopic('${key}')">${s}</div>`;
+                }).join('')}
+                        <div class="subnav-item premium ${currentSubject === 'premium' ? 'active' : ''}" onclick="setSubNavTopic('premium')">👑 Premium</div>
+                    </div>
+                `;
+                area.appendChild(subNavContainer);
+
+                // Filter Bar (for Quizzes only)
+                if (currentView === 'quizzes') {
+                    const filterBar = document.createElement('div');
+                    filterBar.innerHTML = `
+                        <div class="quiz-filter-bar" style="margin-top:0;">
+                            <button class="filter-btn active" onclick="setQuizFilter('all', this)">All</button>
+                            <button class="filter-btn" onclick="setQuizFilter('gt', this)">Grand Tests</button>
+                            <button class="filter-btn" onclick="setQuizFilter('pyq', this)">Sub. PYQs</button>
+                            <button class="filter-btn" onclick="setQuizFilter('btr', this)">BTR Quizzes</button>
+                        </div>
+                    `;
+                    area.appendChild(filterBar);
+                }
+
                 const list = document.createElement('div');
                 list.className = 'chapter-list';
-                const items = currentView === 'notes' ? data.notes : data.qbank.filter(i => i.platform === currentPlatform);
-
-                items.forEach((item, idx) => {
-                    const card = document.createElement('div');
-                    card.className = 'chapter-card';
-                    card.onclick = () => openFile(item.link);
-                    card.innerHTML = `
-                        <div class="chapter-icon"><i class="fas fa-file-pdf"></i></div>
-                        <div style="flex-grow:1; font-weight:500;">${item.title}</div>
-                        <i class="fas fa-external-link-alt" style="opacity:0.5;"></i>
-                    `;
-                    list.appendChild(card);
-                });
+                list.id = 'quiz-list-container';
                 area.appendChild(list);
+
+                renderItems('all');
+            } else if (currentView === 'qbank') {
+                // Keep legacy QBank Platform selection for now
+                if (!currentPlatform) {
+                    renderPlatforms();
+                } else {
+                    renderSubjectList();
+                }
+            }
+            if (area.innerHTML === '') {
+                area.innerHTML = `
+                    <div style="text-align:center; padding:5rem; color:var(--text-light)">
+                        <i class="fas fa-search" style="font-size:3rem; opacity:0.1; margin-bottom:1rem;"></i>
+                        <p>No content available for this subject yet.<br><span style="font-size:0.9rem; color:var(--primary)">✨ Try checking the Premium section!</span></p>
+                    </div>
+                `;
+            }
+        }
+
+        window.setQuizFilter = (filter, btn) => {
+            // Update active state
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderItems(filter);
+        };
+
+        function renderItems(filter) {
+            const container = document.getElementById('quiz-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const data = mbbsData[currentSubject];
+            if (!data) return;
+
+            let items = [];
+            if (currentView === 'notes') {
+                items = data.notes;
+            } else if (currentView === 'quizzes') {
+                items = data.quizzes.filter(i => filter === 'all' || i.type.includes(filter));
+            } else if (currentView === 'qbank') {
+                const classic = data.qbank.filter(i => i.platform === currentPlatform);
+                const quizItems = data.quizzes.filter(i => i.platform === currentPlatform);
+                items = (filter === 'all') ? [...classic, ...quizItems] : quizItems.filter(i => i.type.includes(filter));
             }
 
-            if (area.innerHTML === '') area.innerHTML = '<div style="text-align:center; padding:5rem; color:var(--text-light)">No content available for this subject yet.</div>';
+            items.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = `chapter-card ${item.isPremium ? 'is-premium' : ''}`;
+
+                const isQuiz = item.type && item.type.includes('quiz');
+                card.onclick = () => {
+                    if (item.isPremium) {
+                        alert("👑 This high-value content is exclusive for Premium Members! Launching viewer...");
+                    }
+                    isQuiz ? openQuiz(item.link) : openFile(item.link);
+                };
+
+                const icon = isQuiz ? 'fa-lightbulb' : 'fa-file-pdf';
+                const typeLabel = item.type.includes('gt') ? 'GT' : (item.type.includes('pyq') ? 'PYQ' : (item.type.includes('btr') ? 'BTR' : ''));
+
+                card.innerHTML = `
+                    <div class="chapter-icon"><i class="fas ${icon}"></i></div>
+                    <div style="flex-grow:1; font-weight:500;">
+                        ${typeLabel ? `<span class="quiz-type-icon">[${typeLabel}]</span> ` : ''}
+                        ${item.title}
+                        <div style="margin-top:4px; display:flex; align-items:center; flex-wrap:wrap; gap:5px;">
+                            ${item.subjectName ? `<span class="subject-badge">${item.subjectName}</span>` : ''}
+                            ${item.platform ? `<span class="platform-badge">${item.platform}</span>` : ''}
+                        </div>
+                    </div>
+                    ${item.isPremium ? '<div class="premium-lock"><i class="fas fa-lock"></i></div>' : '<i class="fas fa-external-link-alt" style="opacity:0.5;"></i>'}
+                `;
+                container.appendChild(card);
+            });
+
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:3.5rem; color:var(--text-light)">
+                        <i class="fas fa-folder-open" style="font-size:3rem; opacity:0.1; margin-bottom:1.5rem;"></i>
+                        <p style="font-weight:600;">No items found in this section.</p>
+                        <p style="font-size:0.85rem; margin-top:0.5rem;">Please check the 👑 <b>Premium</b> tab for more content!</p>
+                    </div>
+                `;
+            }
         }
 
         function renderVideoCard(container, video, index) {
@@ -1450,8 +1759,11 @@
         // --- PLAYER ENGINE ---
         window.onYouTubeIframeAPIReady = () => { pendingPlayers.forEach(p => createPlayer(p.id, p.vid)); pendingPlayers = []; };
         function createPlayer(uid, vid) {
+            const cleanVidId = getYoutubeVideoId(vid);
+            console.log('Playing Video ID:', cleanVidId); // Debug log for browser console
+
             players[uid] = new YT.Player(uid, {
-                height: '100%', width: '100%', videoId: vid.trim(),
+                height: '100%', width: '100%', videoId: cleanVidId,
                 playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
                 events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
             });
@@ -1530,6 +1842,26 @@
                 // UI Update Overlay
                 updateOverlaySpeedButtons();
             }
+        };
+
+        window.openQuiz = (url) => {
+            const viewer = document.getElementById('fileViewer');
+            const loader = document.getElementById('pdfLoader');
+
+            // RESET
+            viewer.removeAttribute('srcdoc');
+            viewer.src = "about:blank";
+            loader.style.display = 'block';
+
+            // Loading the raw GitHub HTML link directly
+            viewer.src = url;
+
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 3000);
+
+            document.getElementById('fileModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         };
 
         window.toggleFullScreen = (btn) => {
