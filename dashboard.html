@@ -61,6 +61,41 @@
             cursor: pointer;
         }
 
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            font-size: 0.85rem;
+            transition: 0.3s;
+            outline: none;
+        }
+
+        .search-container input:focus {
+            background: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
         .main-nav {
             display: flex;
             gap: 1.5rem;
@@ -102,6 +137,37 @@
             font-weight: 600;
             font-size: 0.8rem;
             transition: all 0.3s ease;
+        }
+
+        /* --- UI ELEMENTS --- */
+        .back-btn {
+            position: relative;
+            z-index: 1100;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            color: var(--text-main);
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 5px;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+            background: white;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .back-btn i {
+            font-size: 0.8rem;
         }
 
         .container {
@@ -724,133 +790,10 @@
             border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
-        .sub-nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 1.5rem;
-            background: white;
-            padding: 5px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-
-        .sub-nav-tabs::-webkit-scrollbar {
-            display: none;
-        }
-
-        .sub-nav-tab {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--text-light);
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            min-width: 100px;
-        }
-
-        .sub-nav-tab.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .sub-nav-tab i {
-            margin-right: 8px;
-        }
-
         .chapter-card .quiz-type-icon {
             font-size: 0.8rem;
             opacity: 0.6;
             margin-right: 5px;
-        }
-
-        .pdf-fallback {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.8rem;
-            color: var(--primary);
-            background: rgba(255, 255, 255, 0.9);
-            padding: 5px 15px;
-            border-radius: 20px;
-            text-decoration: none;
-            display: none;
-            z-index: 90;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .pdf-fallback:hover {
-            background: white;
-            text-decoration: underline;
-        }
-
-        /* --- PREMIUM NAVIGATION STYLES --- */
-        .subject-subnav-container {
-            position: sticky;
-            top: 70px;
-            /* Below navbar */
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            margin: -20px -20px 20px -20px;
-            /* Offset container padding */
-            padding: 10px 20px;
-        }
-
-        .subject-subnav {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            padding-bottom: 5px;
-        }
-
-        .subject-subnav::-webkit-scrollbar {
-            display: none;
-        }
-
-        .subnav-item {
-            white-space: nowrap;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        .subnav-item:hover {
-            background: rgba(79, 70, 229, 0.05);
-            color: var(--primary);
-        }
-
-        .subnav-item.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
-        }
-
-        .subnav-item.premium {
-            color: #b45309;
-            /* Golden brown */
-            border: 1px dashed #fbbf24;
-            background: rgba(251, 191, 36, 0.1);
-        }
-
-        .subnav-item.premium.active {
-            background: linear-gradient(135deg, #fbbf24, #d97706);
-            color: white;
-            border: none;
         }
 
         .premium-lock {
@@ -947,6 +890,12 @@
             .container {
                 padding: 0 1rem;
                 margin-top: 1rem;
+            }
+
+            .back-btn {
+                margin: 0.5rem 0 1rem 0;
+                width: 100%;
+                justify-content: center;
             }
 
             .section-title {
@@ -1056,6 +1005,10 @@
     <nav class="navbar">
         <div class="nav-brand" onclick="navigate('home')"><i class="fas fa-heartbeat" style="color:#ef4444"></i> MBBS
             World</div>
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="globalSearch" placeholder="Search subjects or topics..." oninput="handleSearch()">
+        </div>
         <div class="main-nav">
             <a href="#" class="nav-link" id="nav-home" onclick="navigate('home')"><i class="fas fa-home"></i> Home</a>
             <a href="#" class="nav-link" id="nav-videos" onclick="navigate('videos')"><i class="fas fa-play-circle"></i>
@@ -1191,24 +1144,37 @@
                     const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
                     if (cols.length < 4) return;
 
-                    const [subj, type, title, link, platform] = cols;
-                    const subjectInput = subj ? subj.trim() : "Other";
-                    const isPremium = subjectInput.toLowerCase() === "other" || !subjectInput;
-                    const cleanSubject = isPremium ? "Premium" : subjectInput;
+                    // Consistent Mapping from Google Sheet (Column A=Subj, B=Type, C=Title, D=Link, E=Platform)
+                    const subjRaw = cols[0] || 'Other';
+                    const typeRaw = cols[1] || '';
+                    const titleRaw = cols[2] || 'Untitled';
+                    const linkRaw = cols[3] || '';
+                    const platformRaw = cols[4] || 'Other';
+
+                    const isPremium = subjRaw.toLowerCase() === "other" || !subjRaw;
+                    const cleanSubject = isPremium ? "Premium" : subjRaw;
                     const subKey = isPremium ? "premium" : cleanSubject.toLowerCase().trim().replace(/ /g, '_');
 
-                    const platformName = platform ? platform.trim() : "Other";
-                    const typeKey = type.toLowerCase().trim();
+                    const typeKey = typeRaw.toLowerCase().trim();
 
                     if (!mbbsData[subKey]) {
                         mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], quizzes: [] };
                     }
 
-                    const item = { title, link, platform: platformName, type: typeKey, subjectName: cleanSubject, isPremium };
+                    // Standardize object structure
+                    const item = {
+                        Subject: subjRaw, // Using user requested property name
+                        title: titleRaw,
+                        link: linkRaw,
+                        platform: platformRaw,
+                        type: typeKey,
+                        subjectName: cleanSubject,
+                        isPremium
+                    };
 
                     if (typeKey === 'videos' || typeKey === 'video') {
-                        const vidId = getYoutubeVideoId(link);
-                        mbbsData[subKey].videos.push({ title, link: vidId, platform: platformName, subjectName: cleanSubject, isPremium });
+                        const vidId = getYoutubeVideoId(linkRaw);
+                        mbbsData[subKey].videos.push({ ...item, link: vidId });
                     } else if (typeKey === 'notes') {
                         mbbsData[subKey].notes.push(item);
                     } else if (typeKey === 'qbank') {
@@ -1216,7 +1182,7 @@
                     } else if (typeKey.includes('quiz')) {
                         mbbsData[subKey].quizzes.push(item);
                     } else if (typeKey === 'keypoints' || typeKey === 'keypoint') {
-                        mbbsData[subKey].keyPoints.push({ title, content: link, platform: platformName, subjectName: cleanSubject, isPremium });
+                        mbbsData[subKey].keyPoints.push({ ...item, content: linkRaw });
                     }
                 });
 
@@ -1276,7 +1242,7 @@
                 return;
             }
 
-            // Cleanup before restoring state to save bandwidth
+            // --- Bandwidth & Performance Fix: Clear background iframes ---
             cleanupIframes();
 
             const prevState = navHistory.pop();
@@ -1288,43 +1254,56 @@
 
             // Re-render based on restored state
             if (currentView === 'home') {
-                showMainMenu(true); // Don't push to history again
+                showMainMenu(true);
             } else if (currentView === 'qbank' && !currentPlatform) {
                 filterCategory('qbank', true);
-            } else if (currentView === 'qbank' && currentPlatform && !currentSubject) {
-                renderContent(true);
             } else {
                 renderContent(true);
             }
 
             // Restore scroll position after rendering
             setTimeout(() => {
-                window.scrollTo(0, prevState.scrollPos);
-            }, 50);
+                window.scrollTo({ top: prevState.scrollPos, behavior: 'auto' });
+            }, 100);
         };
 
         function cleanupIframes() {
             // Stop any playing YouTube videos
             Object.values(players).forEach(p => {
                 if (p && p.stopVideo) p.stopVideo();
+                if (p && p.destroy) p.destroy();
             });
             players = {};
             pendingPlayers = [];
             window.activePlayerId = null;
 
-            // Clear Quiz/PDF Iframe
+            // Clear Quiz/PDF Iframe definately
             const viewer = document.getElementById('fileViewer');
             if (viewer) {
                 viewer.src = '';
-                // Force detach to kill hidden scripts
-                const parent = viewer.parentNode;
-                const newViewer = viewer.cloneNode(true);
-                parent.replaceChild(newViewer, viewer);
+                viewer.removeAttribute('srcdoc');
             }
 
             // Close modal if open
             const modal = document.getElementById('fileModal');
-            if (modal) modal.style.display = 'none';
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('globalSearch').value.toLowerCase().trim();
+
+            if (currentSubject) {
+                // If a subject is selected, we filter the items inside that subject
+                renderItems(query);
+            } else if (currentView === 'home') {
+                // Home search logic can be added here if needed
+            } else {
+                // Filter the subject list
+                renderSubjectList(query);
+            }
         }
 
         // UI State Controllers
@@ -1414,12 +1393,16 @@
             else filterCategory(view);
         };
 
-        function renderSubjectList() {
+        function renderSubjectList(searchQuery = '') {
             const area = document.getElementById('contentArea');
+            const cleanQuery = searchQuery.toLowerCase().trim();
 
             // Filter subjects that actually have content for the current view and platform
             const filteredSubjects = Object.keys(mbbsData).filter(subj => {
                 const data = mbbsData[subj];
+                const matchesSearch = subj.replace(/_/g, ' ').toLowerCase().includes(cleanQuery);
+                if (!matchesSearch) return false;
+
                 if (currentView === 'videos') return data.videos && data.videos.length > 0;
                 if (currentView === 'notes') return data.notes && data.notes.length > 0;
                 if (currentView === 'quizzes') return data.quizzes && data.quizzes.length > 0;
@@ -1448,7 +1431,7 @@
             `;
 
             if (filteredSubjects.length === 0) {
-                area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No ${currentView} available yet.</div>`;
+                area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No subjects matching "${searchQuery}" found.</div>`;
             }
         }
 
@@ -1510,10 +1493,8 @@
             const area = document.getElementById('contentArea');
             area.innerHTML = '';
 
-            // Cleanup on every content render to ensure no background players
-            Object.values(players).forEach(p => p && p.stopVideo && p.stopVideo());
-            players = {}; pendingPlayers = [];
-            window.activePlayerId = null;
+            // --- Bandwidth & Performance Fix: Definitive Cleanup on every view change ---
+            cleanupIframes();
             updateOrientation();
 
             // Header Section
@@ -1565,41 +1546,18 @@
                     renderVideoCard(area, data.videos[selectedChapterIdx], selectedChapterIdx);
                 }
             } else if (currentView === 'notes' || currentView === 'quizzes') {
-                // --- PREMIUM SUBJECT BAR SYSTEM ---
-                const subNavContainer = document.createElement('div');
-                subNavContainer.className = 'subject-subnav-container';
-
-                // Determine which subjects have content for this view
-                const activeSubjects = MBBS_SUBJECTS.filter(s => {
-                    const key = s.toLowerCase().replace(/ /g, '_');
-                    return mbbsData[key] && mbbsData[key][currentView].length > 0;
-                });
-                const hasPremium = mbbsData['premium'] && mbbsData['premium'][currentView].length > 0;
-
-                // Auto-set first subject if none selected
+                // --- Permanent List View Level ---
                 if (!currentSubject) {
-                    if (activeSubjects.length > 0) currentSubject = activeSubjects[0].toLowerCase().replace(/ /g, '_');
-                    else if (hasPremium) currentSubject = 'premium';
+                    renderSubjectList();
+                    return;
                 }
-
-                subNavContainer.innerHTML = `
-                    <div class="subject-subnav">
-                        ${MBBS_SUBJECTS.map(s => {
-                    const key = s.toLowerCase().replace(/ /g, '_');
-                    const isActive = currentSubject === key || (currentSubject && currentSubject.toLowerCase() === s.toLowerCase());
-                    return `<div class="subnav-item ${isActive ? 'active' : ''}" onclick="setSubject('${s}')">${s}</div>`;
-                }).join('')}
-                        <div class="subnav-item premium ${currentSubject === 'premium' ? 'active' : ''}" onclick="setSubject('premium')">👑 Premium</div>
-                    </div>
-                `;
-                area.appendChild(subNavContainer);
 
                 const list = document.createElement('div');
                 list.className = 'chapter-list';
                 list.id = 'quiz-list-container';
                 area.appendChild(list);
 
-                renderItems('all');
+                renderItems();
             } else if (currentView === 'qbank') {
                 // Keep legacy QBank Platform selection for now
                 if (!currentPlatform) {
@@ -1618,7 +1576,7 @@
             }
         }
 
-        function renderItems() {
+        function renderItems(searchQuery = '') {
             const container = document.getElementById('quiz-list-container');
             if (!container) return;
             container.innerHTML = '';
@@ -1636,6 +1594,11 @@
                 const classic = data.qbank.filter(i => i.platform === currentPlatform);
                 const quizItems = data.quizzes.filter(i => i.platform === currentPlatform);
                 items = [...classic, ...quizItems];
+            }
+
+            // Apply search filtering
+            if (searchQuery) {
+                items = items.filter(i => i.title.toLowerCase().includes(searchQuery));
             }
 
             items.forEach((item, idx) => {
