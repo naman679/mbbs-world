@@ -1025,209 +1025,264 @@
             font-size: 1.2rem;
             opacity: 0.6;
         }
+
+        /* --- LOGIN UI --- */
+        #login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .login-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-box h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .login-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-box button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        #error-msg {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
     </style>
 </head>
 
 <body>
-    <div id="landscapeOverlay" class="video-controls-overlay">
-        <button class="overlay-back" onclick="exitLandscape()"><i class="fas fa-arrow-left"></i> Back</button>
-        <div class="speed-row-overlay" id="overlaySpeedRow">
-            <!-- Dynamic Speed Buttons -->
+    <div id="login-container">
+        <div class="login-box">
+            <i class="fas fa-user-lock" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+            <h2>MBBS World Access</h2>
+            <input type="text" id="loginUserName" placeholder="Enter Your Full Name">
+            <button onclick="checkAccess()">Enter Website</button>
+            <p id="error-msg" style="color:#ef4444;"></p>
         </div>
     </div>
 
-    <nav class="navbar">
-        <div class="nav-brand" onclick="navigate('home')"><i class="fas fa-heartbeat" style="color:#ef4444"></i> MBBS
-            World</div>
-        <div class="search-container">
-            <i class="fas fa-search"></i>
-            <input type="text" id="globalSearch" placeholder="Search subjects or topics..." oninput="handleSearch()">
+    <div id="main-content" style="display:none;">
+        <div id="landscapeOverlay" class="video-controls-overlay">
+            <button class="overlay-back" onclick="exitLandscape()"><i class="fas fa-arrow-left"></i> Back</button>
+            <div class="speed-row-overlay" id="overlaySpeedRow">
+                <!-- Dynamic Speed Buttons -->
+            </div>
         </div>
-        <div class="main-nav">
-            <a href="#" class="nav-link" id="nav-home" onclick="navigate('home')"><i class="fas fa-home"></i> Home</a>
-            <a href="#" class="nav-link" id="nav-videos" onclick="navigate('videos')"><i class="fas fa-play-circle"></i>
-                Videos</a>
-            <a href="#" class="nav-link" id="nav-notes" onclick="navigate('notes')"><i class="fas fa-file-pdf"></i>
-                Notes</a>
-            <a href="#" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')"><i class="fas fa-lightbulb"></i>
-                Quizzes</a>
-            <a href="#" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i class="fas fa-tasks"></i>
-                Q-Bank</a>
-        </div>
-        <div class="user-menu">
-            <span id="userName" style="font-weight:600; font-size:0.9rem"></span>
-            <button onclick="handleLogout()" class="logout-btn">Logout</button>
-        </div>
-    </nav>
 
-    <div class="container">
-        <!-- Main Content Area -->
-        <div id="contentArea">
-            <!-- Home View (Default) -->
-            <div class="welcome-section">
-                <h1>Welcome, <span id="welcomeName">Student</span>!</h1>
-                <p>What would you like to study today?</p>
-                <div class="portal-grid">
-                    <div class="portal-card" onclick="navigate('videos')"><i class="fas fa-video"></i>
-                        <h3>Video Lectures</h3>
-                        <p>Premium video content with summary notes.</p>
-                    </div>
-                    <div class="portal-card" onclick="navigate('notes')"><i class="fas fa-book"></i>
-                        <h3>Notes PDF</h3>
-                        <p>Standard textbook reference material.</p>
-                    </div>
-                    <div class="portal-card" onclick="navigate('qbank')"><i class="fas fa-graduation-cap"></i>
-                        <h3>Question Bank</h3>
-                        <p>Test your knowledge with practice files.</p>
+        <nav class="navbar">
+            <div class="nav-brand" onclick="navigate('home')"><i class="fas fa-heartbeat" style="color:#ef4444"></i>
+                MBBS
+                World</div>
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="globalSearch" placeholder="Search subjects or topics..."
+                    oninput="handleSearch()">
+            </div>
+            <div class="main-nav">
+                <a href="#" class="nav-link" id="nav-home" onclick="navigate('home')"><i class="fas fa-home"></i>
+                    Home</a>
+                <a href="#" class="nav-link" id="nav-videos" onclick="navigate('videos')"><i
+                        class="fas fa-play-circle"></i>
+                    Videos</a>
+                <a href="#" class="nav-link" id="nav-notes" onclick="navigate('notes')"><i class="fas fa-file-pdf"></i>
+                    Notes</a>
+                <a href="#" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')"><i
+                        class="fas fa-lightbulb"></i>
+                    Quizzes</a>
+                <a href="#" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i class="fas fa-tasks"></i>
+                    Q-Bank</a>
+            </div>
+            <div class="user-menu">
+                <span id="userName" style="font-weight:600; font-size:0.9rem"></span>
+                <button onclick="handleLogout()" class="logout-btn">Logout</button>
+            </div>
+        </nav>
+
+        <div class="container">
+            <!-- Main Content Area -->
+            <div id="contentArea">
+                <!-- Home View (Default) -->
+                <div class="welcome-section">
+                    <h1>Welcome, <span id="welcomeName">Student</span>!</h1>
+                    <p>What would you like to study today?</p>
+                    <div class="portal-grid">
+                        <div class="portal-card" onclick="navigate('videos')"><i class="fas fa-video"></i>
+                            <h3>Video Lectures</h3>
+                            <p>Premium video content with summary notes.</p>
+                        </div>
+                        <div class="portal-card" onclick="navigate('notes')"><i class="fas fa-book"></i>
+                            <h3>Notes PDF</h3>
+                            <p>Standard textbook reference material.</p>
+                        </div>
+                        <div class="portal-card" onclick="navigate('qbank')"><i class="fas fa-graduation-cap"></i>
+                            <h3>Question Bank</h3>
+                            <p>Test your knowledge with practice files.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="fileModal" class="modal">
-        <div class="modal-content">
-            <button class="fullscreen-modal" onclick="togglePdfFullScreen()" title="Toggle Full Screen">
-                <i class="fas fa-expand"></i>
-            </button>
-            <button class="close-modal" onclick="closeModal()" title="Close">
-                <i class="fas fa-times"></i>
-            </button>
-            <div id="modalFooter" class="modal-footer">
-                <a id="externalLink" href="#" target="_blank" class="external-link-btn">
-                    <i class="fas fa-external-link-alt"></i> Open in New Tab
-                </a>
+        <div id="fileModal" class="modal">
+            <div class="modal-content">
+                <button class="fullscreen-modal" onclick="togglePdfFullScreen()" title="Toggle Full Screen">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="close-modal" onclick="closeModal()" title="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div id="modalFooter" class="modal-footer">
+                    <a id="externalLink" href="#" target="_blank" class="external-link-btn">
+                        <i class="fas fa-external-link-alt"></i> Open in New Tab
+                    </a>
+                </div>
+                <iframe id="fileViewer" style="width:100%; height:calc(100% - 45px); border:none;" src=""
+                    allow="autoplay"
+                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-modals"
+                    onload="document.getElementById('pdfLoader').style.display='none'; this.focus();"></iframe>
             </div>
-            <iframe id="fileViewer" style="width:100%; height:calc(100% - 45px); border:none;" src="" allow="autoplay"
-                sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-modals"
-                onload="document.getElementById('pdfLoader').style.display='none'; this.focus();"></iframe>
         </div>
-    </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        <script src="https://www.youtube.com/iframe_api"></script>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
-            authDomain: "samvad-bafaa.firebaseapp.com",
-            projectId: "samvad-bafaa",
-            storageBucket: "samvad-bafaa.firebasestorage.app",
-            messagingSenderId: "131803431466",
-            appId: "1:131803431466:web:b7b107308ea7197f013953",
-            measurementId: "G-M90SYY2MP9"
-        };
+        <script>
+            // --- DATA ENGINE ---
+            let allData = []; // Global raw data
+            let mbbsData = {}; // Structured data
+            const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oD0BX4WhhLDL6e6WybIEXmvbiroBMBiGASJ2r-HdxlIOmDFqaWpUEMdDydPUHVOQNsOGGbgJR6O/pub?output=csv";
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+            const MBBS_SUBJECTS = [
+                "Anatomy", "Physiology", "Biochemistry",
+                "Pharmacology", "Pathology", "Microbiology",
+                "Forensic Medicine", "Community Medicine",
+                "Medicine", "Surgery", "OBGY", "Pediatrics",
+                "ENT", "Ophthalmology", "Orthopedics",
+                "Dermatology", "Psychiatry", "Radiology", "Anaesthesia"
+            ];
 
-        window.userSessionName = "Student";
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const name = user.displayName || user.email;
-                const firstName = user.displayName?.split(' ')[0] || "Student";
-                window.userSessionName = firstName;
-                document.getElementById('userName').innerText = name;
-                // Update welcome name if it exists in the current view
-                const mainWelcome = document.getElementById('welcomeName');
-                if (mainWelcome) mainWelcome.innerText = firstName;
-                const homeWelcome = document.getElementById('welcomeNameHome');
-                if (homeWelcome) homeWelcome.innerText = firstName;
-            } else { window.location.href = 'index.html'; }
-        });
+            async function fetchSheetData() {
+                try {
+                    const response = await fetch(SHEET_URL);
+                    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                    let text = await response.text();
 
-        window.handleLogout = () => signOut(auth).then(() => window.location.href = 'index.html');
-    </script>
+                    // Remove Byte Order Mark (BOM) if present
+                    text = text.replace(/^\uFEFF/, '');
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-
-    <script>
-        // --- DATA ENGINE ---
-        let allData = []; // Global raw data
-        let mbbsData = {}; // Structured data
-        const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oD0BX4WhhLDL6e6WybIEXmvbiroBMBiGASJ2r-HdxlIOmDFqaWpUEMdDydPUHVOQNsOGGbgJR6O/pub?output=csv";
-
-        const MBBS_SUBJECTS = [
-            "Anatomy", "Physiology", "Biochemistry",
-            "Pharmacology", "Pathology", "Microbiology",
-            "Forensic Medicine", "Community Medicine",
-            "Medicine", "Surgery", "OBGY", "Pediatrics",
-            "ENT", "Ophthalmology", "Orthopedics",
-            "Dermatology", "Psychiatry", "Radiology", "Anaesthesia"
-        ];
-
-        async function fetchSheetData() {
-            try {
-                const response = await fetch(SHEET_URL);
-                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-                let text = await response.text();
-
-                // Remove Byte Order Mark (BOM) if present
-                text = text.replace(/^\uFEFF/, '');
-
-                // If it looks like HTML (Google login page or error), it's not a published CSV
-                if (text.includes('<!DOCTYPE html>') || text.includes('<html>')) {
-                    throw new Error("Invalid CSV format. Please ensure your Google Sheet is 'Published to the Web' as a CSV.");
-                }
-
-                console.log("Sheet data fetched successfully");
-                const lines = text.split(/\r?\n/).filter(line => line.trim() !== "");
-                if (lines.length < 2) throw new Error("Spreadsheet is empty or has no data rows.");
-
-                allData = lines.slice(1);
-                mbbsData = {};
-                allData.forEach(line => {
-                    const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
-                    if (cols.length < 4) return;
-
-                    // Consistent Mapping from Google Sheet (Column A=Subj, B=Type, C=Title, D=Link, E=Platform)
-                    const subjRaw = cols[0] || 'Other';
-                    const typeRaw = cols[1] || '';
-                    const titleRaw = cols[2] || 'Untitled';
-                    const linkRaw = cols[3] || '';
-                    const platformRaw = cols[4] || 'Other';
-
-                    const isPremium = subjRaw.toLowerCase() === "other" || !subjRaw;
-                    const cleanSubject = isPremium ? "Premium" : subjRaw;
-                    const subKey = isPremium ? "premium" : cleanSubject.toLowerCase().trim().replace(/ /g, '_');
-
-                    const typeKey = typeRaw.toLowerCase().trim();
-
-                    if (!mbbsData[subKey]) {
-                        mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], quizzes: [] };
+                    // If it looks like HTML (Google login page or error), it's not a published CSV
+                    if (text.includes('<!DOCTYPE html>') || text.includes('<html>')) {
+                        throw new Error("Invalid CSV format. Please ensure your Google Sheet is 'Published to the Web' as a CSV.");
                     }
 
-                    // Standardize object structure
-                    const item = {
-                        Subject: subjRaw, // Using user requested property name
-                        title: titleRaw,
-                        link: linkRaw,
-                        platform: platformRaw,
-                        Type: typeKey, // Standardizing on capital Type
-                        subjectName: cleanSubject,
-                        isPremium
-                    };
+                    console.log("Sheet data fetched successfully");
+                    const lines = text.split(/\r?\n/).filter(line => line.trim() !== "");
+                    if (lines.length < 2) throw new Error("Spreadsheet is empty or has no data rows.");
 
-                    if (typeKey === 'videos' || typeKey === 'video') {
-                        const vidId = getYoutubeVideoId(linkRaw);
-                        mbbsData[subKey].videos.push({ ...item, link: vidId });
-                    } else if (typeKey === 'notes') {
-                        mbbsData[subKey].notes.push(item);
-                    } else if (typeKey === 'qbank') {
-                        mbbsData[subKey].qbank.push(item);
-                    } else if (typeKey.includes('quiz')) {
-                        mbbsData[subKey].quizzes.push(item);
-                    } else if (typeKey === 'keypoints' || typeKey === 'keypoint') {
-                        mbbsData[subKey].keyPoints.push({ ...item, content: linkRaw });
-                    }
-                });
+                    allData = lines.slice(1);
+                    mbbsData = {};
+                    allData.forEach(line => {
+                        const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+                        if (cols.length < 4) return;
 
-                // Set initial UI
-                showMainMenu();
+                        // Consistent Mapping from Google Sheet (Column A=Subj, B=Type, C=Title, D=Link, E=Platform)
+                        const subjRaw = cols[0] || 'Other';
+                        const typeRaw = cols[1] || '';
+                        const titleRaw = cols[2] || 'Untitled';
+                        const linkRaw = cols[3] || '';
+                        const platformRaw = cols[4] || 'Other';
 
-            } catch (e) {
-                console.error("CSV Fetch Error:", e);
-                document.getElementById('contentArea').innerHTML = `
+                        const isPremium = subjRaw.toLowerCase() === "other" || !subjRaw;
+                        const cleanSubject = isPremium ? "Premium" : subjRaw;
+                        const subKey = isPremium ? "premium" : cleanSubject.toLowerCase().trim().replace(/ /g, '_');
+
+                        const typeKey = typeRaw.toLowerCase().trim();
+
+                        if (!mbbsData[subKey]) {
+                            mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], quizzes: [] };
+                        }
+
+                        // Standardize object structure
+                        const item = {
+                            Subject: subjRaw, // Using user requested property name
+                            title: titleRaw,
+                            link: linkRaw,
+                            platform: platformRaw,
+                            Type: typeKey, // Standardizing on capital Type
+                            subjectName: cleanSubject,
+                            isPremium
+                        };
+
+                        if (typeKey === 'videos' || typeKey === 'video') {
+                            const vidId = getYoutubeVideoId(linkRaw);
+                            mbbsData[subKey].videos.push({ ...item, link: vidId });
+                        } else if (typeKey === 'notes') {
+                            mbbsData[subKey].notes.push(item);
+                        } else if (typeKey === 'qbank') {
+                            mbbsData[subKey].qbank.push(item);
+                        } else if (typeKey.includes('quiz')) {
+                            mbbsData[subKey].quizzes.push(item);
+                        } else if (typeKey === 'keypoints' || typeKey === 'keypoint') {
+                            mbbsData[subKey].keyPoints.push({ ...item, content: linkRaw });
+                        }
+                    });
+
+                    // Set initial UI
+                    showMainMenu();
+
+                } catch (e) {
+                    console.error("CSV Fetch Error:", e);
+                    document.getElementById('contentArea').innerHTML = `
                     <div style="text-align:center; padding:5rem;">
                         <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:#ef4444; margin-bottom:1rem;"></i>
                         <h2 style="color:#ef4444; margin-bottom:0.5rem;">Data Load Failure</h2>
@@ -1238,154 +1293,209 @@
                         </div>
                     </div>
                 `;
-            }
-        }
-
-        function getYoutubeVideoId(url) {
-            if (!url) return "";
-            url = url.trim();
-            if (url.length === 11 && !url.includes('.') && !url.includes('/')) return url;
-            // Regex to strictly capture only 11 characters after any of the YouTube URL prefixes
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/|live\/)([^#\&\?]{11}).*/;
-            const match = url.match(regExp);
-            const id = (match && match[2].length === 11) ? match[2] : url;
-            return id;
-        }
-
-        let currentView = 'home';
-        let currentSubject = null;
-        let currentPlatform = null;
-        let selectedChapterIdx = null;
-        let currentQuizFilter = 'all';
-        let players = {};
-        let pendingPlayers = [];
-        let navHistory = [];
-
-        function pushNavState() {
-            navHistory.push({
-                view: currentView,
-                subject: currentSubject,
-                platform: currentPlatform,
-                chapterIdx: selectedChapterIdx,
-                quizFilter: currentQuizFilter,
-                scrollPos: window.scrollY
-            });
-        }
-
-        window.goBack = () => {
-            if (navHistory.length === 0) {
-                showMainMenu();
-                return;
+                }
             }
 
-            // --- Bandwidth & Performance Fix: Clear background iframes ---
-            cleanupIframes();
-
-            const prevState = navHistory.pop();
-            currentView = prevState.view;
-            currentSubject = prevState.subject;
-            currentPlatform = prevState.platform;
-            selectedChapterIdx = prevState.chapterIdx;
-            currentQuizFilter = prevState.quizFilter;
-
-            // Re-render based on restored state
-            if (currentView === 'home') {
-                showMainMenu(true);
-            } else if (currentView === 'qbank' && !currentPlatform) {
-                filterCategory('qbank', true);
-            } else {
-                renderContent(true);
+            function getYoutubeVideoId(url) {
+                if (!url) return "";
+                url = url.trim();
+                if (url.length === 11 && !url.includes('.') && !url.includes('/')) return url;
+                // Regex to strictly capture only 11 characters after any of the YouTube URL prefixes
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/|live\/)([^#\&\?]{11}).*/;
+                const match = url.match(regExp);
+                const id = (match && match[2].length === 11) ? match[2] : url;
+                return id;
             }
 
-            // Restore scroll position after rendering
-            setTimeout(() => {
-                window.scrollTo({ top: prevState.scrollPos, behavior: 'auto' });
-            }, 100);
-        };
+            let currentView = 'home';
+            let currentSubject = null;
+            let currentPlatform = null;
+            let selectedChapterIdx = null;
+            let currentQuizFilter = 'all';
+            let players = {};
+            let pendingPlayers = [];
+            let navHistory = [];
 
-        function cleanupIframes() {
-            // Stop any playing YouTube videos
-            Object.values(players).forEach(p => {
-                if (p && p.stopVideo) p.stopVideo();
-                if (p && p.destroy) p.destroy();
-            });
-            players = {};
-            pendingPlayers = [];
-            window.activePlayerId = null;
-
-            // Clear Quiz/PDF Iframe definately
-            const viewer = document.getElementById('fileViewer');
-            if (viewer) {
-                viewer.src = '';
-                viewer.removeAttribute('srcdoc');
-            }
-
-            // Close modal if open
-            const modal = document.getElementById('fileModal');
-            if (modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        function handleSearch() {
-            const query = document.getElementById('globalSearch').value.toLowerCase().trim();
-
-            if (currentSubject) {
-                // If a subject is selected, we filter the items inside that subject
-                renderItems(query);
-            } else if (currentView === 'home') {
-                // Home search logic can be added here if needed
-            } else {
-                // Filter the subject list
-                renderSubjectList(query);
-            }
-        }
-
-        // UI State Controllers
-        window.showMainMenu = (isBack = false) => {
-            if (!isBack) pushNavState();
-            currentView = 'home';
-            currentSubject = null;
-            currentPlatform = null;
-            selectedChapterIdx = null;
-            window.activePlayerId = null;
-            updateOrientation();
-            updateNavActive('home');
-            renderHome();
-        };
-
-        window.filterCategory = (type, isBack = false) => {
-            if (!isBack) pushNavState();
-            currentView = type;
-            currentPlatform = null;
-            currentSubject = null;
-            selectedChapterIdx = null;
-            currentQuizFilter = 'all';
-            window.activePlayerId = null;
-            updateOrientation();
-            updateNavActive(type);
-
-            if (type === 'qbank') {
-                renderPlatforms();
-            } else {
-                renderSubjectList();
-            }
-        };
-
-        function renderPlatforms() {
-            const area = document.getElementById('contentArea');
-            const platforms = new Set();
-
-            Object.values(mbbsData).forEach(subj => {
-                subj.qbank.forEach(item => {
-                    if (item.platform) platforms.add(item.platform);
+            function pushNavState() {
+                navHistory.push({
+                    view: currentView,
+                    subject: currentSubject,
+                    platform: currentPlatform,
+                    chapterIdx: selectedChapterIdx,
+                    quizFilter: currentQuizFilter,
+                    scrollPos: window.scrollY
                 });
-            });
+            }
 
-            const platformList = Array.from(platforms).sort();
+            window.goBack = () => {
+                if (navHistory.length === 0) {
+                    showMainMenu();
+                    return;
+                }
 
-            area.innerHTML = `
+                // --- Bandwidth & Performance Fix: Clear background iframes ---
+                cleanupIframes();
+
+                const prevState = navHistory.pop();
+                currentView = prevState.view;
+                currentSubject = prevState.subject;
+                currentPlatform = prevState.platform;
+                selectedChapterIdx = prevState.chapterIdx;
+                currentQuizFilter = prevState.quizFilter;
+
+                // Re-render based on restored state
+                if (currentView === 'home') {
+                    showMainMenu(true);
+                } else if (currentView === 'qbank' && !currentPlatform) {
+                    filterCategory('qbank', true);
+                } else {
+                    renderContent(true);
+                }
+
+                // Restore scroll position after rendering
+                setTimeout(() => {
+                    window.scrollTo({ top: prevState.scrollPos, behavior: 'auto' });
+                }, 100);
+            };
+
+            function cleanupIframes() {
+                // Stop any playing YouTube videos
+                Object.values(players).forEach(p => {
+                    if (p && p.stopVideo) p.stopVideo();
+                    if (p && p.destroy) p.destroy();
+                });
+                players = {};
+                pendingPlayers = [];
+                window.activePlayerId = null;
+
+                // Clear Quiz/PDF Iframe definately
+                const viewer = document.getElementById('fileViewer');
+                if (viewer) {
+                    viewer.src = '';
+                    viewer.removeAttribute('srcdoc');
+                }
+
+                // Close modal if open
+                const modal = document.getElementById('fileModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            }
+
+            function handleSearch() {
+                const query = document.getElementById('globalSearch').value.toLowerCase().trim();
+
+                if (currentSubject) {
+                    // If a subject is selected, we filter the items inside that subject
+                    renderItems(query);
+                } else if (currentView === 'home') {
+                    // Home search logic can be added here if needed
+                } else {
+                    // Filter the subject list
+                    renderSubjectList(query);
+                }
+            }
+
+            // UI State Controllers
+            window.checkAccess = () => {
+                const nameInput = document.getElementById('loginUserName');
+                const name = nameInput.value.trim();
+                if (!name) {
+                    document.getElementById('error-msg').innerText = "Please enter your name.";
+                    return;
+                }
+
+                const scriptURL = "https://script.google.com/macros/s/AKfycbwylD_WnF4JcafLjY2l2DqtYOT86B9EuOe9xwgFqUWKB2I9iJn2_zrK5VXh2bg8Dq7Ytg/exec";
+                const errorEl = document.getElementById('error-msg');
+                errorEl.innerText = "Authenticating...";
+                errorEl.style.color = "var(--primary)";
+
+                fetch(`${scriptURL}?name=${encodeURIComponent(name)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.allowed) {
+                            localStorage.setItem('mbbs_user', name);
+                            document.getElementById('login-container').style.display = 'none';
+                            document.getElementById('main-content').style.display = 'block';
+
+                            const firstName = name.split(' ')[0] || "Student";
+                            window.userSessionName = firstName;
+                            document.getElementById('userName').innerText = name;
+
+                            const mainWelcome = document.getElementById('welcomeName');
+                            if (mainWelcome) mainWelcome.innerText = firstName;
+                            const homeWelcome = document.getElementById('welcomeNameHome');
+                            if (homeWelcome) homeWelcome.innerText = firstName;
+
+                            fetchSheetData();
+                        } else {
+                            errorEl.innerText = data.message || "Invalid name or access expired.";
+                            errorEl.style.color = "#ef4444";
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Auth Error!', error.message);
+                        errorEl.innerText = "Unable to connect. Checking offline access...";
+                        if (localStorage.getItem('mbbs_user') === name) {
+                            // Fallback if network fails but they were logged in before
+                            document.getElementById('login-container').style.display = 'none';
+                            document.getElementById('main-content').style.display = 'block';
+                            fetchSheetData();
+                        } else {
+                            errorEl.innerText = "Connection error. Please check your internet.";
+                        }
+                    });
+            };
+
+            window.handleLogout = () => {
+                localStorage.removeItem('mbbs_user');
+                window.location.reload();
+            };
+
+            window.showMainMenu = (isBack = false) => {
+                if (!isBack) pushNavState();
+                currentView = 'home';
+                currentSubject = null;
+                currentPlatform = null;
+                selectedChapterIdx = null;
+                window.activePlayerId = null;
+                updateOrientation();
+                updateNavActive('home');
+                renderHome();
+            };
+
+            window.filterCategory = (type, isBack = false) => {
+                if (!isBack) pushNavState();
+                currentView = type;
+                currentPlatform = null;
+                currentSubject = null;
+                selectedChapterIdx = null;
+                currentQuizFilter = 'all';
+                window.activePlayerId = null;
+                updateOrientation();
+                updateNavActive(type);
+
+                if (type === 'qbank') {
+                    renderPlatforms();
+                } else {
+                    renderSubjectList();
+                }
+            };
+
+            function renderPlatforms() {
+                const area = document.getElementById('contentArea');
+                const platforms = new Set();
+
+                Object.values(mbbsData).forEach(subj => {
+                    subj.qbank.forEach(item => {
+                        if (item.platform) platforms.add(item.platform);
+                    });
+                });
+
+                const platformList = Array.from(platforms).sort();
+
+                area.innerHTML = `
                 <div class="welcome-section" style="padding: 1rem 0;">
                     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
                     <h1><i class="fas fa-layer-group"></i> Select Platform</h1>
@@ -1402,54 +1512,66 @@
                 </div>
             `;
 
-            if (platformList.length === 0) {
-                area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No platforms found in Question Bank.</div>`;
-            }
-        }
-
-        window.setPlatform = (platform) => {
-            pushNavState();
-            currentPlatform = platform;
-            renderSubjectList();
-        };
-
-        function updateNavActive(view) {
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            const activeLink = document.getElementById(`nav-${view}`);
-            if (activeLink) activeLink.classList.add('active');
-        }
-
-        // window.onload ensures data is ready before clicks
-        window.onload = () => {
-            fetchSheetData();
-        };
-
-        window.navigate = (view) => {
-            if (view === 'home') showMainMenu();
-            else filterCategory(view);
-        };
-
-        function renderSubjectList(searchQuery = '') {
-            const area = document.getElementById('contentArea');
-            const cleanQuery = searchQuery.toLowerCase().trim();
-
-            // Filter subjects that actually have content for the current view and platform
-            const filteredSubjects = Object.keys(mbbsData).filter(subj => {
-                const data = mbbsData[subj];
-                const matchesSearch = subj.replace(/_/g, ' ').toLowerCase().includes(cleanQuery);
-                if (!matchesSearch) return false;
-
-                if (currentView === 'videos') return data.videos && data.videos.length > 0;
-                if (currentView === 'notes') return data.notes && data.notes.length > 0;
-                if (currentView === 'quizzes') return data.quizzes && data.quizzes.length > 0;
-                if (currentView === 'qbank') {
-                    const hasClassic = data.qbank && data.qbank.some(item => item.platform === currentPlatform);
-                    return hasClassic;
+                if (platformList.length === 0) {
+                    area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No platforms found in Question Bank.</div>`;
                 }
-                return false;
-            });
+            }
 
-            area.innerHTML = `
+            window.setPlatform = (platform) => {
+                pushNavState();
+                currentPlatform = platform;
+                renderSubjectList();
+            };
+
+            function updateNavActive(view) {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                const activeLink = document.getElementById(`nav-${view}`);
+                if (activeLink) activeLink.classList.add('active');
+            }
+
+            // window.onload ensures data is ready before clicks
+            window.onload = () => {
+                const savedUser = localStorage.getItem('mbbs_user');
+                if (savedUser) {
+                    document.getElementById('loginUserName').value = savedUser;
+                    checkAccess();
+                }
+
+                // Add Enter key listener
+                const loginInput = document.getElementById('loginUserName');
+                if (loginInput) {
+                    loginInput.addEventListener('keyup', (e) => {
+                        if (e.key === 'Enter') checkAccess();
+                    });
+                }
+            };
+
+            window.navigate = (view) => {
+                if (view === 'home') showMainMenu();
+                else filterCategory(view);
+            };
+
+            function renderSubjectList(searchQuery = '') {
+                const area = document.getElementById('contentArea');
+                const cleanQuery = searchQuery.toLowerCase().trim();
+
+                // Filter subjects that actually have content for the current view and platform
+                const filteredSubjects = Object.keys(mbbsData).filter(subj => {
+                    const data = mbbsData[subj];
+                    const matchesSearch = subj.replace(/_/g, ' ').toLowerCase().includes(cleanQuery);
+                    if (!matchesSearch) return false;
+
+                    if (currentView === 'videos') return data.videos && data.videos.length > 0;
+                    if (currentView === 'notes') return data.notes && data.notes.length > 0;
+                    if (currentView === 'quizzes') return data.quizzes && data.quizzes.length > 0;
+                    if (currentView === 'qbank') {
+                        const hasClassic = data.qbank && data.qbank.some(item => item.platform === currentPlatform);
+                        return hasClassic;
+                    }
+                    return false;
+                });
+
+                area.innerHTML = `
                 <div class="welcome-section" style="padding: 1rem 0;">
                     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
                     <h1><i class="fas ${getViewIcon()}"></i> Select Subject</h1>
@@ -1457,45 +1579,45 @@
                 </div>
                 <div class="subject-sidebar">
                     ${filteredSubjects.map(subj => {
-                const name = subj.replace(/_/g, ' ').toUpperCase();
-                return `
+                    const name = subj.replace(/_/g, ' ').toUpperCase();
+                    return `
                             <div class="subject-item" onclick="setSubject('${subj}')">
                                 <span>${name}</span>
                             </div>`;
-            }).join('')}
+                }).join('')}
                 </div>
             `;
 
-            if (filteredSubjects.length === 0) {
-                area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No subjects matching "${searchQuery}" found.</div>`;
-            }
-        }
-
-        function getViewIcon() {
-            if (currentView === 'videos') return 'fa-play-circle';
-            if (currentView === 'notes') return 'fa-file-pdf';
-            if (currentView === 'quizzes') return 'fa-lightbulb';
-            if (currentView === 'qbank') return 'fa-tasks';
-            return 'fa-folder';
-        }
-
-        function setSubject(subjectName) {
-            pushNavState();
-
-            if (!subjectName || subjectName.toLowerCase() === 'premium') {
-                currentSubject = 'premium';
-            } else {
-                // Normalize for key-based lookup in mbbsData
-                // This aligns with item.Subject.toLowerCase() === subjectName.toLowerCase() logic
-                currentSubject = subjectName.toLowerCase().trim().replace(/ /g, '_');
+                if (filteredSubjects.length === 0) {
+                    area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No subjects matching "${searchQuery}" found.</div>`;
+                }
             }
 
-            selectedChapterIdx = null;
-            renderContent();
-        }
+            function getViewIcon() {
+                if (currentView === 'videos') return 'fa-play-circle';
+                if (currentView === 'notes') return 'fa-file-pdf';
+                if (currentView === 'quizzes') return 'fa-lightbulb';
+                if (currentView === 'qbank') return 'fa-tasks';
+                return 'fa-folder';
+            }
 
-        function renderHome() {
-            document.getElementById('contentArea').innerHTML = `
+            function setSubject(subjectName) {
+                pushNavState();
+
+                if (!subjectName || subjectName.toLowerCase() === 'premium') {
+                    currentSubject = 'premium';
+                } else {
+                    // Normalize for key-based lookup in mbbsData
+                    // This aligns with item.Subject.toLowerCase() === subjectName.toLowerCase() logic
+                    currentSubject = subjectName.toLowerCase().trim().replace(/ /g, '_');
+                }
+
+                selectedChapterIdx = null;
+                renderContent();
+            }
+
+            function renderHome() {
+                document.getElementById('contentArea').innerHTML = `
                 <div class="welcome-section">
                     <h1>Welcome Back, <span id="welcomeNameHome">${window.userSessionName || 'Student'}</span>!</h1>
                     <p>What would you like to study today?</p>
@@ -1523,50 +1645,50 @@
                     </div>
                 </div>
             `;
-        }
+            }
 
-        function renderContent(isBack = false) {
-            const area = document.getElementById('contentArea');
-            area.innerHTML = '';
+            function renderContent(isBack = false) {
+                const area = document.getElementById('contentArea');
+                area.innerHTML = '';
 
-            // --- Bandwidth & Performance Fix: Definitive Cleanup on every view change ---
-            cleanupIframes();
-            updateOrientation();
+                // --- Bandwidth & Performance Fix: Definitive Cleanup on every view change ---
+                cleanupIframes();
+                updateOrientation();
 
-            // Header Section
-            const header = document.createElement('div');
-            header.innerHTML = `
+                // Header Section
+                const header = document.createElement('div');
+                header.innerHTML = `
                 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 1.5rem;">
                     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
                     <h1 style="margin:0; font-size:1.5rem;"><i class="fas ${getViewIcon()}"></i> ${currentView.toUpperCase()}</h1>
                 </div>
             `;
-            area.appendChild(header);
+                area.appendChild(header);
 
-            if (currentView === 'videos') {
-                // --- VIDEOS LOGIC (Subject Grid First) ---
-                if (!currentSubject) {
-                    renderSubjectList();
-                    return;
-                }
+                if (currentView === 'videos') {
+                    // --- VIDEOS LOGIC (Subject Grid First) ---
+                    if (!currentSubject) {
+                        renderSubjectList();
+                        return;
+                    }
 
-                const data = mbbsData[currentSubject];
-                if (selectedChapterIdx === null) {
-                    // Show Chapter List
-                    const list = document.createElement('div');
-                    list.className = 'chapter-list';
-                    data.videos.forEach((v, idx) => {
-                        const vidId = v.link;
-                        const isDone = localStorage.getItem('completed_' + vidId) === 'true';
-                        const item = document.createElement('div');
-                        item.className = 'chapter-card';
-                        if (isDone) item.style.borderLeft = "4px solid #10b981";
-                        item.onclick = () => {
-                            pushNavState();
-                            selectedChapterIdx = idx;
-                            renderContent();
-                        };
-                        item.innerHTML = `
+                    const data = mbbsData[currentSubject];
+                    if (selectedChapterIdx === null) {
+                        // Show Chapter List
+                        const list = document.createElement('div');
+                        list.className = 'chapter-list';
+                        data.videos.forEach((v, idx) => {
+                            const vidId = v.link;
+                            const isDone = localStorage.getItem('completed_' + vidId) === 'true';
+                            const item = document.createElement('div');
+                            item.className = 'chapter-card';
+                            if (isDone) item.style.borderLeft = "4px solid #10b981";
+                            item.onclick = () => {
+                                pushNavState();
+                                selectedChapterIdx = idx;
+                                renderContent();
+                            };
+                            item.innerHTML = `
                             <div class="chapter-icon" style="${isDone ? 'background:rgba(16, 185, 129, 0.1); color:#10b981;' : ''}">
                                 <i class="fas ${isDone ? 'fa-check-circle' : 'fa-play'}"></i>
                             </div>
@@ -1575,94 +1697,94 @@
                             </div>
                             <i class="fas fa-circle-play" style="color:${isDone ? '#10b981' : 'var(--primary)'}; font-size:1.2rem;"></i>
                         `;
-                        list.appendChild(item);
-                    });
-                    area.appendChild(list);
-                } else {
-                    renderVideoCard(area, data.videos[selectedChapterIdx], selectedChapterIdx);
-                }
-            } else if (currentView === 'notes' || currentView === 'quizzes') {
-                // --- Permanent List View Level ---
-                if (!currentSubject) {
-                    renderSubjectList();
-                    return;
-                }
+                            list.appendChild(item);
+                        });
+                        area.appendChild(list);
+                    } else {
+                        renderVideoCard(area, data.videos[selectedChapterIdx], selectedChapterIdx);
+                    }
+                } else if (currentView === 'notes' || currentView === 'quizzes') {
+                    // --- Permanent List View Level ---
+                    if (!currentSubject) {
+                        renderSubjectList();
+                        return;
+                    }
 
-                const list = document.createElement('div');
-                list.className = 'chapter-list';
-                list.id = 'quiz-list-container';
-                area.appendChild(list);
-
-                renderItems();
-            } else if (currentView === 'qbank') {
-                // Keep legacy QBank Platform selection for now
-                if (!currentPlatform) {
-                    renderPlatforms();
-                } else if (!currentSubject) {
-                    renderSubjectList();
-                } else {
-                    // Subject is selected, show the QBank items
                     const list = document.createElement('div');
                     list.className = 'chapter-list';
                     list.id = 'quiz-list-container';
                     area.appendChild(list);
 
                     renderItems();
+                } else if (currentView === 'qbank') {
+                    // Keep legacy QBank Platform selection for now
+                    if (!currentPlatform) {
+                        renderPlatforms();
+                    } else if (!currentSubject) {
+                        renderSubjectList();
+                    } else {
+                        // Subject is selected, show the QBank items
+                        const list = document.createElement('div');
+                        list.className = 'chapter-list';
+                        list.id = 'quiz-list-container';
+                        area.appendChild(list);
+
+                        renderItems();
+                    }
                 }
-            }
-            if (area.innerHTML === '') {
-                area.innerHTML = `
+                if (area.innerHTML === '') {
+                    area.innerHTML = `
                     <div style="text-align:center; padding:5rem; color:var(--text-light)">
                         <i class="fas fa-search" style="font-size:3rem; opacity:0.1; margin-bottom:1rem;"></i>
                         <p>No content available for this subject yet.<br><span style="font-size:0.9rem; color:var(--primary)">✨ Try checking the Premium section!</span></p>
                     </div>
                 `;
-            }
-        }
-
-        function renderItems(searchQuery = '') {
-            const container = document.getElementById('quiz-list-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const data = mbbsData[currentSubject];
-            if (!data) {
-                container.innerHTML = `<div style="text-align:center; padding:3.5rem; color:var(--text-light)">Subject data not found for "${currentSubject}".</div>`;
-                return;
+                }
             }
 
-            let items = [];
-            if (currentView === 'notes') {
-                items = data.notes;
-            } else if (currentView === 'quizzes') {
-                items = data.quizzes;
-            } else if (currentView === 'qbank') {
-                // Strict Filtering: Only show items explicitly marked as 'qbank' in Column B
-                // Ensure platform matching is also respected
-                items = data.qbank.filter(i => i.platform === currentPlatform && i.Type === 'qbank');
-            }
+            function renderItems(searchQuery = '') {
+                const container = document.getElementById('quiz-list-container');
+                if (!container) return;
+                container.innerHTML = '';
 
-            // Apply search filtering
-            if (searchQuery) {
-                items = items.filter(i => i.title.toLowerCase().includes(searchQuery.toLowerCase()));
-            }
+                const data = mbbsData[currentSubject];
+                if (!data) {
+                    container.innerHTML = `<div style="text-align:center; padding:3.5rem; color:var(--text-light)">Subject data not found for "${currentSubject}".</div>`;
+                    return;
+                }
 
-            items.forEach((item, idx) => {
-                const card = document.createElement('div');
-                card.className = `chapter-card ${item.isPremium ? 'is-premium' : ''}`;
+                let items = [];
+                if (currentView === 'notes') {
+                    items = data.notes;
+                } else if (currentView === 'quizzes') {
+                    items = data.quizzes;
+                } else if (currentView === 'qbank') {
+                    // Strict Filtering: Only show items explicitly marked as 'qbank' in Column B
+                    // Ensure platform matching is also respected
+                    items = data.qbank.filter(i => i.platform === currentPlatform && i.Type === 'qbank');
+                }
 
-                const isQuiz = item.Type && item.Type.includes('quiz');
-                card.onclick = () => {
-                    if (item.isPremium) {
-                        alert("👑 This high-value content is exclusive for Premium Members! Launching viewer...");
-                    }
-                    isQuiz ? openQuiz(item.link) : openFile(item.link);
-                };
+                // Apply search filtering
+                if (searchQuery) {
+                    items = items.filter(i => i.title.toLowerCase().includes(searchQuery.toLowerCase()));
+                }
 
-                const icon = isQuiz ? 'fa-lightbulb' : 'fa-file-pdf';
-                const typeLabel = (item.Type && item.Type.includes('gt')) ? 'GT' : ((item.Type && item.Type.includes('pyq')) ? 'PYQ' : ((item.Type && item.Type.includes('btr')) ? 'BTR' : ''));
+                items.forEach((item, idx) => {
+                    const card = document.createElement('div');
+                    card.className = `chapter-card ${item.isPremium ? 'is-premium' : ''}`;
 
-                card.innerHTML = `
+                    const isQuiz = item.Type && item.Type.includes('quiz');
+                    card.onclick = () => {
+                        if (item.isPremium) {
+                            alert("👑 This high-value content is exclusive for Premium Members! Launching viewer...");
+                        }
+                        isQuiz ? openQuiz(item.link) : openFile(item.link);
+                    };
+
+                    const icon = isQuiz ? 'fa-lightbulb' : 'fa-file-pdf';
+                    const typeLabel = (item.Type && item.Type.includes('gt')) ? 'GT' : ((item.Type && item.Type.includes('pyq')) ? 'PYQ' : ((item.Type && item.Type.includes('btr')) ? 'BTR' : ''));
+
+                    card.innerHTML = `
                     <div class="chapter-icon"><i class="fas ${icon}"></i></div>
                     <div style="flex-grow:1; font-weight:500;">
                         ${typeLabel ? `<span class="quiz-type-icon">[${typeLabel}]</span> ` : ''}
@@ -1674,12 +1796,12 @@
                     </div>
                     ${item.isPremium ? '<div class="premium-lock"><i class="fas fa-lock"></i></div>' : '<i class="fas fa-external-link-alt" style="opacity:0.5;"></i>'}
                 `;
-                container.appendChild(card);
-            });
+                    container.appendChild(card);
+                });
 
-            if (items.length === 0) {
-                if (currentView === 'qbank') {
-                    container.innerHTML = `
+                if (items.length === 0) {
+                    if (currentView === 'qbank') {
+                        container.innerHTML = `
                         <div style="text-align:center; padding:3.5rem; color:var(--text-light)">
                             <i class="fas fa-exclamation-circle" style="font-size:3rem; opacity:0.1; margin-bottom:1.5rem;"></i>
                             <p style="font-weight:600;">No QBank files found for this subject.</p>
@@ -1687,23 +1809,23 @@
                             <p style="font-size:0.8rem; margin-top:1rem; opacity:0.7;">Subject: ${currentSubject} | Platform: ${currentPlatform}</p>
                         </div>
                     `;
-                } else {
-                    container.innerHTML = `
+                    } else {
+                        container.innerHTML = `
                         <div style="text-align:center; padding:3.5rem; color:var(--text-light)">
                             <i class="fas fa-folder-open" style="font-size:3rem; opacity:0.1; margin-bottom:1.5rem;"></i>
                             <p style="font-weight:600;">No items found in this section.</p>
                             <p style="font-size:0.85rem; margin-top:0.5rem;">Please check the 👑 <b>Premium</b> tab for more content!</p>
                         </div>
                     `;
+                    }
                 }
             }
-        }
 
-        function renderVideoCard(container, video, index) {
-            const card = document.createElement('div'); card.className = 'card';
-            let vid = video.link;
-            const uid = `yt-${index}`;
-            card.innerHTML = `
+            function renderVideoCard(container, video, index) {
+                const card = document.createElement('div'); card.className = 'card';
+                let vid = video.link;
+                const uid = `yt-${index}`;
+                card.innerHTML = `
                 <div class="video-wrapper">
                     <div id="${uid}"></div>
                     <div class="glass-shield"></div>
@@ -1743,262 +1865,262 @@
                 </div>
                 <div class="card-content"><div class="card-title">${video.title}</div></div>
             `;
-            container.appendChild(card);
-            if (window.YT && window.YT.Player) createPlayer(uid, vid); else pendingPlayers.push({ id: uid, vid: vid });
-        }
+                container.appendChild(card);
+                if (window.YT && window.YT.Player) createPlayer(uid, vid); else pendingPlayers.push({ id: uid, vid: vid });
+            }
 
-        function addSectionHeader(container, text, icon) {
-            const h = document.createElement('h3'); h.className = 'section-title';
-            h.innerHTML = `<i class="fas ${icon}"></i> ${text}`; container.appendChild(h);
-        }
+            function addSectionHeader(container, text, icon) {
+                const h = document.createElement('h3'); h.className = 'section-title';
+                h.innerHTML = `<i class="fas ${icon}"></i> ${text}`; container.appendChild(h);
+            }
 
-        // --- ADVANCED VIDEO LOGIC ---
-        let lastTapTime = 0;
-        window.handleTap = (e, uid) => {
-            const now = Date.now();
-            const delay = now - lastTapTime;
-            const rect = e.currentTarget.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const width = rect.width;
+            // --- ADVANCED VIDEO LOGIC ---
+            let lastTapTime = 0;
+            window.handleTap = (e, uid) => {
+                const now = Date.now();
+                const delay = now - lastTapTime;
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const width = rect.width;
 
-            if (delay < 300) {
-                // Double Tap Detected
-                if (x < width * 0.4) {
-                    seekBy(-10, uid);
-                    showSeekFeedback('left', uid);
-                } else if (x > width * 0.6) {
-                    seekBy(10, uid);
-                    showSeekFeedback('right', uid);
+                if (delay < 300) {
+                    // Double Tap Detected
+                    if (x < width * 0.4) {
+                        seekBy(-10, uid);
+                        showSeekFeedback('left', uid);
+                    } else if (x > width * 0.6) {
+                        seekBy(10, uid);
+                        showSeekFeedback('right', uid);
+                    }
+                } else {
+                    // Single Tap -> Pass to Toggle
+                    togglePlayPause(uid);
                 }
-            } else {
-                // Single Tap -> Pass to Toggle
-                togglePlayPause(uid);
+                lastTapTime = now;
+            };
+
+            window.togglePlayPause = (uid) => {
+                const p = players[uid];
+                if (p) {
+                    const state = p.getPlayerState();
+                    if (state === YT.PlayerState.PLAYING) p.pauseVideo();
+                    else p.playVideo();
+                }
+            };
+
+            function seekBy(seconds, uid) {
+                const p = players[uid];
+                if (p) {
+                    const now = p.getCurrentTime();
+                    p.seekTo(now + seconds, true);
+                }
             }
-            lastTapTime = now;
-        };
 
-        window.togglePlayPause = (uid) => {
-            const p = players[uid];
-            if (p) {
-                const state = p.getPlayerState();
-                if (state === YT.PlayerState.PLAYING) p.pauseVideo();
-                else p.playVideo();
+            function showSeekFeedback(side, uid) {
+                const el = document.getElementById(`seek-${side}-${uid}`);
+                if (el) {
+                    el.classList.add('active');
+                    setTimeout(() => el.classList.remove('active'), 500);
+                }
             }
-        };
 
-        function seekBy(seconds, uid) {
-            const p = players[uid];
-            if (p) {
-                const now = p.getCurrentTime();
-                p.seekTo(now + seconds, true);
+            // ORIENTATION / FULLSCREEN OVERLAY
+            window.activePlayerId = null;
+            function updateOrientation() {
+                const overlay = document.getElementById('landscapeOverlay');
+                if (window.innerHeight < window.innerWidth && window.activePlayerId) {
+                    overlay.classList.add('visible');
+                    updateOverlaySpeedButtons();
+                } else {
+                    overlay.classList.remove('visible');
+                }
             }
-        }
+            window.addEventListener('resize', updateOrientation);
+            window.addEventListener('orientationchange', updateOrientation);
 
-        function showSeekFeedback(side, uid) {
-            const el = document.getElementById(`seek-${side}-${uid}`);
-            if (el) {
-                el.classList.add('active');
-                setTimeout(() => el.classList.remove('active'), 500);
-            }
-        }
+            function updateOverlaySpeedButtons() {
+                const container = document.getElementById('overlaySpeedRow');
+                const currentSpeed = localStorage.getItem('preferred_speed') || 1;
+                const speeds = [0.5, 1, 1.5, 2];
 
-        // ORIENTATION / FULLSCREEN OVERLAY
-        window.activePlayerId = null;
-        function updateOrientation() {
-            const overlay = document.getElementById('landscapeOverlay');
-            if (window.innerHeight < window.innerWidth && window.activePlayerId) {
-                overlay.classList.add('visible');
-                updateOverlaySpeedButtons();
-            } else {
-                overlay.classList.remove('visible');
-            }
-        }
-        window.addEventListener('resize', updateOrientation);
-        window.addEventListener('orientationchange', updateOrientation);
-
-        function updateOverlaySpeedButtons() {
-            const container = document.getElementById('overlaySpeedRow');
-            const currentSpeed = localStorage.getItem('preferred_speed') || 1;
-            const speeds = [0.5, 1, 1.5, 2];
-
-            container.innerHTML = speeds.map(s => `
+                container.innerHTML = speeds.map(s => `
                 <button class="speed-btn ${parseFloat(currentSpeed) === s ? 'active' : ''}" 
                         onclick="changeSpeed(${s}, '${activePlayerId}')">
                     ${s === 1 ? 'Normal' : s + 'x'}
                 </button>
             `).join('');
-        }
-
-        window.exitLandscape = () => {
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            }
-            document.getElementById('landscapeOverlay').classList.remove('visible');
-        };
-
-        // --- PLAYER ENGINE ---
-        window.onYouTubeIframeAPIReady = () => { pendingPlayers.forEach(p => createPlayer(p.id, p.vid)); pendingPlayers = []; };
-        function createPlayer(uid, vid) {
-            const cleanVidId = getYoutubeVideoId(vid);
-            console.log('Playing Video ID:', cleanVidId); // Debug log for browser console
-
-            players[uid] = new YT.Player(uid, {
-                height: '100%', width: '100%', videoId: cleanVidId,
-                playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
-                events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
-            });
-        }
-        function onReady(e, uid) {
-            const dur = e.target.getDuration();
-            document.getElementById(`seek-${uid}`).max = dur;
-            updateClock(uid, 0, dur);
-
-            // RESUME LOGIC
-            const vidData = e.target.getVideoData();
-            const videoId = vidData.video_id;
-            const savedTime = localStorage.getItem('resume_' + videoId);
-            if (savedTime) {
-                e.target.seekTo(parseFloat(savedTime), true);
             }
 
-            // APPLY PREFERRED SPEED
-            const preferredSpeed = localStorage.getItem('preferred_speed') || 1;
-            changeSpeed(parseFloat(preferredSpeed), uid);
-        }
-        function onStateChange(e, uid) {
-            const vidData = e.target.getVideoData();
-            const videoId = vidData.video_id;
-
-            if (e.data == YT.PlayerState.PLAYING) {
-                window.activePlayerId = uid;
-                updateOrientation();
-                updatePlayPauseIcon(uid, true);
-                e.target.setPlaybackQuality('hd720');
-                if (players[uid].timer) clearInterval(players[uid].timer);
-                players[uid].timer = setInterval(() => {
-                    const t = e.target.getCurrentTime();
-                    const d = e.target.getDuration();
-                    document.getElementById(`seek-${uid}`).value = t;
-                    updateClock(uid, t, d);
-
-                    // SAVE PROGRESS
-                    localStorage.setItem('resume_' + videoId, t);
-
-                    // TRACK COMPLETION (90%)
-                    if (d > 0 && t > (d * 0.9)) {
-                        localStorage.setItem('completed_' + videoId, 'true');
-                    }
-                }, 1000);
-            } else {
-                clearInterval(players[uid].timer);
-                updatePlayPauseIcon(uid, false);
-            }
-        }
-
-        function updatePlayPauseIcon(uid, isPlaying) {
-            const btn = document.getElementById(`toggle-${uid}`);
-            if (btn) {
-                btn.innerHTML = `<i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>`;
-            }
-        }
-        function updateClock(uid, curr, dur) { document.getElementById(`time-${uid}`).innerText = `${fmt(curr)} / ${fmt(dur)}`; }
-        function fmt(s) { const m = Math.floor(s / 60); const sc = Math.floor(s % 60); return `${m}:${sc < 10 ? '0' : ''}${sc}`; }
-
-        window.controlPlayer = (uid, a) => players[uid][a + 'Video']();
-        window.userSeek = (uid, v) => players[uid].seekTo(v, true);
-
-        window.changeSpeed = (rate, uid) => {
-            if (players[uid] && players[uid].setPlaybackRate) {
-                players[uid].setPlaybackRate(rate);
-                // Persistence
-                localStorage.setItem('preferred_speed', rate);
-                // UI Update Primary
-                const row = document.getElementById(`speed-row-${uid}`);
-                if (row) {
-                    row.querySelectorAll('.speed-btn').forEach(btn => {
-                        btn.classList.toggle('active', parseFloat(btn.innerText) === rate || (rate === 1 && btn.innerText === 'Normal'));
-                    });
+            window.exitLandscape = () => {
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
                 }
-                // UI Update Overlay
-                updateOverlaySpeedButtons();
+                document.getElementById('landscapeOverlay').classList.remove('visible');
+            };
+
+            // --- PLAYER ENGINE ---
+            window.onYouTubeIframeAPIReady = () => { pendingPlayers.forEach(p => createPlayer(p.id, p.vid)); pendingPlayers = []; };
+            function createPlayer(uid, vid) {
+                const cleanVidId = getYoutubeVideoId(vid);
+                console.log('Playing Video ID:', cleanVidId); // Debug log for browser console
+
+                players[uid] = new YT.Player(uid, {
+                    height: '100%', width: '100%', videoId: cleanVidId,
+                    playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
+                    events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
+                });
             }
-        };
+            function onReady(e, uid) {
+                const dur = e.target.getDuration();
+                document.getElementById(`seek-${uid}`).max = dur;
+                updateClock(uid, 0, dur);
 
-        window.openQuiz = (url) => {
-            pushNavState(); // Save list state before opening modal
-            const viewer = document.getElementById('fileViewer');
-            const loader = document.getElementById('pdfLoader');
-            const externalBtn = document.getElementById('externalLink');
+                // RESUME LOGIC
+                const vidData = e.target.getVideoData();
+                const videoId = vidData.video_id;
+                const savedTime = localStorage.getItem('resume_' + videoId);
+                if (savedTime) {
+                    e.target.seekTo(parseFloat(savedTime), true);
+                }
 
-            viewer.removeAttribute('srcdoc');
-            viewer.src = "about:blank";
-            loader.style.display = 'block';
-
-            const formattedUrl = formatDriveLink(url);
-            viewer.src = formattedUrl;
-            if (externalBtn) externalBtn.href = url;
-
-            document.getElementById('fileModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        };
-
-        window.toggleFullScreen = (btn) => {
-            const c = btn.closest('.card');
-            if (!document.fullscreenElement) {
-                c.requestFullscreen().then(updateOrientation).catch(e => console.error(e));
-            } else {
-                document.exitFullscreen();
+                // APPLY PREFERRED SPEED
+                const preferredSpeed = localStorage.getItem('preferred_speed') || 1;
+                changeSpeed(parseFloat(preferredSpeed), uid);
             }
-        };
+            function onStateChange(e, uid) {
+                const vidData = e.target.getVideoData();
+                const videoId = vidData.video_id;
 
-        // --- FILE ENGINE ---
-        function formatDriveLink(url) {
-            if (!url || !url.includes('drive.google.com')) return url;
-            const match = url.match(/\/d\/([^\/?#]+)|id=([^\/&#?]+)/);
-            const id = (match && (match[1] || match[2])) ? (match[1] || match[2]) : "";
-            return id ? `https://drive.google.com/file/d/${id}/preview` : url;
-        }
+                if (e.data == YT.PlayerState.PLAYING) {
+                    window.activePlayerId = uid;
+                    updateOrientation();
+                    updatePlayPauseIcon(uid, true);
+                    e.target.setPlaybackQuality('hd720');
+                    if (players[uid].timer) clearInterval(players[uid].timer);
+                    players[uid].timer = setInterval(() => {
+                        const t = e.target.getCurrentTime();
+                        const d = e.target.getDuration();
+                        document.getElementById(`seek-${uid}`).value = t;
+                        updateClock(uid, t, d);
 
-        window.openFile = (urlOrContent) => {
-            pushNavState(); // Save list state before opening modal
-            const viewer = document.getElementById('fileViewer');
-            const loader = document.getElementById('pdfLoader');
-            const externalBtn = document.getElementById('externalLink');
+                        // SAVE PROGRESS
+                        localStorage.setItem('resume_' + videoId, t);
 
-            viewer.removeAttribute('srcdoc');
-            viewer.src = "about:blank";
-            loader.style.display = 'block';
-
-            if (urlOrContent.startsWith('http')) {
-                const formatted = formatDriveLink(urlOrContent);
-                viewer.src = formatted;
-                if (externalBtn) externalBtn.href = urlOrContent;
-            } else {
-                viewer.srcdoc = urlOrContent;
-                if (externalBtn) externalBtn.style.display = 'none';
+                        // TRACK COMPLETION (90%)
+                        if (d > 0 && t > (d * 0.9)) {
+                            localStorage.setItem('completed_' + videoId, 'true');
+                        }
+                    }, 1000);
+                } else {
+                    clearInterval(players[uid].timer);
+                    updatePlayPauseIcon(uid, false);
+                }
             }
 
-            document.getElementById('fileModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        };
-
-        window.togglePdfFullScreen = () => {
-            const f = document.getElementById('fileModal');
-            if (!document.fullscreenElement) f.requestFullscreen();
-            else document.exitFullscreen();
-        };
-
-        window.closeModal = () => {
-            // Close via goBack to restore previous list state and scroll Position
-            if (navHistory.length > 0) {
-                goBack();
-            } else {
-                cleanupIframes();
-                document.getElementById('fileModal').style.display = 'none';
-                document.body.style.overflow = 'auto';
+            function updatePlayPauseIcon(uid, isPlaying) {
+                const btn = document.getElementById(`toggle-${uid}`);
+                if (btn) {
+                    btn.innerHTML = `<i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>`;
+                }
             }
-        };
-    </script>
+            function updateClock(uid, curr, dur) { document.getElementById(`time-${uid}`).innerText = `${fmt(curr)} / ${fmt(dur)}`; }
+            function fmt(s) { const m = Math.floor(s / 60); const sc = Math.floor(s % 60); return `${m}:${sc < 10 ? '0' : ''}${sc}`; }
+
+            window.controlPlayer = (uid, a) => players[uid][a + 'Video']();
+            window.userSeek = (uid, v) => players[uid].seekTo(v, true);
+
+            window.changeSpeed = (rate, uid) => {
+                if (players[uid] && players[uid].setPlaybackRate) {
+                    players[uid].setPlaybackRate(rate);
+                    // Persistence
+                    localStorage.setItem('preferred_speed', rate);
+                    // UI Update Primary
+                    const row = document.getElementById(`speed-row-${uid}`);
+                    if (row) {
+                        row.querySelectorAll('.speed-btn').forEach(btn => {
+                            btn.classList.toggle('active', parseFloat(btn.innerText) === rate || (rate === 1 && btn.innerText === 'Normal'));
+                        });
+                    }
+                    // UI Update Overlay
+                    updateOverlaySpeedButtons();
+                }
+            };
+
+            window.openQuiz = (url) => {
+                pushNavState(); // Save list state before opening modal
+                const viewer = document.getElementById('fileViewer');
+                const loader = document.getElementById('pdfLoader');
+                const externalBtn = document.getElementById('externalLink');
+
+                viewer.removeAttribute('srcdoc');
+                viewer.src = "about:blank";
+                loader.style.display = 'block';
+
+                const formattedUrl = formatDriveLink(url);
+                viewer.src = formattedUrl;
+                if (externalBtn) externalBtn.href = url;
+
+                document.getElementById('fileModal').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            };
+
+            window.toggleFullScreen = (btn) => {
+                const c = btn.closest('.card');
+                if (!document.fullscreenElement) {
+                    c.requestFullscreen().then(updateOrientation).catch(e => console.error(e));
+                } else {
+                    document.exitFullscreen();
+                }
+            };
+
+            // --- FILE ENGINE ---
+            function formatDriveLink(url) {
+                if (!url || !url.includes('drive.google.com')) return url;
+                const match = url.match(/\/d\/([^\/?#]+)|id=([^\/&#?]+)/);
+                const id = (match && (match[1] || match[2])) ? (match[1] || match[2]) : "";
+                return id ? `https://drive.google.com/file/d/${id}/preview` : url;
+            }
+
+            window.openFile = (urlOrContent) => {
+                pushNavState(); // Save list state before opening modal
+                const viewer = document.getElementById('fileViewer');
+                const loader = document.getElementById('pdfLoader');
+                const externalBtn = document.getElementById('externalLink');
+
+                viewer.removeAttribute('srcdoc');
+                viewer.src = "about:blank";
+                loader.style.display = 'block';
+
+                if (urlOrContent.startsWith('http')) {
+                    const formatted = formatDriveLink(urlOrContent);
+                    viewer.src = formatted;
+                    if (externalBtn) externalBtn.href = urlOrContent;
+                } else {
+                    viewer.srcdoc = urlOrContent;
+                    if (externalBtn) externalBtn.style.display = 'none';
+                }
+
+                document.getElementById('fileModal').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            };
+
+            window.togglePdfFullScreen = () => {
+                const f = document.getElementById('fileModal');
+                if (!document.fullscreenElement) f.requestFullscreen();
+                else document.exitFullscreen();
+            };
+
+            window.closeModal = () => {
+                // Close via goBack to restore previous list state and scroll Position
+                if (navHistory.length > 0) {
+                    goBack();
+                } else {
+                    cleanupIframes();
+                    document.getElementById('fileModal').style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            };
+        </script>
 </body>
 
 </html>
