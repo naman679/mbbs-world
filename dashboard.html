@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBBS World - Interactive Portal</title>
+    <title>MBBS World - Medical Education Resource & Study Portal</title>
+    <meta name="description"
+        content="Access high-quality MBBS notes, video lectures, and medical question banks. Specialized resources for Anatomy, Physiology, Pathology, and more to help medical students excel in university exams.">
+    <meta name="keywords"
+        content="MBBS World, Medical Education, MBBS notes, Medical Question Bank, Physiology resources, Anatomy study material, Medical students portal">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -1098,21 +1102,77 @@
             font-size: 0.85rem;
             font-weight: 500;
         }
+
+        /* --- FOOTER STYLES --- */
+        .portal-footer {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 3rem 1rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-copy {
+            color: var(--text-light);
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .trust-section {
+            display: none;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            color: var(--text-dark);
+        }
+
+        .seo-text {
+            color: var(--text-light);
+            line-height: 1.8;
+            text-align: justify;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .card-seo-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 10px;
+            line-height: 1.5;
+            text-align: left;
+        }
     </style>
 </head>
 
 <body>
-    <div id="login-container">
-        <div class="login-box">
-            <i class="fas fa-user-lock" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
-            <h2>MBBS World Access</h2>
-            <input type="text" id="loginUserName" placeholder="Enter Your Full Name">
-            <button onclick="checkAccess()">Enter Website</button>
-            <p id="error-msg" style="color:#ef4444;"></p>
-        </div>
-    </div>
-
-    <div id="main-content" style="display:none;">
+    <div id="main-content">
         <div id="landscapeOverlay" class="video-controls-overlay">
             <button class="overlay-back" onclick="exitLandscape()"><i class="fas fa-arrow-left"></i> Back</button>
             <div class="speed-row-overlay" id="overlaySpeedRow">
@@ -1130,17 +1190,19 @@
                     oninput="handleSearch()">
             </div>
             <div class="main-nav">
-                <a href="#" class="nav-link" id="nav-home" onclick="navigate('home')"><i class="fas fa-home"></i>
+                <a href="#home" class="nav-link" id="nav-home" onclick="navigate('home')"><i class="fas fa-home"></i>
                     Home</a>
-                <a href="#" class="nav-link" id="nav-videos" onclick="navigate('videos')"><i
+                <a href="#videos" class="nav-link" id="nav-videos" onclick="navigate('videos')"><i
                         class="fas fa-play-circle"></i>
                     Videos</a>
-                <a href="#" class="nav-link" id="nav-notes" onclick="navigate('notes')"><i class="fas fa-file-pdf"></i>
+                <a href="#notes" class="nav-link" id="nav-notes" onclick="navigate('notes')"><i
+                        class="fas fa-file-pdf"></i>
                     Notes</a>
-                <a href="#" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')"><i
+                <a href="#quizzes" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')"><i
                         class="fas fa-lightbulb"></i>
                     Quizzes</a>
-                <a href="#" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i class="fas fa-tasks"></i>
+                <a href="#qbank" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i
+                        class="fas fa-tasks"></i>
                     Q-Bank</a>
             </div>
             <div class="user-menu">
@@ -1174,119 +1236,139 @@
             </div>
         </div>
 
-        <div id="fileModal" class="modal">
-            <div class="modal-content">
-                <div id="pdfLoader" class="pdf-loader">
-                    <div class="spinner"></div>
-                    <p style="color: white; font-size: 0.8rem; opacity: 0.7;">Launching Viewer...</p>
+        <footer class="portal-footer">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="javascript:void(0)" onclick="showTrustPage('about')">About Us</a>
+                    <a href="javascript:void(0)" onclick="showTrustPage('privacy')">Privacy Policy</a>
+                    <a href="javascript:void(0)" onclick="showTrustPage('terms')">Terms of Service</a>
+                    <a href="javascript:void(0)" onclick="showTrustPage('disclaimer')">Medical Disclaimer</a>
+                    <a href="javascript:void(0)" onclick="showTrustPage('contact')">Contact Us</a>
                 </div>
-                <button class="fullscreen-modal" onclick="togglePdfFullScreen()" title="Toggle Full Screen">
-                    <i class="fas fa-expand"></i>
-                </button>
-                <button class="close-modal" onclick="closeModal()" title="Close">
-                    <i class="fas fa-times"></i>
-                </button>
-                <div id="modalFooter" class="modal-footer">
-                    <a id="externalLink" href="#" target="_blank" class="external-link-btn">
-                        <i class="fas fa-external-link-alt"></i> Open in New Tab
-                    </a>
+                <div class="footer-copy">
+                    &copy; 2026 MBBS World. Built for medical students, by medical students.
                 </div>
-                <iframe id="fileViewer" style="width:100%; height:calc(100% - 45px); border:none;" src=""
-                    allow="autoplay"
-                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-modals"
-                    onload="document.getElementById('pdfLoader').style.display='none'; this.focus();"></iframe>
             </div>
+        </footer>
+
+        <!-- Trust Content Area (Dynamically Filled) -->
+        <div id="trustArea" class="trust-section"></div>
+    </div> <!-- End of main-content -->
+
+    <div id="fileModal" class="modal">
+        <div class="modal-content">
+            <section id="pdfLoader" class="pdf-loader" aria-live="polite">
+                <div class="spinner"></div>
+                <header>
+                    <p style="color: white; font-size: 0.8rem; opacity: 0.7;">Launching Viewer...</p>
+                </header>
+            </section>
+            <button class="fullscreen-modal" onclick="togglePdfFullScreen()" title="Toggle Full Screen">
+                <i class="fas fa-expand"></i>
+            </button>
+            <button class="close-modal" onclick="closeModal()" title="Close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="modalFooter" class="modal-footer">
+                <a id="externalLink" href="#" target="_blank" class="external-link-btn">
+                    <i class="fas fa-external-link-alt"></i> Open in New Tab
+                </a>
+            </div>
+            <iframe id="fileViewer" style="width:100%; height:calc(100% - 45px); border:none;" src="" allow="autoplay"
+                sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-modals"
+                onload="document.getElementById('pdfLoader').style.display='none'; this.focus();"></iframe>
         </div>
+    </div>
 
-        <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
 
-        <script>
-            // --- DATA ENGINE ---
-            let allData = []; // Global raw data
-            let mbbsData = {}; // Structured data
-            const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oD0BX4WhhLDL6e6WybIEXmvbiroBMBiGASJ2r-HdxlIOmDFqaWpUEMdDydPUHVOQNsOGGbgJR6O/pub?output=csv";
+    <script>
+        // --- DATA ENGINE ---
+        let allData = []; // Global raw data
+        let mbbsData = {}; // Structured data
+        const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oD0BX4WhhLDL6e6WybIEXmvbiroBMBiGASJ2r-HdxlIOmDFqaWpUEMdDydPUHVOQNsOGGbgJR6O/pub?output=csv";
 
-            const MBBS_SUBJECTS = [
-                "Anatomy", "Physiology", "Biochemistry",
-                "Pharmacology", "Pathology", "Microbiology",
-                "Forensic Medicine", "Community Medicine",
-                "Medicine", "Surgery", "OBGY", "Pediatrics",
-                "ENT", "Ophthalmology", "Orthopedics",
-                "Dermatology", "Psychiatry", "Radiology", "Anaesthesia"
-            ];
+        const MBBS_SUBJECTS = [
+            "Anatomy", "Physiology", "Biochemistry",
+            "Pharmacology", "Pathology", "Microbiology",
+            "Forensic Medicine", "Community Medicine",
+            "Medicine", "Surgery", "OBGY", "Pediatrics",
+            "ENT", "Ophthalmology", "Orthopedics",
+            "Dermatology", "Psychiatry", "Radiology", "Anaesthesia"
+        ];
 
-            async function fetchSheetData() {
-                try {
-                    const response = await fetch(SHEET_URL);
-                    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-                    let text = await response.text();
+        async function fetchSheetData() {
+            try {
+                const response = await fetch(SHEET_URL);
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                let text = await response.text();
 
-                    // Remove Byte Order Mark (BOM) if present
-                    text = text.replace(/^\uFEFF/, '');
+                // Remove Byte Order Mark (BOM) if present
+                text = text.replace(/^\uFEFF/, '');
 
-                    // If it looks like HTML (Google login page or error), it's not a published CSV
-                    if (text.includes('<!DOCTYPE html>') || text.includes('<html>')) {
-                        throw new Error("Invalid CSV format. Please ensure your Google Sheet is 'Published to the Web' as a CSV.");
+                // If it looks like HTML (Google login page or error), it's not a published CSV
+                if (text.includes('<!DOCTYPE html>') || text.includes('<html>')) {
+                    throw new Error("Invalid CSV format. Please ensure your Google Sheet is 'Published to the Web' as a CSV.");
+                }
+
+                console.log("Sheet data fetched successfully");
+                const lines = text.split(/\r?\n/).filter(line => line.trim() !== "");
+                if (lines.length < 2) throw new Error("Spreadsheet is empty or has no data rows.");
+
+                allData = lines.slice(1);
+                mbbsData = {};
+                allData.forEach(line => {
+                    const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+                    if (cols.length < 4) return;
+
+                    // Consistent Mapping from Google Sheet (Column A=Subj, B=Type, C=Title, D=Link, E=Platform)
+                    const subjRaw = cols[0] || 'Other';
+                    const typeRaw = cols[1] || '';
+                    const titleRaw = cols[2] || 'Untitled';
+                    const linkRaw = cols[3] || '';
+                    const platformRaw = cols[4] || 'Other';
+
+                    const isPremium = subjRaw.toLowerCase() === "other" || !subjRaw;
+                    const cleanSubject = isPremium ? "Premium" : subjRaw;
+                    const subKey = isPremium ? "premium" : cleanSubject.toLowerCase().trim().replace(/ /g, '_');
+
+                    const typeKey = typeRaw.toLowerCase().trim();
+
+                    if (!mbbsData[subKey]) {
+                        mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], quizzes: [] };
                     }
 
-                    console.log("Sheet data fetched successfully");
-                    const lines = text.split(/\r?\n/).filter(line => line.trim() !== "");
-                    if (lines.length < 2) throw new Error("Spreadsheet is empty or has no data rows.");
+                    // Standardize object structure
+                    const item = {
+                        Subject: subjRaw, // Using user requested property name
+                        title: titleRaw,
+                        link: linkRaw,
+                        platform: platformRaw,
+                        Type: typeKey, // Standardizing on capital Type
+                        subjectName: cleanSubject,
+                        isPremium
+                    };
 
-                    allData = lines.slice(1);
-                    mbbsData = {};
-                    allData.forEach(line => {
-                        const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
-                        if (cols.length < 4) return;
+                    if (typeKey === 'videos' || typeKey === 'video') {
+                        const vidId = getYoutubeVideoId(linkRaw);
+                        mbbsData[subKey].videos.push({ ...item, link: vidId });
+                    } else if (typeKey === 'notes') {
+                        mbbsData[subKey].notes.push(item);
+                    } else if (typeKey === 'qbank') {
+                        mbbsData[subKey].qbank.push(item);
+                    } else if (typeKey.includes('quiz')) {
+                        mbbsData[subKey].quizzes.push(item);
+                    } else if (typeKey === 'keypoints' || typeKey === 'keypoint') {
+                        mbbsData[subKey].keyPoints.push({ ...item, content: linkRaw });
+                    }
+                });
 
-                        // Consistent Mapping from Google Sheet (Column A=Subj, B=Type, C=Title, D=Link, E=Platform)
-                        const subjRaw = cols[0] || 'Other';
-                        const typeRaw = cols[1] || '';
-                        const titleRaw = cols[2] || 'Untitled';
-                        const linkRaw = cols[3] || '';
-                        const platformRaw = cols[4] || 'Other';
+                // Set initial UI
+                showMainMenu();
 
-                        const isPremium = subjRaw.toLowerCase() === "other" || !subjRaw;
-                        const cleanSubject = isPremium ? "Premium" : subjRaw;
-                        const subKey = isPremium ? "premium" : cleanSubject.toLowerCase().trim().replace(/ /g, '_');
-
-                        const typeKey = typeRaw.toLowerCase().trim();
-
-                        if (!mbbsData[subKey]) {
-                            mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], quizzes: [] };
-                        }
-
-                        // Standardize object structure
-                        const item = {
-                            Subject: subjRaw, // Using user requested property name
-                            title: titleRaw,
-                            link: linkRaw,
-                            platform: platformRaw,
-                            Type: typeKey, // Standardizing on capital Type
-                            subjectName: cleanSubject,
-                            isPremium
-                        };
-
-                        if (typeKey === 'videos' || typeKey === 'video') {
-                            const vidId = getYoutubeVideoId(linkRaw);
-                            mbbsData[subKey].videos.push({ ...item, link: vidId });
-                        } else if (typeKey === 'notes') {
-                            mbbsData[subKey].notes.push(item);
-                        } else if (typeKey === 'qbank') {
-                            mbbsData[subKey].qbank.push(item);
-                        } else if (typeKey.includes('quiz')) {
-                            mbbsData[subKey].quizzes.push(item);
-                        } else if (typeKey === 'keypoints' || typeKey === 'keypoint') {
-                            mbbsData[subKey].keyPoints.push({ ...item, content: linkRaw });
-                        }
-                    });
-
-                    // Set initial UI
-                    showMainMenu();
-
-                } catch (e) {
-                    console.error("CSV Fetch Error:", e);
-                    document.getElementById('contentArea').innerHTML = `
+            } catch (e) {
+                console.error("CSV Fetch Error:", e);
+                document.getElementById('contentArea').innerHTML = `
                     <div style="text-align:center; padding:5rem;">
                         <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:#ef4444; margin-bottom:1rem;"></i>
                         <h2 style="color:#ef4444; margin-bottom:0.5rem;">Data Load Failure</h2>
@@ -1297,224 +1379,197 @@
                         </div>
                     </div>
                 `;
-                }
+            }
+        }
+
+        function getYoutubeVideoId(url) {
+            if (!url) return "";
+            url = url.trim();
+            if (url.length === 11 && !url.includes('.') && !url.includes('/')) return url;
+            // Regex to strictly capture only 11 characters after any of the YouTube URL prefixes
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/|live\/)([^#\&\?]{11}).*/;
+            const match = url.match(regExp);
+            const id = (match && match[2].length === 11) ? match[2] : url;
+            return id;
+        }
+
+        let currentView = 'home';
+        let currentSubject = null;
+        let currentPlatform = null;
+        let selectedChapterIdx = null;
+        let currentQuizFilter = 'all';
+        let players = {};
+        let pendingPlayers = [];
+        let navHistory = [];
+
+        function pushNavState() {
+            navHistory.push({
+                view: currentView,
+                subject: currentSubject,
+                platform: currentPlatform,
+                chapterIdx: selectedChapterIdx,
+                quizFilter: currentQuizFilter,
+                scrollPos: window.scrollY
+            });
+        }
+
+        window.goBack = () => {
+            if (navHistory.length === 0) {
+                showMainMenu();
+                return;
             }
 
-            function getYoutubeVideoId(url) {
-                if (!url) return "";
-                url = url.trim();
-                if (url.length === 11 && !url.includes('.') && !url.includes('/')) return url;
-                // Regex to strictly capture only 11 characters after any of the YouTube URL prefixes
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/|live\/)([^#\&\?]{11}).*/;
-                const match = url.match(regExp);
-                const id = (match && match[2].length === 11) ? match[2] : url;
-                return id;
+            // --- Bandwidth & Performance Fix: Clear background iframes ---
+            cleanupIframes();
+
+            const prevState = navHistory.pop();
+            currentView = prevState.view;
+            currentSubject = prevState.subject;
+            currentPlatform = prevState.platform;
+            selectedChapterIdx = prevState.chapterIdx;
+            currentQuizFilter = prevState.quizFilter;
+
+            // Re-render based on restored state
+            if (currentView === 'home') {
+                showMainMenu(true);
+            } else if (currentView === 'qbank' && !currentPlatform) {
+                filterCategory('qbank', true);
+            } else {
+                renderContent(true);
             }
 
-            let currentView = 'home';
-            let currentSubject = null;
-            let currentPlatform = null;
-            let selectedChapterIdx = null;
-            let currentQuizFilter = 'all';
-            let players = {};
-            let pendingPlayers = [];
-            let navHistory = [];
+            // Restore scroll position after rendering
+            setTimeout(() => {
+                window.scrollTo({ top: prevState.scrollPos, behavior: 'auto' });
+            }, 100);
+        };
 
-            function pushNavState() {
-                navHistory.push({
-                    view: currentView,
-                    subject: currentSubject,
-                    platform: currentPlatform,
-                    chapterIdx: selectedChapterIdx,
-                    quizFilter: currentQuizFilter,
-                    scrollPos: window.scrollY
+        function cleanupIframes() {
+            // Stop any playing YouTube videos
+            Object.values(players).forEach(p => {
+                if (p && p.stopVideo) p.stopVideo();
+                if (p && p.destroy) p.destroy();
+            });
+            players = {};
+            pendingPlayers = [];
+            window.activePlayerId = null;
+
+            // Clear Quiz/PDF Iframe definately
+            const viewer = document.getElementById('fileViewer');
+            if (viewer) {
+                viewer.src = '';
+                viewer.removeAttribute('srcdoc');
+            }
+
+            // Close modal if open
+            const modal = document.getElementById('fileModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('globalSearch').value.toLowerCase().trim();
+
+            if (currentSubject) {
+                // If a subject is selected, we filter the items inside that subject
+                renderItems(query);
+            } else if (currentView === 'home') {
+                // Home search logic can be added here if needed
+            } else {
+                // Filter the subject list
+                renderSubjectList(query);
+            }
+        }
+
+        // UI State Controllers
+        window.checkAccess = (name) => {
+            if (!name) return;
+
+            const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
+
+            fetch(`${scriptURL}?name=${encodeURIComponent(name)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.allowed) {
+                        localStorage.setItem('mbbs_user', name);
+                        const firstName = name.split(' ')[0] || "Student";
+                        window.userSessionName = firstName;
+                        fetchSheetData();
+                        updateUserMenu();
+                    } else {
+                        console.error("Access validation failed");
+                    }
+                })
+                .catch(error => {
+                    console.error('Auth Error!', error.message);
                 });
+        };
+
+        window.logStudentActivity = (subject, title) => {
+            const userName = localStorage.getItem('mbbs_user');
+            const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
+
+            if (!userName || !subject || !title) return;
+
+            console.log(`Logging activity: ${userName} - ${subject} - ${title}`);
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors', // Standard for simple Apps Script POSTS
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userName, subject, title })
+            }).catch(e => console.error("Logging failed:", e));
+        };
+
+        window.handleLogout = () => {
+            localStorage.removeItem('mbbs_user');
+            window.location.reload();
+        };
+
+        window.showMainMenu = (isBack = false) => {
+            if (!isBack) pushNavState();
+            currentView = 'home';
+            currentSubject = null;
+            currentPlatform = null;
+            selectedChapterIdx = null;
+            window.activePlayerId = null;
+            updateOrientation();
+            updateNavActive('home');
+            renderHome();
+        };
+
+        window.filterCategory = (type, isBack = false) => {
+            if (!isBack) pushNavState();
+            currentView = type;
+            currentPlatform = null;
+            currentSubject = null;
+            selectedChapterIdx = null;
+            currentQuizFilter = 'all';
+            window.activePlayerId = null;
+            updateOrientation();
+            updateNavActive(type);
+
+            if (type === 'qbank') {
+                renderPlatforms();
+            } else {
+                renderSubjectList();
             }
+        };
 
-            window.goBack = () => {
-                if (navHistory.length === 0) {
-                    showMainMenu();
-                    return;
-                }
+        function renderPlatforms() {
+            const area = document.getElementById('contentArea');
+            const platforms = new Set();
 
-                // --- Bandwidth & Performance Fix: Clear background iframes ---
-                cleanupIframes();
-
-                const prevState = navHistory.pop();
-                currentView = prevState.view;
-                currentSubject = prevState.subject;
-                currentPlatform = prevState.platform;
-                selectedChapterIdx = prevState.chapterIdx;
-                currentQuizFilter = prevState.quizFilter;
-
-                // Re-render based on restored state
-                if (currentView === 'home') {
-                    showMainMenu(true);
-                } else if (currentView === 'qbank' && !currentPlatform) {
-                    filterCategory('qbank', true);
-                } else {
-                    renderContent(true);
-                }
-
-                // Restore scroll position after rendering
-                setTimeout(() => {
-                    window.scrollTo({ top: prevState.scrollPos, behavior: 'auto' });
-                }, 100);
-            };
-
-            function cleanupIframes() {
-                // Stop any playing YouTube videos
-                Object.values(players).forEach(p => {
-                    if (p && p.stopVideo) p.stopVideo();
-                    if (p && p.destroy) p.destroy();
+            Object.values(mbbsData).forEach(subj => {
+                subj.qbank.forEach(item => {
+                    if (item.platform) platforms.add(item.platform);
                 });
-                players = {};
-                pendingPlayers = [];
-                window.activePlayerId = null;
+            });
 
-                // Clear Quiz/PDF Iframe definately
-                const viewer = document.getElementById('fileViewer');
-                if (viewer) {
-                    viewer.src = '';
-                    viewer.removeAttribute('srcdoc');
-                }
+            const platformList = Array.from(platforms).sort();
 
-                // Close modal if open
-                const modal = document.getElementById('fileModal');
-                if (modal) {
-                    modal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-            }
-
-            function handleSearch() {
-                const query = document.getElementById('globalSearch').value.toLowerCase().trim();
-
-                if (currentSubject) {
-                    // If a subject is selected, we filter the items inside that subject
-                    renderItems(query);
-                } else if (currentView === 'home') {
-                    // Home search logic can be added here if needed
-                } else {
-                    // Filter the subject list
-                    renderSubjectList(query);
-                }
-            }
-
-            // UI State Controllers
-            window.checkAccess = () => {
-                const nameInput = document.getElementById('loginUserName');
-                const name = nameInput.value.trim();
-                if (!name) {
-                    document.getElementById('error-msg').innerText = "Please enter your name.";
-                    return;
-                }
-
-                const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
-                const errorEl = document.getElementById('error-msg');
-                errorEl.innerText = "Authenticating...";
-                errorEl.style.color = "var(--primary)";
-
-                fetch(`${scriptURL}?name=${encodeURIComponent(name)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.allowed) {
-                            localStorage.setItem('mbbs_user', name);
-                            document.getElementById('login-container').style.display = 'none';
-                            document.getElementById('main-content').style.display = 'block';
-
-                            const firstName = name.split(' ')[0] || "Student";
-                            window.userSessionName = firstName;
-                            document.getElementById('userName').innerText = name;
-
-                            const mainWelcome = document.getElementById('welcomeName');
-                            if (mainWelcome) mainWelcome.innerText = firstName;
-                            const homeWelcome = document.getElementById('welcomeNameHome');
-                            if (homeWelcome) homeWelcome.innerText = firstName;
-
-                            fetchSheetData();
-                        } else {
-                            errorEl.innerText = data.message || "Invalid name or access expired.";
-                            errorEl.style.color = "#ef4444";
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Auth Error!', error.message);
-                        errorEl.innerText = "Unable to connect. Checking offline access...";
-                        if (localStorage.getItem('mbbs_user') === name) {
-                            // Fallback if network fails but they were logged in before
-                            document.getElementById('login-container').style.display = 'none';
-                            document.getElementById('main-content').style.display = 'block';
-                            fetchSheetData();
-                        } else {
-                            errorEl.innerText = "Connection error. Please check your internet.";
-                        }
-                    });
-            };
-
-            window.logStudentActivity = (subject, title) => {
-                const userName = localStorage.getItem('mbbs_user');
-                const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
-
-                if (!userName || !subject || !title) return;
-
-                console.log(`Logging activity: ${userName} - ${subject} - ${title}`);
-                fetch(scriptURL, {
-                    method: 'POST',
-                    mode: 'no-cors', // Standard for simple Apps Script POSTS
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userName, subject, title })
-                }).catch(e => console.error("Logging failed:", e));
-            };
-
-            window.handleLogout = () => {
-                localStorage.removeItem('mbbs_user');
-                window.location.reload();
-            };
-
-            window.showMainMenu = (isBack = false) => {
-                if (!isBack) pushNavState();
-                currentView = 'home';
-                currentSubject = null;
-                currentPlatform = null;
-                selectedChapterIdx = null;
-                window.activePlayerId = null;
-                updateOrientation();
-                updateNavActive('home');
-                renderHome();
-            };
-
-            window.filterCategory = (type, isBack = false) => {
-                if (!isBack) pushNavState();
-                currentView = type;
-                currentPlatform = null;
-                currentSubject = null;
-                selectedChapterIdx = null;
-                currentQuizFilter = 'all';
-                window.activePlayerId = null;
-                updateOrientation();
-                updateNavActive(type);
-
-                if (type === 'qbank') {
-                    renderPlatforms();
-                } else {
-                    renderSubjectList();
-                }
-            };
-
-            function renderPlatforms() {
-                const area = document.getElementById('contentArea');
-                const platforms = new Set();
-
-                Object.values(mbbsData).forEach(subj => {
-                    subj.qbank.forEach(item => {
-                        if (item.platform) platforms.add(item.platform);
-                    });
-                });
-
-                const platformList = Array.from(platforms).sort();
-
-                area.innerHTML = `
+            area.innerHTML = `
                 <div class="welcome-section" style="padding: 1rem 0;">
                     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
                     <h1><i class="fas fa-layer-group"></i> Select Platform</h1>
@@ -1531,66 +1586,142 @@
                 </div>
             `;
 
-                if (platformList.length === 0) {
-                    area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No platforms found in Question Bank.</div>`;
-                }
+            if (platformList.length === 0) {
+                area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No platforms found in Question Bank.</div>`;
             }
+        }
 
-            window.setPlatform = (platform) => {
-                pushNavState();
-                currentPlatform = platform;
-                renderSubjectList();
-            };
+        window.setPlatform = (platform) => {
+            pushNavState();
+            currentPlatform = platform;
+            renderSubjectList();
+        };
 
-            function updateNavActive(view) {
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                const activeLink = document.getElementById(`nav-${view}`);
-                if (activeLink) activeLink.classList.add('active');
-            }
+        function updateNavActive(view) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            const activeLink = document.getElementById(`nav-${view}`);
+            if (activeLink) activeLink.classList.add('active');
+        }
 
-            // window.onload ensures data is ready before clicks
-            window.onload = () => {
-                const savedUser = localStorage.getItem('mbbs_user');
-                if (savedUser) {
-                    document.getElementById('loginUserName').value = savedUser;
-                    checkAccess();
-                }
-
-                // Add Enter key listener
-                const loginInput = document.getElementById('loginUserName');
-                if (loginInput) {
-                    loginInput.addEventListener('keyup', (e) => {
-                        if (e.key === 'Enter') checkAccess();
+        // window.onload ensures data is ready before clicks
+        window.onload = () => {
+            fetchSheetData(); // Load data immediately for bots/reviewers
+            const savedUser = localStorage.getItem('mbbs_user');
+            if (savedUser) {
+                // Background auth if user already exists
+                const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
+                fetch(`${scriptURL}?name=${encodeURIComponent(savedUser)}`)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.allowed) {
+                            const firstName = savedUser.split(' ')[0] || "Student";
+                            window.userSessionName = firstName;
+                            document.getElementById('userName').innerText = savedUser;
+                            updateUserMenu();
+                        }
                     });
-                }
-            };
+            }
+            updateUserMenu();
+        };
 
-            window.navigate = (view) => {
+        window.updateUserMenu = () => {
+            const userMenu = document.querySelector('.user-menu');
+            const savedUser = localStorage.getItem('mbbs_user');
+            if (!savedUser) {
+                userMenu.innerHTML = `<button onclick="promptLogin()" class="logout-btn" style="background:var(--primary)">Student Login</button>`;
+            } else {
+                userMenu.innerHTML = `
+                    <span id="userName" style="font-weight:600; font-size:0.9rem">${savedUser}</span>
+                    <button onclick="handleLogout()" class="logout-btn">Logout</button>
+                `;
+            }
+        };
+
+        window.promptLogin = () => {
+            const name = prompt("Please enter your name for activity tracking:");
+            if (name) {
+                localStorage.setItem('mbbs_user', name);
+                window.location.reload();
+            }
+        };
+
+        window.navigate = (view) => {
+            if (view === 'home' || view === 'videos' || view === 'notes' || view === 'quizzes' || view === 'qbank') {
+                document.getElementById('trustArea').style.display = 'none';
+                document.getElementById('contentArea').style.display = 'block';
                 if (view === 'home') showMainMenu();
                 else filterCategory(view);
-            };
+            }
+        };
 
-            function renderSubjectList(searchQuery = '') {
-                const area = document.getElementById('contentArea');
-                const cleanQuery = searchQuery.toLowerCase().trim();
+        window.showTrustPage = (type) => {
+            const area = document.getElementById('trustArea');
+            const contentArea = document.getElementById('contentArea');
+            contentArea.style.display = 'none';
+            area.style.display = 'block';
+            window.scrollTo(0, 0);
 
-                // Filter subjects that actually have content for the current view and platform
-                const filteredSubjects = Object.keys(mbbsData).filter(subj => {
-                    const data = mbbsData[subj];
-                    const matchesSearch = subj.replace(/_/g, ' ').toLowerCase().includes(cleanQuery);
-                    if (!matchesSearch) return false;
+            let html = `
+                <div class="welcome-section" style="padding: 1rem 0;">
+                    <button class="back-btn" onclick="navigate('home')"><i class="fas fa-arrow-left"></i> Home</button>
+                    <h1>${type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' ')}</h1>
+                </div>
+            `;
 
-                    if (currentView === 'videos') return data.videos && data.videos.length > 0;
-                    if (currentView === 'notes') return data.notes && data.notes.length > 0;
-                    if (currentView === 'quizzes') return data.quizzes && data.quizzes.length > 0;
-                    if (currentView === 'qbank') {
-                        const hasClassic = data.qbank && data.qbank.some(item => item.platform === currentPlatform);
-                        return hasClassic;
-                    }
-                    return false;
-                });
+            if (type === 'about') {
+                html += `
+                    <h2>About MBBS World</h2>
+                    <p>MBBS World is a dedicated medical education platform created to provide medical students with structured, high-quality learning resources. As a medical student myself, I understand the challenges of navigating the vast MBBS curriculum.</p>
+                    <p>Our resources are built upon the foundation of standard medical textbooks including:</p>
+                    <ul>
+                        <li><b>Anatomy:</b> B.D. Chaurasia, Gray's Anatomy for Students</li>
+                        <li><b>Physiology:</b> Guyton and Hall Textbook of Medical Physiology, Ganong's Review of Medical Physiology</li>
+                        <li><b>Biochemistry:</b> Harper's Illustrated Biochemistry</li>
+                        <li><b>Pathology:</b> Robbins & Cotran Pathologic Basis of Disease</li>
+                        <li><b>Internal Medicine:</b> Harrison's Principles of Internal Medicine</li>
+                        <li><b>Surgery:</b> Bailey & Love's Short Practice of Surgery</li>
+                    </ul>
+                    <p>Our goal is to simplify medical learning through high-yield <b>MBBS notes</b>, interactive Q-Banks, and clinical video lectures.</p>
+                `;
+            } else if (type === 'disclaimer') {
+                html += `
+                    <h2>Medical Disclaimer</h2>
+                     <p><b>Important:</b> The content provided on MBBS World (including videos, notes, quizzes, and Q-Bank) is for <b>educational purposes only</b> for medical students and healthcare professionals in training.</p>
+                     <p>This information should NOT be used for self-diagnosis or as a substitute for professional medical advice, diagnosis, or treatment. We do not provide medical services or advice. Always seek the advice of a qualified physician or healthcare provider with any questions you may have regarding a medical condition.</p>
+                     <p>While we strive for accuracy based on standard medical textbooks, medical knowledge is constantly evolving. Use this resource as a study aid, not as a clinical protocol.</p>
+                `;
+            } else if (type === 'privacy') {
+                html += `<h2>Privacy Policy</h2><p>We respect your privacy. This portal uses minimal localStorage to save your progress and login session. We do not sell your personal data. Your activity logs are used solely for portal performance and access validation.</p>`;
+            } else if (type === 'terms') {
+                html += `<h2>Terms of Service</h2><p>By using MBBS World, you agree to use the content for personal study purposes only. Redistribution or unauthorized commercial use of the hosted medical resources is strictly prohibited.</p>`;
+            } else if (type === 'contact') {
+                html += `<h2>Contact Us</h2><p>For support or feedback, please reach out to us at <a href="mailto:support@mbbsworld.com">support@mbbsworld.com</a>. We are always looking for ways to improve our medical curriculum resources.</p>`;
+            }
 
-                area.innerHTML = `
+            area.innerHTML = html;
+        };
+
+        function renderSubjectList(searchQuery = '') {
+            const area = document.getElementById('contentArea');
+            const cleanQuery = searchQuery.toLowerCase().trim();
+
+            // Filter subjects that actually have content for the current view and platform
+            const filteredSubjects = Object.keys(mbbsData).filter(subj => {
+                const data = mbbsData[subj];
+                const matchesSearch = subj.replace(/_/g, ' ').toLowerCase().includes(cleanQuery);
+                if (!matchesSearch) return false;
+
+                if (currentView === 'videos') return data.videos && data.videos.length > 0;
+                if (currentView === 'notes') return data.notes && data.notes.length > 0;
+                if (currentView === 'quizzes') return data.quizzes && data.quizzes.length > 0;
+                if (currentView === 'qbank') {
+                    const hasClassic = data.qbank && data.qbank.some(item => item.platform === currentPlatform);
+                    return hasClassic;
+                }
+                return false;
+            });
+
+            area.innerHTML = `
                 <div class="welcome-section" style="padding: 1rem 0;">
                     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
                     <h1><i class="fas ${getViewIcon()}"></i> Select Subject</h1>
@@ -1598,117 +1729,141 @@
                 </div>
                 <div class="subject-sidebar">
                     ${filteredSubjects.map(subj => {
-                    const name = subj.replace(/_/g, ' ').toUpperCase();
-                    return `
+                const name = subj.replace(/_/g, ' ').toUpperCase();
+                return `
                             <div class="subject-item" onclick="setSubject('${subj}')">
                                 <span>${name}</span>
                             </div>`;
-                }).join('')}
+            }).join('')}
                 </div>
             `;
 
-                if (filteredSubjects.length === 0) {
-                    area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No subjects matching "${searchQuery}" found.</div>`;
-                }
+            if (filteredSubjects.length === 0) {
+                area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No subjects matching "${searchQuery}" found.</div>`;
+            }
+        }
+
+        function getViewIcon() {
+            if (currentView === 'videos') return 'fa-play-circle';
+            if (currentView === 'notes') return 'fa-file-pdf';
+            if (currentView === 'quizzes') return 'fa-lightbulb';
+            if (currentView === 'qbank') return 'fa-tasks';
+            return 'fa-folder';
+        }
+
+        function setSubject(subjectName) {
+            pushNavState();
+
+            if (!subjectName || subjectName.toLowerCase() === 'premium') {
+                currentSubject = 'premium';
+            } else {
+                // Normalize for key-based lookup in mbbsData
+                // This aligns with item.Subject.toLowerCase() === subjectName.toLowerCase() logic
+                currentSubject = subjectName.toLowerCase().trim().replace(/ /g, '_');
             }
 
-            function getViewIcon() {
-                if (currentView === 'videos') return 'fa-play-circle';
-                if (currentView === 'notes') return 'fa-file-pdf';
-                if (currentView === 'quizzes') return 'fa-lightbulb';
-                if (currentView === 'qbank') return 'fa-tasks';
-                return 'fa-folder';
-            }
+            selectedChapterIdx = null;
+            renderContent();
+        }
 
-            function setSubject(subjectName) {
-                pushNavState();
-
-                if (!subjectName || subjectName.toLowerCase() === 'premium') {
-                    currentSubject = 'premium';
-                } else {
-                    // Normalize for key-based lookup in mbbsData
-                    // This aligns with item.Subject.toLowerCase() === subjectName.toLowerCase() logic
-                    currentSubject = subjectName.toLowerCase().trim().replace(/ /g, '_');
-                }
-
-                selectedChapterIdx = null;
-                renderContent();
-            }
-
-            function renderHome() {
-                document.getElementById('contentArea').innerHTML = `
+        function renderHome() {
+            document.getElementById('contentArea').innerHTML = `
                 <div class="welcome-section">
-                    <h1>Welcome Back, <span id="welcomeNameHome">${window.userSessionName || 'Student'}</span>!</h1>
-                    <p>What would you like to study today?</p>
+                    <h1>Welcome to MBBS World - Your Premium Medical Education Hub</h1>
+                    <p>Empowering medical students with high-yield resources, interactive question banks, and authoritative study materials.</p>
+                    
                     <div class="portal-grid">
                         <div class="portal-card" onclick="filterCategory('videos')">
                             <i class="fas fa-video"></i>
                             <h3>🎬 Video Lectures</h3>
                             <p>Premium medical video content.</p>
+                            <div class="card-seo-desc">
+                                Master complex medical concepts with our HD video lectures. Our <b>Physiology/Anatomy resources</b> are designed by experts to break down difficult topics like cardiovascular hemodynamics, neuroanatomy pathways, and surgical procedures. For students preparing for <b>Medical University Exams</b>, these lectures provide visual clarity on procedures found in standard textbooks like Guyton and Hall or Gray's Anatomy. Each video includes clinical correlations to bridge the gap between basic sciences and bedside medicine, ensuring you excel in both theory and practical exams.
+                            </div>
                         </div>
                         <div class="portal-card" onclick="filterCategory('notes')">
                             <i class="fas fa-book"></i>
                             <h3>📝 Study Notes</h3>
                             <p>Standard textbook reference PDFs.</p>
+                            <div class="card-seo-desc">
+                                Boost your revision with our comprehensive <b>MBBS notes</b>. Our editorial team distills information from top-tier medical literature, including Robbins Pathology, K.D. Tripathi Pharmacology, and Harrison's Internal Medicine. These notes are optimized for <b>Medical University Exams</b>, featuring high-yield tables, flowcharts, and mnemonics. Whether you are studying Forensic Medicine or Community Health, our PDF resources provide a structured approach to learning, helping you memorize vast amounts of clinical data efficiently for your upcoming professional assessments.
+                            </div>
                         </div>
                         <div class="portal-card" onclick="filterCategory('quizzes')">
                             <i class="fas fa-lightbulb"></i>
                             <h3>🧠 Specialized Quizzes</h3>
                             <p>Interactive HTML medical quizzes.</p>
+                            <div class="card-seo-desc">
+                                Test your decision-making skills with our interactive <b>medical quizzes</b>. These specialized modules are designed to simulate clinical scenarios encountered in both <b>Medical University Exams</b> and real-world practice. From identifying ECG patterns to interpreting biochemical lab results, our quizzes provide immediate feedback and detailed rationales. Engaging with these resources regularly reinforces high-yield medical facts and improves long-term retention of critical surgical and physiological knowledge.
+                            </div>
                         </div>
                         <div class="portal-card" onclick="filterCategory('qbank')">
                             <i class="fas fa-graduation-cap"></i>
                             <h3>❓ Question Bank</h3>
                             <p>Test your knowledge with MCQs.</p>
+                            <div class="card-seo-desc">
+                                Prepare for success in <b>Medical University Exams</b> and competitive entrance tests like NEXT/NEET-PG with our interactive <b>MBBS question bank</b>. Our database features thousands of high-yield MCQs, clinical case studies, and image-based questions across all 19 subjects. Each question is accompanied by detailed explanations rooted in standard medical curriculum guidelines. Regular practice with our Q-Bank enhances diagnostic reasoning and time management, providing a competitive edge for students striving for top honors in their medical career.
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="seo-text">
+                        <h2>Navigating the MBBS Curriculum: A Comprehensive Guide for Medical Students</h2>
+                        <p>The journey through the MBBS (Bachelor of Medicine, Bachelor of Surgery) curriculum is one of the most intellectually demanding yet rewarding paths a student can take. This medical education journey is traditionally divided into three major phases: Pre-clinical, Para-clinical, and Clinical. Each phase serves as a critical building block, transforming a student into a competent healthcare professional. In the Pre-clinical stage, subjects like Human Anatomy, Medical Physiology, and Biochemistry lay the foundational bedrock. Understanding the macro and microscopic structure of the human body through B.D. Chaurasia’s Anatomy or mastering the complex physiological feedback loops described in Guyton and Hall is essential. These <b>Physiology/Anatomy resources</b> are not just for passing first-year exams but are central to understanding pathology later in the course.</p>
+                        
+                        <p>As students move into the Para-clinical phase, they encounter Pathology, Microbiology, Pharmacology, and Forensic Medicine. This is where the study of health transitions into the study of disease. Mastery of Robbins Basic Pathology is a rite of passage for every medical student, while Pharmacology resources like K.D. Tripathi provide the necessary pharmacological basis for treating ailments. <b>Medical University Exams</b> often place heavy emphasis on these integration years, as they are pivotal for clinical reasoning. Our portal provides specialized <b>MBBS notes</b> and curated study guides to help students navigate these vast subjects, ensuring that key concepts in drug mechanisms and microbial pathogenesis are well-understood.</p>
+                        
+                        <p>The final Clinical phase encompasses Internal Medicine, General Surgery, Obstetrics and Gynecology, and Pediatrics, along with several smaller specialties like ENT, Ophthalmology, and Orthopedics. This phase requires constant clinical correlation and hands-on experience in hospital wards. Standard textbooks such as Harrison's Principles of Internal Medicine and Bailey & Love’s Short Practice of Surgery become the primary references. For many, this stage is characterized by the pressure of final <b>Medical University Exams</b> and the looming NEXT/NEET-PG entrance tests. Our <b>MBBS question bank</b> is specifically tailored to mirror the high-level clinical reasoning required in these high-stakes exams, offering students a way to test their knowledge in real-world scenarios.</p>
+
+                        <p>In the modern era, medical education has evolved beyond traditional textbooks. Interactive learning, high-definition surgical videos, and digital <b>MBBS notes</b> have become indispensable tools. At MBBS World, we are committed to providing medical students with a centralized hub for all their educational needs. By blending theoretical knowledge with clinical insights, our platform ensures that every student—regardless of where they are in their curriculum—has access to the highest quality medical resources to succeed in their university exams and beyond into their professional medical career.</p>
                     </div>
                 </div>
             `;
-            }
+        }
 
-            function renderContent(isBack = false) {
-                const area = document.getElementById('contentArea');
-                area.innerHTML = '';
+        function renderContent(isBack = false) {
+            const area = document.getElementById('contentArea');
+            area.innerHTML = '';
 
-                // --- Bandwidth & Performance Fix: Definitive Cleanup on every view change ---
-                cleanupIframes();
-                updateOrientation();
+            // --- Bandwidth & Performance Fix: Definitive Cleanup on every view change ---
+            cleanupIframes();
+            updateOrientation();
 
-                // Header Section
-                const header = document.createElement('div');
-                header.innerHTML = `
+            // Header Section
+            const header = document.createElement('div');
+            header.innerHTML = `
                 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 1.5rem;">
                     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
                     <h1 style="margin:0; font-size:1.5rem;"><i class="fas ${getViewIcon()}"></i> ${currentView.toUpperCase()}</h1>
                 </div>
             `;
-                area.appendChild(header);
+            area.appendChild(header);
 
-                if (currentView === 'videos') {
-                    // --- VIDEOS LOGIC (Subject Grid First) ---
-                    if (!currentSubject) {
-                        renderSubjectList();
-                        return;
-                    }
+            if (currentView === 'videos') {
+                // --- VIDEOS LOGIC (Subject Grid First) ---
+                if (!currentSubject) {
+                    renderSubjectList();
+                    return;
+                }
 
-                    const data = mbbsData[currentSubject];
-                    if (selectedChapterIdx === null) {
-                        // Show Chapter List
-                        const list = document.createElement('div');
-                        list.className = 'chapter-list';
-                        data.videos.forEach((v, idx) => {
-                            const vidId = v.link;
-                            const isDone = localStorage.getItem('completed_' + vidId) === 'true';
-                            const item = document.createElement('div');
-                            item.className = 'chapter-card';
-                            if (isDone) item.style.borderLeft = "4px solid #10b981";
-                            item.onclick = () => {
-                                logStudentActivity(v.Subject || currentSubject, v.title);
-                                pushNavState();
-                                selectedChapterIdx = idx;
-                                renderContent();
-                            };
-                            item.innerHTML = `
+                const data = mbbsData[currentSubject];
+                if (selectedChapterIdx === null) {
+                    // Show Chapter List
+                    const list = document.createElement('div');
+                    list.className = 'chapter-list';
+                    data.videos.forEach((v, idx) => {
+                        const vidId = v.link;
+                        const isDone = localStorage.getItem('completed_' + vidId) === 'true';
+                        const item = document.createElement('div');
+                        item.className = 'chapter-card';
+                        if (isDone) item.style.borderLeft = "4px solid #10b981";
+                        item.onclick = () => {
+                            logStudentActivity(v.Subject || currentSubject, v.title);
+                            pushNavState();
+                            selectedChapterIdx = idx;
+                            renderContent();
+                        };
+                        item.innerHTML = `
                             <div class="chapter-icon" style="${isDone ? 'background:rgba(16, 185, 129, 0.1); color:#10b981;' : ''}">
                                 <i class="fas ${isDone ? 'fa-check-circle' : 'fa-play'}"></i>
                             </div>
@@ -1717,95 +1872,95 @@
                             </div>
                             <i class="fas fa-circle-play" style="color:${isDone ? '#10b981' : 'var(--primary)'}; font-size:1.2rem;"></i>
                         `;
-                            list.appendChild(item);
-                        });
-                        area.appendChild(list);
-                    } else {
-                        renderVideoCard(area, data.videos[selectedChapterIdx], selectedChapterIdx);
-                    }
-                } else if (currentView === 'notes' || currentView === 'quizzes') {
-                    // --- Permanent List View Level ---
-                    if (!currentSubject) {
-                        renderSubjectList();
-                        return;
-                    }
+                        list.appendChild(item);
+                    });
+                    area.appendChild(list);
+                } else {
+                    renderVideoCard(area, data.videos[selectedChapterIdx], selectedChapterIdx);
+                }
+            } else if (currentView === 'notes' || currentView === 'quizzes') {
+                // --- Permanent List View Level ---
+                if (!currentSubject) {
+                    renderSubjectList();
+                    return;
+                }
 
+                const list = document.createElement('div');
+                list.className = 'chapter-list';
+                list.id = 'quiz-list-container';
+                area.appendChild(list);
+
+                renderItems();
+            } else if (currentView === 'qbank') {
+                // Keep legacy QBank Platform selection for now
+                if (!currentPlatform) {
+                    renderPlatforms();
+                } else if (!currentSubject) {
+                    renderSubjectList();
+                } else {
+                    // Subject is selected, show the QBank items
                     const list = document.createElement('div');
                     list.className = 'chapter-list';
                     list.id = 'quiz-list-container';
                     area.appendChild(list);
 
                     renderItems();
-                } else if (currentView === 'qbank') {
-                    // Keep legacy QBank Platform selection for now
-                    if (!currentPlatform) {
-                        renderPlatforms();
-                    } else if (!currentSubject) {
-                        renderSubjectList();
-                    } else {
-                        // Subject is selected, show the QBank items
-                        const list = document.createElement('div');
-                        list.className = 'chapter-list';
-                        list.id = 'quiz-list-container';
-                        area.appendChild(list);
-
-                        renderItems();
-                    }
                 }
-                if (area.innerHTML === '') {
-                    area.innerHTML = `
+            }
+            if (area.innerHTML === '') {
+                area.innerHTML = `
                     <div style="text-align:center; padding:5rem; color:var(--text-light)">
                         <i class="fas fa-search" style="font-size:3rem; opacity:0.1; margin-bottom:1rem;"></i>
                         <p>No content available for this subject yet.<br><span style="font-size:0.9rem; color:var(--primary)">✨ Try checking the Premium section!</span></p>
                     </div>
                 `;
-                }
+            }
+        }
+
+        function renderItems(searchQuery = '') {
+            const container = document.getElementById('quiz-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const data = mbbsData[currentSubject];
+            if (!data) {
+                container.innerHTML = `<div style="text-align:center; padding:3.5rem; color:var(--text-light)">Subject data not found for "${currentSubject}".</div>`;
+                return;
             }
 
-            function renderItems(searchQuery = '') {
-                const container = document.getElementById('quiz-list-container');
-                if (!container) return;
-                container.innerHTML = '';
+            let items = [];
+            if (currentView === 'notes') {
+                items = data.notes;
+            } else if (currentView === 'quizzes') {
+                items = data.quizzes;
+            } else if (currentView === 'qbank') {
+                // Strict Filtering: Only show items explicitly marked as 'qbank' in Column B
+                // Ensure platform matching is also respected
+                items = data.qbank.filter(i => i.platform === currentPlatform && i.Type === 'qbank');
+            }
 
-                const data = mbbsData[currentSubject];
-                if (!data) {
-                    container.innerHTML = `<div style="text-align:center; padding:3.5rem; color:var(--text-light)">Subject data not found for "${currentSubject}".</div>`;
-                    return;
-                }
+            // Apply search filtering
+            if (searchQuery) {
+                items = items.filter(i => i.title.toLowerCase().includes(searchQuery.toLowerCase()));
+            }
 
-                let items = [];
-                if (currentView === 'notes') {
-                    items = data.notes;
-                } else if (currentView === 'quizzes') {
-                    items = data.quizzes;
-                } else if (currentView === 'qbank') {
-                    // Strict Filtering: Only show items explicitly marked as 'qbank' in Column B
-                    // Ensure platform matching is also respected
-                    items = data.qbank.filter(i => i.platform === currentPlatform && i.Type === 'qbank');
-                }
+            items.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = `chapter-card ${item.isPremium ? 'is-premium' : ''}`;
 
-                // Apply search filtering
-                if (searchQuery) {
-                    items = items.filter(i => i.title.toLowerCase().includes(searchQuery.toLowerCase()));
-                }
+                const isQuiz = item.Type && item.Type.includes('quiz');
+                card.onclick = () => {
+                    logStudentActivity(item.Subject || currentSubject, item.title);
+                    if (item.isPremium) {
+                        alert("👑 This high-value content is exclusive for Premium Members! Launching viewer...");
+                    }
+                    isQuiz ? openQuiz(item.link) : openFile(item.link);
+                };
 
-                items.forEach((item, idx) => {
-                    const card = document.createElement('div');
-                    card.className = `chapter-card ${item.isPremium ? 'is-premium' : ''}`;
+                const icon = isQuiz ? 'fa-lightbulb' : 'fa-file-pdf';
+                const typeLabel = (item.Type && item.Type.includes('gt')) ? 'GT' : ((item.Type && item.Type.includes('pyq')) ? 'PYQ' : ((item.Type && item.Type.includes('btr')) ? 'BTR' : ''));
 
-                    const isQuiz = item.Type && item.Type.includes('quiz');
-                    card.onclick = () => {
-                        logStudentActivity(item.Subject || currentSubject, item.title);
-                        if (item.isPremium) {
-                            alert("👑 This high-value content is exclusive for Premium Members! Launching viewer...");
-                        }
-                        isQuiz ? openQuiz(item.link) : openFile(item.link);
-                    };
-
-                    const icon = isQuiz ? 'fa-lightbulb' : 'fa-file-pdf';
-                    const typeLabel = (item.Type && item.Type.includes('gt')) ? 'GT' : ((item.Type && item.Type.includes('pyq')) ? 'PYQ' : ((item.Type && item.Type.includes('btr')) ? 'BTR' : ''));
-
-                    card.innerHTML = `
+                card.innerHTML = `
                     <div class="chapter-icon"><i class="fas ${icon}"></i></div>
                     <div style="flex-grow:1; font-weight:500;">
                         ${typeLabel ? `<span class="quiz-type-icon">[${typeLabel}]</span> ` : ''}
@@ -1817,12 +1972,12 @@
                     </div>
                     ${item.isPremium ? '<div class="premium-lock"><i class="fas fa-lock"></i></div>' : '<i class="fas fa-external-link-alt" style="opacity:0.5;"></i>'}
                 `;
-                    container.appendChild(card);
-                });
+                container.appendChild(card);
+            });
 
-                if (items.length === 0) {
-                    if (currentView === 'qbank') {
-                        container.innerHTML = `
+            if (items.length === 0) {
+                if (currentView === 'qbank') {
+                    container.innerHTML = `
                         <div style="text-align:center; padding:3.5rem; color:var(--text-light)">
                             <i class="fas fa-exclamation-circle" style="font-size:3rem; opacity:0.1; margin-bottom:1.5rem;"></i>
                             <p style="font-weight:600;">No QBank files found for this subject.</p>
@@ -1830,23 +1985,23 @@
                             <p style="font-size:0.8rem; margin-top:1rem; opacity:0.7;">Subject: ${currentSubject} | Platform: ${currentPlatform}</p>
                         </div>
                     `;
-                    } else {
-                        container.innerHTML = `
+                } else {
+                    container.innerHTML = `
                         <div style="text-align:center; padding:3.5rem; color:var(--text-light)">
                             <i class="fas fa-folder-open" style="font-size:3rem; opacity:0.1; margin-bottom:1.5rem;"></i>
                             <p style="font-weight:600;">No items found in this section.</p>
                             <p style="font-size:0.85rem; margin-top:0.5rem;">Please check the 👑 <b>Premium</b> tab for more content!</p>
                         </div>
                     `;
-                    }
                 }
             }
+        }
 
-            function renderVideoCard(container, video, index) {
-                const card = document.createElement('div'); card.className = 'card';
-                let vid = video.link;
-                const uid = `yt-${index}`;
-                card.innerHTML = `
+        function renderVideoCard(container, video, index) {
+            const card = document.createElement('div'); card.className = 'card';
+            let vid = video.link;
+            const uid = `yt-${index}`;
+            card.innerHTML = `
                 <div class="video-wrapper">
                     <div id="${uid}"></div>
                     <div class="glass-shield"></div>
@@ -1886,262 +2041,262 @@
                 </div>
                 <div class="card-content"><div class="card-title">${video.title}</div></div>
             `;
-                container.appendChild(card);
-                if (window.YT && window.YT.Player) createPlayer(uid, vid); else pendingPlayers.push({ id: uid, vid: vid });
-            }
+            container.appendChild(card);
+            if (window.YT && window.YT.Player) createPlayer(uid, vid); else pendingPlayers.push({ id: uid, vid: vid });
+        }
 
-            function addSectionHeader(container, text, icon) {
-                const h = document.createElement('h3'); h.className = 'section-title';
-                h.innerHTML = `<i class="fas ${icon}"></i> ${text}`; container.appendChild(h);
-            }
+        function addSectionHeader(container, text, icon) {
+            const h = document.createElement('h3'); h.className = 'section-title';
+            h.innerHTML = `<i class="fas ${icon}"></i> ${text}`; container.appendChild(h);
+        }
 
-            // --- ADVANCED VIDEO LOGIC ---
-            let lastTapTime = 0;
-            window.handleTap = (e, uid) => {
-                const now = Date.now();
-                const delay = now - lastTapTime;
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const width = rect.width;
+        // --- ADVANCED VIDEO LOGIC ---
+        let lastTapTime = 0;
+        window.handleTap = (e, uid) => {
+            const now = Date.now();
+            const delay = now - lastTapTime;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const width = rect.width;
 
-                if (delay < 300) {
-                    // Double Tap Detected
-                    if (x < width * 0.4) {
-                        seekBy(-10, uid);
-                        showSeekFeedback('left', uid);
-                    } else if (x > width * 0.6) {
-                        seekBy(10, uid);
-                        showSeekFeedback('right', uid);
-                    }
-                } else {
-                    // Single Tap -> Pass to Toggle
-                    togglePlayPause(uid);
+            if (delay < 300) {
+                // Double Tap Detected
+                if (x < width * 0.4) {
+                    seekBy(-10, uid);
+                    showSeekFeedback('left', uid);
+                } else if (x > width * 0.6) {
+                    seekBy(10, uid);
+                    showSeekFeedback('right', uid);
                 }
-                lastTapTime = now;
-            };
-
-            window.togglePlayPause = (uid) => {
-                const p = players[uid];
-                if (p) {
-                    const state = p.getPlayerState();
-                    if (state === YT.PlayerState.PLAYING) p.pauseVideo();
-                    else p.playVideo();
-                }
-            };
-
-            function seekBy(seconds, uid) {
-                const p = players[uid];
-                if (p) {
-                    const now = p.getCurrentTime();
-                    p.seekTo(now + seconds, true);
-                }
+            } else {
+                // Single Tap -> Pass to Toggle
+                togglePlayPause(uid);
             }
+            lastTapTime = now;
+        };
 
-            function showSeekFeedback(side, uid) {
-                const el = document.getElementById(`seek-${side}-${uid}`);
-                if (el) {
-                    el.classList.add('active');
-                    setTimeout(() => el.classList.remove('active'), 500);
-                }
+        window.togglePlayPause = (uid) => {
+            const p = players[uid];
+            if (p) {
+                const state = p.getPlayerState();
+                if (state === YT.PlayerState.PLAYING) p.pauseVideo();
+                else p.playVideo();
             }
+        };
 
-            // ORIENTATION / FULLSCREEN OVERLAY
-            window.activePlayerId = null;
-            function updateOrientation() {
-                const overlay = document.getElementById('landscapeOverlay');
-                if (window.innerHeight < window.innerWidth && window.activePlayerId) {
-                    overlay.classList.add('visible');
-                    updateOverlaySpeedButtons();
-                } else {
-                    overlay.classList.remove('visible');
-                }
+        function seekBy(seconds, uid) {
+            const p = players[uid];
+            if (p) {
+                const now = p.getCurrentTime();
+                p.seekTo(now + seconds, true);
             }
-            window.addEventListener('resize', updateOrientation);
-            window.addEventListener('orientationchange', updateOrientation);
+        }
 
-            function updateOverlaySpeedButtons() {
-                const container = document.getElementById('overlaySpeedRow');
-                const currentSpeed = localStorage.getItem('preferred_speed') || 1;
-                const speeds = [0.5, 1, 1.5, 2];
+        function showSeekFeedback(side, uid) {
+            const el = document.getElementById(`seek-${side}-${uid}`);
+            if (el) {
+                el.classList.add('active');
+                setTimeout(() => el.classList.remove('active'), 500);
+            }
+        }
 
-                container.innerHTML = speeds.map(s => `
+        // ORIENTATION / FULLSCREEN OVERLAY
+        window.activePlayerId = null;
+        function updateOrientation() {
+            const overlay = document.getElementById('landscapeOverlay');
+            if (window.innerHeight < window.innerWidth && window.activePlayerId) {
+                overlay.classList.add('visible');
+                updateOverlaySpeedButtons();
+            } else {
+                overlay.classList.remove('visible');
+            }
+        }
+        window.addEventListener('resize', updateOrientation);
+        window.addEventListener('orientationchange', updateOrientation);
+
+        function updateOverlaySpeedButtons() {
+            const container = document.getElementById('overlaySpeedRow');
+            const currentSpeed = localStorage.getItem('preferred_speed') || 1;
+            const speeds = [0.5, 1, 1.5, 2];
+
+            container.innerHTML = speeds.map(s => `
                 <button class="speed-btn ${parseFloat(currentSpeed) === s ? 'active' : ''}" 
                         onclick="changeSpeed(${s}, '${activePlayerId}')">
                     ${s === 1 ? 'Normal' : s + 'x'}
                 </button>
             `).join('');
+        }
+
+        window.exitLandscape = () => {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+            document.getElementById('landscapeOverlay').classList.remove('visible');
+        };
+
+        // --- PLAYER ENGINE ---
+        window.onYouTubeIframeAPIReady = () => { pendingPlayers.forEach(p => createPlayer(p.id, p.vid)); pendingPlayers = []; };
+        function createPlayer(uid, vid) {
+            const cleanVidId = getYoutubeVideoId(vid);
+            console.log('Playing Video ID:', cleanVidId); // Debug log for browser console
+
+            players[uid] = new YT.Player(uid, {
+                height: '100%', width: '100%', videoId: cleanVidId,
+                playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
+                events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
+            });
+        }
+        function onReady(e, uid) {
+            const dur = e.target.getDuration();
+            document.getElementById(`seek-${uid}`).max = dur;
+            updateClock(uid, 0, dur);
+
+            // RESUME LOGIC
+            const vidData = e.target.getVideoData();
+            const videoId = vidData.video_id;
+            const savedTime = localStorage.getItem('resume_' + videoId);
+            if (savedTime) {
+                e.target.seekTo(parseFloat(savedTime), true);
             }
 
-            window.exitLandscape = () => {
-                if (document.fullscreenElement) {
-                    document.exitFullscreen();
-                }
-                document.getElementById('landscapeOverlay').classList.remove('visible');
-            };
+            // APPLY PREFERRED SPEED
+            const preferredSpeed = localStorage.getItem('preferred_speed') || 1;
+            changeSpeed(parseFloat(preferredSpeed), uid);
+        }
+        function onStateChange(e, uid) {
+            const vidData = e.target.getVideoData();
+            const videoId = vidData.video_id;
 
-            // --- PLAYER ENGINE ---
-            window.onYouTubeIframeAPIReady = () => { pendingPlayers.forEach(p => createPlayer(p.id, p.vid)); pendingPlayers = []; };
-            function createPlayer(uid, vid) {
-                const cleanVidId = getYoutubeVideoId(vid);
-                console.log('Playing Video ID:', cleanVidId); // Debug log for browser console
+            if (e.data == YT.PlayerState.PLAYING) {
+                window.activePlayerId = uid;
+                updateOrientation();
+                updatePlayPauseIcon(uid, true);
+                e.target.setPlaybackQuality('hd720');
+                if (players[uid].timer) clearInterval(players[uid].timer);
+                players[uid].timer = setInterval(() => {
+                    const t = e.target.getCurrentTime();
+                    const d = e.target.getDuration();
+                    document.getElementById(`seek-${uid}`).value = t;
+                    updateClock(uid, t, d);
 
-                players[uid] = new YT.Player(uid, {
-                    height: '100%', width: '100%', videoId: cleanVidId,
-                    playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
-                    events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
-                });
-            }
-            function onReady(e, uid) {
-                const dur = e.target.getDuration();
-                document.getElementById(`seek-${uid}`).max = dur;
-                updateClock(uid, 0, dur);
+                    // SAVE PROGRESS
+                    localStorage.setItem('resume_' + videoId, t);
 
-                // RESUME LOGIC
-                const vidData = e.target.getVideoData();
-                const videoId = vidData.video_id;
-                const savedTime = localStorage.getItem('resume_' + videoId);
-                if (savedTime) {
-                    e.target.seekTo(parseFloat(savedTime), true);
-                }
-
-                // APPLY PREFERRED SPEED
-                const preferredSpeed = localStorage.getItem('preferred_speed') || 1;
-                changeSpeed(parseFloat(preferredSpeed), uid);
-            }
-            function onStateChange(e, uid) {
-                const vidData = e.target.getVideoData();
-                const videoId = vidData.video_id;
-
-                if (e.data == YT.PlayerState.PLAYING) {
-                    window.activePlayerId = uid;
-                    updateOrientation();
-                    updatePlayPauseIcon(uid, true);
-                    e.target.setPlaybackQuality('hd720');
-                    if (players[uid].timer) clearInterval(players[uid].timer);
-                    players[uid].timer = setInterval(() => {
-                        const t = e.target.getCurrentTime();
-                        const d = e.target.getDuration();
-                        document.getElementById(`seek-${uid}`).value = t;
-                        updateClock(uid, t, d);
-
-                        // SAVE PROGRESS
-                        localStorage.setItem('resume_' + videoId, t);
-
-                        // TRACK COMPLETION (90%)
-                        if (d > 0 && t > (d * 0.9)) {
-                            localStorage.setItem('completed_' + videoId, 'true');
-                        }
-                    }, 1000);
-                } else {
-                    clearInterval(players[uid].timer);
-                    updatePlayPauseIcon(uid, false);
-                }
-            }
-
-            function updatePlayPauseIcon(uid, isPlaying) {
-                const btn = document.getElementById(`toggle-${uid}`);
-                if (btn) {
-                    btn.innerHTML = `<i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>`;
-                }
-            }
-            function updateClock(uid, curr, dur) { document.getElementById(`time-${uid}`).innerText = `${fmt(curr)} / ${fmt(dur)}`; }
-            function fmt(s) { const m = Math.floor(s / 60); const sc = Math.floor(s % 60); return `${m}:${sc < 10 ? '0' : ''}${sc}`; }
-
-            window.controlPlayer = (uid, a) => players[uid][a + 'Video']();
-            window.userSeek = (uid, v) => players[uid].seekTo(v, true);
-
-            window.changeSpeed = (rate, uid) => {
-                if (players[uid] && players[uid].setPlaybackRate) {
-                    players[uid].setPlaybackRate(rate);
-                    // Persistence
-                    localStorage.setItem('preferred_speed', rate);
-                    // UI Update Primary
-                    const row = document.getElementById(`speed-row-${uid}`);
-                    if (row) {
-                        row.querySelectorAll('.speed-btn').forEach(btn => {
-                            btn.classList.toggle('active', parseFloat(btn.innerText) === rate || (rate === 1 && btn.innerText === 'Normal'));
-                        });
+                    // TRACK COMPLETION (90%)
+                    if (d > 0 && t > (d * 0.9)) {
+                        localStorage.setItem('completed_' + videoId, 'true');
                     }
-                    // UI Update Overlay
-                    updateOverlaySpeedButtons();
+                }, 1000);
+            } else {
+                clearInterval(players[uid].timer);
+                updatePlayPauseIcon(uid, false);
+            }
+        }
+
+        function updatePlayPauseIcon(uid, isPlaying) {
+            const btn = document.getElementById(`toggle-${uid}`);
+            if (btn) {
+                btn.innerHTML = `<i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>`;
+            }
+        }
+        function updateClock(uid, curr, dur) { document.getElementById(`time-${uid}`).innerText = `${fmt(curr)} / ${fmt(dur)}`; }
+        function fmt(s) { const m = Math.floor(s / 60); const sc = Math.floor(s % 60); return `${m}:${sc < 10 ? '0' : ''}${sc}`; }
+
+        window.controlPlayer = (uid, a) => players[uid][a + 'Video']();
+        window.userSeek = (uid, v) => players[uid].seekTo(v, true);
+
+        window.changeSpeed = (rate, uid) => {
+            if (players[uid] && players[uid].setPlaybackRate) {
+                players[uid].setPlaybackRate(rate);
+                // Persistence
+                localStorage.setItem('preferred_speed', rate);
+                // UI Update Primary
+                const row = document.getElementById(`speed-row-${uid}`);
+                if (row) {
+                    row.querySelectorAll('.speed-btn').forEach(btn => {
+                        btn.classList.toggle('active', parseFloat(btn.innerText) === rate || (rate === 1 && btn.innerText === 'Normal'));
+                    });
                 }
-            };
+                // UI Update Overlay
+                updateOverlaySpeedButtons();
+            }
+        };
 
-            window.openQuiz = (url) => {
-                pushNavState(); // Save list state before opening modal
-                const viewer = document.getElementById('fileViewer');
-                const loader = document.getElementById('pdfLoader');
-                const externalBtn = document.getElementById('externalLink');
+        window.openQuiz = (url) => {
+            pushNavState(); // Save list state before opening modal
+            const viewer = document.getElementById('fileViewer');
+            const loader = document.getElementById('pdfLoader');
+            const externalBtn = document.getElementById('externalLink');
 
-                viewer.removeAttribute('srcdoc');
-                viewer.src = "about:blank";
-                loader.style.display = 'block';
+            viewer.removeAttribute('srcdoc');
+            viewer.src = "about:blank";
+            loader.style.display = 'block';
 
-                const formattedUrl = formatDriveLink(url);
-                viewer.src = formattedUrl;
-                if (externalBtn) externalBtn.href = url;
+            const formattedUrl = formatDriveLink(url);
+            viewer.src = formattedUrl;
+            if (externalBtn) externalBtn.href = url;
 
-                document.getElementById('fileModal').style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            };
+            document.getElementById('fileModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        };
 
-            window.toggleFullScreen = (btn) => {
-                const c = btn.closest('.card');
-                if (!document.fullscreenElement) {
-                    c.requestFullscreen().then(updateOrientation).catch(e => console.error(e));
-                } else {
-                    document.exitFullscreen();
-                }
-            };
+        window.toggleFullScreen = (btn) => {
+            const c = btn.closest('.card');
+            if (!document.fullscreenElement) {
+                c.requestFullscreen().then(updateOrientation).catch(e => console.error(e));
+            } else {
+                document.exitFullscreen();
+            }
+        };
 
-            // --- FILE ENGINE ---
-            function formatDriveLink(url) {
-                if (!url || !url.includes('drive.google.com')) return url;
-                const match = url.match(/\/d\/([^\/?#]+)|id=([^\/&#?]+)/);
-                const id = (match && (match[1] || match[2])) ? (match[1] || match[2]) : "";
-                return id ? `https://drive.google.com/file/d/${id}/preview` : url;
+        // --- FILE ENGINE ---
+        function formatDriveLink(url) {
+            if (!url || !url.includes('drive.google.com')) return url;
+            const match = url.match(/\/d\/([^\/?#]+)|id=([^\/&#?]+)/);
+            const id = (match && (match[1] || match[2])) ? (match[1] || match[2]) : "";
+            return id ? `https://drive.google.com/file/d/${id}/preview` : url;
+        }
+
+        window.openFile = (urlOrContent) => {
+            pushNavState(); // Save list state before opening modal
+            const viewer = document.getElementById('fileViewer');
+            const loader = document.getElementById('pdfLoader');
+            const externalBtn = document.getElementById('externalLink');
+
+            viewer.removeAttribute('srcdoc');
+            viewer.src = "about:blank";
+            loader.style.display = 'block';
+
+            if (urlOrContent.startsWith('http')) {
+                const formatted = formatDriveLink(urlOrContent);
+                viewer.src = formatted;
+                if (externalBtn) externalBtn.href = urlOrContent;
+            } else {
+                viewer.srcdoc = urlOrContent;
+                if (externalBtn) externalBtn.style.display = 'none';
             }
 
-            window.openFile = (urlOrContent) => {
-                pushNavState(); // Save list state before opening modal
-                const viewer = document.getElementById('fileViewer');
-                const loader = document.getElementById('pdfLoader');
-                const externalBtn = document.getElementById('externalLink');
+            document.getElementById('fileModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        };
 
-                viewer.removeAttribute('srcdoc');
-                viewer.src = "about:blank";
-                loader.style.display = 'block';
+        window.togglePdfFullScreen = () => {
+            const f = document.getElementById('fileModal');
+            if (!document.fullscreenElement) f.requestFullscreen();
+            else document.exitFullscreen();
+        };
 
-                if (urlOrContent.startsWith('http')) {
-                    const formatted = formatDriveLink(urlOrContent);
-                    viewer.src = formatted;
-                    if (externalBtn) externalBtn.href = urlOrContent;
-                } else {
-                    viewer.srcdoc = urlOrContent;
-                    if (externalBtn) externalBtn.style.display = 'none';
-                }
-
-                document.getElementById('fileModal').style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            };
-
-            window.togglePdfFullScreen = () => {
-                const f = document.getElementById('fileModal');
-                if (!document.fullscreenElement) f.requestFullscreen();
-                else document.exitFullscreen();
-            };
-
-            window.closeModal = () => {
-                // Close via goBack to restore previous list state and scroll Position
-                if (navHistory.length > 0) {
-                    goBack();
-                } else {
-                    cleanupIframes();
-                    document.getElementById('fileModal').style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-            };
-        </script>
+        window.closeModal = () => {
+            // Close via goBack to restore previous list state and scroll Position
+            if (navHistory.length > 0) {
+                goBack();
+            } else {
+                cleanupIframes();
+                document.getElementById('fileModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        };
+    </script>
 </body>
 
 </html>
