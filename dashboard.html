@@ -1452,6 +1452,21 @@
                     });
             };
 
+            window.logStudentActivity = (subject, title) => {
+                const userName = localStorage.getItem('mbbs_user');
+                const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
+
+                if (!userName || !subject || !title) return;
+
+                console.log(`Logging activity: ${userName} - ${subject} - ${title}`);
+                fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Standard for simple Apps Script POSTS
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userName, subject, title })
+                }).catch(e => console.error("Logging failed:", e));
+            };
+
             window.handleLogout = () => {
                 localStorage.removeItem('mbbs_user');
                 window.location.reload();
@@ -1688,6 +1703,7 @@
                             item.className = 'chapter-card';
                             if (isDone) item.style.borderLeft = "4px solid #10b981";
                             item.onclick = () => {
+                                logStudentActivity(v.Subject || currentSubject, v.title);
                                 pushNavState();
                                 selectedChapterIdx = idx;
                                 renderContent();
@@ -1779,6 +1795,7 @@
 
                     const isQuiz = item.Type && item.Type.includes('quiz');
                     card.onclick = () => {
+                        logStudentActivity(item.Subject || currentSubject, item.title);
                         if (item.isPremium) {
                             alert("👑 This high-value content is exclusive for Premium Members! Launching viewer...");
                         }
