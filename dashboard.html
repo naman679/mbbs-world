@@ -1562,8 +1562,16 @@
                 // Keep legacy QBank Platform selection for now
                 if (!currentPlatform) {
                     renderPlatforms();
-                } else {
+                } else if (!currentSubject) {
                     renderSubjectList();
+                } else {
+                    // Subject is selected, show the QBank items
+                    const list = document.createElement('div');
+                    list.className = 'chapter-list';
+                    list.id = 'quiz-list-container';
+                    area.appendChild(list);
+
+                    renderItems();
                 }
             }
             if (area.innerHTML === '') {
