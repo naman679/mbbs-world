@@ -1599,8 +1599,7 @@
                 Welcome, <span id="welcomeNameModal">Student</span>!
             </h1>
             <p style="color: var(--text-light); font-size: 1.1rem; line-height: 1.6; margin-bottom: 1rem;">
-                Stop searching, start studying. <br>
-                We’ve curated and organized the best free Telegram content right here for you.
+                Enjoy free, premium Telegram content—now organized in one place for easier studying.
             </p>
             <button class="start-studying-btn" onclick="closeWelcomeModal()">
                 Start Studying
@@ -2165,7 +2164,7 @@
             const modal = document.getElementById('welcomeModal');
             if (modal) {
                 modal.classList.remove('visible');
-                sessionStorage.setItem('welcome_seen', 'true');
+                localStorage.setItem('welcome_seen_v1', 'true');
                 setTimeout(() => {
                     modal.style.display = 'none';
                 }, 500);
@@ -2213,7 +2212,7 @@
             injectWatermark();
 
             // Trigger Welcome Modal if not seen this session
-            if (!sessionStorage.getItem('welcome_seen')) {
+            if (!localStorage.getItem('welcome_seen_v1')) {
                 openWelcomeModal();
             }
         };
