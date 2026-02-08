@@ -27,6 +27,12 @@
             height: 100vh;
             margin: 0;
             color: var(--text-color);
+            /* Disable Selection & Long Press */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
         }
 
         .login-container {
@@ -157,6 +163,16 @@
     </div>
 
     <script>
+        // Content Protection
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'p'))) {
+                e.preventDefault();
+                alert("Security Alert: Screen capture and source viewing are disabled for content protection.");
+            }
+        });
+        document.addEventListener('dragstart', e => e.preventDefault());
+
         const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
 
         document.getElementById('login-submit-btn').addEventListener('click', handleLogin);
