@@ -673,55 +673,6 @@
             height: 100%;
         }
 
-        .tap-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 70px);
-            /* Leave room for floating toolbar */
-            z-index: 2;
-            cursor: pointer;
-            display: flex;
-        }
-
-        .tap-side {
-            width: 50%;
-            height: 100%;
-            position: relative;
-        }
-
-        /* Seek Feedback Animation */
-        .seek-feedback {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.3s;
-        }
-
-        .seek-left {
-            left: 10%;
-        }
-
-        .seek-right {
-            right: 10%;
-        }
-
-        .seek-feedback.active {
-            opacity: 1;
-            transform: translateY(-50%) scale(1.2);
-        }
 
         /* Landscape/Fullscreen Overlay */
         .video-controls-overlay {
@@ -2185,13 +2136,7 @@
             card.innerHTML = `
                 <div class="video-wrapper">
                     <div id="${uid}"></div>
-                    <div class="glass-shield"></div>
-                    <div class="tap-overlay" onclick="handleTap(event, '${uid}')">
-                        <div class="tap-side" id="tap-left-${uid}"></div>
-                        <div class="tap-side" id="tap-right-${uid}"></div>
-                    </div>
-                    <div id="seek-left-${uid}" class="seek-feedback seek-left"><i class="fas fa-backward"></i> -10s</div>
-                    <div id="seek-right-${uid}" class="seek-feedback seek-right">+10s <i class="fas fa-forward"></i></div>
+                    <div class="glass-shield" onclick="togglePlayPause('${uid}')"></div>
                 </div>
 
                 <!-- Moved outside wrapper for landscape flexibility -->
@@ -2232,28 +2177,9 @@
         }
 
         // --- ADVANCED VIDEO LOGIC ---
-        let lastTapTime = 0;
         window.handleTap = (e, uid) => {
-            const now = Date.now();
-            const delay = now - lastTapTime;
-            const rect = e.currentTarget.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const width = rect.width;
-
-            if (delay < 300) {
-                // Double Tap Detected
-                if (x < width * 0.4) {
-                    seekBy(-10, uid);
-                    showSeekFeedback('left', uid);
-                } else if (x > width * 0.6) {
-                    seekBy(10, uid);
-                    showSeekFeedback('right', uid);
-                }
-            } else {
-                // Single Tap -> Pass to Toggle
-                togglePlayPause(uid);
-            }
-            lastTapTime = now;
+            // Deprecated in favor of single-tap toggle on glass-shield
+            togglePlayPause(uid);
         };
 
         window.togglePlayPause = (uid) => {
@@ -2273,13 +2199,6 @@
             }
         }
 
-        function showSeekFeedback(side, uid) {
-            const el = document.getElementById(`seek-${side}-${uid}`);
-            if (el) {
-                el.classList.add('active');
-                setTimeout(() => el.classList.remove('active'), 500);
-            }
-        }
 
         // ORIENTATION / FULLSCREEN OVERLAY
         window.activePlayerId = null;
