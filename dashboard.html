@@ -1722,12 +1722,22 @@
 
         // --- SECURITY ENGINE ---
         function initSecurity() {
+            let initialHeight = window.innerHeight;
             // Block Context Menu Globally
             document.oncontextmenu = () => false;
 
             // Block Copy & Drag
             document.addEventListener('copy', e => e.preventDefault());
             document.addEventListener('dragstart', e => e.preventDefault());
+
+            // 1. 'Volume Key' Trap (Android Best-Effort)
+            window.addEventListener('keydown', e => {
+                if (e.key === 'VolumeDown' || e.key === 'VolumeUp' || e.keyCode === 174 || e.keyCode === 175) {
+                    e.preventDefault();
+                    toggleCurtain(true);
+                    setTimeout(() => toggleCurtain(false), 2000);
+                }
+            });
 
             // Handle Privacy Curtain (Anti-Screen Record)
             const overlay = document.getElementById('security-overlay');
@@ -1751,6 +1761,24 @@
                 toggleCurtain(true);
             });
             window.addEventListener('focus', () => toggleCurtain(false));
+
+            // 3. 'Resize' Trap (Toolbar/Overlay Detection)
+            window.addEventListener('resize', () => {
+                const heightDiff = Math.abs(initialHeight - window.innerHeight);
+                if (heightDiff > 100) {
+                    toggleCurtain(true);
+                    setTimeout(() => {
+                        initialHeight = window.innerHeight;
+                        toggleCurtain(false);
+                    }, 1500);
+                }
+            });
+
+            // 4. Manual Recovery
+            if (overlay) {
+                overlay.addEventListener('click', () => toggleCurtain(false));
+                overlay.addEventListener('touchstart', () => toggleCurtain(false));
+            }
 
             // Block PrintScreen & Shortcuts
             document.addEventListener('keydown', e => {

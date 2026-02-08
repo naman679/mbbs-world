@@ -171,17 +171,45 @@
     <script>
         // Content Protection (Strict Security Developer Mode)
         const overlay = document.getElementById('security-overlay');
+        let initialHeight = window.innerHeight;
+
         const toggleCurtain = (show) => { if (overlay) overlay.style.display = show ? 'flex' : 'none'; };
 
-        document.addEventListener('contextmenu', e => e.preventDefault());
+        // 1. 'Volume Key' Trap (Android Best-Effort)
+        window.addEventListener('keydown', e => {
+            if (e.key === 'VolumeDown' || e.key === 'VolumeUp' || e.keyCode === 174 || e.keyCode === 175) {
+                e.preventDefault();
+                toggleCurtain(true);
+                setTimeout(() => toggleCurtain(false), 2000);
+                console.warn("Security: Hardware button interaction detected.");
+            }
+        });
+
+        // 2. 'Focus Loss' Trap (Instant Protection)
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) toggleCurtain(true);
             else toggleCurtain(false);
         });
-
         window.addEventListener('blur', () => toggleCurtain(true));
         window.addEventListener('focus', () => toggleCurtain(false));
 
+        // 3. 'Resize' Trap (Toolbar/Overlay Detection)
+        window.addEventListener('resize', () => {
+            const heightDiff = Math.abs(initialHeight - window.innerHeight);
+            if (heightDiff > 100) { // Significant shift often associated with screenshot UI
+                toggleCurtain(true);
+                setTimeout(() => {
+                    initialHeight = window.innerHeight;
+                    toggleCurtain(false);
+                }, 1500);
+            }
+        });
+
+        // 4. Manual Recovery
+        if (overlay) overlay.addEventListener('click', () => toggleCurtain(false));
+        if (overlay) overlay.addEventListener('touchstart', () => toggleCurtain(false));
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', e => {
             if (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'p'))) {
                 e.preventDefault();
