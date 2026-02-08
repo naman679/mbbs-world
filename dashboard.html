@@ -2136,7 +2136,7 @@
             card.innerHTML = `
                 <div class="video-wrapper">
                     <div id="${uid}"></div>
-                    <div class="glass-shield" onclick="togglePlayPause('${uid}')"></div>
+                    <div class="glass-shield"></div>
                 </div>
 
                 <!-- Moved outside wrapper for landscape flexibility -->
@@ -2178,8 +2178,7 @@
 
         // --- ADVANCED VIDEO LOGIC ---
         window.handleTap = (e, uid) => {
-            // Deprecated in favor of single-tap toggle on glass-shield
-            togglePlayPause(uid);
+            // Deprecated in favor of dedicated buttons
         };
 
         window.togglePlayPause = (uid) => {
