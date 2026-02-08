@@ -14,6 +14,7 @@
 
     <style>
         :root {
+            /* Light Mode */
             --primary: #4f46e5;
             --primary-dark: #4338ca;
             --accent: #06b6d4;
@@ -21,9 +22,23 @@
             --card-bg: rgba(255, 255, 255, 0.95);
             --text-main: #1e293b;
             --text-light: #64748b;
+            --nav-bg: rgba(255, 255, 255, 0.8);
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             --radius: 16px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-dark: #6366f1;
+            --accent: #22d3ee;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --card-bg: rgba(30, 41, 59, 0.95);
+            --text-main: #f1f5f9;
+            --text-light: #94a3b8;
+            --nav-bg: rgba(15, 23, 42, 0.8);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
         }
 
         * {
@@ -38,37 +53,142 @@
             color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
         }
 
         /* --- NAVIGATION --- */
+        .modal.focus-mode .modal-content {
+            width: 100vw;
+            height: 100vh;
+            max-width: none;
+            border-radius: 0;
+            top: 0;
+            left: 0;
+            transform: none;
+        }
+
+        .modal.focus-mode .modal-footer,
+        .modal.focus-mode .fullscreen-modal:not(#focusToggle) {
+            display: none;
+        }
+
+        .portal-card {
+            background: var(--card-bg);
+            padding: 2.5rem 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .portal-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        .portal-card h3 {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
         .navbar {
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--nav-bg);
             backdrop-filter: blur(12px);
             padding: 0.8rem 2rem;
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: var(--shadow-sm);
+            gap: 20px;
         }
 
-        .nav-brand {
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 1.4rem;
+        .main-nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: 0.3s;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+        }
+
+        .nav-link i {
+            font-size: 1rem;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-main);
             cursor: pointer;
         }
 
+        .theme-toggle {
+            background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Improved touch targets for mobile */
+        @media (max-width: 900px) {
+
+            .nav-link,
+            .logout-btn,
+            .back-btn,
+            .portal-card,
+            .external-link-btn {
+                padding: 1rem 1.5rem !important;
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
         .search-container {
-            flex: 1;
-            max-width: 400px;
-            margin: 0 2rem;
+            width: 100%;
+            max-width: 500px;
+            justify-self: center;
             position: relative;
         }
 
@@ -87,8 +207,9 @@
             padding: 0.6rem 1rem 0.6rem 2.5rem;
             border-radius: 50px;
             border: 1px solid rgba(0, 0, 0, 0.05);
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(var(--primary-rgb, 255, 255, 255), 0.1);
             backdrop-filter: blur(5px);
+            color: var(--text-main);
             font-size: 0.85rem;
             transition: 0.3s;
             outline: none;
@@ -1161,12 +1282,43 @@
             font-size: 0.95rem;
         }
 
-        .card-seo-desc {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-top: 10px;
-            line-height: 1.5;
-            text-align: left;
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 900px) {
+            .navbar {
+                grid-template-columns: auto 1fr auto;
+                padding: 0.8rem 1rem;
+            }
+
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--nav-bg);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                padding: 1rem;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            }
+
+            .main-nav.mobile-active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .search-container {
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .portal-grid {
+                grid-template-columns: 1fr 1fr;
+            }
         }
     </style>
 </head>
@@ -1181,33 +1333,40 @@
         </div>
 
         <nav class="navbar">
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
             <div class="nav-brand" onclick="navigate('home')"><i class="fas fa-heartbeat" style="color:#ef4444"></i>
-                MBBS
-                World</div>
+                MBBS World</div>
+
             <div class="search-container">
                 <i class="fas fa-search"></i>
                 <input type="text" id="globalSearch" placeholder="Search subjects or topics..."
                     oninput="handleSearch()">
             </div>
-            <div class="main-nav">
-                <a href="#home" class="nav-link" id="nav-home" onclick="navigate('home')"><i class="fas fa-home"></i>
-                    Home</a>
-                <a href="#videos" class="nav-link" id="nav-videos" onclick="navigate('videos')"><i
-                        class="fas fa-play-circle"></i>
-                    Videos</a>
-                <a href="#notes" class="nav-link" id="nav-notes" onclick="navigate('notes')"><i
-                        class="fas fa-file-pdf"></i>
-                    Notes</a>
-                <a href="#quizzes" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')"><i
-                        class="fas fa-lightbulb"></i>
-                    Quizzes</a>
-                <a href="#qbank" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i
-                        class="fas fa-tasks"></i>
-                    Q-Bank</a>
-            </div>
-            <div class="user-menu">
-                <span id="userName" style="font-weight:600; font-size:0.9rem"></span>
-                <button onclick="handleLogout()" class="logout-btn">Logout</button>
+
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="main-nav" id="mainNav">
+                    <a href="#home" class="nav-link" id="nav-home" onclick="navigate('home')"><i
+                            class="fas fa-home"></i>
+                        Home</a>
+                    <a href="#videos" class="nav-link" id="nav-videos" onclick="navigate('videos')"><i
+                            class="fas fa-play-circle"></i>
+                        Videos</a>
+                    <a href="#notes" class="nav-link" id="nav-notes" onclick="navigate('notes')"><i
+                            class="fas fa-file-pdf"></i>
+                        Notes</a>
+                    <a href="#quizzes" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')"><i
+                            class="fas fa-lightbulb"></i>
+                        Quizzes</a>
+                    <a href="#qbank" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i
+                            class="fas fa-tasks"></i>
+                        Q-Bank</a>
+                </div>
+                <div class="user-menu">
+                    <span id="userName" style="font-weight:600; font-size:0.9rem"></span>
+                </div>
             </div>
         </nav>
 
@@ -1215,24 +1374,6 @@
             <!-- Main Content Area -->
             <div id="contentArea">
                 <!-- Home View (Default) -->
-                <div class="welcome-section">
-                    <h1>Welcome, <span id="welcomeName">Student</span>!</h1>
-                    <p>What would you like to study today?</p>
-                    <div class="portal-grid">
-                        <div class="portal-card" onclick="navigate('videos')"><i class="fas fa-video"></i>
-                            <h3>Video Lectures</h3>
-                            <p>Premium video content with summary notes.</p>
-                        </div>
-                        <div class="portal-card" onclick="navigate('notes')"><i class="fas fa-book"></i>
-                            <h3>Notes PDF</h3>
-                            <p>Standard textbook reference material.</p>
-                        </div>
-                        <div class="portal-card" onclick="navigate('qbank')"><i class="fas fa-graduation-cap"></i>
-                            <h3>Question Bank</h3>
-                            <p>Test your knowledge with practice files.</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -1263,8 +1404,13 @@
                     <p style="color: white; font-size: 0.8rem; opacity: 0.7;">Launching Viewer...</p>
                 </header>
             </section>
-            <button class="fullscreen-modal" onclick="togglePdfFullScreen()" title="Toggle Full Screen">
+            <button class="fullscreen-modal" onclick="togglePdfFullScreen()" title="Toggle Full Screen"
+                style="right: 110px;">
                 <i class="fas fa-expand"></i>
+            </button>
+            <button class="fullscreen-modal" id="focusToggle" onclick="toggleFocusMode()" title="Toggle Focus Mode"
+                style="right: 60px;">
+                <i class="fas fa-eye"></i>
             </button>
             <button class="close-modal" onclick="closeModal()" title="Close">
                 <i class="fas fa-times"></i>
@@ -1392,6 +1538,33 @@
             const id = (match && match[2].length === 11) ? match[2] : url;
             return id;
         }
+
+        // Theme Management
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('mbbs_theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.querySelector('.theme-toggle i');
+            if (icon) {
+                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+        }
+
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('mobile-active');
+        }
+
+        // Initialize Theme on load
+        (function initTheme() {
+            const savedTheme = localStorage.getItem('mbbs_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
 
         let currentView = 'home';
         let currentSubject = null;
@@ -1527,6 +1700,54 @@
             window.location.reload();
         };
 
+        window.navigate = (view) => {
+            if (view === 'home' || view === 'videos' || view === 'notes' || view === 'quizzes' || view === 'qbank') {
+                const trustArea = document.getElementById('trustArea');
+                const contentArea = document.getElementById('contentArea');
+                if (trustArea) trustArea.style.display = 'none';
+                if (contentArea) contentArea.style.display = 'block';
+
+                if (view === 'home') showMainMenu();
+                else filterCategory(view);
+            }
+        };
+
+        window.showTrustPage = (type) => {
+            const area = document.getElementById('trustArea');
+            const contentArea = document.getElementById('contentArea');
+            if (contentArea) contentArea.style.display = 'none';
+            if (area) {
+                area.style.display = 'block';
+                window.scrollTo(0, 0);
+
+                let html = `
+                    <div class="welcome-section" style="padding: 1rem 0;">
+                        <button class="back-btn" onclick="navigate('home')"><i class="fas fa-arrow-left"></i> Home</button>
+                        <h1>${type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' ')}</h1>
+                    </div>
+                `;
+
+                if (type === 'about') {
+                    html += `
+                        <div class="minimalist-content">
+                            <p>MBBS World is a premium study portal designed specifically for medical students. We provide high-quality videos, notes, and question banks to simplify your medical education journey.</p>
+                            <p>Designed for focus and speed, our goal is to help you master the curriculum without distractions.</p>
+                        </div>
+                    `;
+                } else if (type === 'disclaimer') {
+                    html += `
+                        <div class="minimalist-content">
+                            <p><b>Important Notice:</b> All content on MBBS World is for educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment.</p>
+                            <p>Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
+                        </div>
+                    `;
+                } else {
+                    html += `<div class="minimalist-content"><p>Content for ${type} is coming soon.</p></div>`;
+                }
+                area.innerHTML = html;
+            }
+        };
+
         window.showMainMenu = (isBack = false) => {
             if (!isBack) pushNavState();
             currentView = 'home';
@@ -1580,7 +1801,6 @@
                         <div class="portal-card" onclick="setPlatform('${p}')">
                             <i class="fas fa-university"></i>
                             <h3>${p}</h3>
-                            <p>Browse content from ${p}</p>
                         </div>
                     `).join('')}
                 </div>
@@ -1603,8 +1823,10 @@
             if (activeLink) activeLink.classList.add('active');
         }
 
-        // window.onload ensures data is ready before clicks
         window.onload = () => {
+            const savedTheme = localStorage.getItem('mbbs_theme') || 'light';
+            updateThemeIcon(savedTheme);
+
             fetchSheetData(); // Load data immediately for bots/reviewers
             const savedUser = localStorage.getItem('mbbs_user');
             if (savedUser) {
@@ -1769,53 +1991,26 @@
         function renderHome() {
             document.getElementById('contentArea').innerHTML = `
                 <div class="welcome-section">
-                    <h1>Welcome to MBBS World - Your Premium Medical Education Hub</h1>
-                    <p>Empowering medical students with high-yield resources, interactive question banks, and authoritative study materials.</p>
+                    <h1>Welcome, <span id="welcomeNameHome">${window.userSessionName || 'Student'}</span></h1>
+                    <p>What would you like to study today?</p>
                     
                     <div class="portal-grid">
                         <div class="portal-card" onclick="filterCategory('videos')">
                             <i class="fas fa-video"></i>
-                            <h3>🎬 Video Lectures</h3>
-                            <p>Premium medical video content.</p>
-                            <div class="card-seo-desc">
-                                Master complex medical concepts with our HD video lectures. Our <b>Physiology/Anatomy resources</b> are designed by experts to break down difficult topics like cardiovascular hemodynamics, neuroanatomy pathways, and surgical procedures. For students preparing for <b>Medical University Exams</b>, these lectures provide visual clarity on procedures found in standard textbooks like Guyton and Hall or Gray's Anatomy. Each video includes clinical correlations to bridge the gap between basic sciences and bedside medicine, ensuring you excel in both theory and practical exams.
-                            </div>
+                            <h3>Videos</h3>
                         </div>
                         <div class="portal-card" onclick="filterCategory('notes')">
                             <i class="fas fa-book"></i>
-                            <h3>📝 Study Notes</h3>
-                            <p>Standard textbook reference PDFs.</p>
-                            <div class="card-seo-desc">
-                                Boost your revision with our comprehensive <b>MBBS notes</b>. Our editorial team distills information from top-tier medical literature, including Robbins Pathology, K.D. Tripathi Pharmacology, and Harrison's Internal Medicine. These notes are optimized for <b>Medical University Exams</b>, featuring high-yield tables, flowcharts, and mnemonics. Whether you are studying Forensic Medicine or Community Health, our PDF resources provide a structured approach to learning, helping you memorize vast amounts of clinical data efficiently for your upcoming professional assessments.
-                            </div>
+                            <h3>Notes</h3>
                         </div>
                         <div class="portal-card" onclick="filterCategory('quizzes')">
-                            <i class="fas fa-lightbulb"></i>
-                            <h3>🧠 Specialized Quizzes</h3>
-                            <p>Interactive HTML medical quizzes.</p>
-                            <div class="card-seo-desc">
-                                Test your decision-making skills with our interactive <b>medical quizzes</b>. These specialized modules are designed to simulate clinical scenarios encountered in both <b>Medical University Exams</b> and real-world practice. From identifying ECG patterns to interpreting biochemical lab results, our quizzes provide immediate feedback and detailed rationales. Engaging with these resources regularly reinforces high-yield medical facts and improves long-term retention of critical surgical and physiological knowledge.
-                            </div>
+                            <i class="fas fa-vial"></i>
+                            <h3>Quizzes</h3>
                         </div>
                         <div class="portal-card" onclick="filterCategory('qbank')">
                             <i class="fas fa-graduation-cap"></i>
-                            <h3>❓ Question Bank</h3>
-                            <p>Test your knowledge with MCQs.</p>
-                            <div class="card-seo-desc">
-                                Prepare for success in <b>Medical University Exams</b> and competitive entrance tests like NEXT/NEET-PG with our interactive <b>MBBS question bank</b>. Our database features thousands of high-yield MCQs, clinical case studies, and image-based questions across all 19 subjects. Each question is accompanied by detailed explanations rooted in standard medical curriculum guidelines. Regular practice with our Q-Bank enhances diagnostic reasoning and time management, providing a competitive edge for students striving for top honors in their medical career.
-                            </div>
+                            <h3>Q-Bank</h3>
                         </div>
-                    </div>
-
-                    <div class="seo-text">
-                        <h2>Navigating the MBBS Curriculum: A Comprehensive Guide for Medical Students</h2>
-                        <p>The journey through the MBBS (Bachelor of Medicine, Bachelor of Surgery) curriculum is one of the most intellectually demanding yet rewarding paths a student can take. This medical education journey is traditionally divided into three major phases: Pre-clinical, Para-clinical, and Clinical. Each phase serves as a critical building block, transforming a student into a competent healthcare professional. In the Pre-clinical stage, subjects like Human Anatomy, Medical Physiology, and Biochemistry lay the foundational bedrock. Understanding the macro and microscopic structure of the human body through B.D. Chaurasia’s Anatomy or mastering the complex physiological feedback loops described in Guyton and Hall is essential. These <b>Physiology/Anatomy resources</b> are not just for passing first-year exams but are central to understanding pathology later in the course.</p>
-                        
-                        <p>As students move into the Para-clinical phase, they encounter Pathology, Microbiology, Pharmacology, and Forensic Medicine. This is where the study of health transitions into the study of disease. Mastery of Robbins Basic Pathology is a rite of passage for every medical student, while Pharmacology resources like K.D. Tripathi provide the necessary pharmacological basis for treating ailments. <b>Medical University Exams</b> often place heavy emphasis on these integration years, as they are pivotal for clinical reasoning. Our portal provides specialized <b>MBBS notes</b> and curated study guides to help students navigate these vast subjects, ensuring that key concepts in drug mechanisms and microbial pathogenesis are well-understood.</p>
-                        
-                        <p>The final Clinical phase encompasses Internal Medicine, General Surgery, Obstetrics and Gynecology, and Pediatrics, along with several smaller specialties like ENT, Ophthalmology, and Orthopedics. This phase requires constant clinical correlation and hands-on experience in hospital wards. Standard textbooks such as Harrison's Principles of Internal Medicine and Bailey & Love’s Short Practice of Surgery become the primary references. For many, this stage is characterized by the pressure of final <b>Medical University Exams</b> and the looming NEXT/NEET-PG entrance tests. Our <b>MBBS question bank</b> is specifically tailored to mirror the high-level clinical reasoning required in these high-stakes exams, offering students a way to test their knowledge in real-world scenarios.</p>
-
-                        <p>In the modern era, medical education has evolved beyond traditional textbooks. Interactive learning, high-definition surgical videos, and digital <b>MBBS notes</b> have become indispensable tools. At MBBS World, we are committed to providing medical students with a centralized hub for all their educational needs. By blending theoretical knowledge with clinical insights, our platform ensures that every student—regardless of where they are in their curriculum—has access to the highest quality medical resources to succeed in their university exams and beyond into their professional medical career.</p>
                     </div>
                 </div>
             `;
@@ -2284,6 +2479,15 @@
             const f = document.getElementById('fileModal');
             if (!document.fullscreenElement) f.requestFullscreen();
             else document.exitFullscreen();
+        };
+
+        window.toggleFocusMode = () => {
+            const modal = document.getElementById('fileModal');
+            const btn = document.getElementById('focusToggle');
+            modal.classList.toggle('focus-mode');
+            const isFocus = modal.classList.contains('focus-mode');
+            btn.innerHTML = isFocus ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+            btn.style.color = isFocus ? 'var(--accent)' : 'white';
         };
 
         window.closeModal = () => {
