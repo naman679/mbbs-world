@@ -1595,11 +1595,12 @@
                         points="0,15 100,15 110,5 120,25 130,15 200,15 210,5 220,25 230,15 300,15 310,5 320,25 330,15 400,15 410,5 420,25 430,15 500,15 510,5 520,25 530,15 600,15 610,5 620,25 630,15 700,15 710,5 720,25 730,15 800,15 810,5 820,25 830,15 900,15 910,5 920,25 930,15 1000,15" />
                 </svg>
             </div>
-            <h1 style="color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800;">Welcome to
-                MBBS World</h1>
+            <h1 style="color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800;">
+                Welcome, <span id="welcomeNameModal">Student</span>!
+            </h1>
             <p style="color: var(--text-light); font-size: 1.1rem; line-height: 1.6; margin-bottom: 1rem;">
-                Your premium portal for high-yield medical resources. <br>
-                Ready to excel in your medical journey?
+                Stop searching, start studying. <br>
+                We’ve curated and organized the best free Telegram content right here for you.
             </p>
             <button class="start-studying-btn" onclick="closeWelcomeModal()">
                 Start Studying
@@ -2219,10 +2220,12 @@
 
         window.updateUserMenu = () => {
             const savedUser = sessionStorage.getItem('mbbs_user');
+            const firstName = savedUser ? savedUser.split(' ')[0] : 'Student';
             const userNameSpan = document.getElementById('userName');
-            if (userNameSpan) {
-                userNameSpan.innerText = savedUser || '';
-            }
+            const welcomeModalName = document.getElementById('welcomeNameModal');
+
+            if (userNameSpan) userNameSpan.innerText = savedUser || '';
+            if (welcomeModalName) welcomeModalName.innerText = firstName;
         };
 
         window.promptLogin = () => {
