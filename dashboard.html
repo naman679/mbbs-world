@@ -1752,7 +1752,7 @@
         };
 
         window.logStudentActivity = (subject, title) => {
-            const userName = localStorage.getItem('mbbs_user');
+            const userName = sessionStorage.getItem('mbbs_user');
             const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
 
             if (!userName || !subject || !title) return;
@@ -1767,7 +1767,7 @@
         };
 
         window.handleLogout = () => {
-            localStorage.removeItem('mbbs_user');
+            sessionStorage.removeItem('mbbs_user');
             window.location.reload();
         };
 
@@ -1898,27 +1898,43 @@
             const savedTheme = localStorage.getItem('mbbs_theme') || 'light';
             updateThemeIcon(savedTheme);
 
-            fetchSheetData(); // Load data immediately for bots/reviewers
-            const savedUser = localStorage.getItem('mbbs_user');
-            if (savedUser) {
-                // Background auth if user already exists
-                const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
-                fetch(`${scriptURL}?name=${encodeURIComponent(savedUser)}`)
-                    .then(r => r.json())
-                    .then(data => {
-                        if (data.allowed) {
-                            const firstName = savedUser.split(' ')[0] || "Student";
-                            window.userSessionName = firstName;
-                            document.getElementById('userName').innerText = savedUser;
-                            updateUserMenu();
-                        }
-                    });
+            const savedUser = sessionStorage.getItem('mbbs_user');
+            if (!savedUser) {
+                // Not logged in -> Go to Splash/Login page
+                window.location.href = 'index.html';
+                return;
             }
+
+            fetchSheetData(); // Load data immediately for bots/reviewers
+
+            // Background auth if user already exists
+            const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
+            fetch(`${scriptURL}?name=${encodeURIComponent(savedUser)}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.allowed) {
+                        const firstName = savedUser.split(' ')[0] || "Student";
+                        window.userSessionName = firstName;
+                        document.getElementById('userName').innerText = savedUser;
+                        updateUserMenu();
+                    } else {
+                        // Access revoked or user removed from sheet -> Logout
+                        handleLogout();
+                    }
+                })
+                .catch(err => {
+                    console.error("Auth verify failed:", err);
+                    // If network fails, we still show data but maybe with less features
+                    const firstName = savedUser.split(' ')[0] || "Student";
+                    window.userSessionName = firstName;
+                    updateUserMenu();
+                });
+
             updateUserMenu();
         };
 
         window.updateUserMenu = () => {
-            const savedUser = localStorage.getItem('mbbs_user');
+            const savedUser = sessionStorage.getItem('mbbs_user');
             const userNameSpan = document.getElementById('userName');
             if (userNameSpan) {
                 userNameSpan.innerText = savedUser || '';
@@ -1928,7 +1944,7 @@
         window.promptLogin = () => {
             const name = prompt("Please enter your name for activity tracking:");
             if (name) {
-                localStorage.setItem('mbbs_user', name);
+                sessionStorage.setItem('mbbs_user', name);
                 window.location.reload();
             }
         };

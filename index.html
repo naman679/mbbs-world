@@ -178,7 +178,9 @@
                     // Static Site Mode: Bypass backend verification
                     // In a real app, you would send the token to a server.
                     // Here, we just redirect to the dashboard.
-                    console.log("Logged in as:", result.user.email);
+                    const user = result.user;
+                    sessionStorage.setItem('mbbs_user', user.displayName || user.email);
+                    console.log("Logged in as:", user.email);
                     window.location.href = 'dashboard.html';
                 })
                 .catch((error) => {
