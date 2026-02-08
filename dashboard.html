@@ -109,6 +109,8 @@
             padding: 0;
             border-bottom: 2px solid var(--primary);
             overflow: hidden;
+            position: relative;
+            /* Ensure absolute children position correctly */
         }
 
         .navbar-top {
@@ -1323,8 +1325,8 @@
 
         .ecg-line {
             fill: none;
-            stroke: #00FF00;
-            /* Neon Green */
+            stroke: #D32F2F;
+            /* Medical Red */
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
@@ -1358,12 +1360,6 @@
                 <div class="nav-brand" onclick="navigate('home')">
                     <i class="fas fa-heartbeat" style="color:#ef4444"></i> MBBS World
                 </div>
-                <div class="ecg-container">
-                    <svg width="100%" height="100%" viewBox="0 0 1000 30" preserveAspectRatio="none">
-                        <polyline class="ecg-line"
-                            points="0,15 100,15 110,5 120,25 130,15 200,15 210,5 220,25 230,15 300,15 310,5 320,25 330,15 400,15 410,5 420,25 430,15 500,15 510,5 520,25 530,15 600,15 610,5 620,25 630,15 700,15 710,5 720,25 730,15 800,15 810,5 820,25 830,15 900,15 910,5 920,25 930,15 1000,15" />
-                    </svg>
-                </div>
                 <div class="nav-actions">
                     <button class="search-toggle-btn" onclick="toggleSearch()" title="Search">
                         <i class="fas fa-search"></i>
@@ -1395,6 +1391,12 @@
                         class="fas fa-microscope"></i> Quizzes</a>
                 <a href="#qbank" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i class="fas fa-dna"></i>
                     Q-Bank</a>
+            </div>
+            <div class="ecg-container">
+                <svg width="100%" height="100%" viewBox="0 0 1000 30" preserveAspectRatio="none">
+                    <polyline class="ecg-line"
+                        points="0,15 100,15 110,5 120,25 130,15 200,15 210,5 220,25 230,15 300,15 310,5 320,25 330,15 400,15 410,5 420,25 430,15 500,15 510,5 520,25 530,15 600,15 610,5 620,25 630,15 700,15 710,5 720,25 730,15 800,15 810,5 820,25 830,15 900,15 910,5 920,25 930,15 1000,15" />
+                </svg>
             </div>
         </nav>
 
