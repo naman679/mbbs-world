@@ -1740,11 +1740,13 @@
             const overlay = document.getElementById('security-overlay');
             const toggleBlur = (show) => {
                 if (overlay) overlay.style.display = show ? 'flex' : 'none';
-                if (show) cleanupIframes(); // Extra precaution: stop videos on blur
+                if (show) {
+                    // Stop videos but DON'T clear PDF src immediately on simple hide
+                    // to avoid breaking the experience if the OS just flickers visibility
+                    Object.values(players).forEach(p => { if (p && p.pauseVideo) p.pauseVideo(); });
+                }
             };
 
-            window.addEventListener('blur', () => toggleBlur(true));
-            window.addEventListener('focus', () => toggleBlur(false));
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) toggleBlur(true);
                 else toggleBlur(false);
