@@ -62,31 +62,36 @@
             -webkit-touch-callout: none;
         }
 
-        /* --- SECURITY BLUR --- */
+        /* --- PRIVACY CURTAIN (ANTI-SCREEN RECORD) --- */
         #security-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 99999;
+            background: #000000;
+            z-index: 999999;
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: var(--primary);
+            color: #ffffff;
         }
 
         #security-overlay i {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            font-size: 5rem;
+            color: #ff3b30;
+            margin-bottom: 25px;
         }
 
-        /* --- WATERMARK --- */
+        #security-overlay h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        /* --- DYNAMIC WATERMARK (THEFT DETERRENT) --- */
         #watermark-container {
             position: fixed;
             top: 0;
@@ -94,9 +99,8 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 99999;
             overflow: hidden;
-            opacity: 0.07;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
@@ -105,10 +109,13 @@
 
         .watermark-item {
             transform: rotate(-45deg);
-            font-size: 20px;
+            font-size: 14px;
             font-weight: 700;
+            color: #000000;
+            opacity: 0.08;
             white-space: nowrap;
-            padding: 50px;
+            padding: 40px;
+            display: block;
         }
 
         /* --- NAVIGATION --- */
@@ -1398,7 +1405,7 @@
     </style>
 </head>
 
-<body>
+<body oncontextmenu="return false;">
     <div id="network-banner">⚠️ No Internet Connection. Check your network.</div>
     <div id="network-toast">🐢 Slow Internet Detected. Data Saver Mode Enabled.</div>
 
@@ -1449,11 +1456,11 @@
             </div>
         </nav>
 
-        <!-- SECURITY OVERLAY -->
+        <!-- PRIVACY CURTAIN -->
         <div id="security-overlay">
-            <i class="fas fa-user-shield"></i>
-            <h2>Privacy Protected</h2>
-            <p>Content is hidden while inactive for your security.</p>
+            <i class="fas fa-exclamation-triangle"></i>
+            <h2>⚠️ Security Mode Active</h2>
+            <p>Content Hidden. Please return to the tab to resume study.</p>
         </div>
 
         <!-- WATERMARK CONTAINER -->
@@ -1715,55 +1722,56 @@
 
         // --- SECURITY ENGINE ---
         function initSecurity() {
-            // Block Right Click
-            document.addEventListener('contextmenu', e => e.preventDefault());
+            // Block Context Menu Globally
+            document.oncontextmenu = () => false;
 
             // Block Copy & Drag
-            document.addEventListener('copy', e => {
-                e.preventDefault();
-                console.warn("Copying is disabled for medical content protection.");
-            });
+            document.addEventListener('copy', e => e.preventDefault());
             document.addEventListener('dragstart', e => e.preventDefault());
 
-            // Key Interception
-            document.addEventListener('keydown', e => {
-                // PrintScreen, Ctrl+P (Print), Ctrl+U (Source), Ctrl+S (Save), Ctrl+Shift+I (DevTools)
-                if (e.key === 'PrintScreen' ||
-                    (e.ctrlKey && (e.key === 'p' || e.key === 'u' || e.key === 's')) ||
-                    (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-                    e.preventDefault();
-                    console.error("Security: Action blocked.");
-                }
-            });
-
-            // Focus Protection (Mobile App-Switcher & Desktop Tab Switch)
+            // Handle Privacy Curtain (Anti-Screen Record)
             const overlay = document.getElementById('security-overlay');
-            const toggleBlur = (show) => {
+            const toggleCurtain = (show) => {
                 if (overlay) overlay.style.display = show ? 'flex' : 'none';
                 if (show) {
-                    // Stop videos but DON'T clear PDF src immediately on simple hide
-                    // to avoid breaking the experience if the OS just flickers visibility
+                    // Pause players if hidden
                     Object.values(players).forEach(p => { if (p && p.pauseVideo) p.pauseVideo(); });
                 }
             };
 
+            // Events: visibilitychange, blur, focus
             document.addEventListener('visibilitychange', () => {
-                if (document.hidden) toggleBlur(true);
-                else toggleBlur(false);
+                if (document.hidden) toggleCurtain(true);
+                else toggleCurtain(false);
+            });
+
+            window.addEventListener('blur', (e) => {
+                // Ignore focus moves to IFRAME to prevent flickering
+                if (document.activeElement && document.activeElement.tagName === 'IFRAME') return;
+                toggleCurtain(true);
+            });
+            window.addEventListener('focus', () => toggleCurtain(false));
+
+            // Block PrintScreen & Shortcuts
+            document.addEventListener('keydown', e => {
+                if (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'p' || e.key === 'u' || e.key === 's'))) {
+                    e.preventDefault();
+                    console.warn("Security: Content capture blocked.");
+                }
             });
         }
 
         function injectWatermark() {
             const container = document.getElementById('watermark-container');
-            const userName = sessionStorage.getItem('mbbs_user') || 'MBBS Student';
+            const watermarkText = 'Licensed to Student - Do Not Distribute';
             if (!container) return;
 
             container.innerHTML = '';
-            // Create a grid of watermarks
-            for (let i = 0; i < 40; i++) {
+            // Create a dense grid of watermarks
+            for (let i = 0; i < 60; i++) {
                 const el = document.createElement('div');
                 el.className = 'watermark-item';
-                el.innerText = userName;
+                el.innerText = watermarkText;
                 container.appendChild(el);
             }
         }

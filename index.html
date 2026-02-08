@@ -136,7 +136,13 @@
     </style>
 </head>
 
-<body>
+<body oncontextmenu="return false;">
+    <!-- PRIVACY CURTAIN (ANTI-SCREEN RECORD) -->
+    <div id="security-overlay"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; color:#fff; z-index:999999; display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+        <h1 style="font-size:3rem; margin-bottom:20px;">⚠️ Security Mode Active</h1>
+        <p style="font-size:1.2rem;">Content Hidden. Return to the tab to resume.</p>
+    </div>
 
     <div class="login-container">
         <!-- SVG Icon for Stethoscope -->
@@ -163,8 +169,19 @@
     </div>
 
     <script>
-        // Content Protection
+        // Content Protection (Strict Security Developer Mode)
+        const overlay = document.getElementById('security-overlay');
+        const toggleCurtain = (show) => { if (overlay) overlay.style.display = show ? 'flex' : 'none'; };
+
         document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) toggleCurtain(true);
+            else toggleCurtain(false);
+        });
+
+        window.addEventListener('blur', () => toggleCurtain(true));
+        window.addEventListener('focus', () => toggleCurtain(false));
+
         document.addEventListener('keydown', e => {
             if (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'p'))) {
                 e.preventDefault();
