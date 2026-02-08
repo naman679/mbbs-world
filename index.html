@@ -66,13 +66,29 @@
             font-size: 0.95rem;
         }
 
-        .login-btn {
-            background-color: white;
-            color: #555;
-            border: 1px solid #ddd;
+        .login-input {
+            width: 100%;
             padding: 14px 20px;
             font-size: 16px;
-            font-weight: 500;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
+        }
+
+        .login-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -80,18 +96,19 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            margin-top: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .login-btn:hover {
-            background-color: #f8f9fa;
-            border-color: #ccc;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #005f92;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
-        .login-btn img {
-            margin-right: 12px;
+        .login-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
         }
 
         #error-message {
@@ -123,11 +140,14 @@
         <h1>MBBS World</h1>
         <p>Exclusive Student Portal</p>
 
-        <button id="google-signin-btn" class="login-btn">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"
-                width="20" height="20">
-            Continue with Google
-        </button>
+        <div id="login-form">
+            <input type="text" id="student-name" class="login-input" placeholder="Enter your full name"
+                autocomplete="name">
+            <button id="login-submit-btn" class="login-btn">
+                <i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i>
+                Access Portal
+            </button>
+        </div>
 
         <div id="error-message"></div>
 
@@ -136,61 +156,56 @@
         </div>
     </div>
 
-    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <!-- Add Firebase products that you want to use -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
     <script>
-        // TO USER: REPLACE THIS CONFIG WITH YOUR FIREBASE WEB PROJECT CONFIG
-        const firebaseConfig = {
-            apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
-            authDomain: "samvad-bafaa.firebaseapp.com",
-            projectId: "samvad-bafaa",
-            storageBucket: "samvad-bafaa.firebasestorage.app",
-            messagingSenderId: "131803431466",
-            appId: "1:131803431466:web:b7b107308ea7197f013953",
-            measurementId: "G-M90SYY2MP9"
-        };
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
 
-        // Initialize Firebase
-        try {
-            firebase.initializeApp(firebaseConfig);
-        } catch (e) {
-            console.error("Firebase initialization failed. Did you update the config?", e);
-            document.getElementById('error-message').textContent = "System Error: Firebase config not set.";
-            document.getElementById('error-message').style.display = 'block';
+        document.getElementById('login-submit-btn').addEventListener('click', handleLogin);
+        document.getElementById('student-name').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+
+        function handleLogin() {
+            const nameInput = document.getElementById('student-name');
+            const name = nameInput.value.trim();
+            const errorDiv = document.getElementById('error-message');
+            const btn = document.getElementById('login-submit-btn');
+
+            if (!name) {
+                showError("Please enter your name.");
+                return;
+            }
+
+            errorDiv.style.display = 'none';
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying...';
+
+            // Verify name against Google Apps Script (same logic as dashboard)
+            fetch(`${scriptURL}?name=${encodeURIComponent(name)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.allowed) {
+                        // Success: Save to sessionStorage and redirect
+                        sessionStorage.setItem('mbbs_user', name);
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        showError("Access Denied: Name not recognized. Please contact support.");
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+                    }
+                })
+                .catch(error => {
+                    console.error('Auth Error!', error.message);
+                    showError("Connection Error: Could not reach the verification server.");
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+                });
         }
 
-        const provider = new firebase.auth.GoogleAuthProvider();
-
-        document.getElementById('google-signin-btn').addEventListener('click', () => {
+        function showError(msg) {
             const errorDiv = document.getElementById('error-message');
-            errorDiv.style.display = 'none';
-            errorDiv.textContent = "";
-
-            const btn = document.getElementById('google-signin-btn');
-            btn.style.opacity = "0.7";
-            btn.innerHTML = 'Signing in...';
-
-            firebase.auth().signInWithPopup(provider)
-                .then((result) => {
-                    // Static Site Mode: Bypass backend verification
-                    // In a real app, you would send the token to a server.
-                    // Here, we just redirect to the dashboard.
-                    const user = result.user;
-                    sessionStorage.setItem('mbbs_user', user.displayName || user.email);
-                    console.log("Logged in as:", user.email);
-                    window.location.href = 'dashboard.html';
-                })
-                .catch((error) => {
-                    console.error(error);
-                    errorDiv.textContent = error.message;
-                    errorDiv.style.display = 'block';
-                    btn.style.opacity = "1";
-                    btn.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" width="20" height="20"> Continue with Google';
-                });
-        });
+            errorDiv.textContent = msg;
+            errorDiv.style.display = 'block';
+        }
     </script>
 
 </body>
