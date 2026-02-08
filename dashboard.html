@@ -888,6 +888,93 @@
             justify-content: center;
         }
 
+        /* --- WELCOME MODAL STYLES --- */
+        #welcomeModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 12000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        #welcomeModal.visible {
+            display: flex;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .welcome-modal-container {
+            background: var(--card-bg);
+            padding: 3.5rem 2.5rem;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 92%;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            transform: translateY(20px);
+            transition: transform 0.5s ease;
+        }
+
+        #welcomeModal.visible .welcome-modal-container {
+            transform: translateY(0);
+        }
+
+        .close-welcome {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.4rem;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-welcome:hover {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .start-studying-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 2.5rem;
+            width: 100%;
+            box-shadow: 0 10px 15px -3px rgba(0, 119, 182, 0.3);
+        }
+
+        .start-studying-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.02);
+            box-shadow: 0 15px 25px -5px rgba(0, 119, 182, 0.4);
+        }
+
+        .start-studying-btn:active {
+            transform: scale(0.98);
+        }
+
         /* --- SMART NETWORK MONITOR STYLES --- */
         #network-banner {
             position: fixed;
@@ -1496,6 +1583,30 @@
         <div id="trustArea" class="trust-section"></div>
     </div> <!-- End of main-content -->
 
+    <!-- WELCOME MODAL -->
+    <div id="welcomeModal">
+        <div class="welcome-modal-container">
+            <div class="close-welcome" onclick="closeWelcomeModal()">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="ecg-container" style="margin-bottom: 1.5rem;">
+                <svg width="100%" height="30" viewBox="0 0 1000 30" preserveAspectRatio="none">
+                    <polyline class="ecg-line"
+                        points="0,15 100,15 110,5 120,25 130,15 200,15 210,5 220,25 230,15 300,15 310,5 320,25 330,15 400,15 410,5 420,25 430,15 500,15 510,5 520,25 530,15 600,15 610,5 620,25 630,15 700,15 710,5 720,25 730,15 800,15 810,5 820,25 830,15 900,15 910,5 920,25 930,15 1000,15" />
+                </svg>
+            </div>
+            <h1 style="color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800;">Welcome to
+                MBBS World</h1>
+            <p style="color: var(--text-light); font-size: 1.1rem; line-height: 1.6; margin-bottom: 1rem;">
+                Your premium portal for high-yield medical resources. <br>
+                Ready to excel in your medical journey?
+            </p>
+            <button class="start-studying-btn" onclick="closeWelcomeModal()">
+                Start Studying
+            </button>
+        </div>
+    </div>
+
     <div id="fileModal" class="modal">
         <div class="modal-content">
             <section id="pdfLoader" class="pdf-loader" aria-live="polite">
@@ -2041,6 +2152,25 @@
             if (activeLink) activeLink.classList.add('active');
         }
 
+        function openWelcomeModal() {
+            const modal = document.getElementById('welcomeModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('visible'), 10);
+            }
+        }
+
+        window.closeWelcomeModal = () => {
+            const modal = document.getElementById('welcomeModal');
+            if (modal) {
+                modal.classList.remove('visible');
+                sessionStorage.setItem('welcome_seen', 'true');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 500);
+            }
+        };
+
         window.onload = () => {
             const savedTheme = localStorage.getItem('mbbs_theme') || 'light';
             updateThemeIcon(savedTheme);
@@ -2080,6 +2210,11 @@
             updateUserMenu();
             initSecurity();
             injectWatermark();
+
+            // Trigger Welcome Modal if not seen this session
+            if (!sessionStorage.getItem('welcome_seen')) {
+                openWelcomeModal();
+            }
         };
 
         window.updateUserMenu = () => {
