@@ -1683,30 +1683,21 @@
 
             let hasMatches = false;
 
-            // 1. Search in Portal Cards (Home view)
-            const portalCards = document.querySelectorAll('.portal-card');
-            portalCards.forEach(card => {
-                const text = card.textContent.toLowerCase();
+            // Target all possible searchable elements
+            const searchableItems = document.querySelectorAll('.portal-card, .chapter-card, .subject-item, .card');
+
+            searchableItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
                 const match = text.includes(query);
-                card.style.display = match ? 'flex' : 'none';
+                item.style.display = match ? '' : 'none';
                 if (match) hasMatches = true;
             });
 
-            // 2. Search in Chapter/Subject Cards (Subject details view)
-            const chapterCards = document.querySelectorAll('.chapter-card');
-            chapterCards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                const match = text.includes(query);
-                card.style.display = match ? 'flex' : 'none';
-                if (match) hasMatches = true;
-            });
-
-            // 3. Search in Section Headers (Subject details view)
+            // Special handling for section headers (Subject details view)
             const sectionHeaders = document.querySelectorAll('.section-title');
             sectionHeaders.forEach(header => {
-                // Headers are shown if query is empty OR if we are in search mode (maybe)
-                // Actually, typically headers are hidden if they have no matching items below them
-                // For simplicity, we show them if query is empty
+                // In search mode, headers are shown if there's a match elsewhere or if query is empty
+                // For a better experience, we show them if we are not in a deep search or if query is empty
                 header.style.display = (query === '') ? 'block' : 'none';
             });
 
