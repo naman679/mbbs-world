@@ -10,22 +10,22 @@
     <meta name="keywords"
         content="MBBS World, Medical Education, MBBS notes, Medical Question Bank, Physiology resources, Anatomy study material, Medical students portal">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* Light Mode */
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --accent: #06b6d4;
-            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
-            --card-bg: rgba(255, 255, 255, 0.95);
+            /* Medical Light Mode */
+            --primary: #0077B6;
+            --primary-dark: #005f92;
+            --accent: #22d3ee;
+            --bg-gradient: linear-gradient(135deg, #F0F4F8 0%, #dbeafe 100%);
+            --card-bg: #FFFFFF;
             --text-main: #1e293b;
             --text-light: #64748b;
-            --nav-bg: rgba(255, 255, 255, 0.8);
+            --nav-bg: rgba(255, 255, 255, 0.9);
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --radius: 16px;
+            --radius: 12px;
         }
 
         [data-theme="dark"] {
@@ -45,7 +45,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
@@ -107,7 +107,36 @@
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             padding: 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 2px solid var(--primary);
+            overflow: hidden;
+        }
+
+        /* ECG Heartbeat Animation Header Line */
+        .navbar::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ef4444, transparent);
+            animation: ecg-line 3s linear infinite;
+        }
+
+        @keyframes ecg-line {
+            0% {
+                left: -100%;
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
         }
 
         .navbar-top {
@@ -794,6 +823,56 @@
             justify-content: center;
         }
 
+        /* --- SMART NETWORK MONITOR STYLES --- */
+        #network-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #D32F2F;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: 600;
+            z-index: 2000;
+            display: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        #network-banner.visible {
+            display: block;
+            transform: translateY(0);
+        }
+
+        #network-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #FBC02D;
+            color: #333;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            z-index: 1500;
+            display: none;
+            box-shadow: var(--shadow-md);
+            animation: slideInRight 0.3s ease forwards;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
         .pdf-loader {
             position: absolute;
             top: 50%;
@@ -1263,6 +1342,9 @@
 </head>
 
 <body>
+    <div id="network-banner">⚠️ No Internet Connection. Check your network.</div>
+    <div id="network-toast">🐢 Slow Internet Detected. Data Saver Mode Enabled.</div>
+
     <div id="main-content">
         <div id="landscapeOverlay" class="video-controls-overlay">
             <button class="overlay-back" onclick="exitLandscape()"><i class="fas fa-arrow-left"></i> Back</button>
@@ -1296,11 +1378,16 @@
             </div>
 
             <div class="main-nav" id="mainNav">
-                <a href="#home" class="nav-link active" id="nav-home" onclick="navigate('home')">Home</a>
-                <a href="#videos" class="nav-link" id="nav-videos" onclick="navigate('videos')">Videos</a>
-                <a href="#notes" class="nav-link" id="nav-notes" onclick="navigate('notes')">Notes</a>
-                <a href="#quizzes" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')">Quizzes</a>
-                <a href="#qbank" class="nav-link" id="nav-qbank" onclick="navigate('qbank')">Q-Bank</a>
+                <a href="#home" class="nav-link active" id="nav-home" onclick="navigate('home')"><i
+                        class="fas fa-house-medical"></i> Home</a>
+                <a href="#videos" class="nav-link" id="nav-videos" onclick="navigate('videos')"><i
+                        class="fas fa-stethoscope"></i> Videos</a>
+                <a href="#notes" class="nav-link" id="nav-notes" onclick="navigate('notes')"><i
+                        class="fas fa-clipboard-list"></i> Notes</a>
+                <a href="#quizzes" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')"><i
+                        class="fas fa-microscope"></i> Quizzes</a>
+                <a href="#qbank" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i class="fas fa-dna"></i>
+                    Q-Bank</a>
             </div>
         </nav>
 
@@ -1933,19 +2020,19 @@
                     
                     <div class="portal-grid">
                         <div class="portal-card" onclick="filterCategory('videos')">
-                            <i class="fas fa-video"></i>
+                            <i class="fas fa-stethoscope"></i>
                             <h3>Videos</h3>
                         </div>
                         <div class="portal-card" onclick="filterCategory('notes')">
-                            <i class="fas fa-book"></i>
+                            <i class="fas fa-clipboard-list"></i>
                             <h3>Notes</h3>
                         </div>
                         <div class="portal-card" onclick="filterCategory('quizzes')">
-                            <i class="fas fa-vial"></i>
+                            <i class="fas fa-microscope"></i>
                             <h3>Quizzes</h3>
                         </div>
                         <div class="portal-card" onclick="filterCategory('qbank')">
-                            <i class="fas fa-graduation-cap"></i>
+                            <i class="fas fa-dna"></i>
                             <h3>Q-Bank</h3>
                         </div>
                     </div>
@@ -2404,6 +2491,61 @@
                 document.body.style.overflow = 'auto';
             }
         };
+
+        // --- SMART NETWORK & UTILS ---
+        function getViewIcon() {
+            switch (currentView) {
+                case 'home': return 'fa-house-medical';
+                case 'videos': return 'fa-stethoscope';
+                case 'notes': return 'fa-clipboard-list';
+                case 'quizzes': return 'fa-microscope';
+                case 'qbank': return 'fa-dna';
+                default: return 'fa-folder-open';
+            }
+        }
+
+        function initNetworkMonitor() {
+            const banner = document.getElementById('network-banner');
+            const toast = document.getElementById('network-toast');
+
+            const updateStatus = () => {
+                if (navigator.onLine) {
+                    banner.classList.remove('visible');
+                    checkSpeed();
+                } else {
+                    banner.classList.add('visible');
+                }
+            };
+
+            const checkSpeed = () => {
+                if (navigator.connection) {
+                    const type = navigator.connection.effectiveType;
+                    if (type === '2g' || type === 'slow-2g') {
+                        toast.style.display = 'block';
+                        enableDataSaver();
+                        setTimeout(() => { toast.style.display = 'none'; }, 5000);
+                    }
+                }
+            };
+
+            window.addEventListener('online', updateStatus);
+            window.addEventListener('offline', updateStatus);
+            updateStatus();
+        }
+
+        function enableDataSaver() {
+            console.log("Data Saver Mode Enabled");
+            const media = document.querySelectorAll('video, iframe');
+            media.forEach(m => {
+                if (m.tagName === 'VIDEO') m.setAttribute('preload', 'none');
+                m.removeAttribute('autoplay');
+                // For YT iframes, we can't easily strip autoplay if it's in the URL, 
+                // but createPlayer already handles playerVars.
+            });
+        }
+
+        // Initialize features
+        initNetworkMonitor();
     </script>
 </body>
 
