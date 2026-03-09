@@ -588,12 +588,78 @@
                 optionsDiv.innerHTML = q.options &amp;&amp; q.options.length &gt; 0
                     ? q.options.map(opt =&gt; `
                         &lt;button class=&quot;option-btn w-full text-left p-3 border rounded-lg ${answers[index] === opt.label ? &#x27;selected&#x27; : &#x27;&#x27;}&quot; 
-                                onclick=&quot;selectOption(${index}, &#x27;${opt.label}&#x27;)&quot; 
+                                onclick=&quot;selectOption(${index}, &#x27;${opt.label}&#x27;)&quot;\n                                ${answers[index] ? &#x27;disabled class=&quot;cursor-not-allowed opacity-70&quot;&#x27; : &#x27;&#x27;} 
                                 aria-label=&quot;Option ${opt.label}: ${opt.text}&quot;&gt;
                             ${opt.label}. ${opt.text}
                         &lt;/button&gt;
                     `).join(&#x27;&#x27;)
                     : &#x27;&lt;p class=&quot;text-red-500&quot;&gt;No options available&lt;/p&gt;&#x27;;
+                
+                // ADD EXPLANATION CONTAINER
+                let explDiv = document.getElementById(&#x27;explanation-container&#x27;);
+                if (!explDiv) {
+                    explDiv = document.createElement(&#x27;div&#x27;);
+                    explDiv.id = &#x27;explanation-container&#x27;;
+                    explDiv.className = &#x27;mt-4 hidden&#x27;;
+                    const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                    optionsDiv.parentNode.insertBefore(explDiv, optionsDiv.nextSibling);
+                }
+                
+                // If already answered, show the explanation immediately and color the options
+                if (answers[index]) {
+                    const selectedLabel = answers[index];
+                    let correctLabel = &#x27;&#x27;;
+                    if (q.correct_answer) {
+                        correctLabel = q.correct_answer.split(&#x27;.&#x27;)[0].trim();
+                    } else {
+                        const correctOpt = q.options.find(o =&gt; o.correct);
+                        if (correctOpt) correctLabel = correctOpt.label;
+                    }
+                    
+                    const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                    const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
+                    optionButtons.forEach(btn =&gt; {
+                        btn.disabled = true; // Keep them disabled if already answered
+                        btn.classList.add(&#x27;cursor-not-allowed&#x27;, &#x27;opacity-70&#x27;);
+                        const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
+                        if (btnLabel === correctLabel) {
+                            btn.classList.remove(&#x27;bg-white&#x27;);
+                            btn.classList.add(&#x27;bg-green-100&#x27;, &#x27;border-green-500&#x27;, &#x27;text-green-800&#x27;);
+                        } else if (btnLabel === selectedLabel) {
+                            btn.classList.remove(&#x27;bg-white&#x27;);
+                            btn.classList.add(&#x27;bg-red-100&#x27;, &#x27;border-red-500&#x27;, &#x27;text-red-800&#x27;);
+                        }
+                    });
+                    
+                    // Show explanation
+                    explDiv.innerHTML = `
+                        &lt;div class=&quot;p-4 border rounded-lg bg-gray-50 mt-4 shadow-sm text-left&quot;&gt;
+                            &lt;p&gt;&lt;strong&gt;Correct Answer:&lt;/strong&gt; ${q.correct_answer || &#x27;Unknown&#x27;}&lt;/p&gt;
+                            &lt;div class=&quot;mt-2 text-gray-800 text-sm&quot;&gt;${q.explanation || &#x27;No explanation available&#x27;}&lt;/div&gt;
+                            ${q.explanation_images &amp;&amp; q.explanation_images.length &gt; 0 ? q.explanation_images.map(url =&gt; `\&lt;img src=&quot;\${url}&quot; alt=&quot;Explanation Image&quot; class=&quot;max-w-full h-auto rounded-lg my-2&quot;&gt;`).join(&#x27;&#x27;) : &#x27;&#x27;}
+                            ${q.video ? `
+                                &lt;button class=&quot;play-video bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 font-semibold shadow-sm&quot; 
+                                        onclick=&quot;loadVideo(this, &#x27;\${q.video}&#x27;, &#x27;video-\${index}&#x27;)&quot;
+                                        aria-label=&quot;Play explanation video for Question \${index + 1}&quot;&gt;
+                                    Play Video Explanation
+                                &lt;/button&gt;
+                                &lt;div id=&quot;video-\${index}&quot; class=&quot;video-container mt-2&quot;&gt;&lt;/div&gt;
+                            ` : &#x27;&#x27;}
+                            ${q.audio ? `
+                                &lt;button class=&quot;play-audio bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 font-semibold shadow-sm&quot; 
+                                        onclick=&quot;loadAudio(this, &#x27;\${q.audio}&#x27;, &#x27;audio-\${index}&#x27;)&quot;
+                                        aria-label=&quot;Play audio explanation for Question \${index + 1}&quot;&gt;
+                                    Play Audio Explanation
+                                &lt;/button&gt;
+                                &lt;div id=&quot;audio-\${index}&quot; class=&quot;audio-container mt-2&quot;&gt;&lt;/div&gt;
+                            ` : &#x27;&#x27;}
+                        &lt;/div&gt;
+                    `;
+                    explDiv.classList.remove(&#x27;hidden&#x27;);
+                } else {
+                    explDiv.classList.add(&#x27;hidden&#x27;);
+                    explDiv.innerHTML = &#x27;&#x27;;
+                }
                 document.getElementById(&#x27;previous-btn&#x27;).disabled = index === 0;
                 document.getElementById(&#x27;next-btn&#x27;).disabled = index === questions.length - 1;
                 document.getElementById(&#x27;mark-review&#x27;).classList.toggle(&#x27;marked&#x27;, markedForReview[index]);
@@ -610,14 +676,65 @@
         // Select option
         function selectOption(index, label) {
             try {
+                if (answers[index]) return; // ALREADY ANSWERED
+                
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
+                const q = questions[index];
+                
+                let correctLabel = &#x27;&#x27;;
+                if (q.correct_answer) {
+                    correctLabel = q.correct_answer.split(&#x27;.&#x27;)[0].trim();
+                } else {
+                    const correctOpt = q.options.find(o =&gt; o.correct);
+                    if (correctOpt) correctLabel = correctOpt.label;
+                }
+                
                 optionButtons.forEach(btn =&gt; {
                     const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
                     btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    btn.disabled = true; // Disable all buttons
+                    btn.classList.add(&#x27;cursor-not-allowed&#x27;, &#x27;opacity-70&#x27;);
+                    
+                    if (btnLabel === correctLabel) {
+                        btn.classList.remove(&#x27;bg-white&#x27;);
+                        btn.classList.add(&#x27;bg-green-100&#x27;, &#x27;border-green-500&#x27;, &#x27;text-green-800&#x27;);
+                    } else if (btnLabel === label) {
+                        btn.classList.remove(&#x27;bg-white&#x27;);
+                        btn.classList.add(&#x27;bg-red-100&#x27;, &#x27;border-red-500&#x27;, &#x27;text-red-800&#x27;);
+                    }
                 });
+                
+                let explDiv = document.getElementById(&#x27;explanation-container&#x27;);
+                if (explDiv) {
+                    explDiv.innerHTML = `
+                        &lt;div class=&quot;p-4 border rounded-lg bg-gray-50 mt-4 shadow-sm text-left&quot;&gt;
+                            &lt;p&gt;&lt;strong&gt;Correct Answer:&lt;/strong&gt; ${q.correct_answer || &#x27;Unknown&#x27;}&lt;/p&gt;
+                            &lt;div class=&quot;mt-2 text-gray-800 text-sm&quot;&gt;${q.explanation || &#x27;No explanation available&#x27;}&lt;/div&gt;
+                            ${q.explanation_images &amp;&amp; q.explanation_images.length &gt; 0 ? q.explanation_images.map(url =&gt; `\&lt;img src=&quot;\${url}&quot; alt=&quot;Explanation Image&quot; class=&quot;max-w-full h-auto rounded-lg my-2&quot;&gt;`).join(&#x27;&#x27;) : &#x27;&#x27;}
+                            ${q.video ? `
+                                &lt;button class=&quot;play-video bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 font-semibold shadow-sm&quot; 
+                                        onclick=&quot;loadVideo(this, &#x27;\${q.video}&#x27;, &#x27;video-\${index}&#x27;)&quot;
+                                        aria-label=&quot;Play explanation video for Question \${index + 1}&quot;&gt;
+                                    Play Video Explanation
+                                &lt;/button&gt;
+                                &lt;div id=&quot;video-\${index}&quot; class=&quot;video-container mt-2&quot;&gt;&lt;/div&gt;
+                            ` : &#x27;&#x27;}
+                            ${q.audio ? `
+                                &lt;button class=&quot;play-audio bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 font-semibold shadow-sm&quot; 
+                                        onclick=&quot;loadAudio(this, &#x27;\${q.audio}&#x27;, &#x27;audio-\${index}&#x27;)&quot;
+                                        aria-label=&quot;Play audio explanation for Question \${index + 1}&quot;&gt;
+                                    Play Audio Explanation
+                                &lt;/button&gt;
+                                &lt;div id=&quot;audio-\${index}&quot; class=&quot;audio-container mt-2&quot;&gt;&lt;/div&gt;
+                            ` : &#x27;&#x27;}
+                        &lt;/div&gt;
+                    `;
+                    explDiv.classList.remove(&#x27;hidden&#x27;);
+                }
+                
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -9512,5 +9629,8 @@
 &lt;/html&gt;" frameborder="0" width="100%" height="2000px"></iframe>
 </div>
 
+
+    
+    
 </body>
 </html>
