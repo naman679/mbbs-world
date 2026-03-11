@@ -580,6 +580,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -1749,6 +1752,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -1789,11 +1795,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -2801,6 +2839,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -2841,11 +2882,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -3853,6 +3926,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -3893,11 +3969,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -4905,6 +5013,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -4945,11 +5056,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -5957,6 +6100,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -5997,11 +6143,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -7009,6 +7187,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -7049,11 +7230,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -8061,6 +8274,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -8101,11 +8317,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -9113,6 +9361,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -9153,11 +9404,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -10165,6 +10448,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -10205,11 +10491,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -11217,6 +11535,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -11257,11 +11578,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -12269,6 +12622,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -12309,11 +12665,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -13321,6 +13709,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -13361,11 +13752,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -14373,6 +14796,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -14413,11 +14839,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -15425,6 +15883,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -15465,11 +15926,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
@@ -16477,6 +16970,9 @@
         function showQuestion(index) {
             try {
                 debugLog(`Showing question ${index + 1}`);
+                // [PATCH] Clear explanation box when navigating to a new question
+                const existingBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (existingBox) existingBox.remove();
                 currentQuestion = index;
                 const q = questions[index];
                 if (!q) {
@@ -16517,11 +17013,43 @@
                 debugLog(`Selecting option ${label} for question ${index + 1}`);
                 answers[index] = label;
                 const optionsDiv = document.getElementById(&#x27;options&#x27;);
+                const q = questions[index];
+                // correct_answer may be &quot;C. Some text&quot; or just &quot;C&quot; — extract label letter only, uppercase for safe compare
+                const rawCorrect = q.correct_answer || q.correctAnswer || q.answer || &#x27;&#x27;;
+                const correctLabel = rawCorrect.split(&#x27;.&#x27;)[0].trim().toUpperCase();
+                const clickedLabel = label.trim().toUpperCase();
                 const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
+                    // Use onclick attribute to get label — most reliable, avoids text-content issues
+                    const onclickAttr = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const match = onclickAttr.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (match ? match[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    // [PATCH] Disable all buttons immediately
+                    btn.disabled = true;
+                    btn.style.cursor = &#x27;not-allowed&#x27;;
+                    btn.style.opacity = &#x27;0.9&#x27;;
+                    btn.classList.remove(&#x27;selected&#x27;);
+                    if (btnLabel === correctLabel) {
+                        // Correct answer ALWAYS green — even if user clicked it correctly
+                        btn.style.backgroundColor = &#x27;#22c55e&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#16a34a&#x27;;
+                    } else if (btnLabel === clickedLabel) {
+                        // Wrong selected answer goes red — only if it is NOT the correct answer
+                        btn.style.backgroundColor = &#x27;#ef4444&#x27;;
+                        btn.style.color = &#x27;white&#x27;;
+                        btn.style.borderColor = &#x27;#dc2626&#x27;;
+                    }
+                    // All other options stay default (no colour change)
                 });
+                // [PATCH] Inject explanation box below options
+                const oldBox = document.getElementById(&#x27;explanation-box&#x27;);
+                if (oldBox) oldBox.remove();
+                const explanationBox = document.createElement(&#x27;div&#x27;);
+                explanationBox.id = &#x27;explanation-box&#x27;;
+                explanationBox.className = &#x27;mt-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg text-gray-800&#x27;;
+                explanationBox.innerHTML = &#x27;&lt;strong&gt;Explanation:&lt;/strong&gt; &#x27; + (q.explanation || &#x27;No explanation available for this question.&#x27;);
+                optionsDiv.insertAdjacentElement(&#x27;afterend&#x27;, explanationBox);
                 updateNavPanel();
                 saveProgress();
                 debugLog(`Option ${label} selected for question ${index + 1}`);
