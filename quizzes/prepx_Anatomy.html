@@ -598,6 +598,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -1759,6 +1764,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -2827,6 +2837,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -3895,6 +3910,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -4963,6 +4983,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -6031,6 +6056,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -7099,6 +7129,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -8167,6 +8202,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -9235,6 +9275,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -10303,6 +10348,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -11371,6 +11421,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -12439,6 +12494,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -13507,6 +13567,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -14575,6 +14640,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -15643,6 +15713,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -16711,6 +16786,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -17779,6 +17859,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -18847,6 +18932,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -19915,6 +20005,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -20983,6 +21078,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -22051,6 +22151,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -23119,6 +23224,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -24187,6 +24297,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -25255,6 +25370,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -26323,6 +26443,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -27391,6 +27516,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -28459,6 +28589,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -29527,6 +29662,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -30595,6 +30735,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -31663,6 +31808,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -32731,6 +32881,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -33799,6 +33954,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -34867,6 +35027,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -35935,6 +36100,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -37003,6 +37173,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -38071,6 +38246,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -39139,6 +39319,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -40207,6 +40392,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -41275,6 +41465,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -42343,6 +42538,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -43411,6 +43611,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -44479,6 +44684,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -45547,6 +45757,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -46615,6 +46830,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -47683,6 +47903,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -48751,6 +48976,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -49819,6 +50049,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -50887,6 +51122,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -51955,6 +52195,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -53023,6 +53268,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -54091,6 +54341,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -55159,6 +55414,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -56227,6 +56487,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
@@ -57295,6 +57560,11 @@
         function startQuiz() {
             try {
                 debugLog(&quot;Starting quiz&quot;);
+                // [FIX] Clear any saved progress so fresh start has no pre-selected answers
+                localStorage.removeItem(`quiz_${quizId}`);
+                answers = new Array(questions.length).fill(null);
+                markedForReview = new Array(questions.length).fill(false);
+                currentQuestion = 0;
                 document.getElementById(&#x27;instructions&#x27;).classList.add(&#x27;hidden&#x27;);
                 document.getElementById(&#x27;quiz&#x27;).classList.remove(&#x27;hidden&#x27;);
                 showQuestion(currentQuestion);
