@@ -627,13 +627,18 @@
                     const optionsDiv = document.getElementById(&#x27;options&#x27;);
                     const optionButtons = optionsDiv.querySelectorAll(&#x27;.option-btn&#x27;);
                     optionButtons.forEach(btn =&gt; {
-                        btn.disabled = true; // Keep them disabled if already answered
+                        btn.disabled = true;
                         btn.classList.add(&#x27;cursor-not-allowed&#x27;, &#x27;opacity-70&#x27;);
-                        const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                        if (btnLabel === correctLabel) {
+                        // [FIX] Extract label from onclick - avoids textContent whitespace issues
+                        const oa = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                        const om = oa.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                        const btnLabel = (om ? om[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                        const cmpCorrect = correctLabel.trim().toUpperCase();
+                        const cmpSelected = selectedLabel.trim().toUpperCase();
+                        if (btnLabel === cmpCorrect) {
                             btn.classList.remove(&#x27;bg-white&#x27;);
                             btn.classList.add(&#x27;bg-green-100&#x27;, &#x27;border-green-500&#x27;, &#x27;text-green-800&#x27;);
-                        } else if (btnLabel === selectedLabel) {
+                        } else if (btnLabel === cmpSelected) {
                             btn.classList.remove(&#x27;bg-white&#x27;);
                             btn.classList.add(&#x27;bg-red-100&#x27;, &#x27;border-red-500&#x27;, &#x27;text-red-800&#x27;);
                         }
@@ -701,15 +706,18 @@
                 }
                 
                 optionButtons.forEach(btn =&gt; {
-                    const btnLabel = btn.textContent.trim().split(&#x27;.&#x27;)[0];
-                    btn.classList.toggle(&#x27;selected&#x27;, btnLabel === label);
-                    btn.disabled = true; // Disable all buttons
+                    // [FIX] Extract label from onclick - avoids textContent whitespace issues
+                    const oa = btn.getAttribute(&#x27;onclick&#x27;) || &#x27;&#x27;;
+                    const om = oa.match(/selectOption\s*\(\s*\d+\s*,\s*[&#x27;&quot;](.*?)[&#x27;&quot;]\s*\)/);
+                    const btnLabel = (om ? om[1] : btn.textContent.trim().split(&#x27;.&#x27;)[0]).trim().toUpperCase();
+                    const cmpCorrect = correctLabel.trim().toUpperCase();
+                    const cmpClicked = label.trim().toUpperCase();
+                    btn.disabled = true;
                     btn.classList.add(&#x27;cursor-not-allowed&#x27;, &#x27;opacity-70&#x27;);
-                    
-                    if (btnLabel === correctLabel) {
+                    if (btnLabel === cmpCorrect) {
                         btn.classList.remove(&#x27;bg-white&#x27;);
                         btn.classList.add(&#x27;bg-green-100&#x27;, &#x27;border-green-500&#x27;, &#x27;text-green-800&#x27;);
-                    } else if (btnLabel === label) {
+                    } else if (btnLabel === cmpClicked) {
                         btn.classList.remove(&#x27;bg-white&#x27;);
                         btn.classList.add(&#x27;bg-red-100&#x27;, &#x27;border-red-500&#x27;, &#x27;text-red-800&#x27;);
                     }
