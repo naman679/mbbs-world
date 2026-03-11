@@ -339,7 +339,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 208&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -833,28 +833,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -1519,7 +1500,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 75&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -1920,28 +1901,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -2606,7 +2568,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 50&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -3007,28 +2969,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -3693,7 +3636,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 75&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -4094,28 +4037,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -4780,7 +4704,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 50&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -5181,28 +5105,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -5867,7 +5772,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 75&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -6268,28 +6173,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -6954,7 +6840,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 50&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -7355,28 +7241,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -8041,7 +7908,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 200&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -8442,28 +8309,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -9128,7 +8976,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 200&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -9529,28 +9377,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -10215,7 +10044,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 50&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -10616,28 +10445,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -11302,7 +11112,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 50&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -11703,28 +11513,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -12389,7 +12180,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 26&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -12790,28 +12581,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -13476,7 +13248,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 25&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -13877,28 +13649,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -14563,7 +14316,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 25&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -14964,28 +14717,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -15650,7 +15384,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 50&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -16051,28 +15785,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -16737,7 +16452,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 25&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -17138,28 +16853,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -17824,7 +17520,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 100&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -18225,28 +17921,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -18911,7 +18588,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 200&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -19312,28 +18989,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -19998,7 +19656,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 200&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -20399,28 +20057,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -21085,7 +20724,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 200&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -21486,28 +21125,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -22172,7 +21792,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 100&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -22573,28 +22193,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -23259,7 +22860,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 75&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -23660,28 +23261,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -24346,7 +23928,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 50&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -24747,28 +24329,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -25433,7 +24996,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 50&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -25834,28 +25397,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -26520,7 +26064,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 30&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -26921,28 +26465,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -27607,7 +27132,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 75&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -28008,28 +27533,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -28694,7 +28200,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 100&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -29095,28 +28601,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -29781,7 +29268,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 75&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -30182,28 +29669,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -30868,7 +30336,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 50&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -31269,28 +30737,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -31955,7 +31404,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 50&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -32356,28 +31805,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -33042,7 +32472,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 50&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -33443,28 +32873,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
@@ -34129,7 +33540,7 @@
 &lt;!-- Question Header --&gt;
 &lt;div class=&quot;flex flex-col md:flex-row justify-between items-center mb-4&quot;&gt;
 &lt;h2 class=&quot;text-lg font-semibold&quot; id=&quot;question-number&quot;&gt;Question &lt;span&gt;1&lt;/span&gt; of 25&lt;/h2&gt;
-&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;text-lg font-semibold mt-2 md:mt-0&quot; id=&quot;timer&quot; style=&quot;display:none&quot;&gt;Time Remaining: &lt;span&gt;00:00&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;!-- Question Content --&gt;
 &lt;div class=&quot;mb-6&quot; id=&quot;question-content&quot;&gt;
@@ -34530,28 +33941,9 @@
             }
         }
 
-        // Start timer
+        // Start timer [PATCHED: timer removed]
         function startTimer() {
-            try {
-                debugLog(&quot;Starting timer&quot;);
-                timerInterval = setInterval(() =&gt; {
-                    if (timeRemaining &lt;= 0) {
-                        debugLog(&quot;Timer expired, submitting test&quot;);
-                        clearInterval(timerInterval);
-                        submitTest();
-                    } else {
-                        timeRemaining--;
-                        const minutes = Math.floor(timeRemaining / 60);
-                        const seconds = timeRemaining % 60;
-                        document.getElementById(&#x27;timer&#x27;).innerHTML = `Time Remaining: &lt;span&gt;${minutes.toString().padStart(2, &#x27;0&#x27;)}:${seconds.toString().padStart(2, &#x27;0&#x27;)}&lt;/span&gt;`;
-                        saveProgress();
-                    }
-                }, 1000);
-                debugLog(&quot;Timer started successfully&quot;);
-            } catch (e) {
-                console.error(&quot;Error starting timer:&quot;, e);
-                debugLog(&quot;Failed to start timer: &quot; + e.message);
-            }
+            // Timer disabled
         }
 
         // Update progress bar
