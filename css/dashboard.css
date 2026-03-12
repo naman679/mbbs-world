@@ -1556,6 +1556,8 @@
     }
 }
 
+        
+
         /* ── DARK MODE OVERRIDES ─────────────────────────────────────────── */
         [data-theme="dark"] .navbar {
             background: rgba(15, 23, 42, 0.97);
@@ -1574,57 +1576,146 @@
         [data-theme="dark"] .search-container input::placeholder {
             color: var(--text-light);
         }
-        [data-theme="dark"] .subject-tab {
-            border-color: rgba(255,255,255,0.08);
-            color: var(--text-light);
-        }
+
+        /* Subject items — text was invisible in dark mode */
         [data-theme="dark"] .subject-item {
-            border-color: rgba(255,255,255,0.06);
+            background: rgba(30, 41, 59, 0.9);
+            color: #e2e8f0 !important;
+            border-color: rgba(255,255,255,0.08);
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
+        [data-theme="dark"] .subject-item:hover,
+        [data-theme="dark"] .subject-item.active {
+            background: var(--primary);
+            color: white !important;
+            border-color: transparent;
+        }
+
+        /* Subject tabs — text was invisible in dark mode */
+        [data-theme="dark"] .subject-tab {
+            background: rgba(30, 41, 59, 0.9);
+            color: #e2e8f0 !important;
+            border-color: rgba(255,255,255,0.08);
+        }
+        [data-theme="dark"] .subject-tab.active {
+            background: var(--primary);
+            color: white !important;
+        }
+
+        /* Chapter cards — text was invisible in dark mode */
         [data-theme="dark"] .chapter-card {
+            background: rgba(30, 41, 59, 0.9);
+            color: #e2e8f0;
             border-color: rgba(255,255,255,0.06);
         }
-        [data-theme="dark"] .back-btn {
-            border-color: rgba(255,255,255,0.1);
+        [data-theme="dark"] .chapter-card h3,
+        [data-theme="dark"] .chapter-card p,
+        [data-theme="dark"] .chapter-card span {
+            color: #e2e8f0;
         }
-        [data-theme="dark"] .portal-footer {
-            border-top-color: rgba(255,255,255,0.06);
-        }
-        [data-theme="dark"] .welcome-modal-container {
-            background: rgba(15, 23, 42, 0.98);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
+
+        /* Cards */
         [data-theme="dark"] .card {
             border-color: rgba(255,255,255,0.06);
         }
-        [data-theme="dark"] .watermark-item {
-            color: #ffffff;
-        }
-        [data-theme="dark"] .modal-content {
-            background: #0f172a;
-        }
-        [data-theme="dark"] .search-toggle-btn {
-            background: rgba(255,255,255,0.06);
+        [data-theme="dark"] .card h3,
+        [data-theme="dark"] .card p {
             color: var(--text-main);
         }
-        [data-theme="dark"] .search-toggle-btn:hover {
-            background: rgba(255,255,255,0.12);
+
+        /* Portal cards on home screen */
+        [data-theme="dark"] .portal-card {
+            border-color: rgba(255,255,255,0.06);
         }
-        [data-theme="dark"] .main-nav {
-            border-top-color: rgba(255,255,255,0.05);
+        [data-theme="dark"] .portal-card h3 {
+            color: #e2e8f0;
         }
-        [data-theme="dark"] #userProfileBtn {
-            border-color: rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05);
-        }
-        [data-theme="dark"] .nav-link {
+        [data-theme="dark"] .portal-card p {
             color: var(--text-light);
+        }
+
+        /* Back button */
+        [data-theme="dark"] .back-btn {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(255,255,255,0.1);
+            color: #e2e8f0;
+        }
+
+        /* Footer */
+        [data-theme="dark"] .portal-footer {
+            background: rgba(15, 23, 42, 0.97);
+            border-top-color: rgba(255,255,255,0.06);
+        }
+        [data-theme="dark"] .footer-links a {
+            color: #94a3b8;
+        }
+        [data-theme="dark"] .footer-links a:hover {
+            color: var(--primary);
+        }
+        [data-theme="dark"] .footer-copy {
+            color: #64748b;
+        }
+
+        /* Nav links */
+        [data-theme="dark"] .nav-link {
+            color: #94a3b8;
         }
         [data-theme="dark"] .nav-link.active {
             color: var(--primary);
         }
-        [data-theme="dark"] .portal-card {
-            border-color: rgba(255,255,255,0.06);
+        [data-theme="dark"] .main-nav {
+            border-top-color: rgba(255,255,255,0.05);
+        }
+
+        /* Search & theme toggle buttons */
+        [data-theme="dark"] .search-toggle-btn {
+            background: rgba(255,255,255,0.06);
+            color: #e2e8f0;
+        }
+        [data-theme="dark"] .search-toggle-btn:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        /* User profile button */
+        [data-theme="dark"] #userProfileBtn {
+            border-color: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+        }
+        [data-theme="dark"] #userName {
+            color: #e2e8f0;
+        }
+
+        /* Welcome modal */
+        [data-theme="dark"] .welcome-modal-container {
+            background: rgba(15, 23, 42, 0.98);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+        }
+
+        /* PDF/file modal */
+        [data-theme="dark"] .modal-content {
+            background: #0f172a;
+        }
+
+        /* Watermark visible in dark mode */
+        [data-theme="dark"] .watermark-item {
+            color: #ffffff;
+            opacity: 0.05;
+        }
+
+        /* Section titles */
+        [data-theme="dark"] .section-title {
+            color: #e2e8f0;
+        }
+
+        /* General text fixes */
+        [data-theme="dark"] h1,
+        [data-theme="dark"] h2,
+        [data-theme="dark"] h3,
+        [data-theme="dark"] h4 {
+            color: #e2e8f0;
+        }
+        [data-theme="dark"] p {
+            color: #94a3b8;
         }
         /* ── END DARK MODE OVERRIDES ─────────────────────────────────────── */
