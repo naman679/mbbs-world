@@ -28,27 +28,61 @@
         .rank-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #e5e7eb; }
         .rank-1 { background: #fef3c7; border-radius: 8px; border: 2px solid #f59e0b; }
         .title-badge { font-size: 0.8rem; background: var(--primary); color: white; padding: 3px 8px; border-radius: 12px; margin-top: 5px; display: inline-block; }
+
+        #disconnect-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); color: white; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; text-align: center; backdrop-filter: blur(5px);
+        }
+        .countdown-circle {
+            font-size: 5rem; font-weight: bold; margin: 20px 0;
+            color: #ef4444; border: 8px solid #ef4444; width: 120px;
+            height: 120px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+        }
+
+        .time-selector { display: flex; gap: 10px; margin-top: 8px; }
+        .time-selector button { flex: 1; margin-top: 0; background: #f9fafb; color: var(--text); border: 2px solid #e5e7eb; padding: 10px; }
+        .time-selector button:hover:not(:disabled) { background: #eff6ff; border-color: #93c5fd; }
+        .time-selector button.active { background: #eff6ff; border-color: var(--primary); color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
     </style>
 </head>
 <body>
+
+<div id="disconnect-overlay" class="hidden">
+    <i class="fas fa-wifi-slash" style="font-size: 4rem; color: #ef4444;"></i>
+    <h2 style="margin-top: 20px;">Host Connection Lost!</h2>
+    <p style="font-size: 1.2rem; opacity: 0.9;">Trying to reconnect...</p>
+    <div class="countdown-circle" id="disconnect-timer">30</div>
+    <p>Returning to home in <span id="sec-text">30 seconds</span></p>
+</div>
 
 <div class="container">
     <div id="setup-view">
         <div class="card">
             <h2>Host a Live Quiz</h2>
-            <label>Your Name (Host)</label>
             <input type="text" id="host-name" placeholder="Dr. Name">
+            
             <label>Subject</label>
             <select id="subject-select"><option value="" disabled selected>Loading...</option></select>
+            
             <label>Topic</label>
             <select id="topic-select" disabled><option value="" disabled selected>Select Subject First</option></select>
+            
+            <label>Time per Question</label>
+            <div class="time-selector">
+                <button type="button" class="time-btn active" data-time="60">1 Min</button>
+                <button type="button" class="time-btn" data-time="120">2 Min</button>
+                <button type="button" class="time-btn" data-time="180">3 Min</button>
+                <button type="button" class="time-btn" data-time="300">5 Min</button>
+            </div>
+
             <button id="create-btn" disabled>Create Room</button>
         </div>
         <div class="card" style="margin-top: 20px;">
             <h2>Join a Room</h2>
-            <label>Your Name</label>
             <input type="text" id="join-name" placeholder="Dr. Name">
-            <label>6-Digit Room Code</label>
             <input type="text" id="join-code" placeholder="Enter Code" maxlength="6" style="text-align: center; font-size: 1.2rem; letter-spacing: 5px;">
             <button id="join-btn" class="btn-secondary">Join Room</button>
         </div>
@@ -56,11 +90,10 @@
 
     <div id="waiting-view" class="card hidden" style="text-align: center;">
         <h2>Waiting Room</h2>
-        <p style="font-size: 1.2rem; color: #4b5563;">Room Code:</p>
         <h1 id="display-room-code" style="font-size: 3rem; letter-spacing: 8px; color: var(--primary); margin: 10px 0;">------</h1>
         <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
             <h3>Players Joined (<span id="player-count">1</span>)</h3>
-            <ul id="players-list" style="list-style: none; padding: 0; font-size: 1.1rem; line-height: 1.8;"></ul>
+            <ul id="players-list" style="list-style: none; padding: 0;"></ul>
         </div>
         <button id="start-game-btn" class="hidden">Start Game Now</button>
         <p id="wait-message" class="hidden">Waiting for Host to start...</p>
@@ -73,7 +106,7 @@
         </div>
         <div id="question-text" class="question-text">Loading question...</div>
         <div id="options-container"></div>
-        <div id="status-message" style="text-align: center; font-weight: bold; margin-top: 15px; color: #6b7280;"></div>
+        <div id="status-message" style="text-align: center; font-weight: bold; margin-top: 15px;"></div>
     </div>
 
     <div id="leaderboard-view" class="card hidden">
@@ -85,7 +118,8 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-    import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+    import { getDatabase, ref, set, get, onValue, update, onDisconnect } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+    
     const app = initializeApp({
         apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
         authDomain: "samvad-bafaa.firebaseapp.com",
@@ -95,22 +129,30 @@
         messagingSenderId: "131803431466",
         appId: "1:131803431466:web:b7b107308ea7197f013953"
     });
+    
     window.db = getDatabase(app);
     window.dbRef = ref; window.dbSet = set; window.dbGet = get; window.dbOnValue = onValue; window.dbUpdate = update;
+    window.dbOnDisconnect = onDisconnect;
 </script>
 
 <script>
     const views = { setup: document.getElementById('setup-view'), waiting: document.getElementById('waiting-view'), game: document.getElementById('game-view'), leaderboard: document.getElementById('leaderboard-view') };
     function switchView(vName) { Object.values(views).forEach(v => v.classList.add('hidden')); views[vName].classList.remove('hidden'); }
 
-    // 🔥 Added 'triggeringNext' lock to State
-    let state = { playerId: 'p_' + Math.random().toString(36).substr(2, 9), playerName: '', roomCode: '', isHost: false, questions: [], currentIndex: 0, stats: { correct: 0, timeTaken: 0 }, timerInterval: null, timeLeft: 60, hasAnsweredCurrent: false, triggeringNext: false };
+    let state = { playerId: 'p_' + Math.random().toString(36).substr(2, 9), playerName: '', roomCode: '', isHost: false, questions: [], currentIndex: 0, stats: { correct: 0, timeTaken: 0 }, timerInterval: null, timeLeft: 60, timePerQuestion: 60, hasAnsweredCurrent: false, triggeringNext: false, disconnectTimer: null, disconnectCount: 30 };
     
     let subjectToLinkMap = {};
     let parsedTopicBlocks = [];
     let selectedTopicIndex = -1;
 
-    // Fetch Google Sheet
+    document.querySelectorAll('.time-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            state.timePerQuestion = parseInt(e.target.getAttribute('data-time'));
+        });
+    });
+
     async function initDataEngine() {
         try {
             const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oD0BX4WhhLDL6e6WybIEXmvbiroBMBiGASJ2r-HdxlIOmDFqaWpUEMdDydPUHVOQNsOGGbgJR6O/pub?output=csv");
@@ -124,28 +166,20 @@
             const sel = document.getElementById('subject-select');
             sel.innerHTML = '<option value="" disabled selected>Select Subject</option>';
             Object.keys(subjectToLinkMap).sort().forEach(sub => sel.add(new Option(sub, sub)));
-        } catch (e) { alert("Failed to connect to Google Sheet!"); }
+        } catch (e) { console.error(e); }
     }
 
-    // THE ULTIMATE FETCH + HTML SCRAPER
     document.getElementById('subject-select').addEventListener('change', async (e) => {
         let fetchUrl = subjectToLinkMap[e.target.value]; 
-        
-        if (fetchUrl.includes("github.com") && fetchUrl.includes("/blob/")) {
-            fetchUrl = fetchUrl.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
-        }
-        if (fetchUrl.includes("naman679.github.io")) {
-            fetchUrl = fetchUrl.replace("naman679.github.io/mbbs-world", "raw.githubusercontent.com/naman679/mbbs-world/main");
-        }
+        if (fetchUrl.includes("github.com") && fetchUrl.includes("/blob/")) fetchUrl = fetchUrl.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
+        if (fetchUrl.includes("naman679.github.io")) fetchUrl = fetchUrl.replace("naman679.github.io/mbbs-world", "raw.githubusercontent.com/naman679/mbbs-world/main");
 
         const tSel = document.getElementById('topic-select');
-        tSel.innerHTML = '<option value="" disabled selected>Extracting data...</option>';
-        tSel.disabled = true; document.getElementById('create-btn').disabled = true;
+        tSel.innerHTML = '<option value="" disabled selected>Extracting...</option>';
+        tSel.disabled = true;
         
         try {
             const res = await fetch(fetchUrl);
-            if (!res.ok) throw new Error("GitHub Fetch Failed");
-            
             const rawText = await res.text();
             parsedTopicBlocks = [];
             
@@ -157,43 +191,23 @@
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(rawText, 'text/html');
                 const containers = doc.querySelectorAll('.iframe-container');
-                
                 containers.forEach(container => {
                     const titleEl = container.querySelector('h2');
                     const iframeEl = container.querySelector('iframe');
-                    
                     if (titleEl && iframeEl) {
-                        const topicName = titleEl.textContent.trim();
                         const srcdoc = iframeEl.getAttribute('srcdoc');
-                        
-                        if (srcdoc) {
-                            const match = srcdoc.match(/questions\s*=\s*(\[\s*\{[\s\S]*?\}\s*\])\s*;\s*if\s*\(!Array\.isArray/);
-                            if (match && match[1]) {
-                                try { parsedTopicBlocks.push({ topic: topicName, questions: JSON.parse(match[1]) }); } 
-                                catch (parseErr) { console.error("Scrape skip"); }
-                            }
-                        }
+                        const match = srcdoc.match(/questions\s*=\s*(\[\s*\{[\s\S]*?\}\s*\])\s*;/);
+                        if (match && match[1]) parsedTopicBlocks.push({ topic: titleEl.textContent.trim(), questions: JSON.parse(match[1]) });
                     }
                 });
             }
 
             tSel.innerHTML = '<option value="" disabled selected>Select Topic</option>';
-            let topicsFound = 0;
-            
             parsedTopicBlocks.forEach((block, idx) => {
-                if (block.questions && block.questions.length > 0) {
-                    tSel.add(new Option(`${block.topic || 'Topic '+(idx+1)} (${block.questions.length} Qs)`, idx));
-                    topicsFound++;
-                }
+                if (block.questions && block.questions.length > 0) tSel.add(new Option(`${block.topic || 'Topic '+(idx+1)} (${block.questions.length} Qs)`, idx));
             });
-            
-            if (topicsFound === 0) alert("Could not extract questions from this file.");
-            else tSel.disabled = false;
-            
-        } catch (e) { 
-            tSel.innerHTML = '<option value="" disabled selected>Failed to read Data</option>'; 
-            alert("Error parsing file: " + e.message);
-        }
+            tSel.disabled = false;
+        } catch (e) { alert("Error parsing file: " + e.message); }
     });
 
     document.getElementById('topic-select').addEventListener('change', (e) => {
@@ -201,25 +215,28 @@
         document.getElementById('create-btn').disabled = false;
     });
 
-    // Create Room
+    // --- HOST LOGIC (Protected) ---
     document.getElementById('create-btn').addEventListener('click', async () => {
-        if (selectedTopicIndex === -1) return alert("Select a topic.");
-        const block = parsedTopicBlocks[selectedTopicIndex];
-        
-        state.questions = block.questions;
+        if (selectedTopicIndex === -1) return;
+        state.questions = parsedTopicBlocks[selectedTopicIndex].questions;
         state.playerName = document.getElementById('host-name').value || "Host Doctor";
         state.isHost = true;
         state.roomCode = Math.floor(100000 + Math.random() * 900000).toString(); 
 
-        await window.dbSet(window.dbRef(window.db, `rooms/${state.roomCode}`), {
+        const roomRef = window.dbRef(window.db, `rooms/${state.roomCode}`);
+        
+        // Host ONLY triggers the countdown overlay. Their player data is kept safe!
+        window.dbOnDisconnect(roomRef).update({ status: 'host_disconnected' });
+
+        await window.dbSet(roomRef, {
             status: 'waiting', currentQuestionIndex: 0, questions: state.questions,
-            // 🔥 Initialize answeredIndex to -1
+            timePerQuestion: state.timePerQuestion, 
             players: { [state.playerId]: { name: state.playerName, correct: 0, timeTaken: 0, answeredIndex: -1 } }
         });
         enterWaitingRoom();
     });
 
-    // Join Room
+    // --- MEMBER LOGIC (Auto-Remove on leave) ---
     document.getElementById('join-btn').addEventListener('click', async () => {
         state.playerName = document.getElementById('join-name').value || "Doctor";
         const code = document.getElementById('join-code').value.trim();
@@ -228,9 +245,17 @@
         const snap = await window.dbGet(window.dbRef(window.db, `rooms/${code}`));
         if (!snap.exists()) return alert("Room not found!");
 
-        state.roomCode = code; state.questions = snap.val().questions;
-        // 🔥 Initialize answeredIndex to -1
-        await window.dbUpdate(window.dbRef(window.db, `rooms/${code}/players/${state.playerId}`), { name: state.playerName, correct: 0, timeTaken: 0, answeredIndex: -1 });
+        const roomData = snap.val();
+        state.roomCode = code; 
+        state.questions = roomData.questions;
+        state.timePerQuestion = roomData.timePerQuestion || 60; 
+
+        const myPlayerRef = window.dbRef(window.db, `rooms/${code}/players/${state.playerId}`);
+        
+        // Regular members are instantly removed from the DB if they leave/disconnect
+        window.dbOnDisconnect(myPlayerRef).remove();
+
+        await window.dbUpdate(myPlayerRef, { name: state.playerName, correct: 0, timeTaken: 0, answeredIndex: -1 });
         enterWaitingRoom();
     });
 
@@ -240,20 +265,49 @@
         if (state.isHost) document.getElementById('start-game-btn').classList.remove('hidden');
         else document.getElementById('wait-message').classList.remove('hidden');
 
-        // 🔥 THE MAGIC FIX: Smart Player Listener
+        window.dbOnValue(window.dbRef(window.db, `rooms/${state.roomCode}`), (snap) => {
+            const data = snap.val();
+            if (!data) return;
+
+            const overlay = document.getElementById('disconnect-overlay');
+            if (data.status === 'host_disconnected') {
+                if (!state.disconnectTimer) {
+                    overlay.classList.remove('hidden');
+                    state.disconnectCount = 30; // Increased to 30 seconds
+                    document.getElementById('disconnect-timer').textContent = "30";
+                    state.disconnectTimer = setInterval(() => {
+                        state.disconnectCount--;
+                        document.getElementById('disconnect-timer').textContent = state.disconnectCount;
+                        if (state.disconnectCount <= 0) {
+                            clearInterval(state.disconnectTimer);
+                            location.reload();
+                        }
+                    }, 1000);
+                }
+            } else {
+                if (state.disconnectTimer) {
+                    clearInterval(state.disconnectTimer);
+                    state.disconnectTimer = null;
+                    overlay.classList.add('hidden');
+                }
+            }
+            
+            if (state.isHost && data.status === 'host_disconnected') {
+                window.dbUpdate(window.dbRef(window.db, `rooms/${state.roomCode}`), { status: (state.currentIndex > 0 ? 'playing' : 'waiting') });
+            }
+        });
+
         window.dbOnValue(window.dbRef(window.db, `rooms/${state.roomCode}/players`), (snap) => {
             const players = snap.val() || {};
             document.getElementById('player-count').textContent = Object.keys(players).length;
             document.getElementById('players-list').innerHTML = Object.values(players).map(p => `<li>👨‍⚕️ Dr. ${p.name}</li>`).join('');
 
-            // If we are currently IN a game, check if EVERYONE has answered!
             if (state.isHost && !document.getElementById('game-view').classList.contains('hidden')) {
                 const pArray = Object.values(players);
-                // Check if every player's answeredIndex matches the current question
+                // Disconnected players are deleted from DB, so they don't block the game
                 const allAnswered = pArray.length > 0 && pArray.every(p => p.answeredIndex === state.currentIndex);
-                
                 if (allAnswered && !state.triggeringNext) {
-                    state.triggeringNext = true; // Lock it so it doesn't trigger twice
+                    state.triggeringNext = true;
                     setTimeout(() => window.dbUpdate(window.dbRef(window.db, `rooms/${state.roomCode}`), { currentQuestionIndex: state.currentIndex + 1 }), 3000);
                 }
             }
@@ -267,7 +321,6 @@
 
     document.getElementById('start-game-btn').addEventListener('click', () => window.dbUpdate(window.dbRef(window.db, `rooms/${state.roomCode}`), { status: 'playing' }));
 
-    // Game Engine
     function startGameEngine() {
         switchView('game');
         window.dbOnValue(window.dbRef(window.db, `rooms/${state.roomCode}/currentQuestionIndex`), (snap) => {
@@ -278,52 +331,42 @@
     }
 
     function renderQuestion() {
-        clearInterval(state.timerInterval); state.timeLeft = 60; state.hasAnsweredCurrent = false;
-        state.triggeringNext = false; // 🔥 Unlock the trigger for the new question
-        
+        clearInterval(state.timerInterval); state.timeLeft = state.timePerQuestion; state.hasAnsweredCurrent = false; state.triggeringNext = false;
         const q = state.questions[state.currentIndex];
         document.getElementById('question-tracker').textContent = `Q: ${state.currentIndex + 1} / ${state.questions.length}`;
-        document.getElementById('timer-display').textContent = `⏱️ 60s`;
+        document.getElementById('timer-display').textContent = `⏱️ ${state.timeLeft}s`;
         document.getElementById('status-message').textContent = "";
         
         const decodeHTML = (html) => { const txt = document.createElement('textarea'); txt.innerHTML = html; return txt.value; };
-        
         let qText = decodeHTML(q.text || "");
-        if (q.question_images && q.question_images.length > 0) {
-            qText += '<br>' + q.question_images.map(img => `<img src="${img}" style="max-width:100%; border-radius:8px; margin-top:10px;">`).join('');
-        }
+        if (q.question_images) qText += '<br>' + q.question_images.map(img => `<img src="${img}" style="max-width:100%; border-radius:8px; margin-top:10px;">`).join('');
         document.getElementById('question-text').innerHTML = qText;
         
         const optsContainer = document.getElementById('options-container');
         optsContainer.innerHTML = '';
         (q.options || []).forEach((opt, idx) => {
             const btn = document.createElement('button'); btn.className = 'option-btn';
-            
-            let isCorrect = false;
-            let btnText = "";
-            if (typeof opt === 'object') {
-                isCorrect = opt.correct || false;
-                btnText = opt.label ? `${opt.label}. ${decodeHTML(opt.text)}` : decodeHTML(opt.text);
-            } else {
-                isCorrect = (idx === q.correct_index);
-                btnText = decodeHTML(opt);
-            }
-            
-            btn.textContent = btnText;
+            const isCorrect = typeof opt === 'object' ? opt.correct : (idx === q.correct_index);
+            btn.textContent = typeof opt === 'object' ? (opt.label ? `${opt.label}. ${decodeHTML(opt.text)}` : decodeHTML(opt.text)) : decodeHTML(opt);
             btn.onclick = () => handleAnswer(btn, isCorrect);
             optsContainer.appendChild(btn);
         });
 
         state.timerInterval = setInterval(() => {
             state.timeLeft--; document.getElementById('timer-display').textContent = `⏱️ ${state.timeLeft}s`;
-            if (state.timeLeft <= 0) { clearInterval(state.timerInterval); if (!state.hasAnsweredCurrent) processTimeUp(); }
+            if (state.timeLeft <= 0) { 
+                clearInterval(state.timerInterval); 
+                if (!state.hasAnsweredCurrent) processTimeUp(); 
+            }
         }, 1000);
     }
 
     function handleAnswer(btn, isCorrect) {
         if (state.hasAnsweredCurrent) return;
-        state.hasAnsweredCurrent = true; clearInterval(state.timerInterval);
-        state.stats.timeTaken += (60 - state.timeLeft);
+        state.hasAnsweredCurrent = true; 
+        
+        // Visual clock keeps ticking after answering
+        state.stats.timeTaken += (state.timePerQuestion - state.timeLeft);
         
         if (isCorrect) { btn.classList.add('correct'); state.stats.correct++; }
         else {
@@ -335,44 +378,38 @@
         }
         Array.from(document.getElementById('options-container').children).forEach(b => b.disabled = true);
         document.getElementById('status-message').textContent = `Waiting for others...`;
-        
-        pushStatsToFirebase(); 
-        // 🔥 Notice we DO NOT push to the next question here anymore!
+        pushStatsToFirebase();
     }
 
     function processTimeUp() {
-        state.hasAnsweredCurrent = true; state.stats.timeTaken += 60;
-        Array.from(document.getElementById('options-container').children).forEach(b => b.disabled = true);
-        document.getElementById('status-message').textContent = `Time's Up! Moving next...`;
+        state.hasAnsweredCurrent = true; 
+        state.stats.timeTaken += state.timePerQuestion;
         
-        pushStatsToFirebase(); 
-        // 🔥 We DO NOT push to the next question here anymore!
+        Array.from(document.getElementById('options-container').children).forEach(b => b.disabled = true);
+        document.getElementById('status-message').textContent = `Time's Up!`;
+        pushStatsToFirebase();
     }
 
-    // 🔥 Added answeredIndex to tell the Host that this player is done
     function pushStatsToFirebase() { window.dbUpdate(window.dbRef(window.db, `rooms/${state.roomCode}/players/${state.playerId}`), { correct: state.stats.correct, timeTaken: state.stats.timeTaken, answeredIndex: state.currentIndex }); }
 
-    // Leaderboard
     function showLeaderboard() {
         switchView('leaderboard'); clearInterval(state.timerInterval);
         window.dbGet(window.dbRef(window.db, `rooms/${state.roomCode}/players`)).then(snap => {
-            // Sort players by correct answers, then by fastest time
             const players = Object.values(snap.val() || {}).sort((a, b) => b.correct !== a.correct ? b.correct - a.correct : a.timeTaken - b.timeTaken);
-            
             document.getElementById('leaderboard-list').innerHTML = players.map((p, idx) => {
                 const acc = Math.round((p.correct / state.questions.length) * 100) || 0;
                 
-                // 🔥 Titles assigned by RANK (idx 0 is 1st place, idx 1 is 2nd place, etc.)
+                // 🔥 The "Patient Killer" Roast Set
                 let title = "";
-                if (idx === 0) title = "Asli Maggu 👑";            // 1st Place
-                else if (idx === 1) title = "Jugaadu Doctor 😎";   // 2nd Place
-                else if (idx === 2) title = "Bhagwan Bharose 🙏";  // 3rd Place
-                else title = "Mota Back Lagega 💀";                // 4th Place & Below
+                if (idx === 0) title = "HOD Ka Palatu Kutta 🐕";                  // 1st Place
+                else if (idx === 1) title = "Fraud Doctor 🤡";                     // 2nd Place
+                else if (idx === 2) title = "Jhola Chhap Quack 🦆";                // 3rd Place
+                else title = "Iski Wajah Se Patient Marega 🪦";                    // 4th Place & Below
 
                 return `<div class="rank-row ${idx===0?'rank-1':''}">
-                    <div style="font-size: 1.2rem; font-weight: bold; width: 40px;">#${idx + 1}</div>
-                    <div style="flex-grow: 1;"><div style="font-weight: bold; font-size: 1.1rem;">Dr. ${p.name}</div><div class="title-badge">${title}</div></div>
-                    <div style="text-align: right; line-height: 1.5;"><div style="color: var(--primary); font-weight: bold;">${acc}% Accuracy</div><div style="font-size: 0.9rem; color: #6b7280;">${p.correct}/${state.questions.length} • ${(p.timeTaken/state.questions.length).toFixed(1)}s avg</div></div>
+                    <div style="font-weight: bold; width: 40px;">#${idx + 1}</div>
+                    <div style="flex-grow: 1;"><div>Dr. ${p.name}</div><div class="title-badge">${title}</div></div>
+                    <div style="text-align: right;"><div>${acc}% Accuracy</div><div style="font-size: 0.8rem;">${p.correct}/${state.questions.length} Correct</div></div>
                 </div>`;
             }).join('');
         });
