@@ -47,7 +47,7 @@
 
     <script src="js/login.js?v=2"></script>
 
-   <script type="module">
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
     import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
@@ -64,12 +64,13 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    // 1. AUTO-LOGIN CHECK (On Page Load)
+    // 1. AUTO-LOGIN CHECK
     window.addEventListener('DOMContentLoaded', () => {
         const savedUser = localStorage.getItem('mbbs_saved_user');
         const savedId = localStorage.getItem('mbbs_device_id');
         if (savedUser && savedId) {
-            window.location.replace("dashboard.html"); // Use replace to prevent back-button loops
+            sessionStorage.setItem('mbbs_user', savedUser); // Sync memory
+            window.location.replace("dashboard.html");
         }
     });
 
@@ -78,14 +79,19 @@
     const errorDiv = document.getElementById('error-message');
 
     loginBtn.addEventListener('click', async () => {
-        const userName = nameInput.value.trim().toLowerCase();
+        // Sanitize name so Firebase doesn't crash on special characters
+        const rawName = nameInput.value.trim().toLowerCase();
+        const userName = rawName.replace(/[.#$\[\]]/g, '_'); 
+        
         if (!userName) {
+            errorDiv.style.display = 'block';
             errorDiv.innerText = "Please enter your name.";
             return;
         }
 
+        errorDiv.style.display = 'none';
         loginBtn.disabled = true;
-        loginBtn.innerText = "Verifying...";
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying...';
 
         let currentDeviceId = localStorage.getItem('mbbs_device_id');
         if (!currentDeviceId) {
@@ -104,16 +110,15 @@
                 const savedSlotId = userData[slotName];
 
                 if (!savedSlotId || savedSlotId === currentDeviceId) {
-                    // Update Firebase AND WAIT for success before moving
                     await update(userRef, { [slotName]: currentDeviceId });
                     finalizeLogin(userName);
                 } else {
+                    errorDiv.style.display = 'block';
                     errorDiv.innerText = "Access Denied! Account linked to another device.";
                     loginBtn.disabled = false;
-                    loginBtn.innerText = "Access Portal";
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
                 }
             } else {
-                // New User Registration
                 await set(userRef, {
                     name: userName,
                     [slotName]: currentDeviceId,
@@ -123,17 +128,19 @@
             }
         } catch (error) {
             console.error(error);
+            errorDiv.style.display = 'block';
             errorDiv.innerText = "Database Error. Check your internet.";
             loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
         }
     });
 
     function finalizeLogin(name) {
         localStorage.setItem('mbbs_saved_user', name);
-        // Important: Wait 100ms for localStorage to settle
+        sessionStorage.setItem('mbbs_user', name); // Crucial for stopping the loop
         setTimeout(() => {
             window.location.replace("dashboard.html");
-        }, 100);
+        }, 150);
     }
 </script>
 </body>

@@ -40,6 +40,29 @@
 </head>
 
 <body oncontextmenu="return false;">
+    
+    <script>
+        (function() {
+            const savedUser = localStorage.getItem('mbbs_saved_user');
+            const savedId = localStorage.getItem('mbbs_device_id');
+
+            // If data is missing, stop everything and go back to login instantly
+            if (!savedUser || !savedId) {
+                console.warn("No active session found. Redirecting to login...");
+                window.location.replace("index.html");
+                return;
+            }
+
+            // Pre-fill UI names to prevent blank headers during loading
+            window.addEventListener('DOMContentLoaded', () => {
+                const nameDisplay = document.getElementById('userName');
+                const modalName = document.getElementById('welcomeNameModal');
+                
+                if (nameDisplay) nameDisplay.innerText = savedUser.toUpperCase();
+                if (modalName) modalName.innerText = savedUser.toUpperCase();
+            });
+        })();
+    </script>
     <div id="network-banner">⚠️ No Internet Connection. Check your network.</div>
     <div id="network-toast">🐢 Slow Internet Detected. Data Saver Mode Enabled.</div>
 
@@ -136,7 +159,9 @@
         </footer>
 
         <div id="trustArea" class="trust-section"></div>
-    </div> <div id="welcomeModal">
+    </div> 
+    
+    <div id="welcomeModal">
         <div class="welcome-modal-container">
             <div class="close-welcome" onclick="closeWelcomeModal()">
                 <i class="fas fa-times"></i>

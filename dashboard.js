@@ -176,30 +176,6 @@ function handleInternalBack() {
 window.goBack = () => { if (navHistory.length === 0) showMainMenu(); else history.back(); };
 window.addEventListener('popstate', (e) => { if (navHistory.length > 0) handleInternalBack(); });
 
-function initSecurity() {
-    let initialHeight = window.innerHeight;
-    document.oncontextmenu = () => false;
-    document.addEventListener('copy', e => e.preventDefault());
-    document.addEventListener('dragstart', e => e.preventDefault());
-
-    const overlay = document.getElementById('security-overlay');
-    const toggleCurtain = (show) => {
-        if (overlay) overlay.style.display = show ? 'flex' : 'none';
-        if (show) Object.values(players).forEach(p => { if (p && p.pauseVideo) p.pauseVideo(); });
-    };
-
-    window.addEventListener('keydown', e => {
-        if (e.key === 'VolumeDown' || e.key === 'VolumeUp' || e.keyCode === 174 || e.keyCode === 175) { e.preventDefault(); toggleCurtain(true); setTimeout(() => toggleCurtain(false), 2000); }
-    });
-    document.addEventListener('visibilitychange', () => toggleCurtain(document.hidden));
-    window.addEventListener('blur', (e) => { if (document.activeElement && document.activeElement.tagName !== 'IFRAME') toggleCurtain(true); });
-    window.addEventListener('focus', () => toggleCurtain(false));
-    window.addEventListener('resize', () => {
-        if (Math.abs(initialHeight - window.innerHeight) > 100) { toggleCurtain(true); setTimeout(() => { initialHeight = window.innerHeight; toggleCurtain(false); }, 1500); }
-    });
-    if (overlay) { overlay.addEventListener('click', () => toggleCurtain(false)); overlay.addEventListener('touchstart', () => toggleCurtain(false)); }
-    document.addEventListener('keydown', e => { if (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'p' || e.key === 'u' || e.key === 's'))) e.preventDefault(); });
-}
 
 function injectWatermark() {
     const container = document.getElementById('watermark-container');
@@ -212,7 +188,12 @@ function injectWatermark() {
 }
 
 function cleanupIframes() {
-    Object.values(players).forEach(p => { if (p && p.stopVideo) p.stopVideo(); if (p && p.destroy) p.destroy(); });
+    Object.values(players).forEach(p => {
+        if (p.timer) clearInterval(p.timer);
+        if (p.stopVideo) p.stopVideo();
+        if (p.destroy) p.destroy();
+    });
+    if (window.uiTimer) clearInterval(window.uiTimer);
     players = {}; pendingPlayers = []; window.activePlayerId = null;
     const viewer = document.getElementById('fileViewer'), modal = document.getElementById('fileModal');
     if (viewer) { viewer.src = ''; viewer.removeAttribute('srcdoc'); }
@@ -294,19 +275,15 @@ window.onload = () => {
 
     let savedUser = sessionStorage.getItem('mbbs_user');
 
-    // SAFEGUARD: If no user found after restore trick, boot immediately
     if (!savedUser || savedUser === 'undefined' || savedUser === 'null' || savedUser.trim() === '') {
         handleLogout();
         return;
     }
 
-    // Set UI directly so screen is never blank
-    window.userSessionName = savedUser.split(' ')[0] || "Student";
+    window.userSessionName = savedUser.split('_')[0] || "Student";
     updateUserMenu();
 
-    // Fetch the main content
     fetchSheetData();
-    initSecurity();
     injectWatermark();
 
     if (!localStorage.getItem('welcome_seen_v1')) {
@@ -314,18 +291,25 @@ window.onload = () => {
         if (modal) { modal.style.display = 'flex'; setTimeout(() => modal.classList.add('visible'), 10); }
     }
 
-    // Background Database Checks
+    // --- UPDATED BACKGROUND DATABASE CHECK ---
     fetch(`https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec?name=${encodeURIComponent(savedUser)}`)
         .then(r => r.json())
         .then(async data => {
             if (data.allowed) {
                 if (savedUser.toLowerCase() !== 'naveen' && localStorage.getItem('mbbs_admin_device') !== 'true') {
                     try {
-                        const safeName = savedUser.replace(/[.#$\[\]]/g, '_');
+                        const safeName = savedUser.toLowerCase().replace(/[.#$\[\]]/g, '_');
                         const dbUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}.json`;
                         const dbData = await (await fetch(dbUrl)).json();
-                        if (dbData && typeof dbData === 'object' && dbData.deviceId !== localStorage.getItem('mbbs_device_id')) {
-                            console.error("Device mismatch."); handleLogout();
+                        
+                        // Check against the correct new slot (app_id or web_id)
+                        const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
+                        const slotName = isInsideApp ? "app_id" : "web_id";
+                        const localId = localStorage.getItem('mbbs_device_id');
+
+                        if (dbData && typeof dbData === 'object' && dbData[slotName] !== localId) {
+                            console.error("Device mismatch detected."); 
+                            handleLogout();
                         }
                     } catch (e) { console.error('BG verify error', e); }
                 }
@@ -333,7 +317,7 @@ window.onload = () => {
         }).catch(e => console.error('Sheet check fail', e));
 
     if (savedUser.toLowerCase() !== 'naveen') {
-        const safeName = savedUser.replace(/[.#$\[\]]/g, '_');
+        const safeName = savedUser.toLowerCase().replace(/[.#$\[\]]/g, '_');
         const activityUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}/activityStats.json`;
         fetch(activityUrl).then(r => r.json()).then(data => {
             if (data) { window.activityStats.videos = data.videos || 0; window.activityStats.notes = data.notes || 0; window.activityStats.quizzes = data.quizzes || 0; }
@@ -477,7 +461,7 @@ function renderVideoCard(container, video, index) {
     const card = document.createElement('div'); card.className = 'card';
     let vid = video.link;
     const uid = `yt-${index}`;
-    
+
     card.innerHTML = `
         <div class="video-wrapper">
             <div id="${uid}"></div>
@@ -552,15 +536,15 @@ function onStateChange(e, uid) {
         updateOrientation();
         updatePlayPauseIcon(uid, true);
         e.target.setPlaybackQuality('hd720');
-        
+
         if (players[uid].timer) clearInterval(players[uid].timer);
         players[uid].timer = setInterval(() => {
             const t = e.target.getCurrentTime();
             const d = e.target.getDuration();
-            
+
             const seekEl = document.getElementById(`seek-${uid}`);
             if (seekEl) seekEl.value = t;
-            
+
             updateClock(uid, t, d);
 
             // SAVE PROGRESS
@@ -584,16 +568,16 @@ function updatePlayPauseIcon(uid, isPlaying) {
     }
 }
 
-function updateClock(uid, curr, dur) { 
+function updateClock(uid, curr, dur) {
     const timeEl = document.getElementById(`time-${uid}`);
-    if (timeEl) timeEl.innerText = `${fmt(curr)} / ${fmt(dur)}`; 
+    if (timeEl) timeEl.innerText = `${fmt(curr)} / ${fmt(dur)}`;
 }
 
-function fmt(s) { 
-    if (!s || isNaN(s)) return "0:00"; 
-    const m = Math.floor(s / 60); 
-    const sc = Math.floor(s % 60); 
-    return `${m}:${sc < 10 ? '0' : ''}${sc}`; 
+function fmt(s) {
+    if (!s || isNaN(s)) return "0:00";
+    const m = Math.floor(s / 60);
+    const sc = Math.floor(s % 60);
+    return `${m}:${sc < 10 ? '0' : ''}${sc}`;
 }
 
 window.controlPlayer = (uid, a) => players[uid][a + 'Video']();
