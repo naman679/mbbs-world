@@ -152,6 +152,68 @@ let players = {};
 let pendingPlayers = [];
 let navHistory = [];
 
+// --- ACTIVITY TRACKING ---
+window.activityStats = { videos: 0, notes: 0, quizzes: 0 };
+let activityTimer = null;
+let syncTimer = null;
+
+function formatTime(seconds) {
+    if (!seconds) return "0h 0m";
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    if (h === 0) return `${m}m`;
+    return `${h}h ${m}m`;
+}
+
+window.openProfile = () => {
+    pushNavState(); // Save current state so back button works
+    currentView = 'profile';
+    updateNavActive('profile'); // Optional: Add if a sidebar link exists
+    document.getElementById('trustArea').style.display = 'none';
+    const area = document.getElementById('contentArea');
+    area.style.display = 'block';
+
+    const totalSecs = window.activityStats.videos + window.activityStats.notes + window.activityStats.quizzes;
+
+    area.innerHTML = `
+        <div class="welcome-section" style="padding: 1rem 0; text-align: left;">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+            <h1 style="color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800; border-bottom: 2px solid var(--border); padding-bottom: 1rem;">
+                <i class="fas fa-user-circle"></i> Study Profile
+            </h1>
+            <p style="color: var(--text-light); font-size: 1.1rem; margin-bottom: 2rem; margin-top: 1rem;">
+                Here is your total active learning time on MBBS World.
+            </p>
+        </div>
+
+        <div class="stat-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="stat-card" style="background: var(--surface); padding: 2rem; border-radius: 12px; border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow-sm);">
+                <i class="fas fa-play-circle" style="color: #ef4444; font-size: 2.5rem; margin-bottom: 1rem;"></i>
+                <div id="statVideos" style="font-weight: 700; font-size: 1.5rem; color: var(--text);">${formatTime(window.activityStats.videos)}</div>
+                <div style="font-size: 0.9rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 5px;">Videos</div>
+            </div>
+            
+            <div class="stat-card" style="background: var(--surface); padding: 2rem; border-radius: 12px; border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow-sm);">
+                <i class="fas fa-file-pdf" style="color: #3b82f6; font-size: 2.5rem; margin-bottom: 1rem;"></i>
+                <div id="statNotes" style="font-weight: 700; font-size: 1.5rem; color: var(--text);">${formatTime(window.activityStats.notes)}</div>
+                <div style="font-size: 0.9rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 5px;">Notes</div>
+            </div>
+
+            <div class="stat-card" style="background: var(--surface); padding: 2rem; border-radius: 12px; border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow-sm);">
+                <i class="fas fa-lightbulb" style="color: #10b981; font-size: 2.5rem; margin-bottom: 1rem;"></i>
+                <div id="statQuizzes" style="font-weight: 700; font-size: 1.5rem; color: var(--text);">${formatTime(window.activityStats.quizzes)}</div>
+                <div style="font-size: 0.9rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 5px;">Quizzes</div>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1)); padding: 2.5rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2); text-align: center; margin-bottom: 2rem;">
+            <i class="fas fa-clock" style="color: var(--primary); font-size: 3rem; margin-bottom: 1rem;"></i>
+            <div style="font-size: 1rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px;">Total Study Time</div>
+            <div id="statTotal" style="font-weight: 800; font-size: 3rem; color: var(--text); background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${formatTime(totalSecs)}</div>
+        </div>
+    `;
+};
+
 function pushNavState() {
     navHistory.push({
         view: currentView,
@@ -161,9 +223,11 @@ function pushNavState() {
         quizFilter: currentQuizFilter,
         scrollPos: window.scrollY
     });
+    // Add history state for mobile back button interception
+    history.pushState({ internal: true }, '', window.location.href);
 }
 
-window.goBack = () => {
+function handleInternalBack() {
     if (navHistory.length === 0) {
         showMainMenu();
         return;
@@ -192,7 +256,25 @@ window.goBack = () => {
     setTimeout(() => {
         window.scrollTo({ top: prevState.scrollPos, behavior: 'auto' });
     }, 100);
+}
+
+window.goBack = () => {
+    if (navHistory.length === 0) {
+        showMainMenu();
+        return;
+    }
+    // Deep navigation. Trigger the popstate event naturally by going back in browser history.
+    history.back();
 };
+
+// Listen to hardware back button / browser back button
+window.addEventListener('popstate', (e) => {
+    if (navHistory.length > 0) {
+        handleInternalBack();
+    } else {
+        // No internal history (at home menu), allow default browser exit behavior
+    }
+});
 
 // --- SECURITY ENGINE ---
 function initSecurity() {
@@ -389,7 +471,8 @@ window.logStudentActivity = (subject, title) => {
 
 window.handleLogout = () => {
     sessionStorage.removeItem('mbbs_user');
-    window.location.reload();
+    localStorage.removeItem('mbbs_saved_user'); // ADD THIS LINE: Clears auto-login memory
+    window.location.href = 'index.html'; // Change from reload() to redirect back to login
 };
 
 window.navigate = (view) => {
@@ -447,7 +530,6 @@ window.showMainMenu = (isBack = false) => {
     currentPlatform = null;
     selectedChapterIdx = null;
     window.activePlayerId = null;
-    updateOrientation();
     updateNavActive('home');
     renderHome();
 };
@@ -460,7 +542,6 @@ window.filterCategory = (type, isBack = false) => {
     selectedChapterIdx = null;
     currentQuizFilter = 'all';
     window.activePlayerId = null;
-    updateOrientation();
     updateNavActive(type);
 
     if (type === 'qbank') {
@@ -551,8 +632,36 @@ window.onload = () => {
     const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
     fetch(`${scriptURL}?name=${encodeURIComponent(savedUser)}`)
         .then(r => r.json())
-        .then(data => {
+        .then(async data => {
             if (data.allowed) {
+                // Background Device ID check for dashboard
+                if (savedUser.toLowerCase() !== 'naveen' && localStorage.getItem('mbbs_admin_device') !== 'true') {
+                    try {
+                        const safeName = savedUser.replace(/[.#$\[\]]/g, '_');
+                        const dbUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}.json`;
+
+                        const dbResponse = await fetch(dbUrl);
+                        const dbData = await dbResponse.json();
+                        const localDeviceId = localStorage.getItem('mbbs_device_id');
+
+                        // If user has a Device ID registered in Firebase
+                        if (dbData && typeof dbData === 'object' && dbData !== null) {
+                            if (dbData.deviceId !== localDeviceId) {
+                                console.error("Device ID restriction triggered. Forcing logout.");
+                                handleLogout();
+                                return;
+                            }
+                        } else if (dbData && typeof dbData === 'string') {
+                            // LEGACY MIGRATION PENDING: 
+                            // User is still a string in Firebase (old system). We do NOT log them out.
+                            // Their next manual login will trigger the lenient Auto-Upgrade in login.js.
+                            console.log("Legacy User detected in background check. Awaiting next manual login to auto-upgrade to Device ID.");
+                        }
+                    } catch (verifyError) {
+                        console.error('Device/IP Verification failed in background:', verifyError);
+                    }
+                }
+
                 const firstName = savedUser.split(' ')[0] || "Student";
                 window.userSessionName = firstName;
                 document.getElementById('userName').innerText = savedUser;
@@ -577,6 +686,63 @@ window.onload = () => {
     // Trigger Welcome Modal if not seen this session
     if (!localStorage.getItem('welcome_seen_v1')) {
         openWelcomeModal();
+    }
+
+    // --- INITIALIZE ACTIVITY TRACKING ---
+    if (savedUser && savedUser.toLowerCase() !== 'naveen') {
+        const safeName = savedUser.replace(/[.#$\[\]]/g, '_');
+        const activityUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}/activityStats.json`;
+
+        // 1. Fetch existing stats
+        fetch(activityUrl)
+            .then(r => r.json())
+            .then(data => {
+                if (data) {
+                    window.activityStats.videos = data.videos || 0;
+                    window.activityStats.notes = data.notes || 0;
+                    window.activityStats.quizzes = data.quizzes || 0;
+                }
+            }).catch(e => console.error("Could not load activity stats", e));
+
+        // 2. Start Active Tracker (Runs every 5 seconds)
+        activityTimer = setInterval(() => {
+            // Only count time if user is actually looking at the page
+            if (!document.hasFocus()) return;
+
+            // Check if a video is playing
+            let isVideoPlaying = false;
+            if (window.activePlayerId && players[window.activePlayerId]) {
+                if (typeof players[window.activePlayerId].getPlayerState === 'function') {
+                    if (players[window.activePlayerId].getPlayerState() === 1) { // 1 == PLAYING
+                        isVideoPlaying = true;
+                    }
+                }
+            }
+
+            if (isVideoPlaying) {
+                window.activityStats.videos += 5;
+            } else {
+                // Check if a PDF/Note/Quiz modal is open
+                const fileModal = document.getElementById('fileModal');
+                if (fileModal && fileModal.style.display === 'block') {
+                    if (currentView === 'notes') {
+                        window.activityStats.notes += 5;
+                    } else if (currentView === 'quizzes' || currentView === 'qbank') {
+                        // Q-Bank also counts as quizzes logic-wise for time tracking
+                        window.activityStats.quizzes += 5;
+                    }
+                }
+            }
+        }, 5000);
+
+        // 3. Start Sync Timer (Saves to Firebase every 60 seconds)
+        syncTimer = setInterval(() => {
+            fetch(activityUrl, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(window.activityStats)
+            }).catch(e => console.error("Activity sync failed", e));
+        }, 60000);
     }
 };
 

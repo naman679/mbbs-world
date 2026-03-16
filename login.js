@@ -1,3 +1,12 @@
+// AUTO-LOGIN CHECK
+document.addEventListener('DOMContentLoaded', () => {
+    const savedUser = localStorage.getItem('mbbs_saved_user');
+    if (savedUser) {
+        // If they have been here before, set the active session and send to dashboard
+        sessionStorage.setItem('mbbs_user', savedUser);
+        window.location.href = 'dashboard.html';
+    }
+});
 // Content Protection (Strict Security Developer Mode)
 const overlay = document.getElementById('security-overlay');
 let initialHeight = window.innerHeight;
@@ -69,14 +78,128 @@ function handleLogin() {
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying...';
 
-    // Verify name against Google Apps Script (same logic as dashboard)
+    // Verify name against Google Apps Script
     fetch(`${scriptURL}?name=${encodeURIComponent(name)}`)
         .then(response => response.json())
-        .then(data => {
+        .then(async data => {
             if (data.allowed) {
+                // Device ID & Legacy IP Restriction Check
+                if (name.toLowerCase() === 'naveen') {
+                    // Set an admin flag on this device so they can test other accounts later
+                    localStorage.setItem('mbbs_admin_device', 'true');
+                }
+
+                if (name.toLowerCase() !== 'naveen' && localStorage.getItem('mbbs_admin_device') !== 'true') {
+                    try {
+                        const ipResponse = await fetch('https://api.ipify.org?format=json');
+                        const ipData = await ipResponse.json();
+                        const currentIP = ipData.ip;
+                        const safeName = name.replace(/[.#$\[\]]/g, '_'); // Firebase key safe
+                        const dbUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}.json`;
+
+                        const dbResponse = await fetch(dbUrl);
+                        const dbData = await dbResponse.json();
+
+                        let localDeviceId = localStorage.getItem('mbbs_device_id');
+
+                        if (!dbData) {
+                            // NEW USER: First time login for this user OR User Renamed
+                            if (!localDeviceId) {
+                                localDeviceId = 'device_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+                                localStorage.setItem('mbbs_device_id', localDeviceId);
+                            }
+
+                            // --- PROFILE MIGRATION LOGIC ---
+                            const previousUsername = localStorage.getItem('mbbs_previous_username');
+                            let migratedStats = null;
+
+                            if (previousUsername && previousUsername !== name) {
+                                try {
+                                    // Check if the old username exists in Firebase and belongs to THIS physical device perfectly.
+                                    const oldSafeName = previousUsername.replace(/[.#$\[\]]/g, '_');
+                                    const oldDbUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(oldSafeName)}.json`;
+                                    const oldDbResponse = await fetch(oldDbUrl);
+                                    const oldDbData = await oldDbResponse.json();
+
+                                    // SECURITY: Only migrate stats if the OLD acount was bound to THIS exact device ID.
+                                    // This prevents students from stealing stats by typing random old names.
+                                    if (oldDbData && oldDbData.deviceId === localDeviceId && oldDbData.activityStats) {
+                                        migratedStats = oldDbData.activityStats;
+                                        console.log("Profile Migration: Successfully securely transferred stats from", previousUsername, "to", name);
+                                    }
+                                } catch (e) {
+                                    console.error("Failed to migrate old profile stats:", e);
+                                }
+                            }
+
+                            // Create the new user record, optionally injecting the migrated stats!
+                            const newUserPayload = { deviceId: localDeviceId, registeredIp: currentIP };
+                            if (migratedStats) {
+                                newUserPayload.activityStats = migratedStats;
+                            }
+
+                            await fetch(dbUrl, {
+                                method: 'PUT',
+                                body: JSON.stringify(newUserPayload)
+                            });
+
+                        } else if (typeof dbData === 'string') {
+                            // LEGACY MIGRATION: User currently has only an IP string in Firebase
+                            // Auto-upgrade them to the secure Device ID without strictly matching the old IP,
+                            // since dynamic router IPs have likely changed and caused them to get locked out.
+                            if (!localDeviceId) {
+                                localDeviceId = 'device_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+                                localStorage.setItem('mbbs_device_id', localDeviceId);
+                            }
+                            await fetch(dbUrl, {
+                                method: 'PUT',
+                                body: JSON.stringify({ deviceId: localDeviceId, upgradedFromIp: currentIP })
+                            });
+                        } else if (typeof dbData === 'object' && dbData !== null) {
+                            // DEVICE ID BOUND USER: Normal check
+                            if (dbData.deviceId !== localDeviceId) {
+                                // Device ID Mismatch (Possibly cleared cache)
+                                // Check if they are on a historical IP to recover their account
+                                if (currentIP === dbData.registeredIp || currentIP === dbData.upgradedFromIp || currentIP === dbData.lastKnownIp) {
+                                    // Auto-recover! Generate new Device ID
+                                    localDeviceId = 'device_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+                                    localStorage.setItem('mbbs_device_id', localDeviceId);
+
+                                    // Update Firebase with new device ID and current IP as lastKnown
+                                    await fetch(dbUrl, {
+                                        method: 'PATCH',
+                                        body: JSON.stringify({ deviceId: localDeviceId, lastKnownIp: currentIP })
+                                    });
+                                } else {
+                                    showError("Access Denied: If you cleared your browser cache, please connect to your original Home Wi-Fi to recover your account.");
+                                    btn.disabled = false;
+                                    btn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+                                    return;
+                                }
+                            } else {
+                                // Successful login with matching Device ID
+                                // Keep `lastKnownIp` updated just in case they need to recover later!
+                                await fetch(dbUrl, {
+                                    method: 'PATCH',
+                                    body: JSON.stringify({ lastKnownIp: currentIP })
+                                });
+                            }
+                        }
+                    } catch (verifyError) {
+                        console.error('Device/IP Verification failed:', verifyError);
+                    }
+                }
+
                 // Success: Save to sessionStorage and redirect
-                sessionStorage.setItem('mbbs_user', name);
-                window.location.href = 'dashboard.html';
+sessionStorage.setItem('mbbs_user', name);
+localStorage.setItem('mbbs_saved_user', name); // ADD THIS LINE: Saves name permanently
+
+// Track previous username for automatic precise stats migration if Admin renames them!
+if (name.toLowerCase() !== 'naveen') {
+    localStorage.setItem('mbbs_previous_username', name);
+}
+
+window.location.href = 'dashboard.html';
             } else {
                 showError("Access Denied: Name not recognized. Please contact support.");
                 btn.disabled = false;

@@ -215,7 +215,6 @@
         document.getElementById('create-btn').disabled = false;
     });
 
-    // --- HOST LOGIC (Protected) ---
     document.getElementById('create-btn').addEventListener('click', async () => {
         if (selectedTopicIndex === -1) return;
         state.questions = parsedTopicBlocks[selectedTopicIndex].questions;
@@ -225,7 +224,6 @@
 
         const roomRef = window.dbRef(window.db, `rooms/${state.roomCode}`);
         
-        // Host ONLY triggers the countdown overlay. Their player data is kept safe!
         window.dbOnDisconnect(roomRef).update({ status: 'host_disconnected' });
 
         await window.dbSet(roomRef, {
@@ -236,7 +234,6 @@
         enterWaitingRoom();
     });
 
-    // --- MEMBER LOGIC (Auto-Remove on leave) ---
     document.getElementById('join-btn').addEventListener('click', async () => {
         state.playerName = document.getElementById('join-name').value || "Doctor";
         const code = document.getElementById('join-code').value.trim();
@@ -252,7 +249,6 @@
 
         const myPlayerRef = window.dbRef(window.db, `rooms/${code}/players/${state.playerId}`);
         
-        // Regular members are instantly removed from the DB if they leave/disconnect
         window.dbOnDisconnect(myPlayerRef).remove();
 
         await window.dbUpdate(myPlayerRef, { name: state.playerName, correct: 0, timeTaken: 0, answeredIndex: -1 });
@@ -273,7 +269,7 @@
             if (data.status === 'host_disconnected') {
                 if (!state.disconnectTimer) {
                     overlay.classList.remove('hidden');
-                    state.disconnectCount = 30; // Increased to 30 seconds
+                    state.disconnectCount = 30;
                     document.getElementById('disconnect-timer').textContent = "30";
                     state.disconnectTimer = setInterval(() => {
                         state.disconnectCount--;
@@ -304,7 +300,6 @@
 
             if (state.isHost && !document.getElementById('game-view').classList.contains('hidden')) {
                 const pArray = Object.values(players);
-                // Disconnected players are deleted from DB, so they don't block the game
                 const allAnswered = pArray.length > 0 && pArray.every(p => p.answeredIndex === state.currentIndex);
                 if (allAnswered && !state.triggeringNext) {
                     state.triggeringNext = true;
@@ -365,7 +360,6 @@
         if (state.hasAnsweredCurrent) return;
         state.hasAnsweredCurrent = true; 
         
-        // Visual clock keeps ticking after answering
         state.stats.timeTaken += (state.timePerQuestion - state.timeLeft);
         
         if (isCorrect) { btn.classList.add('correct'); state.stats.correct++; }
@@ -390,8 +384,18 @@
         pushStatsToFirebase();
     }
 
-    function pushStatsToFirebase() { window.dbUpdate(window.dbRef(window.db, `rooms/${state.roomCode}/players/${state.playerId}`), { correct: state.stats.correct, timeTaken: state.stats.timeTaken, answeredIndex: state.currentIndex }); }
+    // 🔥 THE FIX: "name: state.playerName" is added here to prevent 'Dr. undefined' 
+    // and correctly restore disconnected users with their saved local score.
+    function pushStatsToFirebase() { 
+        window.dbUpdate(window.dbRef(window.db, `rooms/${state.roomCode}/players/${state.playerId}`), { 
+            name: state.playerName, 
+            correct: state.stats.correct, 
+            timeTaken: state.stats.timeTaken, 
+            answeredIndex: state.currentIndex 
+        }); 
+    }
 
+    // 🔥 THE FIX: Sorting logic naturally breaks ties by comparing a.timeTaken and b.timeTaken
     function showLeaderboard() {
         switchView('leaderboard'); clearInterval(state.timerInterval);
         window.dbGet(window.dbRef(window.db, `rooms/${state.roomCode}/players`)).then(snap => {
@@ -399,12 +403,11 @@
             document.getElementById('leaderboard-list').innerHTML = players.map((p, idx) => {
                 const acc = Math.round((p.correct / state.questions.length) * 100) || 0;
                 
-                // 🔥 The "Patient Killer" Roast Set
                 let title = "";
-                if (idx === 0) title = "HOD Ka Palatu Kutta 🐕";                  // 1st Place
-                else if (idx === 1) title = "Fraud Doctor 🤡";                     // 2nd Place
-                else if (idx === 2) title = "Jhola Chhap Quack 🦆";                // 3rd Place
-                else title = "Iski Wajah Se Patient Marega 🪦";                    // 4th Place & Below
+                if (idx === 0) title = "HOD Ka Palatu Kutta 🐕";                  
+                else if (idx === 1) title = "Fraud Doctor 🤡";                     
+                else if (idx === 2) title = "Jhola Chhap Quack 🦆";                
+                else title = "Iski Wajah Se Patient Marega 🪦";                    
 
                 return `<div class="rank-row ${idx===0?'rank-1':''}">
                     <div style="font-weight: bold; width: 40px;">#${idx + 1}</div>
