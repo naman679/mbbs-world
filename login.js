@@ -1,12 +1,15 @@
-// AUTO-LOGIN CHECK
+// --- AUTO-LOGIN CHECK ---
 document.addEventListener('DOMContentLoaded', () => {
     const savedUser = localStorage.getItem('mbbs_saved_user');
-    if (savedUser) {
-        // If they have been here before, set the active session and send to dashboard
+    const deviceId = localStorage.getItem('mbbs_device_id');
+    
+    // If they have a saved identity on this device, send straight to dashboard
+    if (savedUser && deviceId) {
         sessionStorage.setItem('mbbs_user', savedUser);
         window.location.href = 'dashboard.html';
     }
 });
+
 // Content Protection (Strict Security Developer Mode)
 const overlay = document.getElementById('security-overlay');
 let initialHeight = window.innerHeight;
@@ -122,7 +125,6 @@ function handleLogin() {
                                     const oldDbData = await oldDbResponse.json();
 
                                     // SECURITY: Only migrate stats if the OLD acount was bound to THIS exact device ID.
-                                    // This prevents students from stealing stats by typing random old names.
                                     if (oldDbData && oldDbData.deviceId === localDeviceId && oldDbData.activityStats) {
                                         migratedStats = oldDbData.activityStats;
                                         console.log("Profile Migration: Successfully securely transferred stats from", previousUsername, "to", name);
@@ -144,9 +146,7 @@ function handleLogin() {
                             });
 
                         } else if (typeof dbData === 'string') {
-                            // LEGACY MIGRATION: User currently has only an IP string in Firebase
-                            // Auto-upgrade them to the secure Device ID without strictly matching the old IP,
-                            // since dynamic router IPs have likely changed and caused them to get locked out.
+                            // LEGACY MIGRATION: Auto-upgrade to Device ID
                             if (!localDeviceId) {
                                 localDeviceId = 'device_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
                                 localStorage.setItem('mbbs_device_id', localDeviceId);
@@ -158,14 +158,12 @@ function handleLogin() {
                         } else if (typeof dbData === 'object' && dbData !== null) {
                             // DEVICE ID BOUND USER: Normal check
                             if (dbData.deviceId !== localDeviceId) {
-                                // Device ID Mismatch (Possibly cleared cache)
-                                // Check if they are on a historical IP to recover their account
+                                // Device ID Mismatch
                                 if (currentIP === dbData.registeredIp || currentIP === dbData.upgradedFromIp || currentIP === dbData.lastKnownIp) {
                                     // Auto-recover! Generate new Device ID
                                     localDeviceId = 'device_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
                                     localStorage.setItem('mbbs_device_id', localDeviceId);
 
-                                    // Update Firebase with new device ID and current IP as lastKnown
                                     await fetch(dbUrl, {
                                         method: 'PATCH',
                                         body: JSON.stringify({ deviceId: localDeviceId, lastKnownIp: currentIP })
@@ -177,8 +175,6 @@ function handleLogin() {
                                     return;
                                 }
                             } else {
-                                // Successful login with matching Device ID
-                                // Keep `lastKnownIp` updated just in case they need to recover later!
                                 await fetch(dbUrl, {
                                     method: 'PATCH',
                                     body: JSON.stringify({ lastKnownIp: currentIP })
@@ -190,16 +186,16 @@ function handleLogin() {
                     }
                 }
 
-                // Success: Save to sessionStorage and redirect
-sessionStorage.setItem('mbbs_user', name);
-localStorage.setItem('mbbs_saved_user', name); // ADD THIS LINE: Saves name permanently
+                // Success: Save to sessionStorage AND localStorage
+                sessionStorage.setItem('mbbs_user', name);
+                localStorage.setItem('mbbs_saved_user', name); // --- NEW PERSISTENT MEMORY ---
 
-// Track previous username for automatic precise stats migration if Admin renames them!
-if (name.toLowerCase() !== 'naveen') {
-    localStorage.setItem('mbbs_previous_username', name);
-}
+                // Track previous username for automatic precise stats migration
+                if (name.toLowerCase() !== 'naveen') {
+                    localStorage.setItem('mbbs_previous_username', name);
+                }
 
-window.location.href = 'dashboard.html';
+                window.location.href = 'dashboard.html';
             } else {
                 showError("Access Denied: Name not recognized. Please contact support.");
                 btn.disabled = false;

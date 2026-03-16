@@ -18,15 +18,12 @@ async function fetchSheetData() {
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         let text = await response.text();
 
-        // Remove Byte Order Mark (BOM) if present
         text = text.replace(/^\uFEFF/, '');
 
-        // If it looks like HTML (Google login page or error), it's not a published CSV
         if (text.includes('<!DOCTYPE html>') || text.includes('<html>')) {
             throw new Error("Invalid CSV format. Please ensure your Google Sheet is 'Published to the Web' as a CSV.");
         }
 
-        console.log("Sheet data fetched successfully");
         const lines = text.split(/\r?\n/).filter(line => line.trim() !== "");
         if (lines.length < 2) throw new Error("Spreadsheet is empty or has no data rows.");
 
@@ -36,7 +33,6 @@ async function fetchSheetData() {
             const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
             if (cols.length < 4) return;
 
-            // Consistent Mapping from Google Sheet (Column A=Subj, B=Type, C=Title, D=Link, E=Platform)
             const subjRaw = cols[0] || 'Other';
             const typeRaw = cols[1] || '';
             const titleRaw = cols[2] || 'Untitled';
@@ -53,13 +49,12 @@ async function fetchSheetData() {
                 mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], quizzes: [] };
             }
 
-            // Standardize object structure
             const item = {
-                Subject: subjRaw, // Using user requested property name
+                Subject: subjRaw, 
                 title: titleRaw,
                 link: linkRaw,
                 platform: platformRaw,
-                Type: typeKey, // Standardizing on capital Type
+                Type: typeKey, 
                 subjectName: cleanSubject,
                 isPremium
             };
@@ -78,20 +73,14 @@ async function fetchSheetData() {
             }
         });
 
-        // Set initial UI
         showMainMenu();
 
     } catch (e) {
-        console.error("CSV Fetch Error:", e);
         document.getElementById('contentArea').innerHTML = `
                     <div style="text-align:center; padding:5rem;">
                         <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:#ef4444; margin-bottom:1rem;"></i>
                         <h2 style="color:#ef4444; margin-bottom:0.5rem;">Data Load Failure</h2>
                         <p style="color:var(--text-light); max-width:500px; margin:0 auto;">${e.message}</p>
-                        <div style="margin-top:2rem; font-size:0.9rem; color:var(--text-light)">
-                            <p>Please ensure your Google Sheet is <b>Published to the Web</b>:</p>
-                            <p>File -> Share -> Publish to the Web -> Link -> <b>CSV</b></p>
-                        </div>
                     </div>
                 `;
     }
@@ -101,14 +90,12 @@ function getYoutubeVideoId(url) {
     if (!url) return "";
     url = url.trim();
     if (url.length === 11 && !url.includes('.') && !url.includes('/')) return url;
-    // Regex to strictly capture only 11 characters after any of the YouTube URL prefixes
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/|live\/)([^#\&\?]{11}).*/;
     const match = url.match(regExp);
     const id = (match && match[2].length === 11) ? match[2] : url;
     return id;
 }
 
-// Theme Management
 function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -125,7 +112,7 @@ function updateThemeIcon(theme) {
 }
 
 function toggleMobileMenu() {
-    const nav = id('mainNav');
+    const nav = document.getElementById('mainNav');
     nav.classList.toggle('mobile-active');
 }
 
@@ -137,7 +124,6 @@ function toggleSearch() {
     }
 }
 
-// Initialize Theme on load
 (function initTheme() {
     const savedTheme = localStorage.getItem('mbbs_theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -152,7 +138,6 @@ let players = {};
 let pendingPlayers = [];
 let navHistory = [];
 
-// --- ACTIVITY TRACKING ---
 window.activityStats = { videos: 0, notes: 0, quizzes: 0 };
 let activityTimer = null;
 let syncTimer = null;
@@ -166,9 +151,9 @@ function formatTime(seconds) {
 }
 
 window.openProfile = () => {
-    pushNavState(); // Save current state so back button works
+    pushNavState(); 
     currentView = 'profile';
-    updateNavActive('profile'); // Optional: Add if a sidebar link exists
+    updateNavActive('profile'); 
     document.getElementById('trustArea').style.display = 'none';
     const area = document.getElementById('contentArea');
     area.style.display = 'block';
@@ -223,7 +208,6 @@ function pushNavState() {
         quizFilter: currentQuizFilter,
         scrollPos: window.scrollY
     });
-    // Add history state for mobile back button interception
     history.pushState({ internal: true }, '', window.location.href);
 }
 
@@ -233,7 +217,6 @@ function handleInternalBack() {
         return;
     }
 
-    // --- Bandwidth & Performance Fix: Clear background iframes ---
     cleanupIframes();
 
     const prevState = navHistory.pop();
@@ -243,7 +226,6 @@ function handleInternalBack() {
     selectedChapterIdx = prevState.chapterIdx;
     currentQuizFilter = prevState.quizFilter;
 
-    // Re-render based on restored state
     if (currentView === 'home') {
         showMainMenu(true);
     } else if (currentView === 'qbank' && !currentPlatform) {
@@ -252,7 +234,6 @@ function handleInternalBack() {
         renderContent(true);
     }
 
-    // Restore scroll position after rendering
     setTimeout(() => {
         window.scrollTo({ top: prevState.scrollPos, behavior: 'auto' });
     }, 100);
@@ -263,30 +244,20 @@ window.goBack = () => {
         showMainMenu();
         return;
     }
-    // Deep navigation. Trigger the popstate event naturally by going back in browser history.
     history.back();
 };
 
-// Listen to hardware back button / browser back button
 window.addEventListener('popstate', (e) => {
-    if (navHistory.length > 0) {
-        handleInternalBack();
-    } else {
-        // No internal history (at home menu), allow default browser exit behavior
-    }
+    if (navHistory.length > 0) handleInternalBack();
 });
 
 // --- SECURITY ENGINE ---
 function initSecurity() {
     let initialHeight = window.innerHeight;
-    // Block Context Menu Globally
     document.oncontextmenu = () => false;
-
-    // Block Copy & Drag
     document.addEventListener('copy', e => e.preventDefault());
     document.addEventListener('dragstart', e => e.preventDefault());
 
-    // 1. 'Volume Key' Trap (Android Best-Effort)
     window.addEventListener('keydown', e => {
         if (e.key === 'VolumeDown' || e.key === 'VolumeUp' || e.keyCode === 174 || e.keyCode === 175) {
             e.preventDefault();
@@ -295,30 +266,25 @@ function initSecurity() {
         }
     });
 
-    // Handle Privacy Curtain (Anti-Screen Record)
     const overlay = document.getElementById('security-overlay');
     const toggleCurtain = (show) => {
         if (overlay) overlay.style.display = show ? 'flex' : 'none';
         if (show) {
-            // Pause players if hidden
             Object.values(players).forEach(p => { if (p && p.pauseVideo) p.pauseVideo(); });
         }
     };
 
-    // Events: visibilitychange, blur, focus
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) toggleCurtain(true);
         else toggleCurtain(false);
     });
 
     window.addEventListener('blur', (e) => {
-        // Ignore focus moves to IFRAME to prevent flickering
         if (document.activeElement && document.activeElement.tagName === 'IFRAME') return;
         toggleCurtain(true);
     });
     window.addEventListener('focus', () => toggleCurtain(false));
 
-    // 3. 'Resize' Trap (Toolbar/Overlay Detection)
     window.addEventListener('resize', () => {
         const heightDiff = Math.abs(initialHeight - window.innerHeight);
         if (heightDiff > 100) {
@@ -330,17 +296,14 @@ function initSecurity() {
         }
     });
 
-    // 4. Manual Recovery
     if (overlay) {
         overlay.addEventListener('click', () => toggleCurtain(false));
         overlay.addEventListener('touchstart', () => toggleCurtain(false));
     }
 
-    // Block PrintScreen & Shortcuts
     document.addEventListener('keydown', e => {
         if (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'p' || e.key === 'u' || e.key === 's'))) {
             e.preventDefault();
-            console.warn("Security: Content capture blocked.");
         }
     });
 }
@@ -351,7 +314,6 @@ function injectWatermark() {
     if (!container) return;
 
     container.innerHTML = '';
-    // Create a dense grid of watermarks
     for (let i = 0; i < 60; i++) {
         const el = document.createElement('div');
         el.className = 'watermark-item';
@@ -361,7 +323,6 @@ function injectWatermark() {
 }
 
 function cleanupIframes() {
-    // Stop any playing YouTube videos
     Object.values(players).forEach(p => {
         if (p && p.stopVideo) p.stopVideo();
         if (p && p.destroy) p.destroy();
@@ -370,14 +331,12 @@ function cleanupIframes() {
     pendingPlayers = [];
     window.activePlayerId = null;
 
-    // Clear Quiz/PDF Iframe definately
     const viewer = document.getElementById('fileViewer');
     if (viewer) {
         viewer.src = '';
         viewer.removeAttribute('srcdoc');
     }
 
-    // Close modal if open
     const modal = document.getElementById('fileModal');
     if (modal) {
         modal.style.display = 'none';
@@ -394,8 +353,6 @@ function handleSearch() {
     clearBtn.style.display = query.length > 0 ? 'block' : 'none';
 
     let hasMatches = false;
-
-    // Target all possible searchable elements
     const searchableItems = document.querySelectorAll('.portal-card, .chapter-card, .subject-item, .card');
 
     searchableItems.forEach(item => {
@@ -405,15 +362,11 @@ function handleSearch() {
         if (match) hasMatches = true;
     });
 
-    // Special handling for section headers (Subject details view)
     const sectionHeaders = document.querySelectorAll('.section-title');
     sectionHeaders.forEach(header => {
-        // In search mode, headers are shown if there's a match elsewhere or if query is empty
-        // For a better experience, we show them if we are not in a deep search or if query is empty
         header.style.display = (query === '') ? 'block' : 'none';
     });
 
-    // Handle No Results State
     if (query !== '' && !hasMatches) {
         noResults.style.display = 'block';
         contentArea.style.display = 'none';
@@ -430,7 +383,6 @@ window.clearSearch = () => {
     input.focus();
 };
 
-// UI State Controllers
 window.checkAccess = (name) => {
     if (!name) return;
 
@@ -440,13 +392,12 @@ window.checkAccess = (name) => {
         .then(response => response.json())
         .then(data => {
             if (data.allowed) {
-                localStorage.setItem('mbbs_user', name);
+                localStorage.setItem('mbbs_saved_user', name);
+                sessionStorage.setItem('mbbs_user', name);
                 const firstName = name.split(' ')[0] || "Student";
                 window.userSessionName = firstName;
                 fetchSheetData();
                 updateUserMenu();
-            } else {
-                console.error("Access validation failed");
             }
         })
         .catch(error => {
@@ -460,67 +411,19 @@ window.logStudentActivity = (subject, title) => {
 
     if (!userName || !subject || !title) return;
 
-    console.log(`Logging activity: ${userName} - ${subject} - ${title}`);
     fetch(scriptURL, {
         method: 'POST',
-        mode: 'no-cors', // Standard for simple Apps Script POSTS
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userName, subject, title })
     }).catch(e => console.error("Logging failed:", e));
 };
 
+// --- LOGOUT LOGIC (UPDATED) ---
 window.handleLogout = () => {
     sessionStorage.removeItem('mbbs_user');
-    localStorage.removeItem('mbbs_saved_user'); // ADD THIS LINE: Clears auto-login memory
-    window.location.href = 'index.html'; // Change from reload() to redirect back to login
-};
-
-window.navigate = (view) => {
-    if (view === 'home' || view === 'videos' || view === 'notes' || view === 'quizzes' || view === 'qbank') {
-        const trustArea = document.getElementById('trustArea');
-        const contentArea = document.getElementById('contentArea');
-        if (trustArea) trustArea.style.display = 'none';
-        if (contentArea) contentArea.style.display = 'block';
-
-        if (view === 'home') showMainMenu();
-        else filterCategory(view);
-    }
-};
-
-window.showTrustPage = (type) => {
-    const area = document.getElementById('trustArea');
-    const contentArea = document.getElementById('contentArea');
-    if (contentArea) contentArea.style.display = 'none';
-    if (area) {
-        area.style.display = 'block';
-        window.scrollTo(0, 0);
-
-        let html = `
-                    <div class="welcome-section" style="padding: 1rem 0;">
-                        <button class="back-btn" onclick="navigate('home')"><i class="fas fa-arrow-left"></i> Home</button>
-                        <h1>${type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' ')}</h1>
-                    </div>
-                `;
-
-        if (type === 'about') {
-            html += `
-                        <div class="minimalist-content">
-                            <p>MBBS World is a premium study portal designed specifically for medical students. We provide high-quality videos, notes, and question banks to simplify your medical education journey.</p>
-                            <p>Designed for focus and speed, our goal is to help you master the curriculum without distractions.</p>
-                        </div>
-                    `;
-        } else if (type === 'disclaimer') {
-            html += `
-                        <div class="minimalist-content">
-                            <p><b>Important Notice:</b> All content on MBBS World is for educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment.</p>
-                            <p>Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
-                        </div>
-                    `;
-        } else {
-            html += `<div class="minimalist-content"><p>Content for ${type} is coming soon.</p></div>`;
-        }
-        area.innerHTML = html;
-    }
+    localStorage.removeItem('mbbs_saved_user'); // Wipe persistent auto-login
+    window.location.href = 'index.html'; // Kick to login screen
 };
 
 window.showMainMenu = (isBack = false) => {
@@ -578,10 +481,6 @@ function renderPlatforms() {
                     `).join('')}
                 </div>
             `;
-
-    if (platformList.length === 0) {
-        area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No platforms found in Question Bank.</div>`;
-    }
 }
 
 window.setPlatform = (platform) => {
@@ -615,26 +514,40 @@ window.closeWelcomeModal = () => {
     }
 };
 
+// --- INITIAL LOAD CHECK (UPDATED) ---
 window.onload = () => {
     const savedTheme = localStorage.getItem('mbbs_theme') || 'light';
     updateThemeIcon(savedTheme);
 
-    const savedUser = sessionStorage.getItem('mbbs_user');
+    // 1. Try to get user from short-term session
+    let savedUser = sessionStorage.getItem('mbbs_user');
+    
+    // 2. NEW: If session is empty (tab was closed), check permanent device memory
     if (!savedUser) {
-        // Not logged in -> Go to Splash/Login page
+        const localUser = localStorage.getItem('mbbs_saved_user');
+        const deviceId = localStorage.getItem('mbbs_device_id');
+        
+        // If both exist on the device, restore the session
+        if (localUser && deviceId) {
+            savedUser = localUser;
+            sessionStorage.setItem('mbbs_user', localUser);
+        }
+    }
+
+    // 3. If STILL no user, kick them to login
+    if (!savedUser) {
         window.location.href = 'index.html';
         return;
     }
 
-    fetchSheetData(); // Load data immediately for bots/reviewers
+    fetchSheetData(); // Load data
 
-    // Background auth if user already exists
+    // Background auth check
     const scriptURL = "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec";
     fetch(`${scriptURL}?name=${encodeURIComponent(savedUser)}`)
         .then(r => r.json())
         .then(async data => {
             if (data.allowed) {
-                // Background Device ID check for dashboard
                 if (savedUser.toLowerCase() !== 'naveen' && localStorage.getItem('mbbs_admin_device') !== 'true') {
                     try {
                         const safeName = savedUser.replace(/[.#$\[\]]/g, '_');
@@ -644,18 +557,12 @@ window.onload = () => {
                         const dbData = await dbResponse.json();
                         const localDeviceId = localStorage.getItem('mbbs_device_id');
 
-                        // If user has a Device ID registered in Firebase
                         if (dbData && typeof dbData === 'object' && dbData !== null) {
                             if (dbData.deviceId !== localDeviceId) {
                                 console.error("Device ID restriction triggered. Forcing logout.");
                                 handleLogout();
                                 return;
                             }
-                        } else if (dbData && typeof dbData === 'string') {
-                            // LEGACY MIGRATION PENDING: 
-                            // User is still a string in Firebase (old system). We do NOT log them out.
-                            // Their next manual login will trigger the lenient Auto-Upgrade in login.js.
-                            console.log("Legacy User detected in background check. Awaiting next manual login to auto-upgrade to Device ID.");
                         }
                     } catch (verifyError) {
                         console.error('Device/IP Verification failed in background:', verifyError);
@@ -667,13 +574,10 @@ window.onload = () => {
                 document.getElementById('userName').innerText = savedUser;
                 updateUserMenu();
             } else {
-                // Access revoked or user removed from sheet -> Logout
-                handleLogout();
+                handleLogout(); // User deleted from sheet, wipe them out
             }
         })
         .catch(err => {
-            console.error("Auth verify failed:", err);
-            // If network fails, we still show data but maybe with less features
             const firstName = savedUser.split(' ')[0] || "Student";
             window.userSessionName = firstName;
             updateUserMenu();
@@ -683,17 +587,14 @@ window.onload = () => {
     initSecurity();
     injectWatermark();
 
-    // Trigger Welcome Modal if not seen this session
     if (!localStorage.getItem('welcome_seen_v1')) {
         openWelcomeModal();
     }
 
-    // --- INITIALIZE ACTIVITY TRACKING ---
     if (savedUser && savedUser.toLowerCase() !== 'naveen') {
         const safeName = savedUser.replace(/[.#$\[\]]/g, '_');
         const activityUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}/activityStats.json`;
 
-        // 1. Fetch existing stats
         fetch(activityUrl)
             .then(r => r.json())
             .then(data => {
@@ -704,16 +605,13 @@ window.onload = () => {
                 }
             }).catch(e => console.error("Could not load activity stats", e));
 
-        // 2. Start Active Tracker (Runs every 5 seconds)
         activityTimer = setInterval(() => {
-            // Only count time if user is actually looking at the page
             if (!document.hasFocus()) return;
 
-            // Check if a video is playing
             let isVideoPlaying = false;
             if (window.activePlayerId && players[window.activePlayerId]) {
                 if (typeof players[window.activePlayerId].getPlayerState === 'function') {
-                    if (players[window.activePlayerId].getPlayerState() === 1) { // 1 == PLAYING
+                    if (players[window.activePlayerId].getPlayerState() === 1) { 
                         isVideoPlaying = true;
                     }
                 }
@@ -722,20 +620,17 @@ window.onload = () => {
             if (isVideoPlaying) {
                 window.activityStats.videos += 5;
             } else {
-                // Check if a PDF/Note/Quiz modal is open
                 const fileModal = document.getElementById('fileModal');
                 if (fileModal && fileModal.style.display === 'block') {
                     if (currentView === 'notes') {
                         window.activityStats.notes += 5;
                     } else if (currentView === 'quizzes' || currentView === 'qbank') {
-                        // Q-Bank also counts as quizzes logic-wise for time tracking
                         window.activityStats.quizzes += 5;
                     }
                 }
             }
         }, 5000);
 
-        // 3. Start Sync Timer (Saves to Firebase every 60 seconds)
         syncTimer = setInterval(() => {
             fetch(activityUrl, {
                 method: 'PATCH',
@@ -760,6 +655,7 @@ window.promptLogin = () => {
     const name = prompt("Please enter your name for activity tracking:");
     if (name) {
         sessionStorage.setItem('mbbs_user', name);
+        localStorage.setItem('mbbs_saved_user', name); // Persist
         window.location.reload();
     }
 };
@@ -790,33 +686,20 @@ window.showTrustPage = (type) => {
     if (type === 'about') {
         html += `
                     <h2>About MBBS World</h2>
-                    <p>MBBS World is a dedicated medical education platform created to provide medical students with structured, high-quality learning resources. As a medical student myself, I understand the challenges of navigating the vast MBBS curriculum.</p>
-                    <p>Our resources are built upon the foundation of standard medical textbooks including:</p>
-                    <ul>
-                        <li><b>Anatomy:</b> B.D. Chaurasia, Gray's Anatomy for Students</li>
-                        <li><b>Physiology:</b> Guyton and Hall Textbook of Medical Physiology, Ganong's Review of Medical Physiology</li>
-                        <li><b>Biochemistry:</b> Harper's Illustrated Biochemistry</li>
-                        <li><b>Pathology:</b> Robbins & Cotran Pathologic Basis of Disease</li>
-                        <li><b>Internal Medicine:</b> Harrison's Principles of Internal Medicine</li>
-                        <li><b>Surgery:</b> Bailey & Love's Short Practice of Surgery</li>
-                    </ul>
-                    <p>Our goal is to simplify medical learning through high-yield <b>MBBS notes</b>, interactive Q-Banks, and clinical video lectures.</p>
+                    <p>MBBS World is a dedicated medical education platform created to provide medical students with structured, high-quality learning resources.</p>
                 `;
     } else if (type === 'disclaimer') {
         html += `
                     <h2>Medical Disclaimer</h2>
-                     <p><b>Important:</b> The content provided on MBBS World (including videos, notes, quizzes, and Q-Bank) is for <b>educational purposes only</b> for medical students and healthcare professionals in training.</p>
-                     <p>This information should NOT be used for self-diagnosis or as a substitute for professional medical advice, diagnosis, or treatment. We do not provide medical services or advice. Always seek the advice of a qualified physician or healthcare provider with any questions you may have regarding a medical condition.</p>
-                     <p>While we strive for accuracy based on standard medical textbooks, medical knowledge is constantly evolving. Use this resource as a study aid, not as a clinical protocol.</p>
+                     <p><b>Important:</b> The content provided on MBBS World is for <b>educational purposes only</b>.</p>
                 `;
     } else if (type === 'privacy') {
-        html += `<h2>Privacy Policy</h2><p>We respect your privacy. This portal uses minimal localStorage to save your progress and login session. We do not sell your personal data. Your activity logs are used solely for portal performance and access validation.</p>`;
+        html += `<h2>Privacy Policy</h2><p>We respect your privacy.</p>`;
     } else if (type === 'terms') {
-        html += `<h2>Terms of Service</h2><p>By using MBBS World, you agree to use the content for personal study purposes only. Redistribution or unauthorized commercial use of the hosted medical resources is strictly prohibited.</p>`;
+        html += `<h2>Terms of Service</h2><p>By using MBBS World, you agree to use the content for personal study purposes only.</p>`;
     } else if (type === 'contact') {
-        html += `<h2>Contact Us</h2><p>For support or feedback, please reach out to us at <a href="mailto:support@mbbsworld.com">support@mbbsworld.com</a>. We are always looking for ways to improve our medical curriculum resources.</p>`;
+        html += `<h2>Contact Us</h2><p>Reach out to us at <a href="mailto:support@mbbsworld.com">support@mbbsworld.com</a>.</p>`;
     }
-
     area.innerHTML = html;
 };
 
@@ -824,7 +707,6 @@ function renderSubjectList(searchQuery = '') {
     const area = document.getElementById('contentArea');
     const cleanQuery = searchQuery.toLowerCase().trim();
 
-    // Filter subjects that actually have content for the current view and platform
     const filteredSubjects = Object.keys(mbbsData).filter(subj => {
         const data = mbbsData[subj];
         const matchesSearch = subj.replace(/_/g, ' ').toLowerCase().includes(cleanQuery);
@@ -856,10 +738,6 @@ function renderSubjectList(searchQuery = '') {
     }).join('')}
                 </div>
             `;
-
-    if (filteredSubjects.length === 0) {
-        area.innerHTML += `<div style="text-align:center; padding:2rem; color:var(--text-light)">No subjects matching "${searchQuery}" found.</div>`;
-    }
 }
 
 function getViewIcon() {
@@ -876,8 +754,6 @@ function setSubject(subjectName) {
     if (!subjectName || subjectName.toLowerCase() === 'premium') {
         currentSubject = 'premium';
     } else {
-        // Normalize for key-based lookup in mbbsData
-        // This aligns with item.Subject.toLowerCase() === subjectName.toLowerCase() logic
         currentSubject = subjectName.toLowerCase().trim().replace(/ /g, '_');
     }
 
@@ -923,11 +799,9 @@ function renderContent(isBack = false) {
     const area = document.getElementById('contentArea');
     area.innerHTML = '';
 
-    // --- Bandwidth & Performance Fix: Definitive Cleanup on every view change ---
     cleanupIframes();
     updateOrientation();
 
-    // Header Section
     const header = document.createElement('div');
     header.innerHTML = `
                 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 1.5rem;">
@@ -938,7 +812,6 @@ function renderContent(isBack = false) {
     area.appendChild(header);
 
     if (currentView === 'videos') {
-        // --- VIDEOS LOGIC (Subject Grid First) ---
         if (!currentSubject) {
             renderSubjectList();
             return;
@@ -946,7 +819,6 @@ function renderContent(isBack = false) {
 
         const data = mbbsData[currentSubject];
         if (selectedChapterIdx === null) {
-            // Show Chapter List
             const list = document.createElement('div');
             list.className = 'chapter-list';
             data.videos.forEach((v, idx) => {
@@ -977,7 +849,6 @@ function renderContent(isBack = false) {
             renderVideoCard(area, data.videos[selectedChapterIdx], selectedChapterIdx);
         }
     } else if (currentView === 'notes' || currentView === 'quizzes') {
-        // --- Permanent List View Level ---
         if (!currentSubject) {
             renderSubjectList();
             return;
@@ -990,13 +861,11 @@ function renderContent(isBack = false) {
 
         renderItems();
     } else if (currentView === 'qbank') {
-        // Keep legacy QBank Platform selection for now
         if (!currentPlatform) {
             renderPlatforms();
         } else if (!currentSubject) {
             renderSubjectList();
         } else {
-            // Subject is selected, show the QBank items
             const list = document.createElement('div');
             list.className = 'chapter-list';
             list.id = 'quiz-list-container';
@@ -1004,14 +873,6 @@ function renderContent(isBack = false) {
 
             renderItems();
         }
-    }
-    if (area.innerHTML === '') {
-        area.innerHTML = `
-                    <div style="text-align:center; padding:5rem; color:var(--text-light)">
-                        <i class="fas fa-search" style="font-size:3rem; opacity:0.1; margin-bottom:1rem;"></i>
-                        <p>No content available for this subject yet.<br><span style="font-size:0.9rem; color:var(--primary)">✨ Try checking the Premium section!</span></p>
-                    </div>
-                `;
     }
 }
 
@@ -1021,26 +882,14 @@ function renderItems(searchQuery = '') {
     container.innerHTML = '';
 
     const data = mbbsData[currentSubject];
-    if (!data) {
-        container.innerHTML = `<div style="text-align:center; padding:3.5rem; color:var(--text-light)">Subject data not found for "${currentSubject}".</div>`;
-        return;
-    }
+    if (!data) return;
 
     let items = [];
-    if (currentView === 'notes') {
-        items = data.notes;
-    } else if (currentView === 'quizzes') {
-        items = data.quizzes;
-    } else if (currentView === 'qbank') {
-        // Strict Filtering: Only show items explicitly marked as 'qbank' in Column B
-        // Ensure platform matching is also respected
-        items = data.qbank.filter(i => i.platform === currentPlatform && i.Type === 'qbank');
-    }
+    if (currentView === 'notes') items = data.notes;
+    else if (currentView === 'quizzes') items = data.quizzes;
+    else if (currentView === 'qbank') items = data.qbank.filter(i => i.platform === currentPlatform && i.Type === 'qbank');
 
-    // Apply search filtering
-    if (searchQuery) {
-        items = items.filter(i => i.title.toLowerCase().includes(searchQuery.toLowerCase()));
-    }
+    if (searchQuery) items = items.filter(i => i.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
     items.forEach((item, idx) => {
         const card = document.createElement('div');
@@ -1049,9 +898,6 @@ function renderItems(searchQuery = '') {
         const isQuiz = item.Type && item.Type.includes('quiz');
         card.onclick = () => {
             logStudentActivity(item.Subject || currentSubject, item.title);
-            if (item.isPremium) {
-                alert("👑 This high-value content is exclusive for Premium Members! Launching viewer...");
-            }
             isQuiz ? openQuiz(item.link) : openFile(item.link);
         };
 
@@ -1063,36 +909,10 @@ function renderItems(searchQuery = '') {
                     <div style="flex-grow:1; font-weight:500;">
                         ${typeLabel ? `<span class="quiz-type-icon">[${typeLabel}]</span> ` : ''}
                         ${item.title}
-                        <div style="margin-top:4px; display:flex; align-items:center; flex-wrap:wrap; gap:5px;">
-                            ${item.Subject ? `<span class="subject-badge">${item.Subject}</span>` : ''}
-                            ${item.platform ? `<span class="platform-badge">${item.platform}</span>` : ''}
-                        </div>
                     </div>
-                    ${item.isPremium ? '<div class="premium-lock"><i class="fas fa-lock"></i></div>' : '<i class="fas fa-external-link-alt" style="opacity:0.5;"></i>'}
                 `;
         container.appendChild(card);
     });
-
-    if (items.length === 0) {
-        if (currentView === 'qbank') {
-            container.innerHTML = `
-                        <div style="text-align:center; padding:3.5rem; color:var(--text-light)">
-                            <i class="fas fa-exclamation-circle" style="font-size:3rem; opacity:0.1; margin-bottom:1.5rem;"></i>
-                            <p style="font-weight:600;">No QBank files found for this subject.</p>
-                            <p style="font-size:0.85rem; margin-top:0.5rem; color:#ef4444;">Please check if <b>Column B</b> in your sheet says "qbank".</p>
-                            <p style="font-size:0.8rem; margin-top:1rem; opacity:0.7;">Subject: ${currentSubject} | Platform: ${currentPlatform}</p>
-                        </div>
-                    `;
-        } else {
-            container.innerHTML = `
-                        <div style="text-align:center; padding:3.5rem; color:var(--text-light)">
-                            <i class="fas fa-folder-open" style="font-size:3rem; opacity:0.1; margin-bottom:1.5rem;"></i>
-                            <p style="font-weight:600;">No items found in this section.</p>
-                            <p style="font-size:0.85rem; margin-top:0.5rem;">Please check the 👑 <b>Premium</b> tab for more content!</p>
-                        </div>
-                    `;
-        }
-    }
 }
 
 function renderVideoCard(container, video, index) {
@@ -1104,68 +924,41 @@ function renderVideoCard(container, video, index) {
                     <div id="${uid}"></div>
                     <div class="glass-shield"></div>
                 </div>
-
-                <!-- Moved outside wrapper for landscape flexibility -->
                 <div class="custom-controls">
                     <div class="timeline-container">
                         <input type="range" class="timeline" id="seek-${uid}" min="0" value="0" oninput="userSeek('${uid}', this.value)">
                         <span class="time-display" id="time-${uid}">0:00 / 0:00</span>
                     </div>
                     <div class="buttons-row">
-                        <button class="ctrl-btn primary" id="toggle-${uid}" onclick="togglePlayPause('${uid}')">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <button class="ctrl-btn" onclick="seekBy(-10, '${uid}')">
-                            <i class="fas fa-undo"></i>
-                        </button>
-                        <button class="ctrl-btn" onclick="seekBy(10, '${uid}')">
-                            <i class="fas fa-redo"></i>
-                        </button>
+                        <button class="ctrl-btn primary" id="toggle-${uid}" onclick="togglePlayPause('${uid}')"><i class="fas fa-play"></i></button>
+                        <button class="ctrl-btn" onclick="seekBy(-10, '${uid}')"><i class="fas fa-undo"></i></button>
+                        <button class="ctrl-btn" onclick="seekBy(10, '${uid}')"><i class="fas fa-redo"></i></button>
                         <div class="speed-row" id="speed-row-${uid}">
                             <button class="speed-btn active" onclick="changeSpeed(1, '${uid}')">1x</button>
                             <button class="speed-btn" onclick="changeSpeed(1.5, '${uid}')">1.5x</button>
                             <button class="speed-btn" onclick="changeSpeed(2, '${uid}')">2x</button>
                         </div>
-                        <button class="ctrl-btn" onclick="toggleFullScreen(this)">
-                            <i class="fas fa-expand"></i>
-                        </button>
+                        <button class="ctrl-btn" onclick="toggleFullScreen(this)"><i class="fas fa-expand"></i></button>
                     </div>
                 </div>
-                <div class="card-content"><div class="card-title">${video.title}</div></div>
             `;
     container.appendChild(card);
     if (window.YT && window.YT.Player) createPlayer(uid, vid); else pendingPlayers.push({ id: uid, vid: vid });
 }
 
-function addSectionHeader(container, text, icon) {
-    const h = document.createElement('h3'); h.className = 'section-title';
-    h.innerHTML = `<i class="fas ${icon}"></i> ${text}`; container.appendChild(h);
-}
-
-// --- ADVANCED VIDEO LOGIC ---
-window.handleTap = (e, uid) => {
-    // Deprecated in favor of dedicated buttons
-};
-
 window.togglePlayPause = (uid) => {
     const p = players[uid];
     if (p) {
-        const state = p.getPlayerState();
-        if (state === YT.PlayerState.PLAYING) p.pauseVideo();
+        if (p.getPlayerState() === YT.PlayerState.PLAYING) p.pauseVideo();
         else p.playVideo();
     }
 };
 
 function seekBy(seconds, uid) {
     const p = players[uid];
-    if (p) {
-        const now = p.getCurrentTime();
-        p.seekTo(now + seconds, true);
-    }
+    if (p) p.seekTo(p.getCurrentTime() + seconds, true);
 }
 
-
-// ORIENTATION / FULLSCREEN OVERLAY
 window.activePlayerId = null;
 function updateOrientation() {
     const overlay = document.getElementById('landscapeOverlay');
@@ -1182,75 +975,48 @@ window.addEventListener('orientationchange', updateOrientation);
 function updateOverlaySpeedButtons() {
     const container = document.getElementById('overlaySpeedRow');
     const currentSpeed = localStorage.getItem('preferred_speed') || 1;
-    const speeds = [0.5, 1, 1.5, 2];
-
-    container.innerHTML = speeds.map(s => `
+    container.innerHTML = [0.5, 1, 1.5, 2].map(s => `
                 <button class="speed-btn ${parseFloat(currentSpeed) === s ? 'active' : ''}" 
-                        onclick="changeSpeed(${s}, '${activePlayerId}')">
-                    ${s === 1 ? 'Normal' : s + 'x'}
+                        onclick="changeSpeed(${s}, '${activePlayerId}')">${s === 1 ? 'Normal' : s + 'x'}
                 </button>
             `).join('');
 }
 
 window.exitLandscape = () => {
-    if (document.fullscreenElement) {
-        document.exitFullscreen();
-    }
+    if (document.fullscreenElement) document.exitFullscreen();
     document.getElementById('landscapeOverlay').classList.remove('visible');
 };
 
-// --- PLAYER ENGINE ---
 window.onYouTubeIframeAPIReady = () => { pendingPlayers.forEach(p => createPlayer(p.id, p.vid)); pendingPlayers = []; };
 function createPlayer(uid, vid) {
     const cleanVidId = getYoutubeVideoId(vid);
-    console.log('Playing Video ID:', cleanVidId); // Debug log for browser console
-
     players[uid] = new YT.Player(uid, {
         height: '100%', width: '100%', videoId: cleanVidId,
         playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
         events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
     });
 }
+
 function onReady(e, uid) {
     const dur = e.target.getDuration();
     document.getElementById(`seek-${uid}`).max = dur;
-    updateClock(uid, 0, dur);
-
-    // RESUME LOGIC
-    const vidData = e.target.getVideoData();
-    const videoId = vidData.video_id;
-    const savedTime = localStorage.getItem('resume_' + videoId);
-    if (savedTime) {
-        e.target.seekTo(parseFloat(savedTime), true);
-    }
-
-    // APPLY PREFERRED SPEED
-    const preferredSpeed = localStorage.getItem('preferred_speed') || 1;
-    changeSpeed(parseFloat(preferredSpeed), uid);
+    const savedTime = localStorage.getItem('resume_' + e.target.getVideoData().video_id);
+    if (savedTime) e.target.seekTo(parseFloat(savedTime), true);
+    changeSpeed(parseFloat(localStorage.getItem('preferred_speed') || 1), uid);
 }
-function onStateChange(e, uid) {
-    const vidData = e.target.getVideoData();
-    const videoId = vidData.video_id;
 
+function onStateChange(e, uid) {
+    const vidId = e.target.getVideoData().video_id;
     if (e.data == YT.PlayerState.PLAYING) {
         window.activePlayerId = uid;
         updateOrientation();
         updatePlayPauseIcon(uid, true);
-        e.target.setPlaybackQuality('hd720');
         if (players[uid].timer) clearInterval(players[uid].timer);
         players[uid].timer = setInterval(() => {
             const t = e.target.getCurrentTime();
-            const d = e.target.getDuration();
             document.getElementById(`seek-${uid}`).value = t;
-            updateClock(uid, t, d);
-
-            // SAVE PROGRESS
-            localStorage.setItem('resume_' + videoId, t);
-
-            // TRACK COMPLETION (90%)
-            if (d > 0 && t > (d * 0.9)) {
-                localStorage.setItem('completed_' + videoId, 'true');
-            }
+            updateClock(uid, t, e.target.getDuration());
+            localStorage.setItem('resume_' + vidId, t);
         }, 1000);
     } else {
         clearInterval(players[uid].timer);
@@ -1260,59 +1026,22 @@ function onStateChange(e, uid) {
 
 function updatePlayPauseIcon(uid, isPlaying) {
     const btn = document.getElementById(`toggle-${uid}`);
-    if (btn) {
-        btn.innerHTML = `<i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>`;
-    }
+    if (btn) btn.innerHTML = `<i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>`;
 }
 function updateClock(uid, curr, dur) { document.getElementById(`time-${uid}`).innerText = `${fmt(curr)} / ${fmt(dur)}`; }
 function fmt(s) { const m = Math.floor(s / 60); const sc = Math.floor(s % 60); return `${m}:${sc < 10 ? '0' : ''}${sc}`; }
 
-window.controlPlayer = (uid, a) => players[uid][a + 'Video']();
 window.userSeek = (uid, v) => players[uid].seekTo(v, true);
-
 window.changeSpeed = (rate, uid) => {
     if (players[uid] && players[uid].setPlaybackRate) {
         players[uid].setPlaybackRate(rate);
-        // Persistence
         localStorage.setItem('preferred_speed', rate);
-        // UI Update Primary
         const row = document.getElementById(`speed-row-${uid}`);
-        if (row) {
-            row.querySelectorAll('.speed-btn').forEach(btn => {
-                btn.classList.toggle('active', parseFloat(btn.innerText) === rate || (rate === 1 && btn.innerText === 'Normal'));
-            });
-        }
-        // UI Update Overlay
+        if (row) row.querySelectorAll('.speed-btn').forEach(btn => btn.classList.toggle('active', parseFloat(btn.innerText) === rate || (rate === 1 && btn.innerText === 'Normal')));
         updateOverlaySpeedButtons();
     }
 };
 
-window.openQuiz = (url) => {
-    pushNavState(); // Save list state before opening modal
-    const viewer = document.getElementById('fileViewer');
-    const loader = document.getElementById('pdfLoader');
-
-    viewer.removeAttribute('srcdoc');
-    viewer.src = "about:blank";
-    loader.style.display = 'block';
-
-    const formattedUrl = formatDriveLink(url);
-    viewer.src = formattedUrl;
-
-    document.getElementById('fileModal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-};
-
-window.toggleFullScreen = (btn) => {
-    const c = btn.closest('.card');
-    if (!document.fullscreenElement) {
-        c.requestFullscreen().then(updateOrientation).catch(e => console.error(e));
-    } else {
-        document.exitFullscreen();
-    }
-};
-
-// --- FILE ENGINE ---
 function formatDriveLink(url) {
     if (!url || !url.includes('drive.google.com')) return url;
     const match = url.match(/\/d\/([^\/?#]+)|id=([^\/&#?]+)/);
@@ -1320,24 +1049,27 @@ function formatDriveLink(url) {
     return id ? `https://drive.google.com/file/d/${id}/preview` : url;
 }
 
-window.openFile = (urlOrContent) => {
-    pushNavState(); // Save list state before opening modal
+window.openQuiz = (url) => {
+    pushNavState();
     const viewer = document.getElementById('fileViewer');
-    const loader = document.getElementById('pdfLoader');
-
-    viewer.removeAttribute('srcdoc');
-    viewer.src = "about:blank";
-    loader.style.display = 'block';
-
-    if (urlOrContent.startsWith('http')) {
-        const formatted = formatDriveLink(urlOrContent);
-        viewer.src = formatted;
-    } else {
-        viewer.srcdoc = urlOrContent;
-    }
-
+    viewer.src = formatDriveLink(url);
     document.getElementById('fileModal').style.display = 'block';
     document.body.style.overflow = 'hidden';
+};
+
+window.openFile = (urlOrContent) => {
+    pushNavState(); 
+    const viewer = document.getElementById('fileViewer');
+    if (urlOrContent.startsWith('http')) viewer.src = formatDriveLink(urlOrContent);
+    else viewer.srcdoc = urlOrContent;
+    document.getElementById('fileModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+};
+
+window.toggleFullScreen = (btn) => {
+    const c = btn.closest('.card');
+    if (!document.fullscreenElement) c.requestFullscreen().then(updateOrientation).catch(e => console.error(e));
+    else document.exitFullscreen();
 };
 
 window.togglePdfFullScreen = () => {
@@ -1352,71 +1084,22 @@ window.toggleFocusMode = () => {
     modal.classList.toggle('focus-mode');
     const isFocus = modal.classList.contains('focus-mode');
     btn.innerHTML = isFocus ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
-    btn.style.color = isFocus ? 'var(--accent)' : 'white';
 };
 
 window.closeModal = () => {
-    // Close via goBack to restore previous list state and scroll Position
-    if (navHistory.length > 0) {
-        goBack();
-    } else {
+    if (navHistory.length > 0) goBack();
+    else {
         cleanupIframes();
         document.getElementById('fileModal').style.display = 'none';
         document.body.style.overflow = 'auto';
     }
 };
 
-// --- SMART NETWORK & UTILS ---
-function getViewIcon() {
-    switch (currentView) {
-        case 'home': return 'fa-house-medical';
-        case 'videos': return 'fa-stethoscope';
-        case 'notes': return 'fa-clipboard-list';
-        case 'quizzes': return 'fa-microscope';
-        case 'qbank': return 'fa-dna';
-        default: return 'fa-folder-open';
-    }
-}
-
 function initNetworkMonitor() {
     const banner = document.getElementById('network-banner');
-    const toast = document.getElementById('network-toast');
-
-    const updateStatus = () => {
-        if (navigator.onLine) {
-            banner.classList.remove('visible');
-            checkSpeed();
-        } else {
-            banner.classList.add('visible');
-        }
-    };
-
-    const checkSpeed = () => {
-        if (navigator.connection) {
-            const type = navigator.connection.effectiveType;
-            if (type === '2g' || type === 'slow-2g') {
-                toast.style.display = 'block';
-                enableDataSaver();
-                setTimeout(() => { toast.style.display = 'none'; }, 5000);
-            }
-        }
-    };
-
+    const updateStatus = () => navigator.onLine ? banner.classList.remove('visible') : banner.classList.add('visible');
     window.addEventListener('online', updateStatus);
     window.addEventListener('offline', updateStatus);
     updateStatus();
 }
-
-function enableDataSaver() {
-    console.log("Data Saver Mode Enabled");
-    const media = document.querySelectorAll('video, iframe');
-    media.forEach(m => {
-        if (m.tagName === 'VIDEO') m.setAttribute('preload', 'none');
-        m.removeAttribute('autoplay');
-        // For YT iframes, we can't easily strip autoplay if it's in the URL, 
-        // but createPlayer already handles playerVars.
-    });
-}
-
-// Initialize features
 initNetworkMonitor();
