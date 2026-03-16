@@ -1,17 +1,18 @@
-// --- AUTO-LOGIN CHECK ---
-document.addEventListener('DOMContentLoaded', () => {
+// --- AUTO-LOGIN CHECK (Instant) ---
+(function checkAutoLogin() {
     const savedUser = localStorage.getItem('mbbs_saved_user');
     const deviceId = localStorage.getItem('mbbs_device_id');
     
     // If they have a saved identity on this device, send straight to dashboard
     if (savedUser && deviceId) {
         sessionStorage.setItem('mbbs_user', savedUser);
-        window.location.href = 'dashboard.html';
+        window.location.replace('dashboard.html'); // Uses 'replace' so they can't click back to login
     }
-});
+})();
 
 // Content Protection (Strict Security Developer Mode)
 const overlay = document.getElementById('security-overlay');
+// ... rest of your login.js stays exactly the same
 let initialHeight = window.innerHeight;
 
 const toggleCurtain = (show) => { if (overlay) overlay.style.display = show ? 'flex' : 'none'; };

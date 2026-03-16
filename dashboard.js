@@ -1,3 +1,25 @@
+// --- INSTANT SESSION RESTORE ---
+(function restoreSession() {
+    let savedUser = sessionStorage.getItem('mbbs_user');
+    
+    // If session is empty (tab was closed), check permanent device memory instantly
+    if (!savedUser) {
+        const localUser = localStorage.getItem('mbbs_saved_user');
+        const deviceId = localStorage.getItem('mbbs_device_id');
+        
+        // Restore the session
+        if (localUser && deviceId) {
+            sessionStorage.setItem('mbbs_user', localUser);
+        } else {
+            // No saved user found at all, boot them immediately
+            window.location.replace('index.html');
+        }
+    }
+})();
+
+// --- DATA ENGINE ---
+let allData = []; // Global raw data
+// ...
 // --- DATA ENGINE ---
 let allData = []; // Global raw data
 let mbbsData = {}; // Structured data
