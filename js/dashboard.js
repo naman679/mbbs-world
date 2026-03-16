@@ -212,7 +212,12 @@ function injectWatermark() {
 }
 
 function cleanupIframes() {
-    Object.values(players).forEach(p => { if (p && p.stopVideo) p.stopVideo(); if (p && p.destroy) p.destroy(); });
+    Object.values(players).forEach(p => {
+        if (p.timer) clearInterval(p.timer);
+        if (p.stopVideo) p.stopVideo();
+        if (p.destroy) p.destroy();
+    });
+    if (window.uiTimer) clearInterval(window.uiTimer);
     players = {}; pendingPlayers = []; window.activePlayerId = null;
     const viewer = document.getElementById('fileViewer'), modal = document.getElementById('fileModal');
     if (viewer) { viewer.src = ''; viewer.removeAttribute('srcdoc'); }
@@ -477,7 +482,7 @@ function renderVideoCard(container, video, index) {
     const card = document.createElement('div'); card.className = 'card';
     let vid = video.link;
     const uid = `yt-${index}`;
-    
+
     card.innerHTML = `
         <div class="video-wrapper">
             <div id="${uid}"></div>
@@ -552,15 +557,15 @@ function onStateChange(e, uid) {
         updateOrientation();
         updatePlayPauseIcon(uid, true);
         e.target.setPlaybackQuality('hd720');
-        
+
         if (players[uid].timer) clearInterval(players[uid].timer);
         players[uid].timer = setInterval(() => {
             const t = e.target.getCurrentTime();
             const d = e.target.getDuration();
-            
+
             const seekEl = document.getElementById(`seek-${uid}`);
             if (seekEl) seekEl.value = t;
-            
+
             updateClock(uid, t, d);
 
             // SAVE PROGRESS
@@ -584,16 +589,16 @@ function updatePlayPauseIcon(uid, isPlaying) {
     }
 }
 
-function updateClock(uid, curr, dur) { 
+function updateClock(uid, curr, dur) {
     const timeEl = document.getElementById(`time-${uid}`);
-    if (timeEl) timeEl.innerText = `${fmt(curr)} / ${fmt(dur)}`; 
+    if (timeEl) timeEl.innerText = `${fmt(curr)} / ${fmt(dur)}`;
 }
 
-function fmt(s) { 
-    if (!s || isNaN(s)) return "0:00"; 
-    const m = Math.floor(s / 60); 
-    const sc = Math.floor(s % 60); 
-    return `${m}:${sc < 10 ? '0' : ''}${sc}`; 
+function fmt(s) {
+    if (!s || isNaN(s)) return "0:00";
+    const m = Math.floor(s / 60);
+    const sc = Math.floor(s % 60);
+    return `${m}:${sc < 10 ? '0' : ''}${sc}`;
 }
 
 window.controlPlayer = (uid, a) => players[uid][a + 'Video']();
