@@ -47,95 +47,94 @@
 
     <script src="js/login.js?v=2"></script>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
-        import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+   <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
-            authDomain: "samvad-bafaa.firebaseapp.com",
-            projectId: "samvad-bafaa",
-            storageBucket: "samvad-bafaa.appspot.com",
-            messagingSenderId: "131803431466",
-            appId: "1:131803431466:web:b7b107308ea7197f013953",
-            measurementId: "G-M90SYY2MP9"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
+        authDomain: "samvad-bafaa.firebaseapp.com",
+        projectId: "samvad-bafaa",
+        storageBucket: "samvad-bafaa.appspot.com",
+        messagingSenderId: "131803431466",
+        appId: "1:131803431466:web:b7b107308ea7197f013953",
+        measurementId: "G-M90SYY2MP9"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const database = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
 
-        // --- 1. PERSISTENT LOGIN CHECK ---
-        window.addEventListener('load', () => {
-            const savedUser = localStorage.getItem('mbbs_saved_user');
-            const savedId = localStorage.getItem('mbbs_device_id');
-            if (savedUser && savedId) {
-                // Auto-redirect if session exists
-                window.location.href = "dashboard.html";
-            }
-        });
-
-        // --- 2. DUAL-SLOT LOGIN LOGIC ---
-        const loginBtn = document.getElementById('login-submit-btn');
-        const nameInput = document.getElementById('student-name');
-        const errorDiv = document.getElementById('error-message');
-
-        loginBtn.addEventListener('click', async () => {
-            const userName = nameInput.value.trim().toLowerCase(); // Use lowercase for consistent DB keys
-            if (!userName) {
-                errorDiv.innerText = "Please enter your full name.";
-                return;
-            }
-
-            // Generate or retrieve Device ID
-            let currentDeviceId = localStorage.getItem('mbbs_device_id');
-            if (!currentDeviceId) {
-                currentDeviceId = 'ID_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('mbbs_device_id', currentDeviceId);
-            }
-
-            // Detect if inside Android App via UserAgent
-            const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
-            const slotName = isInsideApp ? "app_id" : "web_id";
-
-            const userRef = ref(database, 'users/' + userName);
-
-            try {
-                const snapshot = await get(userRef);
-                
-                if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    const savedSlotId = userData[slotName];
-
-                    if (!savedSlotId || savedSlotId === currentDeviceId) {
-                        // Slot is empty or matches current device: GRANT ACCESS
-                        await update(userRef, { [slotName]: currentDeviceId });
-                        finalizeLogin(userName);
-                    } else {
-                        // Slot is taken by a different device: BLOCK
-                        const platform = isInsideApp ? "another Mobile App" : "another Chrome Browser";
-                        errorDiv.innerText = `Access Denied! Account already linked to ${platform}.`;
-                    }
-                } else {
-                    // NEW USER: Create account and fill current slot
-                    await set(userRef, {
-                        name: userName,
-                        [slotName]: currentDeviceId,
-                        created_at: new Date().toISOString()
-                    });
-                    finalizeLogin(userName);
-                }
-            } catch (error) {
-                console.error(error);
-                errorDiv.innerText = "Connection error. Please try again.";
-            }
-        });
-
-        function finalizeLogin(name) {
-            localStorage.setItem('mbbs_saved_user', name);
-            window.location.href = "dashboard.html";
+    // 1. AUTO-LOGIN CHECK (On Page Load)
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedUser = localStorage.getItem('mbbs_saved_user');
+        const savedId = localStorage.getItem('mbbs_device_id');
+        if (savedUser && savedId) {
+            window.location.replace("dashboard.html"); // Use replace to prevent back-button loops
         }
-    </script>
+    });
+
+    const loginBtn = document.getElementById('login-submit-btn');
+    const nameInput = document.getElementById('student-name');
+    const errorDiv = document.getElementById('error-message');
+
+    loginBtn.addEventListener('click', async () => {
+        const userName = nameInput.value.trim().toLowerCase();
+        if (!userName) {
+            errorDiv.innerText = "Please enter your name.";
+            return;
+        }
+
+        loginBtn.disabled = true;
+        loginBtn.innerText = "Verifying...";
+
+        let currentDeviceId = localStorage.getItem('mbbs_device_id');
+        if (!currentDeviceId) {
+            currentDeviceId = 'ID_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('mbbs_device_id', currentDeviceId);
+        }
+
+        const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
+        const slotName = isInsideApp ? "app_id" : "web_id";
+        const userRef = ref(database, 'users/' + userName);
+
+        try {
+            const snapshot = await get(userRef);
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                const savedSlotId = userData[slotName];
+
+                if (!savedSlotId || savedSlotId === currentDeviceId) {
+                    // Update Firebase AND WAIT for success before moving
+                    await update(userRef, { [slotName]: currentDeviceId });
+                    finalizeLogin(userName);
+                } else {
+                    errorDiv.innerText = "Access Denied! Account linked to another device.";
+                    loginBtn.disabled = false;
+                    loginBtn.innerText = "Access Portal";
+                }
+            } else {
+                // New User Registration
+                await set(userRef, {
+                    name: userName,
+                    [slotName]: currentDeviceId,
+                    created_at: new Date().toISOString()
+                });
+                finalizeLogin(userName);
+            }
+        } catch (error) {
+            console.error(error);
+            errorDiv.innerText = "Database Error. Check your internet.";
+            loginBtn.disabled = false;
+        }
+    });
+
+    function finalizeLogin(name) {
+        localStorage.setItem('mbbs_saved_user', name);
+        // Important: Wait 100ms for localStorage to settle
+        setTimeout(() => {
+            window.location.replace("dashboard.html");
+        }, 100);
+    }
+</script>
 </body>
 </html>
