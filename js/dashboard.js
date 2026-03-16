@@ -1,7 +1,7 @@
 // --- INSTANT SESSION RESTORE ---
 (function restoreSession() {
     let savedUser = sessionStorage.getItem('mbbs_user');
-    
+
     if (!savedUser || savedUser === 'undefined' || savedUser === 'null') {
         const localUser = localStorage.getItem('mbbs_saved_user');
         if (localUser && localUser !== 'undefined' && localUser !== 'null') {
@@ -13,8 +13,8 @@
 })();
 
 // --- DATA ENGINE ---
-let allData = []; 
-let mbbsData = {}; 
+let allData = [];
+let mbbsData = {};
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oD0BX4WhhLDL6e6WybIEXmvbiroBMBiGASJ2r-HdxlIOmDFqaWpUEMdDydPUHVOQNsOGGbgJR6O/pub?output=csv";
 
 async function fetchSheetData() {
@@ -119,8 +119,8 @@ function formatTime(seconds) {
 }
 
 window.openProfile = () => {
-    pushNavState(); 
-    currentView = 'profile'; updateNavActive('profile'); 
+    pushNavState();
+    currentView = 'profile'; updateNavActive('profile');
     document.getElementById('trustArea').style.display = 'none';
     const area = document.getElementById('contentArea');
     area.style.display = 'block';
@@ -244,8 +244,8 @@ window.logStudentActivity = (subject, title) => {
 
 window.handleLogout = () => {
     sessionStorage.removeItem('mbbs_user');
-    localStorage.removeItem('mbbs_saved_user'); 
-    window.location.replace('index.html'); 
+    localStorage.removeItem('mbbs_saved_user');
+    window.location.replace('index.html');
 };
 
 window.showMainMenu = (isBack = false) => {
@@ -293,7 +293,7 @@ window.onload = () => {
     updateThemeIcon(savedTheme);
 
     let savedUser = sessionStorage.getItem('mbbs_user');
-    
+
     // SAFEGUARD: If no user found after restore trick, boot immediately
     if (!savedUser || savedUser === 'undefined' || savedUser === 'null' || savedUser.trim() === '') {
         handleLogout();
@@ -305,13 +305,13 @@ window.onload = () => {
     updateUserMenu();
 
     // Fetch the main content
-    fetchSheetData(); 
+    fetchSheetData();
     initSecurity();
     injectWatermark();
 
     if (!localStorage.getItem('welcome_seen_v1')) {
         const modal = document.getElementById('welcomeModal');
-        if(modal) { modal.style.display = 'flex'; setTimeout(() => modal.classList.add('visible'), 10); }
+        if (modal) { modal.style.display = 'flex'; setTimeout(() => modal.classList.add('visible'), 10); }
     }
 
     // Background Database Checks
@@ -368,7 +368,7 @@ window.updateUserMenu = () => {
 };
 
 window.navigate = (view) => {
-    if (['home','videos','notes','quizzes','qbank'].includes(view)) {
+    if (['home', 'videos', 'notes', 'quizzes', 'qbank'].includes(view)) {
         document.getElementById('trustArea').style.display = 'none';
         document.getElementById('contentArea').style.display = 'block';
         if (view === 'home') showMainMenu(); else filterCategory(view);
@@ -472,24 +472,195 @@ function renderItems() {
     });
 }
 
+// --- ADVANCED VIDEO CONTROLS INTEGRATION ---
 function renderVideoCard(container, video, index) {
     const card = document.createElement('div'); card.className = 'card';
+    let vid = video.link;
     const uid = `yt-${index}`;
-    card.innerHTML = `<div class="video-wrapper"><div id="${uid}"></div><div class="glass-shield"></div></div>
-                      <div class="custom-controls"><div class="buttons-row"><button class="ctrl-btn primary" onclick="togglePlayPause('${uid}')"><i class="fas fa-play"></i></button></div></div>`;
+    
+    card.innerHTML = `
+        <div class="video-wrapper">
+            <div id="${uid}"></div>
+            <div class="glass-shield"></div>
+        </div>
+        <div class="custom-controls" style="z-index: 99;">
+            <div class="timeline-container">
+                <input type="range" class="timeline" id="seek-${uid}" min="0" value="0" step="0.1" oninput="userSeek('${uid}', this.value)">
+                <span class="time-display" id="time-${uid}">0:00 / 0:00</span>
+            </div>
+            <div class="buttons-row">
+                <button class="ctrl-btn primary" id="toggle-${uid}" onclick="togglePlayPause('${uid}')">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="ctrl-btn" onclick="seekBy(-10, '${uid}')">
+                    <i class="fas fa-undo"></i>
+                </button>
+                <button class="ctrl-btn" onclick="seekBy(10, '${uid}')">
+                    <i class="fas fa-redo"></i>
+                </button>
+                <div class="speed-row" id="speed-row-${uid}">
+                    <button class="speed-btn active" onclick="changeSpeed(1, '${uid}')">1x</button>
+                    <button class="speed-btn" onclick="changeSpeed(1.5, '${uid}')">1.5x</button>
+                    <button class="speed-btn" onclick="changeSpeed(2, '${uid}')">2x</button>
+                </div>
+                <button class="ctrl-btn" onclick="toggleFullScreen(this)">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-content"><div class="card-title">${video.title}</div></div>
+    `;
     container.appendChild(card);
-    if (window.YT && window.YT.Player) createPlayer(uid, video.link); else pendingPlayers.push({ id: uid, vid: video.link });
+    if (window.YT && window.YT.Player) createPlayer(uid, vid); else pendingPlayers.push({ id: uid, vid: vid });
 }
 
-window.togglePlayPause = (uid) => { const p = players[uid]; if (p) p.getPlayerState() === YT.PlayerState.PLAYING ? p.pauseVideo() : p.playVideo(); };
 window.onYouTubeIframeAPIReady = () => { pendingPlayers.forEach(p => createPlayer(p.id, p.vid)); pendingPlayers = []; };
+
 function createPlayer(uid, vid) {
-    players[uid] = new YT.Player(uid, { height: '100%', width: '100%', videoId: getYoutubeVideoId(vid), playerVars: { 'controls': 0, 'playsinline': 1 }, events: { 'onReady': (e) => {}, 'onStateChange': (e) => { window.activePlayerId = uid; updateOrientation(); } }});
+    const cleanVidId = getYoutubeVideoId(vid);
+    players[uid] = new YT.Player(uid, {
+        height: '100%', width: '100%', videoId: cleanVidId,
+        playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
+        events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
+    });
+}
+
+function onReady(e, uid) {
+    const dur = e.target.getDuration();
+    document.getElementById(`seek-${uid}`).max = dur;
+    updateClock(uid, 0, dur);
+
+    // RESUME LOGIC
+    const vidData = e.target.getVideoData();
+    const videoId = vidData.video_id;
+    const savedTime = localStorage.getItem('resume_' + videoId);
+    if (savedTime) {
+        e.target.seekTo(parseFloat(savedTime), true);
+    }
+
+    // APPLY PREFERRED SPEED
+    const preferredSpeed = localStorage.getItem('preferred_speed') || 1;
+    changeSpeed(parseFloat(preferredSpeed), uid);
+}
+
+function onStateChange(e, uid) {
+    const vidData = e.target.getVideoData();
+    const videoId = vidData.video_id;
+
+    if (e.data == YT.PlayerState.PLAYING) {
+        window.activePlayerId = uid;
+        updateOrientation();
+        updatePlayPauseIcon(uid, true);
+        e.target.setPlaybackQuality('hd720');
+        
+        if (players[uid].timer) clearInterval(players[uid].timer);
+        players[uid].timer = setInterval(() => {
+            const t = e.target.getCurrentTime();
+            const d = e.target.getDuration();
+            
+            const seekEl = document.getElementById(`seek-${uid}`);
+            if (seekEl) seekEl.value = t;
+            
+            updateClock(uid, t, d);
+
+            // SAVE PROGRESS
+            localStorage.setItem('resume_' + videoId, t);
+
+            // TRACK COMPLETION (90%)
+            if (d > 0 && t > (d * 0.9)) {
+                localStorage.setItem('completed_' + videoId, 'true');
+            }
+        }, 1000);
+    } else {
+        if (players[uid].timer) clearInterval(players[uid].timer);
+        updatePlayPauseIcon(uid, false);
+    }
+}
+
+function updatePlayPauseIcon(uid, isPlaying) {
+    const btn = document.getElementById(`toggle-${uid}`);
+    if (btn) {
+        btn.innerHTML = `<i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>`;
+    }
+}
+
+function updateClock(uid, curr, dur) { 
+    const timeEl = document.getElementById(`time-${uid}`);
+    if (timeEl) timeEl.innerText = `${fmt(curr)} / ${fmt(dur)}`; 
+}
+
+function fmt(s) { 
+    if (!s || isNaN(s)) return "0:00"; 
+    const m = Math.floor(s / 60); 
+    const sc = Math.floor(s % 60); 
+    return `${m}:${sc < 10 ? '0' : ''}${sc}`; 
+}
+
+window.controlPlayer = (uid, a) => players[uid][a + 'Video']();
+window.userSeek = (uid, v) => players[uid].seekTo(v, true);
+
+window.changeSpeed = (rate, uid) => {
+    if (players[uid] && players[uid].setPlaybackRate) {
+        players[uid].setPlaybackRate(rate);
+        localStorage.setItem('preferred_speed', rate);
+        const row = document.getElementById(`speed-row-${uid}`);
+        if (row) {
+            row.querySelectorAll('.speed-btn').forEach(btn => {
+                btn.classList.toggle('active', parseFloat(btn.innerText) === rate || (rate === 1 && btn.innerText === 'Normal'));
+            });
+        }
+        updateOverlaySpeedButtons();
+    }
+};
+
+window.togglePlayPause = (uid) => {
+    const p = players[uid];
+    if (p) {
+        const state = p.getPlayerState();
+        if (state === YT.PlayerState.PLAYING) p.pauseVideo();
+        else p.playVideo();
+    }
+};
+
+window.seekBy = (seconds, uid) => {
+    const p = players[uid];
+    if (p) {
+        const now = p.getCurrentTime();
+        p.seekTo(now + seconds, true);
+    }
+};
+
+window.toggleFullScreen = (btn) => {
+    const c = btn.closest('.card');
+    if (!document.fullscreenElement) {
+        c.requestFullscreen().then(updateOrientation).catch(e => console.error(e));
+    } else {
+        document.exitFullscreen();
+    }
+};
+
+function updateOverlaySpeedButtons() {
+    const container = document.getElementById('overlaySpeedRow');
+    if (!container) return;
+    const currentSpeed = localStorage.getItem('preferred_speed') || 1;
+    const speeds = [0.5, 1, 1.5, 2];
+
+    container.innerHTML = speeds.map(s => `
+        <button class="speed-btn ${parseFloat(currentSpeed) === s ? 'active' : ''}" 
+                onclick="changeSpeed(${s}, '${activePlayerId}')">
+            ${s === 1 ? 'Normal' : s + 'x'}
+        </button>
+    `).join('');
 }
 
 function updateOrientation() {
     const overlay = document.getElementById('landscapeOverlay');
-    if (window.innerHeight < window.innerWidth && window.activePlayerId) overlay.classList.add('visible'); else overlay.classList.remove('visible');
+    if (window.innerHeight < window.innerWidth && window.activePlayerId) {
+        overlay.classList.add('visible');
+        updateOverlaySpeedButtons();
+    } else {
+        overlay.classList.remove('visible');
+    }
 }
 window.addEventListener('resize', updateOrientation); window.addEventListener('orientationchange', updateOrientation);
 window.exitLandscape = () => { if (document.fullscreenElement) document.exitFullscreen(); document.getElementById('landscapeOverlay').classList.remove('visible'); };
@@ -501,4 +672,4 @@ function formatDriveLink(url) {
 }
 window.openQuiz = (url) => { pushNavState(); document.getElementById('fileViewer').src = formatDriveLink(url); document.getElementById('fileModal').style.display = 'block'; document.body.style.overflow = 'hidden'; };
 window.openFile = (urlOrContent) => { pushNavState(); document.getElementById('fileViewer').src = urlOrContent.startsWith('http') ? formatDriveLink(urlOrContent) : urlOrContent; document.getElementById('fileModal').style.display = 'block'; document.body.style.overflow = 'hidden'; };
-window.closeModal = () => { if (navHistory.length > 0) goBack(); else { cleanupIframes(); document.getElementById('fileModal').style.display = 'none'; document.body.style.overflow = 'auto'; } };
+window.closeModal = () => { if (navHistory.length > 0) goBack(); else { cleanupIframes(); if (window.uiTimer) clearInterval(window.uiTimer); document.getElementById('fileModal').style.display = 'none'; document.body.style.overflow = 'auto'; } };
