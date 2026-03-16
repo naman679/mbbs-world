@@ -176,30 +176,6 @@ function handleInternalBack() {
 window.goBack = () => { if (navHistory.length === 0) showMainMenu(); else history.back(); };
 window.addEventListener('popstate', (e) => { if (navHistory.length > 0) handleInternalBack(); });
 
-function initSecurity() {
-    let initialHeight = window.innerHeight;
-    document.oncontextmenu = () => false;
-    document.addEventListener('copy', e => e.preventDefault());
-    document.addEventListener('dragstart', e => e.preventDefault());
-
-    const overlay = document.getElementById('security-overlay');
-    const toggleCurtain = (show) => {
-        if (overlay) overlay.style.display = show ? 'flex' : 'none';
-        if (show) Object.values(players).forEach(p => { if (p && p.pauseVideo) p.pauseVideo(); });
-    };
-
-    window.addEventListener('keydown', e => {
-        if (e.key === 'VolumeDown' || e.key === 'VolumeUp' || e.keyCode === 174 || e.keyCode === 175) { e.preventDefault(); toggleCurtain(true); setTimeout(() => toggleCurtain(false), 2000); }
-    });
-    document.addEventListener('visibilitychange', () => toggleCurtain(document.hidden));
-    window.addEventListener('blur', (e) => { if (document.activeElement && document.activeElement.tagName !== 'IFRAME') toggleCurtain(true); });
-    window.addEventListener('focus', () => toggleCurtain(false));
-    window.addEventListener('resize', () => {
-        if (Math.abs(initialHeight - window.innerHeight) > 100) { toggleCurtain(true); setTimeout(() => { initialHeight = window.innerHeight; toggleCurtain(false); }, 1500); }
-    });
-    if (overlay) { overlay.addEventListener('click', () => toggleCurtain(false)); overlay.addEventListener('touchstart', () => toggleCurtain(false)); }
-    document.addEventListener('keydown', e => { if (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'p' || e.key === 'u' || e.key === 's'))) e.preventDefault(); });
-}
 
 function injectWatermark() {
     const container = document.getElementById('watermark-container');
@@ -311,7 +287,6 @@ window.onload = () => {
 
     // Fetch the main content
     fetchSheetData();
-    initSecurity();
     injectWatermark();
 
     if (!localStorage.getItem('welcome_seen_v1')) {
