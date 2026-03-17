@@ -465,10 +465,6 @@ function renderVideoCard(container, video, index) {
     card.innerHTML = `
         <div class="video-wrapper">
             <div id="${uid}"></div>
-            <div class="video-branding-overlay" id="overlay-${uid}">
-                <i class="fas fa-heartbeat"></i>
-                <span>MBBS World</span>
-            </div>
             <div class="glass-shield"></div>
         </div>
         <div class="custom-controls" style="z-index: 99;">
@@ -537,17 +533,6 @@ function onStateChange(e, uid) {
     console.log(`Player ${uid} state changed to: ${e.data}`);
 
     if (e.data == YT.PlayerState.PLAYING) {
-        // --- NEW OVERLAY VISIBILITY LOGIC ---
-        const overlay = document.getElementById(`overlay-${uid}`);
-        if (overlay) {
-            console.log(`Starting hide timer for ${uid}`);
-            if (players[uid].hideTimeout) clearTimeout(players[uid].hideTimeout);
-            players[uid].hideTimeout = setTimeout(() => {
-                overlay.classList.add('hide-overlay');
-                console.log(`Overlay hidden for ${uid}`);
-            }, 3000);
-        }
-
         window.activePlayerId = uid;
         updateOrientation();
         updatePlayPauseIcon(uid, true);
@@ -565,14 +550,6 @@ function onStateChange(e, uid) {
     } else {
         if (players[uid].timer) clearInterval(players[uid].timer);
         updatePlayPauseIcon(uid, false);
-
-        // --- NEW OVERLAY VISIBILITY LOGIC (PAUSE) ---
-        const overlay = document.getElementById(`overlay-${uid}`);
-        if (overlay) {
-            console.log(`Showing overlay for ${uid} (state: ${e.data})`);
-            if (players[uid].hideTimeout) clearTimeout(players[uid].hideTimeout);
-            overlay.classList.remove('hide-overlay');
-        }
     }
 }
 
