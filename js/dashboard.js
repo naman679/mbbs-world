@@ -511,6 +511,7 @@ function createPlayer(uid, vid) {
         playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
         events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
     });
+    players[uid].videoId = cleanVidId; // Store for cross-origin safe access
 }
 
 function onReady(e, uid) {
@@ -532,41 +533,34 @@ function onReady(e, uid) {
 }
 
 function onStateChange(e, uid) {
-    const vidData = e.target.getVideoData();
-    const videoId = vidData.video_id;
+    const videoId = players[uid].videoId;
+    console.log(`Player ${uid} state changed to: ${e.data}`);
 
     if (e.data == YT.PlayerState.PLAYING) {
-        window.activePlayerId = uid;
-        updateOrientation();
-        updatePlayPauseIcon(uid, true);
-        e.target.setPlaybackQuality('hd720');
-
         // --- NEW OVERLAY VISIBILITY LOGIC ---
         const overlay = document.getElementById(`overlay-${uid}`);
         if (overlay) {
+            console.log(`Starting hide timer for ${uid}`);
             if (players[uid].hideTimeout) clearTimeout(players[uid].hideTimeout);
             players[uid].hideTimeout = setTimeout(() => {
                 overlay.classList.add('hide-overlay');
+                console.log(`Overlay hidden for ${uid}`);
             }, 3000);
         }
+
+        window.activePlayerId = uid;
+        updateOrientation();
+        updatePlayPauseIcon(uid, true);
 
         if (players[uid].timer) clearInterval(players[uid].timer);
         players[uid].timer = setInterval(() => {
             const t = e.target.getCurrentTime();
             const d = e.target.getDuration();
-
             const seekEl = document.getElementById(`seek-${uid}`);
             if (seekEl) seekEl.value = t;
-
             updateClock(uid, t, d);
-
-            // SAVE PROGRESS
             localStorage.setItem('resume_' + videoId, t);
-
-            // TRACK COMPLETION (90%)
-            if (d > 0 && t > (d * 0.9)) {
-                localStorage.setItem('completed_' + videoId, 'true');
-            }
+            if (d > 0 && t > (d * 0.9)) localStorage.setItem('completed_' + videoId, 'true');
         }, 1000);
     } else {
         if (players[uid].timer) clearInterval(players[uid].timer);
@@ -575,6 +569,7 @@ function onStateChange(e, uid) {
         // --- NEW OVERLAY VISIBILITY LOGIC (PAUSE) ---
         const overlay = document.getElementById(`overlay-${uid}`);
         if (overlay) {
+            console.log(`Showing overlay for ${uid} (state: ${e.data})`);
             if (players[uid].hideTimeout) clearTimeout(players[uid].hideTimeout);
             overlay.classList.remove('hide-overlay');
         }
