@@ -465,7 +465,7 @@ function renderVideoCard(container, video, index) {
     card.innerHTML = `
         <div class="video-wrapper">
             <div id="${uid}"></div>
-            <div class="video-branding-overlay">
+            <div class="video-branding-overlay" id="overlay-${uid}">
                 <i class="fas fa-heartbeat"></i>
                 <span>MBBS World</span>
             </div>
@@ -541,6 +541,15 @@ function onStateChange(e, uid) {
         updatePlayPauseIcon(uid, true);
         e.target.setPlaybackQuality('hd720');
 
+        // --- NEW OVERLAY VISIBILITY LOGIC ---
+        const overlay = document.getElementById(`overlay-${uid}`);
+        if (overlay) {
+            if (players[uid].hideTimeout) clearTimeout(players[uid].hideTimeout);
+            players[uid].hideTimeout = setTimeout(() => {
+                overlay.classList.add('hide-overlay');
+            }, 3000);
+        }
+
         if (players[uid].timer) clearInterval(players[uid].timer);
         players[uid].timer = setInterval(() => {
             const t = e.target.getCurrentTime();
@@ -562,6 +571,13 @@ function onStateChange(e, uid) {
     } else {
         if (players[uid].timer) clearInterval(players[uid].timer);
         updatePlayPauseIcon(uid, false);
+
+        // --- NEW OVERLAY VISIBILITY LOGIC (PAUSE) ---
+        const overlay = document.getElementById(`overlay-${uid}`);
+        if (overlay) {
+            if (players[uid].hideTimeout) clearTimeout(players[uid].hideTimeout);
+            overlay.classList.remove('hide-overlay');
+        }
     }
 }
 
