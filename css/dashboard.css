@@ -654,6 +654,13 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             animation: fadeInOverlay 0.5s ease forwards;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .video-branding-overlay.hide-overlay {
+            opacity: 0;
+            transform: translateY(-5px);
+            pointer-events: none;
         }
 
         .video-branding-overlay i {
@@ -677,12 +684,14 @@
         /* Adjustments for smaller screens */
         @media (max-width: 600px) {
             .video-branding-overlay {
-                padding: 6px 10px;
+                padding: 6px 12px;
                 top: 8px;
                 left: 8px;
+                min-width: 160px; /* Ensure coverage of channel name in portrait */
+                justify-content: center;
             }
             .video-branding-overlay span {
-                font-size: 0.75rem;
+                font-size: 0.8rem;
             }
             .video-branding-overlay i {
                 font-size: 0.9rem;
