@@ -156,6 +156,52 @@
             gap: 12px;
         }
 
+        /* --- DOWNLOAD APP BUTTON --- */
+        .download-app-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white !important;
+            padding: 8px 16px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 119, 182, 0.2);
+            white-space: nowrap;
+            border: none;
+        }
+
+        .download-app-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 119, 182, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .download-app-btn i {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .download-app-btn span {
+                display: none;
+            }
+            .download-app-btn {
+                padding: 0;
+                width: 40px;
+                height: 40px;
+                justify-content: center;
+                border-radius: 50%;
+                gap: 0;
+            }
+            .download-app-btn i {
+                font-size: 1.1rem;
+            }
+        }
+
         .search-toggle-btn {
             width: 42px;
             height: 42px;
