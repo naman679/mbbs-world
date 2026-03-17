@@ -465,6 +465,10 @@ function renderVideoCard(container, video, index) {
     card.innerHTML = `
         <div class="video-wrapper">
             <div id="${uid}"></div>
+            <div class="video-branding-overlay">
+                <i class="fas fa-heartbeat"></i>
+                <span>MBBS World</span>
+            </div>
             <div class="glass-shield"></div>
         </div>
         <div class="custom-controls" style="z-index: 99;">
