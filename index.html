@@ -93,7 +93,29 @@
 
         errorDiv.style.display = 'none';
         loginBtn.disabled = true;
-        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying...';
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying Student...';
+
+        // --- NEW: Check Google Sheet Whitelist FIRST ---
+        try {
+            const sheetResponse = await fetch(`https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec?name=${encodeURIComponent(userName)}`);
+            const sheetData = await sheetResponse.json();
+
+            if (!sheetData.allowed) {
+                errorDiv.style.display = 'block';
+                errorDiv.innerText = "Access Denied! You are not on the allowed student list.";
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+                return; // STOP HERE! Do not write to Firebase.
+            }
+        } catch (error) {
+            console.error("Whitelist check failed:", error);
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = "Verification Error. Try again later.";
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+            return;
+        }
+        // -----------------------------------------------
 
         let currentDeviceId = localStorage.getItem('mbbs_device_id');
         if (!currentDeviceId) {
