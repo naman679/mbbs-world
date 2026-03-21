@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBBS Portal - Student Login</title>
+    <meta name="description"
+        content="Secure login portal for MBBS World students. Access premium medical video lectures, notes, and question banks.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/login.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4359263469597920"
+     crossorigin="anonymous"></script>
+</head>
+
+<body oncontextmenu="return false;">
+    <div id="security-overlay"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; color:#fff; z-index:999999; display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+        <h1 style="font-size:3rem; margin-bottom:20px;">⚠️ Security Mode Active</h1>
+        <p style="font-size:1.2rem;">Content Hidden. Return to the active window to continue studying.</p>
+    </div>
+
+    <div class="login-container">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <i class="fas fa-user-md"></i>
+            </div>
+            <h2>MBBS World</h2>
+            <p>Student Portal Login</p>
+        </div>
+
+        <div class="login-form">
+            <label for="student-name" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);">Full Name</label>
+            <input type="text" id="student-name" class="login-input" placeholder="Enter your full name"
+                autocomplete="name" aria-label="Enter your full name">
+            <button id="login-submit-btn" class="login-btn">
+                <i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i>
+                Access Portal
+            </button>
+        </div>
+
+        <div id="error-message" style="color: #ff4d4d; margin-top: 15px; font-size: 0.9rem; text-align: center;"></div>
+
+        <div class="footer-text">
+            Secure Access &bull; Verified Students Only
+        </div>
+    </div>
+
+    <script src="js/login.js?v=2"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
+        authDomain: "samvad-bafaa.firebaseapp.com",
+        projectId: "samvad-bafaa",
+        storageBucket: "samvad-bafaa.appspot.com",
+        messagingSenderId: "131803431466",
+        appId: "1:131803431466:web:b7b107308ea7197f013953",
+        measurementId: "G-M90SYY2MP9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // 1. AUTO-LOGIN CHECK
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedUser = localStorage.getItem('mbbs_saved_user');
+        const savedId = localStorage.getItem('mbbs_device_id');
+        if (savedUser && savedId) {
+            sessionStorage.setItem('mbbs_user', savedUser); // Sync memory
+            window.location.replace("dashboard.html");
+        }
+    });
+
+    const loginBtn = document.getElementById('login-submit-btn');
+    const nameInput = document.getElementById('student-name');
+    const errorDiv = document.getElementById('error-message');
+
+    loginBtn.addEventListener('click', async () => {
+        // Sanitize name so Firebase doesn't crash on special characters
+        const rawName = nameInput.value.trim().toLowerCase();
+        const userName = rawName.replace(/[.#$\[\]]/g, '_'); 
+        
+        if (!userName) {
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = "Please enter your name.";
+            return;
+        }
+
+        errorDiv.style.display = 'none';
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying Student...';
+
+        // --- NEW: Check Google Sheet Whitelist FIRST ---
+        try {
+            const sheetResponse = await fetch(`https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec?name=${encodeURIComponent(userName)}`);
+            const sheetData = await sheetResponse.json();
+
+            if (!sheetData.allowed) {
+                errorDiv.style.display = 'block';
+                errorDiv.innerText = "Access Denied! You are not on the allowed student list.";
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+                return; // STOP HERE! Do not write to Firebase.
+            }
+        } catch (error) {
+            console.error("Whitelist check failed:", error);
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = "Verification Error. Try again later.";
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+            return;
+        }
+        // -----------------------------------------------
+
+        let currentDeviceId = localStorage.getItem('mbbs_device_id');
+        if (!currentDeviceId) {
+            currentDeviceId = 'ID_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('mbbs_device_id', currentDeviceId);
+        }
+
+        const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
+        const slotName = isInsideApp ? "app_id" : "web_id";
+        const userRef = ref(database, 'users/' + userName);
+
+        try {
+            const snapshot = await get(userRef);
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                const savedSlotId = userData[slotName];
+
+                if (!savedSlotId || savedSlotId === currentDeviceId) {
+                    await update(userRef, { [slotName]: currentDeviceId });
+                    finalizeLogin(userName);
+                } else {
+                    errorDiv.style.display = 'block';
+                    errorDiv.innerText = "Access Denied! Account linked to another device.";
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+                }
+            } else {
+                await set(userRef, {
+                    name: userName,
+                    [slotName]: currentDeviceId,
+                    created_at: new Date().toISOString()
+                });
+                finalizeLogin(userName);
+            }
+        } catch (error) {
+            console.error(error);
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = "Database Error. Check your internet.";
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+        }
+    });
+
+    function finalizeLogin(name) {
+        localStorage.setItem('mbbs_saved_user', name);
+        sessionStorage.setItem('mbbs_user', name); // Crucial for stopping the loop
+        setTimeout(() => {
+            window.location.replace("dashboard.html");
+        }, 150);
+    }
+</script>
+</body>
+</html>
