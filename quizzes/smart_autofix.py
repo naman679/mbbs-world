@@ -10,7 +10,7 @@ except ImportError:
     exit()
 
 # 1. Insert your free API Key here
-API_KEY = "AIzaSyDz9Fbr7XgDuXgxNAsWL7iciJcC-IXD5TQ" 
+ 
 genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel('gemini-pro')
 ddgs = DDGS()
