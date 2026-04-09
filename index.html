@@ -96,14 +96,19 @@
         loginBtn.disabled = true;
         loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying...';
 
-        let currentDeviceId = localStorage.getItem('mbbs_device_id');
-        if (!currentDeviceId) {
-            currentDeviceId = 'ID_' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('mbbs_device_id', currentDeviceId);
-        }
+        let currentDeviceId;
+        let slotName = 'web_id';
 
-        const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
-        const slotName = isInsideApp ? "app_id" : "web_id";
+        if (typeof AndroidApp !== 'undefined' && AndroidApp.getDeviceId) {
+            currentDeviceId = AndroidApp.getDeviceId();
+            slotName = 'app_id';
+        } else {
+            currentDeviceId = localStorage.getItem('mbbs_device_id');
+            if (!currentDeviceId) {
+                currentDeviceId = 'web_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('mbbs_device_id', currentDeviceId);
+            }
+        }
         const userRef = ref(database, 'users/' + userName);
 
         try {
