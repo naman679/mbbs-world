@@ -174,7 +174,26 @@ function handleInternalBack() {
 }
 
 window.goBack = () => { if (navHistory.length === 0) showMainMenu(); else history.back(); };
-window.addEventListener('popstate', (e) => { if (navHistory.length > 0) handleInternalBack(); });
+window.isFullscreenState = false;
+window.ignoreNextPopState = false;
+
+window.addEventListener('popstate', (e) => { 
+    if (window.ignoreNextPopState) {
+        window.ignoreNextPopState = false;
+        return;
+    }
+    
+    if (window.isFullscreenState) {
+        window.isFullscreenState = false;
+        let ext = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        if (ext && (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement)) { 
+            ext.call(document); 
+        }
+        return;
+    }
+
+    if (navHistory.length > 0) handleInternalBack(); 
+});
 
 
 function injectWatermark() {
@@ -652,6 +671,8 @@ window.toggleFullScreen = (btn) => {
     if (!isFullscreen) {
         let req = c.requestFullscreen || c.webkitRequestFullscreen || c.mozRequestFullScreen || c.msRequestFullscreen;
         if (req) {
+            window.isFullscreenState = true;
+            history.pushState({ isFullscreenTrap: true }, '');
             let promise = req.call(c);
             if (promise && promise.then) {
                 promise.then(() => {
@@ -699,6 +720,12 @@ function handleExitFullscreen() {
                 screen.msUnlockOrientation();
             }
         } catch(e) { console.log('Unlock error:', e); }
+        
+        if (window.isFullscreenState) {
+            window.isFullscreenState = false;
+            window.ignoreNextPopState = true;
+            history.back();
+        }
     }
 }
 
