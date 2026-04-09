@@ -82,24 +82,21 @@ function switchPhase(phase) {
 function updatePhaseUI() {
     const cfg = phaseConfig[currentPhase];
 
-    // Update label, hint, and placeholder
-    phaseLabel.textContent = cfg.label;
-    phaseHint.textContent  = cfg.hint;
-    phaseHint.className    = 'phase-hint ' + cfg.hintClass;
-    chatInput.placeholder  = cfg.placeholder;
+    // Update Top Header Title
+    document.getElementById('phaseLabel').textContent = cfg.label;
+    
+    // Update input placeholder
+    chatInput.placeholder = cfg.placeholder;
 
-    // Update buttons (Make them act like free-roaming tabs, no linear lock)
-    document.querySelectorAll('.phase-step').forEach(btn => {
-        btn.classList.remove('active', 'done');
+    // Update active state on side tabs
+    document.querySelectorAll('.side-tab').forEach(btn => {
+        btn.classList.remove('active');
         if (btn.dataset.phase === currentPhase) {
             btn.classList.add('active');
         }
     });
 
-    // Hide the old linear "Next" button entirely
-    if(nextPhaseBtn) nextPhaseBtn.style.display = 'none';
-
-    // Update Quick Chips
+    // Update Quick Chips at the bottom
     quickChips.innerHTML = '';
     cfg.chips.forEach(text => {
         const btn = document.createElement('button');
