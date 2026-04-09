@@ -457,11 +457,38 @@ function renderItems() {
     const container = document.getElementById('quiz-list-container'); if (!container) return;
     const data = mbbsData[currentSubject]; if (!data) return;
     let items = currentView === 'notes' ? data.notes : currentView === 'quizzes' ? data.quizzes : data.qbank.filter(i => i.platform === currentPlatform);
+    const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
+
     items.forEach((item) => {
-        const card = document.createElement('div'); card.className = `chapter-card ${item.isPremium ? 'is-premium' : ''}`;
+        const card = document.createElement('div');
         const isQuiz = item.Type && item.Type.includes('quiz');
-        card.onclick = () => { logStudentActivity(currentSubject, item.title); isQuiz ? openQuiz(item.link) : openFile(item.link); };
-        card.innerHTML = `<div class="chapter-icon"><i class="fas ${isQuiz ? 'fa-lightbulb' : 'fa-file-pdf'}"></i></div><div style="flex-grow:1; font-weight:500;">${item.title}</div>`;
+        let isCompleted = false;
+
+        if (isQuiz) {
+            isCompleted = localStorage.getItem('completed_quiz_' + currentUser + '_' + item.title) === 'true';
+        }
+
+        card.className = `chapter-card ${item.isPremium ? 'is-premium' : ''}`;
+        
+        if (isCompleted) {
+            card.style.backgroundColor = '#d1fae5';
+            card.style.borderColor = '#10b981';
+        }
+
+        card.onclick = () => { 
+            logStudentActivity(currentSubject, item.title); 
+            if (isQuiz) {
+                localStorage.setItem('completed_quiz_' + currentUser + '_' + item.title, 'true');
+                openQuiz(item.link); 
+            } else {
+                openFile(item.link);
+            }
+        };
+        
+        const checkIcon = isCompleted ? '<i class="fas fa-check-circle" style="color:#059669; margin-left:10px; font-size:1.1rem;"></i>' : '';
+        const baseIcon = isQuiz ? 'fa-lightbulb' : 'fa-file-pdf';
+        const iconColor = isCompleted ? 'color:#10b981;' : '';
+        card.innerHTML = `<div class="chapter-icon"><i class="fas ${baseIcon}" style="${iconColor}"></i></div><div style="flex-grow:1; font-weight:500; display:flex; justify-content:space-between; align-items:center;"><span>${item.title}</span> ${checkIcon}</div>`;
         container.appendChild(card);
     });
 }
