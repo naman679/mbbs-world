@@ -23,27 +23,99 @@ const diseaseBank = [
     "Uncomplicated UTI", "Benign Prostatic Hyperplasia (BPH)", "Renal Colic"
 ];
 
+const phaseConfig = {
+    history: { label: "Patient History", placeholder: "Ask the patient a question...", chips: ["Duration of symptoms?", "Past Medical History?", "Any allergies?"] },
+    examination: { label: "Physical Exam", placeholder: "Perform an examination...", chips: ["Inspect general appearance", "Check pallor/icterus", "Auscultate chest", "Palpate abdomen"] },
+    emergency: { label: "Vitals & Stabilize", placeholder: "Check vitals or stabilize...", chips: ["Check Vitals", "Check SpO2", "Give IV fluids", "Give Oxygen"] },
+    investigation: { label: "Investigations", placeholder: "Order a test or scan...", chips: ["CBC", "RFT & LFT", "Chest X-Ray", "ECG", "Urine Routine"] },
+    management: { label: "Prescribe & Plan", placeholder: "Prescribe medication...", chips: ["Give Paracetamol", "Prescribe Antibiotics", "Give Antacid", "Advise bed rest"] },
+    diagnosis: { label: "Handoff & Disposition", placeholder: "State your final diagnosis...", chips: ["My diagnosis is...", "Admit to ward", "Discharge with meds"] }
+};
+
 const chatInput = document.getElementById('chatInput');
 const sendBtn = document.getElementById('sendBtn');
 const chatContainer = document.getElementById('chatContainer');
+const quickChipsDiv = document.getElementById('quickChips');
 
 window.onload = () => {
+    startNewCase();
+    switchPhase('history'); 
+}
+
+async function startNewCase() {
     activeCustomDisease = diseaseBank[Math.floor(Math.random() * diseaseBank.length)];
+    messageHistory = []; 
+    chatContainer.innerHTML = '';
+    
+    appendMessage("system", `🔄 **NEXT PATIENT CALLED!** \n\nA new patient has just walked into your cabin.`);
+    
+    chatInput.disabled = true;
+    sendBtn.disabled = true;
+    const loadingId = appendMessage("ai", "Patient is walking in and sitting down...");
+
+    try {
+        const tempHistory = [{ role: "user", parts: [{ text: "[PATIENT_ENTRY]" }] }];
+        const response = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                messages: tempHistory,
+                customDisease: activeCustomDisease, 
+                phase: currentPhase
+            })
+        });
+
+        const data = await response.json();
+        document.getElementById(loadingId).remove();
+
+        if (data.errorFromGroq) {
+            appendMessage("ai", `System Error: ${data.errorFromGroq}`);
+        } else if (data.candidates && data.candidates.length > 0) {
+            let aiText = data.candidates[0].content.parts[0].text;
+            let formattedText = aiText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            
+            appendMessage("ai", formattedText);
+            messageHistory.push({ role: "user", parts: [{ text: "Hello, please come in and tell me your problem." }] });
+            messageHistory.push({ role: "model", parts: [{ text: aiText }] });
+        }
+    } catch (error) {
+        document.getElementById(loadingId).remove();
+        appendMessage("ai", `Connection Error. Check Cloudflare Worker.`);
+    } finally {
+        chatInput.disabled = false;
+        sendBtn.disabled = false;
+        chatInput.focus();
+    }
 }
 
 function switchPhase(phase) {
     currentPhase = phase;
+    const config = phaseConfig[phase];
     
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
         if (btn.dataset.phase === currentPhase) {
             btn.classList.add('active');
-            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); // Auto-scrolls tabs on mobile
+            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); 
         }
     });
 
-    const labels = { history: "Patient History", examination: "Physical Exam", emergency: "Vitals & Stabilize", investigation: "Investigations", management: "Prescribe & Plan", diagnosis: "Handoff & Disposition" };
-    document.getElementById('phaseLabel').textContent = labels[phase];
+    document.getElementById('phaseLabel').textContent = config.label;
+    chatInput.placeholder = config.placeholder;
+
+    quickChipsDiv.innerHTML = '';
+    if(config.chips) {
+        config.chips.forEach(chipText => {
+            const btn = document.createElement('button');
+            btn.className = 'quick-chip';
+            btn.textContent = chipText;
+            btn.onclick = () => {
+                chatInput.value = chipText;
+                handleSend(); 
+            };
+            quickChipsDiv.appendChild(btn);
+        });
+    }
 }
 
 async function handleSend() {
@@ -52,11 +124,8 @@ async function handleSend() {
 
     const lowerText = text.toLowerCase();
     if (lowerText === "change the case" || lowerText === "change case" || lowerText === "next patient") {
-        activeCustomDisease = diseaseBank[Math.floor(Math.random() * diseaseBank.length)];
-        messageHistory = []; 
-        chatContainer.innerHTML = '';
-        appendMessage("ai", `🔄 **NEXT PATIENT CALLED!** \n\nThe previous patient left the clinic. A new patient has just walked in. What is your first question?`);
         chatInput.value = '';
+        startNewCase(); 
         return; 
     }
 
@@ -99,8 +168,6 @@ async function handleSend() {
     } finally {
         chatInput.disabled = false;
         sendBtn.disabled = false;
-        // Note: We intentionally DO NOT call chatInput.focus() here on mobile, 
-        // otherwise the keyboard will aggressively pop back up after every message.
     }
 }
 
@@ -115,6 +182,10 @@ function appendMessage(sender, text) {
         innerHTML = `<div class="message ai">
                         <div class="ai-header"><i class="fas fa-robot"></i> Sim Engine</div>
                         <div class="ai-content">${text}</div>
+                     </div>`;
+    } else if (sender === 'system') {
+        innerHTML = `<div class="message ai" style="background:#f1f5f9; text-align:center; margin: 0 auto; width: 100%;">
+                        <div class="ai-content" style="color: #64748b; font-size: 0.85rem;">${text}</div>
                      </div>`;
     } else {
         innerHTML = `<div class="message user">${text}</div>`;
@@ -137,6 +208,6 @@ chatInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') { 
         e.preventDefault(); 
         handleSend(); 
-        chatInput.blur(); // Hides keyboard on mobile after pressing Enter
+        chatInput.blur(); 
     }
 });
