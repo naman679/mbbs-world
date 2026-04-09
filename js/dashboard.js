@@ -426,10 +426,20 @@ function renderContent() {
         const data = mbbsData[currentSubject];
         if (selectedChapterIdx === null) {
             const list = document.createElement('div'); list.className = 'chapter-list';
+            const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
             data.videos.forEach((v, idx) => {
                 const item = document.createElement('div'); item.className = 'chapter-card';
+                const videoId = getYoutubeVideoId(v.link);
+                const isWatched = localStorage.getItem('completed_' + currentUser + '_' + videoId) === 'true';
+                
+                if (isWatched) {
+                    item.style.backgroundColor = '#d1fae5';
+                    item.style.borderColor = '#10b981';
+                }
+                
                 item.onclick = () => { logStudentActivity(currentSubject, v.title); pushNavState(); selectedChapterIdx = idx; renderContent(); };
-                item.innerHTML = `<div class="chapter-icon"><i class="fas fa-play"></i></div><div style="flex-grow:1; font-weight:500;">Chapter ${idx + 1}: ${v.title}</div>`;
+                const checkIcon = isWatched ? '<i class="fas fa-check-circle" style="color:#059669; margin-left:10px; font-size:1.1rem;"></i>' : '';
+                item.innerHTML = `<div class="chapter-icon"><i class="fas fa-play" style="${isWatched ? 'color:#10b981;' : ''}"></i></div><div style="flex-grow:1; font-weight:500; display:flex; justify-content:space-between; align-items:center;"><span>Chapter ${idx + 1}: ${v.title}</span> ${checkIcon}</div>`;
                 list.appendChild(item);
             });
             area.appendChild(list);
@@ -518,7 +528,8 @@ function onReady(e, uid) {
     // RESUME LOGIC
     const vidData = e.target.getVideoData();
     const videoId = vidData.video_id;
-    const savedTime = localStorage.getItem('resume_' + videoId);
+    const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
+    const savedTime = localStorage.getItem('resume_' + currentUser + '_' + videoId) || localStorage.getItem('resume_' + videoId);
     if (savedTime) {
         e.target.seekTo(parseFloat(savedTime), true);
     }
@@ -544,8 +555,9 @@ function onStateChange(e, uid) {
             const seekEl = document.getElementById(`seek-${uid}`);
             if (seekEl) seekEl.value = t;
             updateClock(uid, t, d);
-            localStorage.setItem('resume_' + videoId, t);
-            if (d > 0 && t > (d * 0.9)) localStorage.setItem('completed_' + videoId, 'true');
+            const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
+            localStorage.setItem('resume_' + currentUser + '_' + videoId, t);
+            if (d > 0 && t > (d * 0.9)) localStorage.setItem('completed_' + currentUser + '_' + videoId, 'true');
         }, 1000);
     } else {
         if (players[uid].timer) clearInterval(players[uid].timer);
@@ -608,12 +620,65 @@ window.seekBy = (seconds, uid) => {
 
 window.toggleFullScreen = (btn) => {
     const c = btn.closest('.card');
-    if (!document.fullscreenElement) {
-        c.requestFullscreen().then(updateOrientation).catch(e => console.error(e));
+    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+    
+    if (!isFullscreen) {
+        let req = c.requestFullscreen || c.webkitRequestFullscreen || c.mozRequestFullScreen || c.msRequestFullscreen;
+        if (req) {
+            let promise = req.call(c);
+            if (promise && promise.then) {
+                promise.then(() => {
+                    tryLockLandscape();
+                    updateOrientation();
+                }).catch(e => console.error(e));
+            } else {
+                setTimeout(() => {
+                    tryLockLandscape();
+                    updateOrientation();
+                }, 100);
+            }
+        }
     } else {
-        document.exitFullscreen();
+        let ext = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        if (ext) ext.call(document);
     }
 };
+
+function tryLockLandscape() {
+    try {
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('landscape').catch(e => console.log('Ori lock fail:', e));
+        } else if (screen.lockOrientation) {
+            screen.lockOrientation('landscape');
+        } else if (screen.mozLockOrientation) {
+            screen.mozLockOrientation('landscape');
+        } else if (screen.msLockOrientation) {
+            screen.msLockOrientation('landscape');
+        }
+    } catch(e) { console.log('Lock error:', e); }
+}
+
+function handleExitFullscreen() {
+    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+    if (!isFullscreen) {
+        try {
+            if (screen.orientation && screen.orientation.unlock) {
+                screen.orientation.unlock();
+            } else if (screen.unlockOrientation) {
+                screen.unlockOrientation();
+            } else if (screen.mozUnlockOrientation) {
+                screen.mozUnlockOrientation();
+            } else if (screen.msUnlockOrientation) {
+                screen.msUnlockOrientation();
+            }
+        } catch(e) { console.log('Unlock error:', e); }
+    }
+}
+
+document.addEventListener('fullscreenchange', handleExitFullscreen);
+document.addEventListener('webkitfullscreenchange', handleExitFullscreen);
+document.addEventListener('mozfullscreenchange', handleExitFullscreen);
+document.addEventListener('MSFullscreenChange', handleExitFullscreen);
 
 function updateOverlaySpeedButtons() {
     const container = document.getElementById('overlaySpeedRow');
