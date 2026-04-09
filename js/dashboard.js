@@ -497,7 +497,6 @@ function renderItems() {
         card.onclick = () => { 
             logStudentActivity(currentSubject, item.title); 
             if (isQuiz) {
-                localStorage.setItem('completed_quiz_' + currentUser + '_' + item.title, 'true');
                 openQuiz(item.link); 
             } else {
                 openFile(item.link);
@@ -768,3 +767,34 @@ function formatDriveLink(url) {
 window.openQuiz = (url) => { pushNavState(); document.getElementById('fileViewer').src = formatDriveLink(url); document.getElementById('fileModal').style.display = 'block'; document.body.style.overflow = 'hidden'; };
 window.openFile = (urlOrContent) => { pushNavState(); document.getElementById('fileViewer').src = urlOrContent.startsWith('http') ? formatDriveLink(urlOrContent) : urlOrContent; document.getElementById('fileModal').style.display = 'block'; document.body.style.overflow = 'hidden'; };
 window.closeModal = () => { if (navHistory.length > 0) goBack(); else { cleanupIframes(); if (window.uiTimer) clearInterval(window.uiTimer); document.getElementById('fileModal').style.display = 'none'; document.body.style.overflow = 'auto'; } };
+
+window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'quiz_fully_completed') {
+        const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
+        let completedItemTitle = null;
+        for (const subjKey in mbbsData) {
+            for (const item of mbbsData[subjKey].quizzes) {
+                if (item.link.includes(e.data.url_path)) {
+                    completedItemTitle = item.title;
+                    break;
+                }
+            }
+            if (completedItemTitle) break;
+            
+            for (const item of mbbsData[subjKey].qbank) {
+                if (item.link.includes(e.data.url_path)) {
+                    completedItemTitle = item.title;
+                    break;
+                }
+            }
+            if (completedItemTitle) break;
+        }
+        
+        if (completedItemTitle) {
+            localStorage.setItem('completed_quiz_' + currentUser + '_' + completedItemTitle, 'true');
+            if (currentView === 'quizzes' || currentView === 'qbank') {
+                renderContent();
+            }
+        }
+    }
+});
