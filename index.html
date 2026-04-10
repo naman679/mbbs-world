@@ -99,11 +99,14 @@
         let currentDeviceId;
         let slotName = 'web_id';
 
+        // 1. Android App Logic (The fix Antigravity gave you)
         if (window.injectedAppId) {
             currentDeviceId = window.injectedAppId;
             slotName = 'app_id';
-            localStorage.setItem('mbbs_device_id', currentDeviceId);
-        } else {
+            localStorage.setItem('mbbs_device_id', currentDeviceId);  // persist immediately
+        } 
+        // 2. Regular Web Browser Logic (Keep your original fallback)
+        else {
             currentDeviceId = localStorage.getItem('mbbs_device_id');
             if (!currentDeviceId) {
                 currentDeviceId = 'web_' + Math.random().toString(36).substr(2, 9);
