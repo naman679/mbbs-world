@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>MBBS World - OPD Simulator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/daily-case.css"> 
+</head>
+<body>
+    <div class="sim-container">
+        <header class="sim-header">
+            <div class="case-info">
+                <span class="case-badge">OPD Clinic</span>
+                <span class="case-title" id="phaseLabel">Patient History</span>
+            </div>
+            <div class="menu-icon" onclick="resetSimulation()"><i class="fas fa-redo-alt"></i></div>
+        </header>
+
+        <nav class="top-tabs" id="tabNav">
+            <button class="tab-btn active" data-phase="history" onclick="switchPhase('history')">Patient</button>
+            <button class="tab-btn" data-phase="examination" onclick="switchPhase('examination')">Exam</button>
+            <button class="tab-btn emergency" data-phase="emergency" onclick="switchPhase('emergency')">Vitals</button>
+            <button class="tab-btn" data-phase="investigation" onclick="switchPhase('investigation')">Investigations</button>
+            <button class="tab-btn" data-phase="management" onclick="switchPhase('management')">Prescribe</button>
+            <button class="tab-btn" data-phase="diagnosis" onclick="switchPhase('diagnosis')">Handoff</button>
+        </nav>
+
+        <div class="clinical-workspace" id="chatContainer">
+            <div class="message-wrapper ai">
+                <div class="message ai">
+                    <div class="ai-header"><i class="fas fa-clipboard-list"></i> System</div>
+                    <div class="ai-content">
+                        OPD Simulation initialized. A new patient just walked into your cabin. Type your questions, exams, or orders below. <br><br><em>(Hint: Type "change the case" at any time to call the next patient).</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-chips-container" id="quickChips"></div>
+
+        <footer class="input-area">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Ask the patient a question..." autocomplete="off">
+            <button id="sendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </footer>
+    </div>
+    <script src="js/daily-case.js"></script> 
+</body>
+</html>

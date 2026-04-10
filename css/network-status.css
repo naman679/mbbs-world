@@ -1,0 +1,61 @@
+/* Network Status Notification Styling */
+#network-status-notification {
+    position: fixed;
+    top: -100px; /* Hidden by default */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: top 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+#network-status-notification.show {
+    top: 20px;
+}
+
+#network-status-notification .icon {
+    margin-right: 12px;
+    font-size: 1.2rem;
+}
+
+#network-status-notification .message {
+    flex-grow: 1;
+}
+
+#network-status-notification .close-btn {
+    background: none;
+    border: none;
+    color: #856404;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0 5px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+#network-status-notification .close-btn:hover {
+    opacity: 1;
+}
+
+/* For Offline status (High contrast) */
+#network-status-notification.offline {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+
+#network-status-notification.offline .close-btn {
+    color: #721c24;
+}

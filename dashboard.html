@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>MBBS World - Medical Education Resource & Study Portal</title>
+    <meta name="description"
+        content="Access high-quality MBBS notes, video lectures, and medical question banks. Specialized resources for Anatomy, Physiology, Pathology, and more to help medical students excel in university exams.">
+    <meta name="keywords"
+        content="MBBS World, Medical Education, MBBS notes, Medical Question Bank, Physiology resources, Anatomy study material, Medical students portal">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/dashboard.css?v=20240317_v3">
+    <link rel="stylesheet" href="css/network-status.css">
+    <style>
+        /* Special Styling for the Live Game Card */
+        .live-quiz-card {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .live-quiz-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+        .live-quiz-card.tutor-card {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+            margin-top: 5px;
+        }
+        .live-quiz-card.tutor-card:hover {
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+        }
+        .live-quiz-info h3 { margin: 0; font-size: 1.2rem; }
+        .live-quiz-info p { margin: 5px 0 0; opacity: 0.9; font-size: 0.9rem; }
+        .live-quiz-icon { font-size: 2rem; opacity: 0.8; }
+    </style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4359263469597920"
+     crossorigin="anonymous"></script>
+</head>
+
+<body oncontextmenu="return false;">
+    
+    <script>
+        (function() {
+            const savedUser = localStorage.getItem('mbbs_saved_user');
+            const savedId = localStorage.getItem('mbbs_device_id');
+
+            // If data is missing, stop everything and go back to login instantly
+            if (!savedUser || !savedId) {
+                console.warn("No active session found. Redirecting to login...");
+                window.location.replace("index.html");
+                return;
+            }
+
+            // Pre-fill UI names to prevent blank headers during loading
+            window.addEventListener('DOMContentLoaded', () => {
+                const nameDisplay = document.getElementById('userName');
+                const modalName = document.getElementById('welcomeNameModal');
+                
+                if (nameDisplay) nameDisplay.innerText = savedUser.toUpperCase();
+                if (modalName) modalName.innerText = savedUser.toUpperCase();
+            });
+        })();
+    </script>
+
+    <div id="main-content">
+        <div id="landscapeOverlay" class="video-controls-overlay">
+            <button class="overlay-back" onclick="exitLandscape()"><i class="fas fa-arrow-left"></i> Back</button>
+            <div class="speed-row-overlay" id="overlaySpeedRow">
+                </div>
+        </div>
+
+        <nav class="navbar">
+            <div class="navbar-top">
+                <div class="nav-brand" onclick="navigate('home')">
+                    <i class="fas fa-heartbeat" style="color:#ef4444"></i> MBBS World
+                </div>
+                <div class="nav-actions">
+                    <a href="https://drive.google.com/uc?export=download&id=1js3B6E_ZAhR6sgAejMgkeulqweRzq9xX" 
+                       class="download-app-btn" 
+                       download 
+                       title="Download App"
+                       aria-label="Download App">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Get App</span>
+                    </a>
+                    <button class="search-toggle-btn" onclick="toggleSearch()" title="Search"
+                        aria-label="Toggle Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="search-toggle-btn theme-toggle" onclick="toggleTheme()" title="Theme"
+                        aria-label="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div id="userProfileBtn" onclick="openProfile()" title="View Activity Profile">
+                        <span id="userName"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-container" id="searchBar">
+                <div class="search-bar-wrapper">
+                    <i class="fas fa-search"></i>
+                    <label for="globalSearch"
+                        style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);">Search
+                        subjects</label>
+                    <input type="text" id="globalSearch" placeholder="Search subjects or topics..."
+                        onkeyup="handleSearch()" aria-label="Search subjects or topics">
+                    <i class="fas fa-times-circle" id="clearSearch" onclick="clearSearch()" title="Clear search"
+                        aria-label="Clear Search Input" role="button" tabindex="0"></i>
+                </div>
+            </div>
+
+            <div class="main-nav" id="mainNav">
+                <a href="javascript:void(0)" class="nav-link active" id="nav-home" onclick="navigate('home')"><i
+                        class="fas fa-house-medical"></i> Home</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-videos" onclick="navigate('videos')"><i
+                        class="fas fa-stethoscope"></i> Videos</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-notes" onclick="navigate('notes')"><i
+                        class="fas fa-clipboard-list"></i> Notes</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')"><i
+                        class="fas fa-microscope"></i> Quizzes</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i
+                        class="fas fa-dna"></i>
+                    Q-Bank</a>
+            </div>
+        </nav>
+
+
+        <div id="watermark-container"></div>
+
+        <a href="live-game.html" class="live-quiz-card">
+            <div class="live-quiz-info">
+                <h3>🎮 Live Multiplayer Quiz</h3>
+                <p>Challenge your batchmates in real-time!</p>
+            </div>
+            <div class="live-quiz-icon">
+                <i class="fas fa-users"></i>
+            </div>
+        </a>
+
+        <a href="daily-case.html" class="live-quiz-card tutor-card">
+            <div class="live-quiz-info">
+                <h3>🩺 The Daily Case: AI Tutor</h3>
+                <p>Practice clinical diagnosis with our AI patient.</p>
+            </div>
+            <div class="live-quiz-icon">
+                <i class="fas fa-robot"></i>
+            </div>
+        </a>
+
+        <div class="container">
+            <div id="contentArea">
+                </div>
+            <div id="noResults" class="no-results">
+                <i class="fas fa-search-minus"></i>
+                <p>No results found for your search.</p>
+            </div>
+        </div>
+
+        <footer class="portal-footer">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="javascript:void(0)" onclick="showTrustPage('about')">About Us</a>
+                    <a href="javascript:void(0)" onclick="showTrustPage('privacy')">Privacy Policy</a>
+                    <a href="javascript:void(0)" onclick="showTrustPage('terms')">Terms of Service</a>
+                    <a href="javascript:void(0)" onclick="showTrustPage('disclaimer')">Medical Disclaimer</a>
+                    <a href="javascript:void(0)" onclick="showTrustPage('contact')">Contact Us</a>
+                </div>
+                <div class="footer-copy">
+                    &copy; 2026 MBBS World. Built for medical students, by medical students.
+                </div>
+            </div>
+        </footer>
+
+        <div id="trustArea" class="trust-section"></div>
+    </div> 
+    
+    <div id="welcomeModal">
+        <div class="welcome-modal-container">
+            <div class="close-welcome" onclick="closeWelcomeModal()">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="ecg-container" style="margin-bottom: 1.5rem;">
+                <svg width="100%" height="30" viewBox="0 0 1000 30" preserveAspectRatio="none">
+                    <polyline class="ecg-line"
+                        points="0,15 100,15 110,5 120,25 130,15 200,15 210,5 220,25 230,15 300,15 310,5 320,25 330,15 400,15 410,5 420,25 430,15 500,15 510,5 520,25 530,15 600,15 610,5 620,25 630,15 700,15 710,5 720,25 730,15 800,15 810,5 820,25 830,15 900,15 910,5 920,25 930,15 1000,15" />
+                </svg>
+            </div>
+            <h1 style="color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800;">
+                Welcome, <span id="welcomeNameModal">Student</span>!
+            </h1>
+            <p style="color: var(--text-light); font-size: 1.1rem; line-height: 1.6; margin-bottom: 1rem;">
+                Enjoy free, premium Telegram content—now organized in one place for easier studying.
+            </p>
+            <button class="start-studying-btn" onclick="closeWelcomeModal()">
+                Start Studying
+            </button>
+        </div>
+    </div>
+
+    <div id="fileModal" class="modal">
+        <div class="modal-content">
+            <section id="pdfLoader" class="pdf-loader" aria-live="polite">
+                <div class="spinner"></div>
+                <header>
+                    <p style="color: white; font-size: 0.8rem; opacity: 0.7;">Launching Viewer...</p>
+                </header>
+            </section>
+            <button class="fullscreen-modal" onclick="togglePdfFullScreen()" title="Toggle Full Screen"
+                style="right: 110px;" aria-label="Toggle Full Screen">
+                <i class="fas fa-expand"></i>
+            </button>
+            <button class="fullscreen-modal" id="focusToggle" onclick="toggleFocusMode()" title="Toggle Focus Mode"
+                style="right: 60px;" aria-label="Toggle Focus Mode">
+                <i class="fas fa-eye"></i>
+            </button>
+            <button class="close-modal" onclick="closeModal()" title="Close" aria-label="Close Modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <iframe id="fileViewer" style="width:100%; height:100%; border:none;" src="" allow="autoplay"
+                referrerpolicy="no-referrer"
+                sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-modals"
+                onload="document.getElementById('pdfLoader').style.display='none'; this.focus();"></iframe>
+        </div>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="js/dashboard.js?v=20240317_v3"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
+        import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
+            authDomain: "samvad-bafaa.firebaseapp.com",
+            databaseURL: "https://samvad-bafaa-default-rtdb.firebaseio.com",
+            projectId: "samvad-bafaa",
+            storageBucket: "samvad-bafaa.appspot.com",
+            messagingSenderId: "131803431466",
+            appId: "1:131803431466:web:b7b107308ea7197f013953",
+            measurementId: "G-M90SYY2MP9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        
+        window.db = getDatabase(app);
+        window.dbRef = ref;
+        window.dbSet = set;
+        window.dbGet = get;
+        window.dbOnValue = onValue;
+        window.dbUpdate = update;
+    </script>
+    <script src="js/network-status.js"></script>
+</body>
+</html>
