@@ -99,9 +99,10 @@
         let currentDeviceId;
         let slotName = 'web_id';
 
-        if (typeof AndroidApp !== 'undefined' && AndroidApp.getDeviceId) {
-            currentDeviceId = AndroidApp.getDeviceId();
+        if (window.injectedAppId) {
+            currentDeviceId = window.injectedAppId;
             slotName = 'app_id';
+            localStorage.setItem('mbbs_device_id', currentDeviceId);
         } else {
             currentDeviceId = localStorage.getItem('mbbs_device_id');
             if (!currentDeviceId) {
