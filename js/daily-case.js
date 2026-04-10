@@ -43,7 +43,31 @@ window.onload = () => {
 }
 
 async function startNewCase() {
-    activeCustomDisease = diseaseBank[Math.floor(Math.random() * diseaseBank.length)];
+    // --- NON-REPEATING WHITELIST LOGIC ---
+    
+    // 1. Fetch completed diseases from Local Storage (or DB later)
+    let completedDiseases = JSON.parse(localStorage.getItem('mbbs_completed_cases')) || [];
+    
+    // 2. Filter the master bank to only show diseases the user HAS NOT done
+    let availableDiseases = diseaseBank.filter(disease => !completedDiseases.includes(disease));
+    
+    // 3. Handle the scenario where the user has completed all 70+ cases
+    if (availableDiseases.length === 0) {
+        alert("Awesome job! You have completed all available clinical cases. We will reset your progress so you can practice again.");
+        completedDiseases = []; // Reset the list
+        localStorage.setItem('mbbs_completed_cases', JSON.stringify(completedDiseases));
+        availableDiseases = [...diseaseBank]; // Refill available diseases
+    }
+    
+    // 4. Select a random disease from the AVAILABLE list
+    activeCustomDisease = availableDiseases[Math.floor(Math.random() * availableDiseases.length)];
+    
+    // 5. Save this new disease to completed list so it doesn't repeat next time
+    completedDiseases.push(activeCustomDisease);
+    localStorage.setItem('mbbs_completed_cases', JSON.stringify(completedDiseases));
+    
+    // --------------------------------------
+
     messageHistory = []; 
     chatContainer.innerHTML = '';
     
@@ -60,7 +84,7 @@ async function startNewCase() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 messages: tempHistory,
-                customDisease: activeCustomDisease, 
+                customDisease: activeCustomDisease, // Sends the unique disease to Cloudflare
                 phase: currentPhase
             })
         });
@@ -79,7 +103,7 @@ async function startNewCase() {
             messageHistory.push({ role: "model", parts: [{ text: aiText }] });
         }
     } catch (error) {
-        document.getElementById(loadingId).remove();
+        if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
         appendMessage("ai", `Connection Error. Check Cloudflare Worker.`);
     } finally {
         chatInput.disabled = false;
