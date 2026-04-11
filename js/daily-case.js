@@ -59,8 +59,11 @@ async function startNewCase() {
         availableDiseases = [...diseaseBank]; // Refill available diseases
     }
     
-    // 4. Select a random disease from the AVAILABLE list
+    // Select a random disease from the AVAILABLE list
     activeCustomDisease = availableDiseases[Math.floor(Math.random() * availableDiseases.length)];
+    
+    // Log Activity to Google Sheet
+    logStudentActivity("Daily Case", activeCustomDisease);
     
     // 5. Save this new disease to completed list so it doesn't repeat next time
     completedDiseases.push(activeCustomDisease);
@@ -110,6 +113,15 @@ async function startNewCase() {
         sendBtn.disabled = false;
         chatInput.focus();
     }
+}
+
+// Activity Logging to Google Sheet
+function logStudentActivity(subject, title) {
+    const userName = sessionStorage.getItem('mbbs_user');
+    if (!userName || !subject || !title) return;
+    fetch("https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec", {
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userName, subject, title })
+    }).catch(e => console.error(e));
 }
 
 function switchPhase(phase) {
