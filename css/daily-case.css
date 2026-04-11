@@ -17,8 +17,15 @@ body {
     background: #000; 
     display: flex;
     justify-content: center;
+    /* Use 100vh as a fallback, but rely on fixed positioning for mobile */
+    height: 100vh; 
     height: 100dvh; 
     overflow: hidden;
+    position: fixed; /* This prevents the entire body from scrolling up */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .sim-container {
@@ -29,6 +36,8 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    /* Ensure it doesn't overflow the fixed body */
+    overflow: hidden; 
 }
 
 .sim-header {
