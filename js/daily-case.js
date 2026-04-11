@@ -1,25 +1,25 @@
 // ==========================================
 // 🚨 IMPORTANT: Paste Cloudflare Worker URL here after generation!
 // ==========================================
-const WORKER_URL = "https://mbbs-world-tutor.namanjain5359v.workers.dev"; 
+const WORKER_URL = "https://mbbs-world-tutor.namanjain5359v.workers.dev";
 
 let currentPhase = "history";
-let messageHistory = []; 
-let activeCustomDisease = ""; 
+let messageHistory = [];
+let activeCustomDisease = "";
 
 const diseaseBank = [
     "Viral Fever", "Dengue Fever", "Typhoid Fever", "Malaria", "Chikungunya", "Pulmonary Tuberculosis", "Amoebic Dysentery", "Acute Gastroenteritis", "Food Poisoning",
-    "Upper Respiratory Tract Infection (URTI)", "Acute Bronchitis", "Allergic Rhinitis", "Bronchial Asthma", "COPD Exacerbation", "Community Acquired Pneumonia", 
-    "GERD", "Peptic Ulcer Disease", "Irritable Bowel Syndrome", "Chronic Constipation", "Hemorrhoids", "Anal Fissure", 
-    "Essential Hypertension", "Stable Angina", "Congestive Heart Failure (Mild)", 
-    "Type 2 Diabetes Mellitus", "Hypothyroidism", "Hyperthyroidism", "Dyslipidemia", "Gout", 
+    "Upper Respiratory Tract Infection (URTI)", "Acute Bronchitis", "Allergic Rhinitis", "Bronchial Asthma", "COPD Exacerbation", "Community Acquired Pneumonia",
+    "GERD", "Peptic Ulcer Disease", "Irritable Bowel Syndrome", "Chronic Constipation", "Hemorrhoids", "Anal Fissure",
+    "Essential Hypertension", "Stable Angina", "Congestive Heart Failure (Mild)",
+    "Type 2 Diabetes Mellitus", "Hypothyroidism", "Hyperthyroidism", "Dyslipidemia", "Gout",
     "Osteoarthritis (Knee)", "Rheumatoid Arthritis", "Mechanical Low Back Pain", "Cervical Spondylosis", "Plantar Fasciitis",
     "Tinea Corporis (Ringworm)", "Scabies", "Acne Vulgaris", "Atopic Dermatitis", "Psoriasis", "Urticaria", "Cellulitis",
     "Acute Otitis Media", "Acute Sinusitis", "Acute Pharyngitis", "Acute Tonsillitis", "Impacted Cerumen",
     "Viral Conjunctivitis", "Bacterial Conjunctivitis", "Allergic Conjunctivitis", "Hordeolum (Stye)",
     "Generalized Anxiety Disorder", "Mild Depressive Episode", "Tension-type Headache", "Migraine without aura",
-    "Hand Foot and Mouth Disease", "Varicella (Chickenpox)", "Measles", "Mumps", 
-    "Vulvovaginal Candidiasis", "Polycystic Ovarian Syndrome (PCOS)", "Primary Dysmenorrhea", "Pelvic Inflammatory Disease", 
+    "Hand Foot and Mouth Disease", "Varicella (Chickenpox)", "Measles", "Mumps",
+    "Vulvovaginal Candidiasis", "Polycystic Ovarian Syndrome (PCOS)", "Primary Dysmenorrhea", "Pelvic Inflammatory Disease",
     "Uncomplicated UTI", "Benign Prostatic Hyperplasia (BPH)", "Renal Colic"
 ];
 
@@ -39,18 +39,18 @@ const quickChipsDiv = document.getElementById('quickChips');
 
 window.onload = () => {
     startNewCase();
-    switchPhase('history'); 
+    switchPhase('history');
 }
 
 async function startNewCase() {
     // --- NON-REPEATING WHITELIST LOGIC ---
-    
+
     // 1. Fetch completed diseases from Local Storage (or DB later)
     let completedDiseases = JSON.parse(localStorage.getItem('mbbs_completed_cases')) || [];
-    
+
     // 2. Filter the master bank to only show diseases the user HAS NOT done
     let availableDiseases = diseaseBank.filter(disease => !completedDiseases.includes(disease));
-    
+
     // 3. Handle the scenario where the user has completed all 70+ cases
     if (availableDiseases.length === 0) {
         alert("Awesome job! You have completed all available clinical cases. We will reset your progress so you can practice again.");
@@ -58,24 +58,24 @@ async function startNewCase() {
         localStorage.setItem('mbbs_completed_cases', JSON.stringify(completedDiseases));
         availableDiseases = [...diseaseBank]; // Refill available diseases
     }
-    
+
     // Select a random disease from the AVAILABLE list
     activeCustomDisease = availableDiseases[Math.floor(Math.random() * availableDiseases.length)];
-    
+
     // Log Activity to Google Sheet
     logStudentActivity("Daily Case", activeCustomDisease);
-    
+
     // 5. Save this new disease to completed list so it doesn't repeat next time
     completedDiseases.push(activeCustomDisease);
     localStorage.setItem('mbbs_completed_cases', JSON.stringify(completedDiseases));
-    
+
     // --------------------------------------
 
-    messageHistory = []; 
+    messageHistory = [];
     chatContainer.innerHTML = '';
-    
+
     appendMessage("system", `🔄 **NEXT PATIENT CALLED!** \n\nA new patient has just walked into your cabin.`);
-    
+
     chatInput.disabled = true;
     sendBtn.disabled = true;
     const loadingId = appendMessage("ai", "Patient is walking in and sitting down...");
@@ -100,13 +100,13 @@ async function startNewCase() {
         } else if (data.candidates && data.candidates.length > 0) {
             let aiText = data.candidates[0].content.parts[0].text;
             let formattedText = aiText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            
+
             appendMessage("ai", formattedText);
             messageHistory.push({ role: "user", parts: [{ text: "Hello, please come in and tell me your problem." }] });
             messageHistory.push({ role: "model", parts: [{ text: aiText }] });
         }
     } catch (error) {
-        if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+        if (document.getElementById(loadingId)) document.getElementById(loadingId).remove();
         appendMessage("ai", `Connection Error. Check Cloudflare Worker.`);
     } finally {
         chatInput.disabled = false;
@@ -127,12 +127,12 @@ function logStudentActivity(subject, title) {
 function switchPhase(phase) {
     currentPhase = phase;
     const config = phaseConfig[phase];
-    
+
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
         if (btn.dataset.phase === currentPhase) {
             btn.classList.add('active');
-            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); 
+            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
     });
 
@@ -140,14 +140,14 @@ function switchPhase(phase) {
     chatInput.placeholder = config.placeholder;
 
     quickChipsDiv.innerHTML = '';
-    if(config.chips) {
+    if (config.chips) {
         config.chips.forEach(chipText => {
             const btn = document.createElement('button');
             btn.className = 'quick-chip';
             btn.textContent = chipText;
             btn.onclick = () => {
                 chatInput.value = chipText;
-                handleSend(); 
+                handleSend();
             };
             quickChipsDiv.appendChild(btn);
         });
@@ -161,13 +161,13 @@ async function handleSend() {
     const lowerText = text.toLowerCase();
     if (lowerText === "change the case" || lowerText === "change case" || lowerText === "next patient") {
         chatInput.value = '';
-        startNewCase(); 
-        return; 
+        startNewCase();
+        return;
     }
 
     appendMessage("user", text);
     messageHistory.push({ role: "user", parts: [{ text: text }] });
-    
+
     chatInput.value = '';
     chatInput.disabled = true;
     sendBtn.disabled = true;
@@ -180,7 +180,7 @@ async function handleSend() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 messages: messageHistory,
-                customDisease: activeCustomDisease, 
+                customDisease: activeCustomDisease,
                 phase: currentPhase
             })
         });
@@ -193,7 +193,7 @@ async function handleSend() {
         } else if (data.candidates && data.candidates.length > 0) {
             let aiText = data.candidates[0].content.parts[0].text;
             let formattedText = aiText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            
+
             appendMessage("ai", formattedText);
             messageHistory.push({ role: "model", parts: [{ text: aiText }] });
         }
@@ -212,7 +212,7 @@ function appendMessage(sender, text) {
     const uniqueId = 'msg-' + Date.now();
     wrapper.id = uniqueId;
     wrapper.className = `message-wrapper ${sender}`;
-    
+
     let innerHTML = '';
     if (sender === 'ai') {
         innerHTML = `<div class="message ai">
@@ -226,7 +226,7 @@ function appendMessage(sender, text) {
     } else {
         innerHTML = `<div class="message user">${text}</div>`;
     }
-    
+
     wrapper.innerHTML = innerHTML;
     chatContainer.appendChild(wrapper);
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -234,17 +234,17 @@ function appendMessage(sender, text) {
 }
 
 function resetSimulation() {
-    if(confirm("Restart clinic session? Current progress will be lost.")) {
+    if (confirm("Restart clinic session? Current progress will be lost.")) {
         location.reload();
     }
 }
 
 sendBtn.addEventListener('click', handleSend);
 chatInput.addEventListener('keypress', e => {
-    if (e.key === 'Enter') { 
-        e.preventDefault(); 
-        handleSend(); 
-        chatInput.blur(); 
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSend();
+        chatInput.blur();
     }
 });
 
@@ -253,9 +253,9 @@ chatInput.addEventListener('focus', () => {
     setTimeout(() => {
         // Scroll the input area into view smoothly
         chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        
+
         // Ensure the chat container scrolls to the very bottom so messages aren't hidden
         chatContainer.scrollTop = chatContainer.scrollHeight;
-    }, 300); 
+    }, 300);
 });
 
