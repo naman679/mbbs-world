@@ -798,3 +798,75 @@ window.addEventListener('message', function(e) {
         }
     }
 });
+
+function launchGuidedTour() {
+    const driver = window.driver.js.driver;
+
+    const driverObj = driver({
+        showProgress: true,
+        steps: [
+            { 
+                popover: { 
+                    title: 'Welcome to MBBS World! 🩺', 
+                    description: 'Let us show you how to navigate your medical resources efficiently.' 
+                } 
+            },
+            { 
+                element: '.nav-brand', 
+                popover: { 
+                    title: 'Your Home Base', 
+                    description: 'Click here anytime to return to the main dashboard.' 
+                } 
+            },
+            { 
+                element: '.search-toggle-btn', 
+                popover: { 
+                    title: 'Quick Search', 
+                    description: 'Looking for a specific topic like "Anatomy" or "PSM"? Find it instantly here.' 
+                } 
+            },
+            { 
+                element: '#mainNav', 
+                popover: { 
+                    title: 'Study Categories', 
+                    description: 'Switch between Video lectures, PDF Notes, and high-yield Question Banks.' 
+                } 
+            },
+            { 
+                element: '#btn-live-quiz', 
+                popover: { 
+                    title: 'Live Multiplayer Quiz 🎮', 
+                    description: 'Challenge your MPMSU batchmates in real-time! (App Exclusive)' 
+                } 
+            },
+            { 
+                element: '#btn-daily-case', 
+                popover: { 
+                    title: 'The Daily Case AI 🩺', 
+                    description: 'Practice clinical diagnosis with our AI patient simulator. Perfect for your OPD postings!' 
+                } 
+            },
+            { 
+                element: '#userProfileBtn', 
+                popover: { 
+                    title: 'Track Your Progress', 
+                    description: 'See how many hours you have studied and check your quiz accuracy here.' 
+                } 
+            }
+        ]
+    });
+
+    driverObj.drive();
+}
+
+// Auto-launch for New Users only
+window.addEventListener('load', () => {
+    const tourDone = localStorage.getItem('mbbs_tour_completed');
+    if (!tourDone) {
+        // Short delay to ensure everything is rendered
+        setTimeout(() => {
+            launchGuidedTour();
+            localStorage.setItem('mbbs_tour_completed', 'true');
+        }, 1500);
+    }
+});
