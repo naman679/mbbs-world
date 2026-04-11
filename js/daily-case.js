@@ -247,3 +247,15 @@ chatInput.addEventListener('keypress', e => {
         chatInput.blur(); 
     }
 });
+
+chatInput.addEventListener('focus', () => {
+    // Set a tiny timeout to wait for the keyboard to fully animate up
+    setTimeout(() => {
+        // Scroll the input area into view smoothly
+        chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        
+        // Ensure the chat container scrolls to the very bottom so messages aren't hidden
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }, 300); 
+});
+
