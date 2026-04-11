@@ -22,6 +22,7 @@ FILES_TO_UPLOAD = [
     "css/login.css",
     "css/network-status.css",
     "css/daily-case.css",
+    "live-game.html",
 ]
 
 def upload_file(file_path):

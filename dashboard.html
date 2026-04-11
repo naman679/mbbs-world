@@ -141,7 +141,7 @@
 
         <div id="watermark-container"></div>
 
-        <a href="live-game.html" class="live-quiz-card">
+        <a href="live-game.html" class="live-quiz-card" id="btn-live-quiz" style="display: none;">
             <div class="live-quiz-info">
                 <h3>🎮 Live Multiplayer Quiz</h3>
                 <p>Challenge your batchmates in real-time!</p>
@@ -151,7 +151,7 @@
             </div>
         </a>
 
-        <a href="daily-case.html" class="live-quiz-card tutor-card">
+        <a href="daily-case.html" class="live-quiz-card tutor-card" id="btn-daily-case" style="display: none;">
             <div class="live-quiz-info">
                 <h3>🩺 The Daily Case: AI Tutor</h3>
                 <p>Practice clinical diagnosis with our AI patient.</p>
@@ -160,6 +160,16 @@
                 <i class="fas fa-robot"></i>
             </div>
         </a>
+
+        <script>
+            (function() {
+                const isInsideApp = navigator.userAgent.includes("MBBSWorldApp") || !!window.injectedAppId;
+                if (isInsideApp) {
+                    document.getElementById('btn-live-quiz').style.display = 'flex';
+                    document.getElementById('btn-daily-case').style.display = 'flex';
+                }
+            })();
+        </script>
 
         <div class="container">
             <div id="contentArea">
