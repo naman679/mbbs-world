@@ -1,537 +1,1931 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Atrium – Clinical Learning</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{--bg:#f5ede0;--card:#fff;--orange:#f97316;--teal:#06b6d4;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--red:#ef4444;--gold:#f59e0b;--r:16px}
-body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;max-width:430px;margin:0 auto;height:100vh;overflow:hidden;position:relative}
-body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,#d4a97422 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}
-.screen{display:none;flex-direction:column;height:calc(100vh - 58px);overflow-y:auto;scrollbar-width:none;position:relative;z-index:1}
-.screen::-webkit-scrollbar{display:none}
-.screen.active{display:flex}
-.topbar{display:flex;align-items:center;gap:8px;padding:12px 14px 8px;position:sticky;top:0;background:var(--bg);z-index:10;flex-shrink:0}
-.tb-pill{display:flex;align-items:center;gap:5px;background:var(--card);border-radius:30px;padding:6px 12px;font-size:14px;font-weight:700;border:1.5px solid var(--border);box-shadow:0 1px 4px #0001}
-.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0 14px;z-index:100}
-.nb{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;padding:0 12px;font-weight:500}
-.nb.active{color:var(--orange)}
-.ni{font-size:22px;line-height:1}
-/* HOME */
-.home-content{padding:0 12px 16px;display:flex;flex-direction:column;gap:10px}
-.spec-card{background:var(--card);border-radius:var(--r);padding:16px;border:1.5px solid var(--border);display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px #0001;cursor:pointer;transition:.15s}
-.spec-card:active{transform:scale(.98)}
-.spec-info{flex:1;min-width:0}
-.spec-name{font-size:17px;font-weight:800;margin-bottom:4px}
-.spec-case{font-size:13px;color:var(--muted);line-height:1.4;margin-bottom:8px}
-.spec-trophies{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.trophy-item{display:flex;align-items:center;gap:3px;font-size:12px;font-weight:600;color:var(--muted);background:#f1f5f9;border-radius:20px;padding:3px 8px}
-.play-btn{width:52px;height:52px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px #f9731640}
-.play-icon{width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid #fff;margin-left:3px}
-/* INTRO */
-#s-intro{background:var(--bg)}
-.intro-scroll{flex:1;overflow-y:auto;scrollbar-width:none;position:relative}
-.intro-scroll::-webkit-scrollbar{display:none}
-.intro-close{position:absolute;top:14px;left:14px;width:38px;height:38px;border-radius:10px;background:var(--card);border:1.5px solid var(--border);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10}
-.intro-inner{padding:60px 16px 100px;display:flex;flex-direction:column;align-items:center}
-.intro-waiting{background:#f59e0b;color:#fff;border-radius:30px;padding:8px 24px;font-size:14px;font-weight:700;margin-bottom:16px;text-align:center}
-.intro-img{width:100%;border-radius:16px;background:#f1f5f9;min-height:190px;display:flex;align-items:center;justify-content:center;font-size:80px;margin-bottom:4px}
-.intro-spec-tag{color:var(--orange);font-size:14px;font-weight:700;margin:14px 0 6px;text-align:center}
-.intro-title{font-size:22px;font-weight:800;text-align:center;line-height:1.35;margin-bottom:12px}
-.intro-desc{font-size:14px;color:var(--muted);text-align:center;line-height:1.65;margin-bottom:24px}
-.intro-cta{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:calc(100% - 28px);max-width:402px;background:var(--orange);color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;z-index:20}
-/* CAROUSEL */
-.car-header{padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;background:var(--bg);z-index:10;flex-shrink:0}
-.icon-btn{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0}
-.btn-card{background:var(--card);border:1.5px solid var(--border)}
-.btn-orange{background:var(--orange);color:#fff;border:none}
-.car-body{flex:1;overflow-y:auto;scrollbar-width:none;padding:0 14px 8px}
-.car-body::-webkit-scrollbar{display:none}
-.car-card{background:var(--card);border-radius:18px;border:1.5px solid var(--border);padding:20px;box-shadow:0 2px 12px #0001}
-.car-card-title{font-size:18px;font-weight:800;text-align:center;margin-bottom:18px}
-.car-img{width:100%;border-radius:12px;background:#f1f5f9;min-height:150px;display:flex;align-items:center;justify-content:center;font-size:72px;margin-bottom:18px}
-.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
-.info-cell{display:flex;flex-direction:column;gap:4px}
-.info-icon{color:var(--orange);font-size:18px}
-.info-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
-.info-val{font-size:15px;font-weight:700}
-.cc-box{border-top:1px solid var(--border);padding-top:14px}
-.cc-lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
-.cc-val{font-size:16px;font-weight:700;line-height:1.4}
-.vital-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
-.vr-icon{font-size:22px;color:var(--orange);flex-shrink:0;margin-top:2px}
-.vr-label{font-size:12px;font-weight:700;color:var(--muted)}
-.vr-val{font-size:20px;font-weight:800;margin-top:2px}
-.hx-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px;font-size:14px;line-height:1.55}
-.hx-dot{width:8px;height:8px;border-radius:50%;background:var(--text);flex-shrink:0;margin-top:6px}
-.view-exam-btn{width:100%;border:2px solid var(--orange);background:#fff;color:var(--orange);border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;margin-top:14px;font-family:inherit}
-.dots-row{display:flex;justify-content:center;gap:8px;padding:10px 0 4px;flex-shrink:0}
-.dot{width:28px;height:6px;border-radius:3px;background:#e2e8f0;transition:.3s}
-.dot.active{background:var(--orange)}
-.car-nav{display:flex;justify-content:space-between;align-items:center;padding:8px 14px 14px;flex-shrink:0;gap:10px}
-.arrow-btn{width:54px;height:54px;border-radius:14px;border:2px solid var(--orange);background:var(--card);color:var(--orange);font-size:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:700;flex-shrink:0;transition:.15s}
-.arrow-btn:active{background:#fff7ed}
-.arrow-btn.ghost{opacity:0;pointer-events:none}
-.order-btn{flex:1;background:var(--orange);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
-/* TRAY SCREENS */
-.tray-header{background:var(--bg);padding:12px 14px 0;position:sticky;top:0;z-index:10;flex-shrink:0}
-.tray-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.tray-title{font-size:18px;font-weight:800}
-.tray-box{background:#fde8cc;border-radius:16px;padding:14px;margin:0 0 2px;border:2px dashed #f4b57a;min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;overflow:hidden}
-.tray-label{color:#e07b20;font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
-.tray-empty-box{width:70px;height:52px;border:2px dashed #f4b57a;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;color:#f4b57a}
-.tray-chips{display:flex;gap:8px;width:100%;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}
-.tray-chips::-webkit-scrollbar{display:none}
-.tray-chip{background:var(--card);border-radius:10px;padding:7px 10px;font-size:12px;font-weight:700;white-space:nowrap;display:flex;align-items:center;gap:5px;border:1.5px solid var(--border);flex-shrink:0;max-width:130px}
-.chip-name{overflow:hidden;text-overflow:ellipsis}
-.chip-x{cursor:pointer;font-size:13px;color:var(--muted);flex-shrink:0}
-.item-list{padding:8px 14px 120px;display:flex;flex-direction:column;gap:4px;flex:1;overflow-y:auto;scrollbar-width:none}
-.item-list::-webkit-scrollbar{display:none}
-.cat-head{font-size:14px;font-weight:700;margin:10px 0 6px;display:flex;align-items:center;gap:8px}
-.item-row{background:var(--card);border-radius:12px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;border:1.5px solid var(--border);gap:8px}
-.item-name{font-size:14px;font-weight:600;flex:1}
-.add-btn{background:#fde8cc;color:var(--orange);border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;white-space:nowrap;transition:.15s}
-.add-btn.added{background:var(--orange);color:#fff}
-.bottom-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;padding:10px 14px 14px;background:var(--bg);border-top:1px solid var(--border);display:flex;gap:10px;z-index:50}
-.bb-icon{width:48px;height:48px;border-radius:12px;border:2px solid var(--orange);background:var(--card);color:var(--orange);font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
-.bb-cta{flex:1;background:var(--orange);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;opacity:.4;transition:.2s}
-.bb-cta.on{opacity:1}
-/* RESULTS MODAL */
-.overlay{position:fixed;inset:0;background:#0006;z-index:200;display:flex;align-items:flex-end;justify-content:center}
-.overlay.hide{display:none}
-.sheet{background:#e8f6f8;border-radius:20px 20px 0 0;width:100%;max-width:430px;padding:20px 16px 30px;max-height:85vh;overflow-y:auto;scrollbar-width:none}
-.sheet::-webkit-scrollbar{display:none}
-.sheet-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.sheet-close{width:34px;height:34px;border-radius:10px;background:var(--card);border:1.5px solid var(--border);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.res-card{background:var(--card);border-radius:16px;padding:28px 20px;text-align:center;margin-bottom:14px;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.res-name{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:12px}
-.res-val{font-size:19px;font-weight:800;line-height:1.4}
-.res-dots{display:flex;justify-content:center;gap:8px;margin-bottom:18px}
-.rdot{width:28px;height:6px;border-radius:3px;background:#cce5ea;transition:.3s;cursor:pointer}
-.rdot.active{background:var(--orange)}
-.sheet-btn-o{border:2px solid var(--orange);background:#e8f6f8;color:var(--orange);border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;margin-bottom:10px}
-.sheet-btn-f{background:var(--orange);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;width:100%}
-/* DIAGNOSIS */
-.diag-hint{background:var(--card);border:1.5px solid var(--border);border-radius:30px;padding:8px 20px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;margin:4px auto 8px;align-self:center}
-.diag-sub{font-size:16px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:12px;padding:0 14px}
-.diag-list{padding:0 14px 140px;display:flex;flex-direction:column;gap:10px;flex:1;overflow-y:auto;scrollbar-width:none}
-.diag-list::-webkit-scrollbar{display:none}
-.dopt{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;font-size:15px;font-weight:700;text-align:center;cursor:pointer;font-family:inherit;transition:.2s;line-height:1.35}
-.dopt.sel{background:#fde8cc;border-color:var(--orange)}
-.dopt.correct{background:#dcfce7;border-color:#16a34a;color:#15803d}
-.dopt.wrong{background:#fee2e2;border-color:var(--red);color:#b91c1c}
-/* COMPLETE */
-#s-complete{background:linear-gradient(180deg,#e0f7fa 0%,#b2ebf2 60%,#e8f5e9 100%)}
-.comp-inner{padding:30px 16px 100px;display:flex;flex-direction:column;align-items:center}
-.comp-xp-lbl{font-size:14px;font-weight:700;color:var(--muted);margin-bottom:4px}
-.comp-xp-num{font-size:60px;font-weight:900;color:var(--text);line-height:1}
-.comp-bolt{font-size:90px;margin:14px 0 22px;filter:drop-shadow(0 4px 24px #06b6d450)}
-.comp-h{font-size:22px;font-weight:800;text-align:center;margin-bottom:10px}
-.comp-sub{font-size:14px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:22px}
-.comp-thumb{width:130px;height:96px;border-radius:14px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-size:56px;margin-bottom:22px}
-/* REVIEW */
-#s-review{background:linear-gradient(180deg,#e0f7fa 0%,#b2ebf2 40%,#e8f5e9 100%)}
-.rev-inner{padding:16px 14px 60px;display:flex;flex-direction:column;align-items:center}
-.rev-thumb{width:130px;height:96px;border-radius:16px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-size:56px;overflow:hidden;margin-bottom:16px}
-.rev-dx{color:var(--orange);font-size:18px;font-weight:800;text-align:center;margin-bottom:4px}
-.rev-sub{font-size:15px;font-weight:700;text-align:center;margin-bottom:20px}
-.rev-tabs{background:var(--card);border-radius:16px;width:100%;margin-bottom:16px;overflow:hidden;border:1.5px solid var(--border)}
-.tab-bar{display:flex;border-bottom:1px solid var(--border)}
-.rtab{flex:1;padding:12px 4px;font-size:14px;font-weight:700;text-align:center;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent;transition:.2s;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
-.rtab.active{color:var(--orange);border-bottom-color:var(--orange)}
-.tab-pane{display:none;padding:16px}
-.tab-pane.active{display:block}
-.rev-section{margin-bottom:14px;padding-bottom:14px;border-bottom:1px dashed var(--border)}
-.rev-section:last-child{border:none;margin-bottom:0;padding-bottom:0}
-.rev-sec-head{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;margin-bottom:8px}
-.chk{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0}
-.chk-g{background:#10b981}.chk-r{background:#ef4444}.chk-a{background:#f59e0b}
-.rev-pt{display:flex;align-items:flex-start;gap:8px;font-size:13px;margin-bottom:6px;line-height:1.5}
-.rev-bullet{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;margin-top:6px}
-.insight-card{background:#e0f7fa;border:2px solid var(--teal);border-radius:16px;padding:16px;width:100%;margin-bottom:16px}
-.ins-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.ins-title{color:var(--teal);font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
-.ins-tog{width:32px;height:32px;border-radius:50%;background:var(--text);color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-family:inherit}
-.ins-summ{background:var(--card);border-radius:30px;padding:8px 20px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;margin:0 auto 16px;font-family:inherit}
-.ins-play{width:26px;height:26px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
-.ins-h{font-size:15px;font-weight:800;margin:14px 0 6px}
-.ins-pt{display:flex;align-items:flex-start;gap:8px;font-size:13px;margin-bottom:8px;line-height:1.55}
-.ins-bul{width:7px;height:7px;border-radius:50%;background:var(--text);flex-shrink:0;margin-top:5px}
-.dna{display:flex;justify-content:center;font-size:20px;letter-spacing:4px;opacity:.25;margin:12px 0}
-.acc-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-radius:30px;border:none;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;margin-bottom:10px;transition:.15s}
-.acc-teal{background:var(--teal);color:#fff}
-.acc-orange{background:#fde8cc;color:var(--orange)}
-.acc-arr{width:28px;height:28px;border-radius:50%;background:#1e293b;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.acc-body{display:none;background:var(--card);border-radius:14px;padding:14px;margin:-6px 0 10px;font-size:13px;line-height:1.6;border:1.5px solid var(--border)}
-.acc-body.open{display:block}
-/* LEAGUES */
-.league-content{padding:12px 14px;display:flex;flex-direction:column;gap:12px}
-.league-banner{background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:var(--r);padding:20px;text-align:center;border:2px solid var(--gold)}
-.league-row{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:12px;padding:11px 14px;border:1.5px solid var(--border)}
-.lr-you{border-color:var(--orange);background:#fff7ed}
-.avatar-circle{width:38px;height:38px;border-radius:50%;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.xpbar{height:6px;background:#f1f5f9;border-radius:3px;margin-top:4px;overflow:hidden}
-.xpfill{height:100%;background:linear-gradient(90deg,var(--orange),#f59e0b);border-radius:3px}
-/* LEARNING */
-.learn-content{padding:12px 14px;display:flex;flex-direction:column;gap:12px}
-.flip-card{perspective:900px;cursor:pointer}
-.flip-inner{position:relative;transform-style:preserve-3d;transition:.55s;min-height:165px}
-.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
-.ff,.fb{backface-visibility:hidden;border-radius:var(--r);padding:24px 20px;min-height:165px;display:flex;align-items:center;justify-content:center;text-align:center;border:2px solid var(--border);position:absolute;top:0;left:0;right:0}
-.ff{background:var(--card);font-size:16px;font-weight:600}
-.fb{background:#fff7ed;transform:rotateY(180deg);font-size:14px;color:#9a3412;border-color:#fed7aa;font-weight:500}
-.rate-row{display:flex;gap:8px}
-.rate-btn{flex:1;border:none;border-radius:12px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-.rb-hard{background:#fee2e2;color:#b91c1c}
-.rb-ok{background:#fef3c7;color:#92400e}
-.rb-easy{background:#dcfce7;color:#15803d}
-/* ME */
-.me-content{padding:12px 14px;display:flex;flex-direction:column;gap:12px}
-.profile-card{background:var(--card);border-radius:var(--r);padding:20px;text-align:center;border:1.5px solid var(--border)}
-.skill-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
-.pbar{height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-bottom:10px}
-.pbfill{height:100%;border-radius:4px}
-/* SHARED */
-.act-btn{border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;width:100%;font-family:inherit;transition:.15s}
-.act-orange{background:var(--orange);color:#fff}
-.act-outline{background:#fff;border:2px solid var(--orange);color:var(--orange)}
-.xp-popup{position:fixed;top:80px;right:20px;background:var(--orange);color:#fff;border-radius:30px;padding:8px 18px;font-weight:700;font-size:15px;z-index:999;animation:popIn .3s ease,fadeOut .4s ease 1.5s forwards;pointer-events:none}
-@keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes fadeOut{to{opacity:0;transform:translateY(-20px)}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Atrium – Clinical Learning</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    :root {
+      --bg: #f5ede0;
+      --card: #fff;
+      --orange: #f97316;
+      --teal: #06b6d4;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --red: #ef4444;
+      --gold: #f59e0b;
+      --r: 16px
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      max-width: 430px;
+      margin: 0 auto;
+      height: 100vh;
+      overflow: hidden;
+      position: relative
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, #d4a97422 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      height: calc(100vh - 58px);
+      overflow-y: auto;
+      scrollbar-width: none;
+      position: relative;
+      z-index: 1
+    }
+
+    .screen::-webkit-scrollbar {
+      display: none
+    }
+
+    .screen.active {
+      display: flex
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px 8px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+      flex-shrink: 0
+    }
+
+    .tb-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--card);
+      border-radius: 30px;
+      padding: 6px 12px;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 1px 4px #0001
+    }
+
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0 14px;
+      z-index: 100
+    }
+
+    .nb {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 10px;
+      cursor: pointer;
+      padding: 0 12px;
+      font-weight: 500
+    }
+
+    .nb.active {
+      color: var(--orange)
+    }
+
+    .ni {
+      font-size: 22px;
+      line-height: 1
+    }
+
+    /* HOME */
+    .home-content {
+      padding: 0 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .spec-card {
+      background: var(--card);
+      border-radius: var(--r);
+      padding: 16px;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 8px #0001;
+      cursor: pointer;
+      transition: .15s
+    }
+
+    .spec-card:active {
+      transform: scale(.98)
+    }
+
+    .spec-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .spec-name {
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 4px
+    }
+
+    .spec-case {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+      margin-bottom: 8px
+    }
+
+    .spec-trophies {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .trophy-item {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      background: #f1f5f9;
+      border-radius: 20px;
+      padding: 3px 8px
+    }
+
+    .play-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px #f9731640
+    }
+
+    .play-icon {
+      width: 0;
+      height: 0;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-left: 18px solid #fff;
+      margin-left: 3px
+    }
+
+    /* INTRO */
+    #s-intro {
+      background: var(--bg)
+    }
+
+    .intro-scroll {
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: none;
+      position: relative
+    }
+
+    .intro-scroll::-webkit-scrollbar {
+      display: none
+    }
+
+    .intro-close {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10
+    }
+
+    .intro-inner {
+      padding: 60px 16px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center
+    }
+
+    .intro-waiting {
+      background: #f59e0b;
+      color: #fff;
+      border-radius: 30px;
+      padding: 8px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-align: center
+    }
+
+    .intro-img {
+      width: 100%;
+      border-radius: 16px;
+      background: #f1f5f9;
+      min-height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      margin-bottom: 4px
+    }
+
+    .intro-spec-tag {
+      color: var(--orange);
+      font-size: 14px;
+      font-weight: 700;
+      margin: 14px 0 6px;
+      text-align: center
+    }
+
+    .intro-title {
+      font-size: 22px;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.35;
+      margin-bottom: 12px
+    }
+
+    .intro-desc {
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.65;
+      margin-bottom: 24px
+    }
+
+    .intro-cta {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 28px);
+      max-width: 402px;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      z-index: 20
+    }
+
+    /* CAROUSEL */
+    .car-header {
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+      flex-shrink: 0
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      flex-shrink: 0
+    }
+
+    .btn-card {
+      background: var(--card);
+      border: 1.5px solid var(--border)
+    }
+
+    .btn-orange {
+      background: var(--orange);
+      color: #fff;
+      border: none
+    }
+
+    .car-body {
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: none;
+      padding: 0 14px 8px
+    }
+
+    .car-body::-webkit-scrollbar {
+      display: none
+    }
+
+    .car-card {
+      background: var(--card);
+      border-radius: 18px;
+      border: 1.5px solid var(--border);
+      padding: 20px;
+      box-shadow: 0 2px 12px #0001
+    }
+
+    .car-card-title {
+      font-size: 18px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 18px
+    }
+
+    .car-img {
+      width: 100%;
+      border-radius: 12px;
+      background: #f1f5f9;
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 72px;
+      margin-bottom: 18px
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px
+    }
+
+    .info-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 4px
+    }
+
+    .info-icon {
+      color: var(--orange);
+      font-size: 18px
+    }
+
+    .info-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .3px
+    }
+
+    .info-val {
+      font-size: 15px;
+      font-weight: 700
+    }
+
+    .cc-box {
+      border-top: 1px solid var(--border);
+      padding-top: 14px
+    }
+
+    .cc-lbl {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .3px;
+      margin-bottom: 6px
+    }
+
+    .cc-val {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.4
+    }
+
+    .vital-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px
+    }
+
+    .vr-icon {
+      font-size: 22px;
+      color: var(--orange);
+      flex-shrink: 0;
+      margin-top: 2px
+    }
+
+    .vr-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted)
+    }
+
+    .vr-val {
+      font-size: 20px;
+      font-weight: 800;
+      margin-top: 2px
+    }
+
+    .hx-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 13px;
+      font-size: 14px;
+      line-height: 1.55
+    }
+
+    .hx-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text);
+      flex-shrink: 0;
+      margin-top: 6px
+    }
+
+    .view-exam-btn {
+      width: 100%;
+      border: 2px solid var(--orange);
+      background: #fff;
+      color: var(--orange);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 14px;
+      font-family: inherit
+    }
+
+    .dots-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 0 4px;
+      flex-shrink: 0
+    }
+
+    .dot {
+      width: 28px;
+      height: 6px;
+      border-radius: 3px;
+      background: #e2e8f0;
+      transition: .3s
+    }
+
+    .dot.active {
+      background: var(--orange)
+    }
+
+    .car-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 14px 14px;
+      flex-shrink: 0;
+      gap: 10px
+    }
+
+    .arrow-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      border: 2px solid var(--orange);
+      background: var(--card);
+      color: var(--orange);
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: .15s
+    }
+
+    .arrow-btn:active {
+      background: #fff7ed
+    }
+
+    .arrow-btn.ghost {
+      opacity: 0;
+      pointer-events: none
+    }
+
+    .order-btn {
+      flex: 1;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit
+    }
+
+    /* TRAY SCREENS */
+    .tray-header {
+      background: var(--bg);
+      padding: 12px 14px 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      flex-shrink: 0
+    }
+
+    .tray-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px
+    }
+
+    .tray-title {
+      font-size: 18px;
+      font-weight: 800
+    }
+
+    .tray-box {
+      background: #fde8cc;
+      border-radius: 16px;
+      padding: 14px;
+      margin: 0 0 2px;
+      border: 2px dashed #f4b57a;
+      min-height: 88px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      overflow: hidden
+    }
+
+    .tray-label {
+      color: #e07b20;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .5px;
+      text-transform: uppercase
+    }
+
+    .tray-empty-box {
+      width: 70px;
+      height: 52px;
+      border: 2px dashed #f4b57a;
+      border-radius: 12px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #f4b57a
+    }
+
+    .tray-chips {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex-wrap: nowrap
+    }
+
+    .tray-chips::-webkit-scrollbar {
+      display: none
+    }
+
+    .tray-chip {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 1.5px solid var(--border);
+      flex-shrink: 0;
+      max-width: 130px
+    }
+
+    .chip-name {
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .chip-x {
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--muted);
+      flex-shrink: 0
+    }
+
+    .item-list {
+      padding: 8px 14px 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: none
+    }
+
+    .item-list::-webkit-scrollbar {
+      display: none
+    }
+
+    .cat-head {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 10px 0 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .item-row {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1.5px solid var(--border);
+      gap: 8px
+    }
+
+    .item-name {
+      font-size: 14px;
+      font-weight: 600;
+      flex: 1
+    }
+
+    .add-btn {
+      background: #fde8cc;
+      color: var(--orange);
+      border: none;
+      border-radius: 20px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      flex-shrink: 0;
+      white-space: nowrap;
+      transition: .15s
+    }
+
+    .add-btn.added {
+      background: var(--orange);
+      color: #fff
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      padding: 10px 14px 14px;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      z-index: 50
+    }
+
+    .bb-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      border: 2px solid var(--orange);
+      background: var(--card);
+      color: var(--orange);
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0
+    }
+
+    .bb-cta {
+      flex: 1;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      opacity: .4;
+      transition: .2s
+    }
+
+    .bb-cta.on {
+      opacity: 1
+    }
+
+    /* RESULTS MODAL */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: #0006;
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center
+    }
+
+    .overlay.hide {
+      display: none
+    }
+
+    .sheet {
+      background: #e8f6f8;
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-width: 430px;
+      padding: 20px 16px 30px;
+      max-height: 85vh;
+      overflow-y: auto;
+      scrollbar-width: none
+    }
+
+    .sheet::-webkit-scrollbar {
+      display: none
+    }
+
+    .sheet-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px
+    }
+
+    .sheet-close {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .res-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 28px 20px;
+      text-align: center;
+      margin-bottom: 14px;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center
+    }
+
+    .res-name {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 12px
+    }
+
+    .res-val {
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1.4
+    }
+
+    .res-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 18px
+    }
+
+    .rdot {
+      width: 28px;
+      height: 6px;
+      border-radius: 3px;
+      background: #cce5ea;
+      transition: .3s;
+      cursor: pointer
+    }
+
+    .rdot.active {
+      background: var(--orange)
+    }
+
+    .sheet-btn-o {
+      border: 2px solid var(--orange);
+      background: #e8f6f8;
+      color: var(--orange);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      width: 100%;
+      margin-bottom: 10px
+    }
+
+    .sheet-btn-f {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      width: 100%
+    }
+
+    /* DIAGNOSIS */
+    .diag-hint {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 4px auto 8px;
+      align-self: center
+    }
+
+    .diag-sub {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 12px;
+      padding: 0 14px
+    }
+
+    .diag-list {
+      padding: 0 14px 140px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: none
+    }
+
+    .diag-list::-webkit-scrollbar {
+      display: none
+    }
+
+    .dopt {
+      width: 100%;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      font-family: inherit;
+      transition: .2s;
+      line-height: 1.35
+    }
+
+    .dopt.sel {
+      background: #fde8cc;
+      border-color: var(--orange)
+    }
+
+    .dopt.correct {
+      background: #dcfce7;
+      border-color: #16a34a;
+      color: #15803d
+    }
+
+    .dopt.wrong {
+      background: #fee2e2;
+      border-color: var(--red);
+      color: #b91c1c
+    }
+
+    /* COMPLETE */
+    #s-complete {
+      background: linear-gradient(180deg, #e0f7fa 0%, #b2ebf2 60%, #e8f5e9 100%)
+    }
+
+    .comp-inner {
+      padding: 30px 16px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center
+    }
+
+    .comp-xp-lbl {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px
+    }
+
+    .comp-xp-num {
+      font-size: 60px;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1
+    }
+
+    .comp-bolt {
+      font-size: 90px;
+      margin: 14px 0 22px;
+      filter: drop-shadow(0 4px 24px #06b6d450)
+    }
+
+    .comp-h {
+      font-size: 22px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 10px
+    }
+
+    .comp-sub {
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 22px
+    }
+
+    .comp-thumb {
+      width: 130px;
+      height: 96px;
+      border-radius: 14px;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      margin-bottom: 22px
+    }
+
+    /* REVIEW */
+    #s-review {
+      background: linear-gradient(180deg, #e0f7fa 0%, #b2ebf2 40%, #e8f5e9 100%)
+    }
+
+    .rev-inner {
+      padding: 16px 14px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center
+    }
+
+    .rev-thumb {
+      width: 130px;
+      height: 96px;
+      border-radius: 16px;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      overflow: hidden;
+      margin-bottom: 16px
+    }
+
+    .rev-dx {
+      color: var(--orange);
+      font-size: 18px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 4px
+    }
+
+    .rev-sub {
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px
+    }
+
+    .rev-tabs {
+      background: var(--card);
+      border-radius: 16px;
+      width: 100%;
+      margin-bottom: 16px;
+      overflow: hidden;
+      border: 1.5px solid var(--border)
+    }
+
+    .tab-bar {
+      display: flex;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .rtab {
+      flex: 1;
+      padding: 12px 4px;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      color: var(--muted);
+      border-bottom: 3px solid transparent;
+      transition: .2s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: inherit
+    }
+
+    .rtab.active {
+      color: var(--orange);
+      border-bottom-color: var(--orange)
+    }
+
+    .tab-pane {
+      display: none;
+      padding: 16px
+    }
+
+    .tab-pane.active {
+      display: block
+    }
+
+    .rev-section {
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed var(--border)
+    }
+
+    .rev-section:last-child {
+      border: none;
+      margin-bottom: 0;
+      padding-bottom: 0
+    }
+
+    .rev-sec-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px
+    }
+
+    .chk {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #fff;
+      flex-shrink: 0
+    }
+
+    .chk-g {
+      background: #10b981
+    }
+
+    .chk-r {
+      background: #ef4444
+    }
+
+    .chk-a {
+      background: #f59e0b
+    }
+
+    .rev-pt {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      margin-bottom: 6px;
+      line-height: 1.5
+    }
+
+    .rev-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--muted);
+      flex-shrink: 0;
+      margin-top: 6px
+    }
+
+    .insight-card {
+      background: #e0f7fa;
+      border: 2px solid var(--teal);
+      border-radius: 16px;
+      padding: 16px;
+      width: 100%;
+      margin-bottom: 16px
+    }
+
+    .ins-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px
+    }
+
+    .ins-title {
+      color: var(--teal);
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .ins-tog {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--text);
+      color: #fff;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      font-family: inherit
+    }
+
+    .ins-summ {
+      background: var(--card);
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+      margin: 0 auto 16px;
+      font-family: inherit
+    }
+
+    .ins-play {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #fff
+    }
+
+    .ins-h {
+      font-size: 15px;
+      font-weight: 800;
+      margin: 14px 0 6px
+    }
+
+    .ins-pt {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      margin-bottom: 8px;
+      line-height: 1.55
+    }
+
+    .ins-bul {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text);
+      flex-shrink: 0;
+      margin-top: 5px
+    }
+
+    .dna {
+      display: flex;
+      justify-content: center;
+      font-size: 20px;
+      letter-spacing: 4px;
+      opacity: .25;
+      margin: 12px 0
+    }
+
+    .acc-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      margin-bottom: 10px;
+      transition: .15s
+    }
+
+    .acc-teal {
+      background: var(--teal);
+      color: #fff
+    }
+
+    .acc-orange {
+      background: #fde8cc;
+      color: var(--orange)
+    }
+
+    .acc-arr {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #1e293b;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0
+    }
+
+    .acc-body {
+      display: none;
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px;
+      margin: -6px 0 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      border: 1.5px solid var(--border)
+    }
+
+    .acc-body.open {
+      display: block
+    }
+
+    /* LEAGUES */
+    .league-content {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .league-banner {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border-radius: var(--r);
+      padding: 20px;
+      text-align: center;
+      border: 2px solid var(--gold)
+    }
+
+    .league-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border)
+    }
+
+    .lr-you {
+      border-color: var(--orange);
+      background: #fff7ed
+    }
+
+    .avatar-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0
+    }
+
+    .xpbar {
+      height: 6px;
+      background: #f1f5f9;
+      border-radius: 3px;
+      margin-top: 4px;
+      overflow: hidden
+    }
+
+    .xpfill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--orange), #f59e0b);
+      border-radius: 3px
+    }
+
+    /* LEARNING */
+    .learn-content {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .flip-card {
+      perspective: 900px;
+      cursor: pointer
+    }
+
+    .flip-inner {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: .55s;
+      min-height: 165px
+    }
+
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg)
+    }
+
+    .ff,
+    .fb {
+      backface-visibility: hidden;
+      border-radius: var(--r);
+      padding: 24px 20px;
+      min-height: 165px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border: 2px solid var(--border);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0
+    }
+
+    .ff {
+      background: var(--card);
+      font-size: 16px;
+      font-weight: 600
+    }
+
+    .fb {
+      background: #fff7ed;
+      transform: rotateY(180deg);
+      font-size: 14px;
+      color: #9a3412;
+      border-color: #fed7aa;
+      font-weight: 500
+    }
+
+    .rate-row {
+      display: flex;
+      gap: 8px
+    }
+
+    .rate-btn {
+      flex: 1;
+      border: none;
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit
+    }
+
+    .rb-hard {
+      background: #fee2e2;
+      color: #b91c1c
+    }
+
+    .rb-ok {
+      background: #fef3c7;
+      color: #92400e
+    }
+
+    .rb-easy {
+      background: #dcfce7;
+      color: #15803d
+    }
+
+    /* ME */
+    .me-content {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .profile-card {
+      background: var(--card);
+      border-radius: var(--r);
+      padding: 20px;
+      text-align: center;
+      border: 1.5px solid var(--border)
+    }
+
+    .skill-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 5px
+    }
+
+    .pbar {
+      height: 8px;
+      background: #f1f5f9;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 10px
+    }
+
+    .pbfill {
+      height: 100%;
+      border-radius: 4px
+    }
+
+    /* SHARED */
+    .act-btn {
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      font-family: inherit;
+      transition: .15s
+    }
+
+    .act-orange {
+      background: var(--orange);
+      color: #fff
+    }
+
+    .act-outline {
+      background: #fff;
+      border: 2px solid var(--orange);
+      color: var(--orange)
+    }
+
+    .xp-popup {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background: var(--orange);
+      color: #fff;
+      border-radius: 30px;
+      padding: 8px 18px;
+      font-weight: 700;
+      font-size: 15px;
+      z-index: 999;
+      animation: popIn .3s ease, fadeOut .4s ease 1.5s forwards;
+      pointer-events: none
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(.5);
+        opacity: 0
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: translateY(-20px)
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="s-home" class="screen active">
-  <div class="topbar">
-    <div class="tb-pill">🪙 <span id="coins">0</span></div>
-    <div class="tb-pill">❤️ <span id="hearts">5</span></div>
-    <div class="tb-pill">🔥 <span id="streak">0</span></div>
-  </div>
-  <div class="home-content">
-    <div style="text-align:center;padding:8px 0 4px">
-      <div style="font-size:20px;font-weight:800">Specialty wise challenges</div>
-      <div style="font-size:13px;color:var(--muted);margin-top:4px;line-height:1.5">Build depth in each discipline<br>with curated case scenarios.</div>
+  <div id="s-home" class="screen active">
+    <div class="topbar">
+      <div class="tb-pill">🪙 <span id="coins">0</span></div>
+      <div class="tb-pill">❤️ <span id="hearts">5</span></div>
+      <div class="tb-pill">🔥 <span id="streak">0</span></div>
     </div>
-    <div id="home-list"></div>
-  </div>
-</div>
-
-<div id="s-intro" class="screen">
-  <div class="intro-scroll">
-    <button class="intro-close" onclick="show('home')">✕</button>
-    <div class="intro-inner">
-      <div class="intro-waiting" id="intro-wait">Waiting for the past 177 days</div>
-      <div class="intro-img" id="intro-img">🏥</div>
-      <div class="intro-spec-tag" id="intro-tag">General Medicine</div>
-      <div class="intro-title" id="intro-title">Case Title</div>
-      <div class="intro-desc" id="intro-desc">Description.</div>
+    <div class="home-content">
+      <div style="text-align:center;padding:8px 0 4px">
+        <div style="font-size:20px;font-weight:800">Specialty wise challenges</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;line-height:1.5">Build depth in each
+          discipline<br>with curated case scenarios.</div>
+      </div>
+      <div id="home-list"></div>
     </div>
   </div>
-  <button class="intro-cta" onclick="startCarousel()">Solve the case →</button>
-</div>
 
-<div id="s-carousel" class="screen">
-  <div class="car-header">
-    <button class="icon-btn btn-card" onclick="show('home')">✕</button>
-    <button class="icon-btn btn-orange" style="margin-left:auto">🔊</button>
+  <div id="s-intro" class="screen">
+    <div class="intro-scroll">
+      <button class="intro-close" onclick="show('home')">✕</button>
+      <div class="intro-inner">
+        <div class="intro-waiting" id="intro-wait">Waiting for the past 177 days</div>
+        <div class="intro-img" id="intro-img">🏥</div>
+        <div class="intro-spec-tag" id="intro-tag">General Medicine</div>
+        <div class="intro-title" id="intro-title">Case Title</div>
+        <div class="intro-desc" id="intro-desc">Description.</div>
+      </div>
+    </div>
+    <button class="intro-cta" onclick="startCarousel()">Solve the case →</button>
   </div>
-  <div class="car-body" id="car-body"></div>
-  <div class="dots-row" id="car-dots"></div>
-  <div class="car-nav" id="car-nav"></div>
-</div>
 
-<div id="s-tests" class="screen">
-  <div class="tray-header">
-    <div class="tray-top">
-      <button class="icon-btn btn-card" onclick="show('s-carousel')" style="display:flex;width:42px;height:42px">✕</button>
-      <div class="tray-title">Choose the Tests</div>
+  <div id="s-carousel" class="screen">
+    <div class="car-header">
+      <button class="icon-btn btn-card" onclick="show('home')">✕</button>
       <button class="icon-btn btn-orange" style="margin-left:auto">🔊</button>
     </div>
-    <div style="padding:0 14px 10px">
-      <div class="tray-box" id="test-tray">
-        <div class="tray-label">ADD TO TRAY HERE</div>
-        <div class="tray-empty-box" id="test-empty">+</div>
-        <div class="tray-chips" id="test-chips" style="display:none"></div>
+    <div class="car-body" id="car-body"></div>
+    <div class="dots-row" id="car-dots"></div>
+    <div class="car-nav" id="car-nav"></div>
+  </div>
+
+  <div id="s-tests" class="screen">
+    <div class="tray-header">
+      <div class="tray-top">
+        <button class="icon-btn btn-card" onclick="show('s-carousel')"
+          style="display:flex;width:42px;height:42px">✕</button>
+        <div class="tray-title">Choose the Tests</div>
+        <button class="icon-btn btn-orange" style="margin-left:auto">🔊</button>
+      </div>
+      <div style="padding:0 14px 10px">
+        <div class="tray-box" id="test-tray">
+          <div class="tray-label">ADD TO TRAY HERE</div>
+          <div class="tray-empty-box" id="test-empty">+</div>
+          <div class="tray-chips" id="test-chips" style="display:none"></div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="item-list" id="test-list"></div>
-  <div class="bottom-bar">
-    <button class="bb-icon">🕐</button>
-    <button class="bb-cta" id="test-cta" onclick="showResults()">Review Results →</button>
-  </div>
-</div>
-
-<div class="overlay hide" id="modal-results">
-  <div class="sheet">
-    <div class="sheet-top">
-      <button class="sheet-close" onclick="closeModal()">✕</button>
-      <div style="font-size:16px;font-weight:800">Test Results</div>
-      <div style="font-size:14px;font-weight:700;color:var(--muted)" id="res-counter">1/1</div>
+    <div class="item-list" id="test-list"></div>
+    <div class="bottom-bar">
+      <button class="bb-icon">🕐</button>
+      <button class="bb-cta" id="test-cta" onclick="showResults()">Review Results →</button>
     </div>
-    <div id="res-cards"></div>
-    <div class="res-dots" id="res-dots"></div>
-    <button class="sheet-btn-o" onclick="closeModal()">Perform More Tests</button>
-    <button class="sheet-btn-f" onclick="goToDiag()">Select Diagnosis →</button>
   </div>
-</div>
 
-<div id="s-diag" class="screen">
-  <div class="car-header">
-    <button class="icon-btn btn-card" onclick="show('s-tests')" style="display:flex">✕</button>
-    <div style="font-size:18px;font-weight:800">Diagnosis</div>
-    <button class="icon-btn btn-orange" style="margin-left:auto">🔊</button>
+  <div class="overlay hide" id="modal-results">
+    <div class="sheet">
+      <div class="sheet-top">
+        <button class="sheet-close" onclick="closeModal()">✕</button>
+        <div style="font-size:16px;font-weight:800">Test Results</div>
+        <div style="font-size:14px;font-weight:700;color:var(--muted)" id="res-counter">1/1</div>
+      </div>
+      <div id="res-cards"></div>
+      <div class="res-dots" id="res-dots"></div>
+      <button class="sheet-btn-o" onclick="closeModal()">Perform More Tests</button>
+      <button class="sheet-btn-f" onclick="goToDiag()">Select Diagnosis →</button>
+    </div>
   </div>
-  <div class="diag-hint">💡 <span id="diag-cnt">3</span> correct options</div>
-  <div class="diag-sub">Choose the correct diagnosis</div>
-  <div class="diag-list" id="diag-list"></div>
-  <div class="bottom-bar">
-    <button class="bb-icon">🕐</button>
-    <button class="bb-icon">☰</button>
-    <button class="bb-cta" id="diag-cta" onclick="confirmDiag()">Plan Treatment →</button>
-  </div>
-</div>
 
-<div id="s-treat" class="screen">
-  <div class="tray-header">
-    <div class="tray-top">
-      <button class="icon-btn btn-card" onclick="show('s-diag')" style="display:flex;width:42px;height:42px">✕</button>
-      <div class="tray-title">Choose the Treatments</div>
+  <div id="s-diag" class="screen">
+    <div class="car-header">
+      <button class="icon-btn btn-card" onclick="show('s-tests')" style="display:flex">✕</button>
+      <div style="font-size:18px;font-weight:800">Diagnosis</div>
       <button class="icon-btn btn-orange" style="margin-left:auto">🔊</button>
     </div>
-    <div style="padding:0 14px 10px">
-      <div class="tray-box" id="treat-tray">
-        <div class="tray-label">ADD TO TRAY HERE</div>
-        <div class="tray-empty-box" id="treat-empty">+</div>
-        <div class="tray-chips" id="treat-chips" style="display:none"></div>
+    <div class="diag-hint">💡 <span id="diag-cnt">3</span> correct options</div>
+    <div class="diag-sub">Choose the correct diagnosis</div>
+    <div class="diag-list" id="diag-list"></div>
+    <div class="bottom-bar">
+      <button class="bb-icon">🕐</button>
+      <button class="bb-icon">☰</button>
+      <button class="bb-cta" id="diag-cta" onclick="confirmDiag()">Plan Treatment →</button>
+    </div>
+  </div>
+
+  <div id="s-treat" class="screen">
+    <div class="tray-header">
+      <div class="tray-top">
+        <button class="icon-btn btn-card" onclick="show('s-diag')"
+          style="display:flex;width:42px;height:42px">✕</button>
+        <div class="tray-title">Choose the Treatments</div>
+        <button class="icon-btn btn-orange" style="margin-left:auto">🔊</button>
+      </div>
+      <div style="padding:0 14px 10px">
+        <div class="tray-box" id="treat-tray">
+          <div class="tray-label">ADD TO TRAY HERE</div>
+          <div class="tray-empty-box" id="treat-empty">+</div>
+          <div class="tray-chips" id="treat-chips" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+    <div class="item-list" id="treat-list"></div>
+    <div class="bottom-bar">
+      <button class="bb-icon">🕐</button>
+      <button class="bb-icon">☰</button>
+      <button class="bb-cta" id="treat-cta" onclick="completeCase()">Review Treatment →</button>
+    </div>
+  </div>
+
+  <div id="s-complete" class="screen">
+    <div class="comp-inner">
+      <div class="comp-xp-lbl">XP earned</div>
+      <div class="comp-xp-num" id="comp-xp">30</div>
+      <div class="comp-bolt">⚡</div>
+      <div class="comp-h" id="comp-h">Tough case, but real progress starts here</div>
+      <div class="comp-sub">Mistakes help you build real clinical judgment. Let's take the learnings and move forward
+        stronger.</div>
+      <div class="comp-thumb" id="comp-thumb">🏥</div>
+      <button class="act-btn act-orange" onclick="goToReview()" style="margin-bottom:10px">See Case Review →</button>
+      <button class="act-btn act-outline" onclick="show('home')">Back to Home</button>
+    </div>
+  </div>
+
+  <div id="s-review" class="screen">
+    <div class="rev-inner">
+      <div class="rev-thumb" id="rev-thumb">🏥</div>
+      <div class="rev-dx" id="rev-dx">Diagnosis</div>
+      <div class="rev-sub" id="rev-sub">Subtitle</div>
+      <div class="rev-tabs">
+        <div class="tab-bar">
+          <button class="rtab active" onclick="switchTab('tests',this)">Tests</button>
+          <button class="rtab" onclick="switchTab('diag',this)">Diagnosis</button>
+          <button class="rtab" onclick="switchTab('treatment',this)">Treatment</button>
+        </div>
+        <div class="tab-pane active" id="tp-tests"></div>
+        <div class="tab-pane" id="tp-diag"></div>
+        <div class="tab-pane" id="tp-treatment"></div>
+      </div>
+      <div class="dna">🧬🧬🧬</div>
+      <div class="insight-card">
+        <div class="ins-head">
+          <div class="ins-title">▶ Core Clinical Insights</div>
+          <button class="ins-tog" onclick="toggleIns()">▲</button>
+        </div>
+        <button class="ins-summ">Summary <div class="ins-play">▶</div></button>
+        <div id="ins-body"></div>
+      </div>
+      <div class="dna">🧬🧬🧬</div>
+      <div id="accordions" style="width:100%"></div>
+      <button class="act-btn act-orange" onclick="show('home')" style="margin-top:8px">Back to Home</button>
+    </div>
+  </div>
+
+  <div id="s-leagues" class="screen">
+    <div class="topbar">
+      <div class="tb-pill">🪙 <span id="coins2">0</span></div>
+      <div class="tb-pill">❤️ <span id="hearts2">5</span></div>
+      <div class="tb-pill">🔥 <span id="streak2">0</span></div>
+    </div>
+    <div class="league-content">
+      <div class="league-banner">
+        <div style="font-size:36px">🥇</div>
+        <div style="font-size:20px;font-weight:800;margin-top:6px">Gold League</div>
+        <div style="font-size:13px;color:#92400e;margin-top:4px">Resets in 4 days · Top 10 advance to Diamond</div>
+        <div style="margin-top:12px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#92400e;margin-bottom:4px">
+            <span>Your XP</span><span><span id="league-me-xp">0</span> / 3000</span></div>
+          <div style="height:8px;background:#fde68a;border-radius:4px;overflow:hidden">
+            <div id="league-me-bar" style="height:100%;width:0%;background:var(--orange);border-radius:4px"></div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:var(--muted)">Leaderboard</div>
+      <div id="league-list"></div>
+    </div>
+  </div>
+
+  <div id="s-learning" class="screen">
+    <div class="topbar">
+      <div style="font-size:18px;font-weight:800">Flashcard Review</div>
+    </div>
+    <div class="learn-content">
+      <div style="font-size:12px;color:var(--muted);text-align:center">Tap card to reveal · Rate to continue</div>
+      <div class="flip-card" id="fc" onclick="flipFC()" style="min-height:165px">
+        <div class="flip-inner">
+          <div class="ff" id="fc-front"></div>
+          <div class="fb" id="fc-back"></div>
+        </div>
+      </div>
+      <div class="rate-row">
+        <button class="rate-btn rb-hard" onclick="rateFC()">😓 Hard</button>
+        <button class="rate-btn rb-ok" onclick="rateFC()">🤔 OK</button>
+        <button class="rate-btn rb-easy" onclick="rateFC()">😄 Easy</button>
+      </div>
+      <div style="font-size:12px;color:var(--muted);text-align:center" id="fc-prog">Card 1 of 6</div>
+      <div style="height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden">
+        <div id="fc-bar" style="height:100%;background:var(--orange);border-radius:3px;width:17%;transition:.4s"></div>
       </div>
     </div>
   </div>
-  <div class="item-list" id="treat-list"></div>
-  <div class="bottom-bar">
-    <button class="bb-icon">🕐</button>
-    <button class="bb-icon">☰</button>
-    <button class="bb-cta" id="treat-cta" onclick="completeCase()">Review Treatment →</button>
-  </div>
-</div>
 
-<div id="s-complete" class="screen">
-  <div class="comp-inner">
-    <div class="comp-xp-lbl">XP earned</div>
-    <div class="comp-xp-num" id="comp-xp">30</div>
-    <div class="comp-bolt">⚡</div>
-    <div class="comp-h" id="comp-h">Tough case, but real progress starts here</div>
-    <div class="comp-sub">Mistakes help you build real clinical judgment. Let's take the learnings and move forward stronger.</div>
-    <div class="comp-thumb" id="comp-thumb">🏥</div>
-    <button class="act-btn act-orange" onclick="goToReview()" style="margin-bottom:10px">See Case Review →</button>
-    <button class="act-btn act-outline" onclick="show('home')">Back to Home</button>
-  </div>
-</div>
-
-<div id="s-review" class="screen">
-  <div class="rev-inner">
-    <div class="rev-thumb" id="rev-thumb">🏥</div>
-    <div class="rev-dx" id="rev-dx">Diagnosis</div>
-    <div class="rev-sub" id="rev-sub">Subtitle</div>
-    <div class="rev-tabs">
-      <div class="tab-bar">
-        <button class="rtab active" onclick="switchTab('tests',this)">Tests</button>
-        <button class="rtab" onclick="switchTab('diag',this)">Diagnosis</button>
-        <button class="rtab" onclick="switchTab('treatment',this)">Treatment</button>
+  <div id="s-me" class="screen">
+    <div class="topbar">
+      <div style="font-size:18px;font-weight:800">My Profile</div>
+    </div>
+    <div class="me-content">
+      <div class="profile-card">
+        <div
+          style="width:70px;height:70px;border-radius:50%;background:#fff7ed;border:3px solid var(--orange);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 10px">
+          👨‍⚕️</div>
+        <div style="font-size:20px;font-weight:800" id="me-name-disp">Dr. Student</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:3px">Medical Student</div>
+        <div style="display:flex;justify-content:center;gap:10px;margin-top:14px">
+          <div style="text-align:center">
+            <div style="font-size:20px;font-weight:800;color:var(--orange)" id="me-coins">0</div>
+            <div style="font-size:10px;color:var(--muted)">Coins</div>
+          </div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div style="text-align:center">
+            <div style="font-size:20px;font-weight:800;color:var(--red)" id="me-hearts">5</div>
+            <div style="font-size:10px;color:var(--muted)">Hearts</div>
+          </div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div style="text-align:center">
+            <div style="font-size:20px;font-weight:800;color:var(--orange)" id="me-streak">0</div>
+            <div style="font-size:10px;color:var(--muted)">Streak</div>
+          </div>
+        </div>
       </div>
-      <div class="tab-pane active" id="tp-tests"></div>
-      <div class="tab-pane" id="tp-diag"></div>
-      <div class="tab-pane" id="tp-treatment"></div>
-    </div>
-    <div class="dna">🧬🧬🧬</div>
-    <div class="insight-card">
-      <div class="ins-head">
-        <div class="ins-title">▶ Core Clinical Insights</div>
-        <button class="ins-tog" onclick="toggleIns()">▲</button>
+      <div style="background:var(--card);border-radius:var(--r);padding:16px;border:1.5px solid var(--border)">
+        <div style="font-size:15px;font-weight:800;margin-bottom:12px">Skill Progress</div>
+        <div id="skill-list"></div>
       </div>
-      <button class="ins-summ">Summary <div class="ins-play">▶</div></button>
-      <div id="ins-body"></div>
+      <div style="height:10px"></div>
     </div>
-    <div class="dna">🧬🧬🧬</div>
-    <div id="accordions" style="width:100%"></div>
-    <button class="act-btn act-orange" onclick="show('home')" style="margin-top:8px">Back to Home</button>
   </div>
-</div>
 
-<div id="s-leagues" class="screen">
-  <div class="topbar">
-    <div class="tb-pill">🪙 <span id="coins2">0</span></div>
-    <div class="tb-pill">❤️ <span id="hearts2">5</span></div>
-    <div class="tb-pill">🔥 <span id="streak2">0</span></div>
+  <div class="nav">
+    <button class="nb active" onclick="show('home')" id="n-home"><span class="ni">🏠</span>Home</button>
+    <button class="nb" onclick="show('s-learning')" id="n-s-learning"><span class="ni">➕</span>Learning</button>
+    <button class="nb" onclick="show('s-leagues')" id="n-s-leagues"><span class="ni">🏅</span>Leagues</button>
+    <button class="nb" onclick="show('s-me')" id="n-s-me"><span class="ni">🐱</span>Me</button>
   </div>
-  <div class="league-content">
-    <div class="league-banner">
-      <div style="font-size:36px">🥇</div>
-      <div style="font-size:20px;font-weight:800;margin-top:6px">Gold League</div>
-      <div style="font-size:13px;color:#92400e;margin-top:4px">Resets in 4 days · Top 10 advance to Diamond</div>
-      <div style="margin-top:12px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#92400e;margin-bottom:4px"><span>Your XP</span><span><span id="league-me-xp">0</span> / 3000</span></div>
-        <div style="height:8px;background:#fde68a;border-radius:4px;overflow:hidden"><div id="league-me-bar" style="height:100%;width:0%;background:var(--orange);border-radius:4px"></div></div>
-      </div>
-    </div>
-    <div style="font-size:14px;font-weight:700;color:var(--muted)">Leaderboard</div>
-    <div id="league-list"></div>
-  </div>
-</div>
 
-<div id="s-learning" class="screen">
-  <div class="topbar"><div style="font-size:18px;font-weight:800">Flashcard Review</div></div>
-  <div class="learn-content">
-    <div style="font-size:12px;color:var(--muted);text-align:center">Tap card to reveal · Rate to continue</div>
-    <div class="flip-card" id="fc" onclick="flipFC()" style="min-height:165px">
-      <div class="flip-inner"><div class="ff" id="fc-front"></div><div class="fb" id="fc-back"></div></div>
-    </div>
-    <div class="rate-row">
-      <button class="rate-btn rb-hard" onclick="rateFC()">😓 Hard</button>
-      <button class="rate-btn rb-ok" onclick="rateFC()">🤔 OK</button>
-      <button class="rate-btn rb-easy" onclick="rateFC()">😄 Easy</button>
-    </div>
-    <div style="font-size:12px;color:var(--muted);text-align:center" id="fc-prog">Card 1 of 6</div>
-    <div style="height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div id="fc-bar" style="height:100%;background:var(--orange);border-radius:3px;width:17%;transition:.4s"></div></div>
-  </div>
-</div>
+  <script>
+    const SPECS = [
+      {
+        id: 'gm', name: 'General Medicine', color: '#f97316', emoji: '🩺', waitDays: 177,
+        caseTitle: 'Fever, fatigue, rash, and aching joints in a young woman',
+        caseDesc: 'A 24-year-old woman with weeks of fatigue, fever, photosensitive facial rash, joint pains, and pleuritic chest discomfort. Evaluate common infectious, autoimmune, endocrine, and neoplastic causes while staying cost-conscious.',
+        patient: { name: 'Eliza', gender: 'Female', age: '24 Y', complaint: 'Fatigue, fever, facial rash, and joint pains' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '38.1°C (100.58°F)' },
+          { icon: '❤️', label: 'Heart Rate', val: '96 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '108/68 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '18/min' },
+          { icon: '💧', label: 'SpO2', val: '99% on room air' },
+        ],
+        history: ['Six weeks of fatigue, low-grade fevers, and 3 kg unintentional weight loss.', 'Symmetric hand and wrist pain with 45 minutes morning stiffness.', 'Photosensitive facial rash that worsens after sun exposure.', 'Pleuritic chest pain worse with inspiration; mild exertional dyspnea.', 'Painless oral ulcers; intermittent non-scarring hair shedding.', 'Occasional frothy urine without dysuria or flank pain.', 'No recent travel, TB exposure, or sick contacts; monogamous relationship; no IV drug use.', 'No prior medical conditions or medications; not pregnant; no recent vaccinations.'],
+        physExam: ['Ill-appearing but not toxic; fatigued.', 'Erythematous malar rash sparing the nasolabial folds.', 'Two shallow painless ulcers on the hard palate.', 'Patchy non-scarring alopecia.', 'Tender, mildly swollen MCP and PIP joints bilaterally; reduced grip strength.', 'Faint pericardial friction rub; decreased breath sounds at left base.', 'No hepatosplenomegaly; no focal neurologic deficits.', 'Small, mobile, non-tender cervical lymph nodes.'],
+        testCats: [
+          { name: 'Neurology & Endocrinology', icon: '🧠', tests: [{ n: 'TSH', c: true, r: '1.6 μIU/mL (normal)' }, { n: 'Morning serum cortisol', c: false, r: 'Normal — 18 mcg/dL' }] },
+          { name: 'Radiology & Imaging', icon: '🩻', tests: [{ n: 'Chest X-ray (PA/Lateral)', c: true, r: 'Small left pleural effusion' }, { n: 'Renal ultrasound', c: false, r: 'Normal size kidneys; no hydronephrosis' }, { n: 'Abdominal ultrasound', c: false, r: 'No organomegaly' }] },
+          { name: 'Cardiology & Pulmonary Function', icon: '❤️‍🩹', tests: [{ n: 'Transthoracic echocardiogram', c: true, r: 'Mild pericardial effusion noted' }, { n: '12-lead ECG', c: true, r: 'Diffuse ST elevation — pericarditis pattern' }, { n: 'Spirometry', c: false, r: 'Mild restrictive pattern' }] },
+          { name: 'Genetic & Specialized', icon: '🧬', tests: [{ n: 'ANA by immunofluorescence (titer)', c: true, r: 'Positive 1:640, homogeneous pattern' }, { n: 'Antiphospholipid antibody panel', c: true, r: 'Positive lupus anticoagulant' }, { n: 'Complement C3 and C4', c: true, r: 'C3: 62 mg/dL (low), C4: 8 mg/dL (low)' }, { n: 'Anti-Ro/SSA and Anti-La/SSB', c: true, r: 'Anti-Ro positive' }] },
+          { name: 'Microbiology & Infectious Disease', icon: '🦠', tests: [{ n: 'EBV VCA IgM', c: false, r: 'Negative — no acute EBV' }, { n: 'Urine culture', c: false, r: 'No growth' }, { n: 'Influenza A/B PCR', c: false, r: 'Negative' }, { n: 'HIV-1/2 Ag/Ab combo', c: false, r: 'Negative' }] },
+          { name: 'Pathology', icon: '🔬', tests: [{ n: 'ESR', c: true, r: '92 mm/hr (markedly elevated)' }, { n: 'C-reactive protein', c: true, r: '48 mg/L (elevated)' }, { n: 'Serum ferritin', c: true, r: '680 ng/mL (elevated)' }, { n: 'Urine protein/creatinine ratio', c: true, r: '2.8 g/g — significant proteinuria' }, { n: 'Anti-CCP antibodies', c: false, r: 'Negative' }, { n: 'Comprehensive metabolic panel', c: true, r: 'Creatinine 1.4 mg/dL elevated, low albumin' }, { n: 'Urinalysis with microscopy', c: true, r: '3+ protein, RBC casts — active sediment' }, { n: 'CBC with differential', c: true, r: 'WBC 3.2k leukopenia, Hb 9.8 anemia, Plt 98k thrombocytopenia' }, { n: 'Peripheral blood smear', c: false, r: 'No schistocytes; normocytic anemia' }, { n: 'Rheumatoid factor', c: false, r: 'Low positive — non-specific' }, { n: 'Direct antiglobulin (Coombs) test', c: true, r: 'Positive — autoimmune hemolytic anemia' }] },
+          { name: 'Histopathology & Biopsy', icon: '🩸', tests: [{ n: 'Skin punch biopsy (malar lesion)', c: false, r: 'Interface dermatitis consistent with lupus' }] },
+        ],
+        diagnoses: [{ t: 'Hodgkin lymphoma', c: false }, { t: 'Systemic lupus erythematosus (multisystem inflammatory disease)', c: true }, { t: 'Acute pericarditis (serositis)', c: true }, { t: 'Lupus nephritis (proteinuric glomerulonephritis)', c: true }, { t: 'Infectious mononucleosis', c: false }, { t: 'Pulmonary tuberculosis', c: false }, { t: 'Anemia of chronic disease', c: false }, { t: 'Hyperthyroidism', c: false }, { t: 'Rheumatoid arthritis', c: false }],
+        dxCount: 3,
+        treatCats: [
+          { name: 'Medications', icon: '💊', treats: [{ n: 'Colchicine for pericarditis', c: true }, { n: 'Hydroxychloroquine (daily)', c: true }, { n: 'Oseltamivir', c: false }, { n: 'Levothyroxine', c: false }, { n: 'Ibuprofen (NSAID) for serositis/arthralgia', c: false }, { n: 'Rituximab infusion', c: false }, { n: 'Piperacillin–tazobactam IV', c: false }, { n: 'Warfarin anticoagulation', c: false }, { n: 'Prednisone, low–moderate dose taper', c: true }, { n: 'Methimazole', c: false }, { n: 'Lisinopril (ACE inhibitor) for proteinuria', c: true }, { n: 'Cyclophosphamide induction (high dose)', c: false }] },
+          { name: 'Emergency & Critical Care', icon: '❤️‍🩹', treats: [{ n: 'Therapeutic plasma exchange', c: false }] },
+          { name: 'Lifestyle & Preventive Medicine', icon: '🥗', treats: [{ n: 'Photoprotection and sunscreen', c: true }, { n: 'RIPE therapy for TB', c: false }] },
+        ],
+        summary: { dx: 'Systemic lupus erythematosus with lupus nephritis and serositis', sub: 'Sun rash with serositis', clues: 'Photosensitive malar rash, oral ulcers, symmetric inflammatory polyarthritis, pleuritic chest pain with friction rub and diffuse ST elevation, hematuria with RBC casts and proteinuria, high-titer ANA with anti–dsDNA/anti-Smith positivity and low complements.', tests: 'ANA with specific antibodies (anti–dsDNA, anti-Smith), complements (C3/C4), urinalysis with protein/creatinine ratio and renal function, ECG/echocardiogram; then kidney biopsy to classify lupus nephritis.', mgmt: 'Start hydroxychloroquine plus moderate-dose glucocorticoids, ACE inhibitor for proteinuria, colchicine for pericarditis (avoid NSAIDs if renal active), strict photoprotection, and arrange prompt renal biopsy.', pitfalls: 'Delaying kidney biopsy or treating empirically with cytotoxic therapy/NSAIDs without confirming and staging lupus nephritis.', other: 'Hodgkin lymphoma lacks malar rash, serositis, and renal involvement. RA lacks nephritis and malar rash. Infectious causes excluded by negative workup.', testRationale: 'ANA + anti-dsDNA cornerstone for SLE. Complement (C3/C4) tracks disease activity. Urinalysis + protein/creatinine ratio assess nephritis. ECG and echo evaluate serositis.', treatSeq: '1. Hydroxychloroquine — universal. 2. Glucocorticoids — acute flare. 3. ACE inhibitor — renal protection. 4. Colchicine — pericarditis. 5. Renal biopsy before cytotoxics.', traps: 'Never start NSAIDs if renal disease active. Do not skip kidney biopsy. Always screen for antiphospholipid syndrome.', learning: 'SLE: multisystem autoimmune disease. Malar rash + serositis + nephritis + cytopenias + positive ANA = classic SLE. Hydroxychloroquine reduces flares and improves survival.' },
+        xp: 30
+      },
+      {
+        id: 'acs', name: 'Acute Care & Surgery', color: '#ef4444', emoji: '🚑', waitDays: 142,
+        caseTitle: 'Vomiting blood and fainting in a young man',
+        caseDesc: 'A 26-year-old male brought to ED after hematemesis and syncope. History of NSAID use. Evaluate and manage urgently.',
+        patient: { name: 'Dawid', gender: 'Male', age: '26 Y', complaint: 'Vomiting blood and fainting' },
+        vitals: [{ icon: '🌡️', label: 'Temperature', val: '37.0°C' }, { icon: '❤️', label: 'Heart Rate', val: '118 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '90/60 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '22/min' }, { icon: '💧', label: 'SpO2', val: '96% on room air' }],
+        history: ['2 episodes of hematemesis — fresh red blood.', 'Syncopal episode in bathroom this morning.', 'Regular NSAID use for back pain over 3 months.', 'No prior GI history, no significant alcohol use.'],
+        physExam: ['Pale, diaphoretic, distressed.', 'HR 118, BP 90/60 — hemodynamic compromise.', 'Epigastric tenderness on palpation.', 'No peritoneal signs, no ascites.'],
+        testCats: [{ name: 'Emergency Labs', icon: '🔬', tests: [{ n: 'IV Access + Fluid Resuscitation', c: true, r: '2 large bore IVs, NS running fast' }, { n: 'Hb/PCV', c: true, r: 'Hb 7.2 g/dL — significant anemia' }, { n: 'Upper GI Endoscopy', c: true, r: 'Duodenal ulcer with active bleeding vessel' }, { n: 'CT Head', c: false, r: 'Normal — no intracranial pathology' }] }],
+        diagnoses: [{ t: 'Upper GI Bleed — Peptic Ulcer Disease', c: true }, { t: 'Variceal Bleeding', c: false }, { t: 'Mallory-Weiss Tear', c: false }, { t: 'Aortic Aneurysm Rupture', c: false }],
+        dxCount: 1,
+        treatCats: [{ name: 'Medications & Procedures', icon: '💊', treats: [{ n: 'IV PPI (Pantoprazole)', c: true }, { n: 'Endoscopic hemostasis', c: true }, { n: 'Blood transfusion', c: true }, { n: 'Oral antacids only', c: false }, { n: 'Emergency laparotomy', c: false }] }],
+        summary: { dx: 'Upper GI Bleed — Duodenal Ulcer', sub: 'Hematemesis with hemodynamic compromise', clues: 'Hematemesis, syncope, low BP, tachycardia, Hb 7.2 — significant UGIB. NSAID use strongly suggests peptic ulcer.', tests: 'Hb/PCV urgently, cross-match blood, IV access + resuscitation, urgent upper GI endoscopy.', mgmt: 'ABC first — IV access, fluid resuscitation, IV PPI, urgent endoscopy for hemostasis, blood transfusion if Hb <7.', pitfalls: 'Delaying fluid resuscitation. Performing CT before stabilising patient.', other: 'Variceal bleeding: no liver disease history. Mallory-Weiss: no violent vomiting. Aortic: no pulsatile mass.', testRationale: 'Hb urgently to guide transfusion. Endoscopy is both diagnostic and therapeutic.', treatSeq: '1. IV access + fluids. 2. IV PPI. 3. Urgent endoscopy. 4. Blood transfusion if needed.', traps: 'Never delay resuscitation for CT. Check Hb before transfusion threshold.', learning: 'UGIB: ABC first. Hb <7 → transfuse. IV PPI reduces re-bleeding. Endoscopic therapy: injection, clips, or heat.' },
+        xp: 30
+      },
+      {
+        id: 'obgyn', name: 'OBGYN', color: '#ec4899', emoji: '🤰', waitDays: 98,
+        caseTitle: 'Vaginal bleeding and decreased fetal movement at 34 weeks',
+        caseDesc: 'A 27-year-old G2P1 at 34 weeks with sudden painless vaginal bleeding and reduced fetal movements. Previous caesarean section.',
+        patient: { name: 'Anastasia', gender: 'Female', age: '27 Y', complaint: 'Vaginal bleeding and decreased fetal movement' },
+        vitals: [{ icon: '🌡️', label: 'Temperature', val: '36.9°C' }, { icon: '❤️', label: 'Heart Rate', val: '96 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '110/70 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '18/min' }, { icon: '💧', label: 'SpO2', val: '98% on room air' }],
+        history: ['G2P1 at 34 weeks gestation.', 'Sudden onset painless vaginal bleeding this morning.', 'Reduced fetal movements since morning.', 'No uterine contractions.', 'Previous lower segment caesarean section.'],
+        physExam: ['Anxious but haemodynamically stable.', 'Uterus soft — no abdominal tenderness.', 'Fetal heart rate borderline at 118 bpm.', 'Do NOT perform vaginal examination.'],
+        testCats: [{ name: 'Obstetric Investigations', icon: '🩺', tests: [{ n: 'Obstetric Ultrasound', c: true, r: 'Placenta previa confirmed — anterior low-lying placenta' }, { n: 'CTG (Cardiotocography)', c: true, r: 'Fetal bradycardia episodes — non-reassuring trace' }, { n: 'CBC + Coagulation', c: true, r: 'Hb 9.8, platelets normal, coagulation normal' }, { n: 'Urine culture', c: false, r: 'No growth' }, { n: 'MRI Brain', c: false, r: 'Normal' }] }],
+        diagnoses: [{ t: 'Placenta Previa with Fetal Distress', c: true }, { t: 'Placental Abruption', c: false }, { t: 'Preterm Labour', c: false }, { t: 'Vasa Previa', c: false }],
+        dxCount: 1,
+        treatCats: [{ name: 'Emergency Management', icon: '🚑', treats: [{ n: 'Emergency C-section', c: true }, { n: 'NICU standby', c: true }, { n: 'Blood transfusion ready', c: true }, { n: 'Tocolytics', c: false }, { n: 'Vaginal delivery with oxytocin', c: false }] }],
+        summary: { dx: 'Placenta Previa with Fetal Distress', sub: 'Painless antepartum haemorrhage', clues: 'Painless bleeding, prior C-section, anterior low-lying placenta on ultrasound, non-reassuring CTG — classic previa with fetal compromise.', tests: 'Obstetric ultrasound (not vaginal exam!), CTG for fetal wellbeing, CBC + coagulation screen.', mgmt: 'Emergency C-section, NICU standby, cross-match blood preoperatively.', pitfalls: 'Never do vaginal exam if placenta previa suspected. Delaying delivery when fetal compromise present.', other: 'Abruption: painful bleeding + uterine tenderness. Preterm labour: contractions. Vasa previa: rupture of membranes + fetal bradycardia.', testRationale: 'Ultrasound confirms placenta position. CTG assesses fetal wellbeing urgently. Coagulation screen for DIC risk.', treatSeq: '1. IV access + monitoring. 2. Emergency C-section decision. 3. Anaesthesia team. 4. NICU standby.', traps: 'Avoid vaginal exam — catastrophic bleeding risk. Delay in delivery = fetal death.', loading: 'Placenta previa: painless bleeding. Abruption: painful. Never examine vaginally without ruling out previa.' },
+        xp: 30
+      },
+    ];
 
-<div id="s-me" class="screen">
-  <div class="topbar"><div style="font-size:18px;font-weight:800">My Profile</div></div>
-  <div class="me-content">
-    <div class="profile-card">
-      <div style="width:70px;height:70px;border-radius:50%;background:#fff7ed;border:3px solid var(--orange);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 10px">👨‍⚕️</div>
-      <div style="font-size:20px;font-weight:800" id="me-name-disp">Dr. Student</div>
-      <div style="font-size:13px;color:var(--muted);margin-top:3px">Medical Student</div>
-      <div style="display:flex;justify-content:center;gap:10px;margin-top:14px">
-        <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:var(--orange)" id="me-coins">0</div><div style="font-size:10px;color:var(--muted)">Coins</div></div>
-        <div style="width:1px;background:var(--border)"></div>
-        <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:var(--red)" id="me-hearts">5</div><div style="font-size:10px;color:var(--muted)">Hearts</div></div>
-        <div style="width:1px;background:var(--border)"></div>
-        <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:var(--orange)" id="me-streak">0</div><div style="font-size:10px;color:var(--muted)">Streak</div></div>
-      </div>
-    </div>
-    <div style="background:var(--card);border-radius:var(--r);padding:16px;border:1.5px solid var(--border)">
-      <div style="font-size:15px;font-weight:800;margin-bottom:12px">Skill Progress</div>
-      <div id="skill-list"></div>
-    </div>
-    <div style="height:10px"></div>
-  </div>
-</div>
+    const FLASHCARDS = [
+      { q: "What is the classic triad of Parkinson's Disease?", a: "Tremor (resting), Rigidity (cogwheel), Bradykinesia" },
+      { q: "Aquagenic pruritus is pathognomonic for?", a: "Polycythemia Vera — itching triggered by warm water" },
+      { q: "What CSF findings confirm bacterial meningitis?", a: "Turbid CSF, WBC >100 neutrophils, high protein, LOW glucose" },
+      { q: "Malar rash + low complement + ANA = ?", a: "Systemic Lupus Erythematosus (SLE)" },
+      { q: "First-line treatment for SLE?", a: "Hydroxychloroquine for all; glucocorticoids for flares; ACE inhibitor if nephritis" },
+      { q: "Wood's lamp shows chalk-white in?", a: "Vitiligo — complete depigmentation" },
+    ];
+    const LEAGUE = [
 
-<div class="nav">
-  <button class="nb active" onclick="show('home')" id="n-home"><span class="ni">🏠</span>Home</button>
-  <button class="nb" onclick="show('s-learning')" id="n-s-learning"><span class="ni">➕</span>Learning</button>
-  <button class="nb" onclick="show('s-leagues')" id="n-s-leagues"><span class="ni">🏅</span>Leagues</button>
-  <button class="nb" onclick="show('s-me')" id="n-s-me"><span class="ni">🐱</span>Me</button>
-</div>
+    ];
 
-<script>
-const SPECS=[
-  {id:'gm',name:'General Medicine',color:'#f97316',emoji:'🩺',waitDays:177,
-   caseTitle:'Fever, fatigue, rash, and aching joints in a young woman',
-   caseDesc:'A 24-year-old woman with weeks of fatigue, fever, photosensitive facial rash, joint pains, and pleuritic chest discomfort. Evaluate common infectious, autoimmune, endocrine, and neoplastic causes while staying cost-conscious.',
-   patient:{name:'Eliza',gender:'Female',age:'24 Y',complaint:'Fatigue, fever, facial rash, and joint pains'},
-   vitals:[
-     {icon:'🌡️',label:'Temperature',val:'38.1°C (100.58°F)'},
-     {icon:'❤️',label:'Heart Rate',val:'96 bpm'},
-     {icon:'📈',label:'Blood Pressure',val:'108/68 mmHg'},
-     {icon:'🫁',label:'Respiratory Rate',val:'18/min'},
-     {icon:'💧',label:'SpO2',val:'99% on room air'},
-   ],
-   history:['Six weeks of fatigue, low-grade fevers, and 3 kg unintentional weight loss.','Symmetric hand and wrist pain with 45 minutes morning stiffness.','Photosensitive facial rash that worsens after sun exposure.','Pleuritic chest pain worse with inspiration; mild exertional dyspnea.','Painless oral ulcers; intermittent non-scarring hair shedding.','Occasional frothy urine without dysuria or flank pain.','No recent travel, TB exposure, or sick contacts; monogamous relationship; no IV drug use.','No prior medical conditions or medications; not pregnant; no recent vaccinations.'],
-   physExam:['Ill-appearing but not toxic; fatigued.','Erythematous malar rash sparing the nasolabial folds.','Two shallow painless ulcers on the hard palate.','Patchy non-scarring alopecia.','Tender, mildly swollen MCP and PIP joints bilaterally; reduced grip strength.','Faint pericardial friction rub; decreased breath sounds at left base.','No hepatosplenomegaly; no focal neurologic deficits.','Small, mobile, non-tender cervical lymph nodes.'],
-   testCats:[
-     {name:'Neurology & Endocrinology',icon:'🧠',tests:[{n:'TSH',c:true,r:'1.6 μIU/mL (normal)'},{n:'Morning serum cortisol',c:false,r:'Normal — 18 mcg/dL'}]},
-     {name:'Radiology & Imaging',icon:'🩻',tests:[{n:'Chest X-ray (PA/Lateral)',c:true,r:'Small left pleural effusion'},{n:'Renal ultrasound',c:false,r:'Normal size kidneys; no hydronephrosis'},{n:'Abdominal ultrasound',c:false,r:'No organomegaly'}]},
-     {name:'Cardiology & Pulmonary Function',icon:'❤️‍🩹',tests:[{n:'Transthoracic echocardiogram',c:true,r:'Mild pericardial effusion noted'},{n:'12-lead ECG',c:true,r:'Diffuse ST elevation — pericarditis pattern'},{n:'Spirometry',c:false,r:'Mild restrictive pattern'}]},
-     {name:'Genetic & Specialized',icon:'🧬',tests:[{n:'ANA by immunofluorescence (titer)',c:true,r:'Positive 1:640, homogeneous pattern'},{n:'Antiphospholipid antibody panel',c:true,r:'Positive lupus anticoagulant'},{n:'Complement C3 and C4',c:true,r:'C3: 62 mg/dL (low), C4: 8 mg/dL (low)'},{n:'Anti-Ro/SSA and Anti-La/SSB',c:true,r:'Anti-Ro positive'}]},
-     {name:'Microbiology & Infectious Disease',icon:'🦠',tests:[{n:'EBV VCA IgM',c:false,r:'Negative — no acute EBV'},{n:'Urine culture',c:false,r:'No growth'},{n:'Influenza A/B PCR',c:false,r:'Negative'},{n:'HIV-1/2 Ag/Ab combo',c:false,r:'Negative'}]},
-     {name:'Pathology',icon:'🔬',tests:[{n:'ESR',c:true,r:'92 mm/hr (markedly elevated)'},{n:'C-reactive protein',c:true,r:'48 mg/L (elevated)'},{n:'Serum ferritin',c:true,r:'680 ng/mL (elevated)'},{n:'Urine protein/creatinine ratio',c:true,r:'2.8 g/g — significant proteinuria'},{n:'Anti-CCP antibodies',c:false,r:'Negative'},{n:'Comprehensive metabolic panel',c:true,r:'Creatinine 1.4 mg/dL elevated, low albumin'},{n:'Urinalysis with microscopy',c:true,r:'3+ protein, RBC casts — active sediment'},{n:'CBC with differential',c:true,r:'WBC 3.2k leukopenia, Hb 9.8 anemia, Plt 98k thrombocytopenia'},{n:'Peripheral blood smear',c:false,r:'No schistocytes; normocytic anemia'},{n:'Rheumatoid factor',c:false,r:'Low positive — non-specific'},{n:'Direct antiglobulin (Coombs) test',c:true,r:'Positive — autoimmune hemolytic anemia'}]},
-     {name:'Histopathology & Biopsy',icon:'🩸',tests:[{n:'Skin punch biopsy (malar lesion)',c:false,r:'Interface dermatitis consistent with lupus'}]},
-   ],
-   diagnoses:[{t:'Hodgkin lymphoma',c:false},{t:'Systemic lupus erythematosus (multisystem inflammatory disease)',c:true},{t:'Acute pericarditis (serositis)',c:true},{t:'Lupus nephritis (proteinuric glomerulonephritis)',c:true},{t:'Infectious mononucleosis',c:false},{t:'Pulmonary tuberculosis',c:false},{t:'Anemia of chronic disease',c:false},{t:'Hyperthyroidism',c:false},{t:'Rheumatoid arthritis',c:false}],
-   dxCount:3,
-   treatCats:[
-     {name:'Medications',icon:'💊',treats:[{n:'Colchicine for pericarditis',c:true},{n:'Hydroxychloroquine (daily)',c:true},{n:'Oseltamivir',c:false},{n:'Levothyroxine',c:false},{n:'Ibuprofen (NSAID) for serositis/arthralgia',c:false},{n:'Rituximab infusion',c:false},{n:'Piperacillin–tazobactam IV',c:false},{n:'Warfarin anticoagulation',c:false},{n:'Prednisone, low–moderate dose taper',c:true},{n:'Methimazole',c:false},{n:'Lisinopril (ACE inhibitor) for proteinuria',c:true},{n:'Cyclophosphamide induction (high dose)',c:false}]},
-     {name:'Emergency & Critical Care',icon:'❤️‍🩹',treats:[{n:'Therapeutic plasma exchange',c:false}]},
-     {name:'Lifestyle & Preventive Medicine',icon:'🥗',treats:[{n:'Photoprotection and sunscreen',c:true},{n:'RIPE therapy for TB',c:false}]},
-   ],
-   summary:{dx:'Systemic lupus erythematosus with lupus nephritis and serositis',sub:'Sun rash with serositis',clues:'Photosensitive malar rash, oral ulcers, symmetric inflammatory polyarthritis, pleuritic chest pain with friction rub and diffuse ST elevation, hematuria with RBC casts and proteinuria, high-titer ANA with anti–dsDNA/anti-Smith positivity and low complements.',tests:'ANA with specific antibodies (anti–dsDNA, anti-Smith), complements (C3/C4), urinalysis with protein/creatinine ratio and renal function, ECG/echocardiogram; then kidney biopsy to classify lupus nephritis.',mgmt:'Start hydroxychloroquine plus moderate-dose glucocorticoids, ACE inhibitor for proteinuria, colchicine for pericarditis (avoid NSAIDs if renal active), strict photoprotection, and arrange prompt renal biopsy.',pitfalls:'Delaying kidney biopsy or treating empirically with cytotoxic therapy/NSAIDs without confirming and staging lupus nephritis.',other:'Hodgkin lymphoma lacks malar rash, serositis, and renal involvement. RA lacks nephritis and malar rash. Infectious causes excluded by negative workup.',testRationale:'ANA + anti-dsDNA cornerstone for SLE. Complement (C3/C4) tracks disease activity. Urinalysis + protein/creatinine ratio assess nephritis. ECG and echo evaluate serositis.',treatSeq:'1. Hydroxychloroquine — universal. 2. Glucocorticoids — acute flare. 3. ACE inhibitor — renal protection. 4. Colchicine — pericarditis. 5. Renal biopsy before cytotoxics.',traps:'Never start NSAIDs if renal disease active. Do not skip kidney biopsy. Always screen for antiphospholipid syndrome.',learning:'SLE: multisystem autoimmune disease. Malar rash + serositis + nephritis + cytopenias + positive ANA = classic SLE. Hydroxychloroquine reduces flares and improves survival.'},
-   xp:30},
-  {id:'acs',name:'Acute Care & Surgery',color:'#ef4444',emoji:'🚑',waitDays:142,
-   caseTitle:'Vomiting blood and fainting in a young man',
-   caseDesc:'A 26-year-old male brought to ED after hematemesis and syncope. History of NSAID use. Evaluate and manage urgently.',
-   patient:{name:'Dawid',gender:'Male',age:'26 Y',complaint:'Vomiting blood and fainting'},
-   vitals:[{icon:'🌡️',label:'Temperature',val:'37.0°C'},{icon:'❤️',label:'Heart Rate',val:'118 bpm'},{icon:'📈',label:'Blood Pressure',val:'90/60 mmHg'},{icon:'🫁',label:'Respiratory Rate',val:'22/min'},{icon:'💧',label:'SpO2',val:'96% on room air'}],
-   history:['2 episodes of hematemesis — fresh red blood.','Syncopal episode in bathroom this morning.','Regular NSAID use for back pain over 3 months.','No prior GI history, no significant alcohol use.'],
-   physExam:['Pale, diaphoretic, distressed.','HR 118, BP 90/60 — hemodynamic compromise.','Epigastric tenderness on palpation.','No peritoneal signs, no ascites.'],
-   testCats:[{name:'Emergency Labs',icon:'🔬',tests:[{n:'IV Access + Fluid Resuscitation',c:true,r:'2 large bore IVs, NS running fast'},{n:'Hb/PCV',c:true,r:'Hb 7.2 g/dL — significant anemia'},{n:'Upper GI Endoscopy',c:true,r:'Duodenal ulcer with active bleeding vessel'},{n:'CT Head',c:false,r:'Normal — no intracranial pathology'}]}],
-   diagnoses:[{t:'Upper GI Bleed — Peptic Ulcer Disease',c:true},{t:'Variceal Bleeding',c:false},{t:'Mallory-Weiss Tear',c:false},{t:'Aortic Aneurysm Rupture',c:false}],
-   dxCount:1,
-   treatCats:[{name:'Medications & Procedures',icon:'💊',treats:[{n:'IV PPI (Pantoprazole)',c:true},{n:'Endoscopic hemostasis',c:true},{n:'Blood transfusion',c:true},{n:'Oral antacids only',c:false},{n:'Emergency laparotomy',c:false}]}],
-   summary:{dx:'Upper GI Bleed — Duodenal Ulcer',sub:'Hematemesis with hemodynamic compromise',clues:'Hematemesis, syncope, low BP, tachycardia, Hb 7.2 — significant UGIB. NSAID use strongly suggests peptic ulcer.',tests:'Hb/PCV urgently, cross-match blood, IV access + resuscitation, urgent upper GI endoscopy.',mgmt:'ABC first — IV access, fluid resuscitation, IV PPI, urgent endoscopy for hemostasis, blood transfusion if Hb <7.',pitfalls:'Delaying fluid resuscitation. Performing CT before stabilising patient.',other:'Variceal bleeding: no liver disease history. Mallory-Weiss: no violent vomiting. Aortic: no pulsatile mass.',testRationale:'Hb urgently to guide transfusion. Endoscopy is both diagnostic and therapeutic.',treatSeq:'1. IV access + fluids. 2. IV PPI. 3. Urgent endoscopy. 4. Blood transfusion if needed.',traps:'Never delay resuscitation for CT. Check Hb before transfusion threshold.',learning:'UGIB: ABC first. Hb <7 → transfuse. IV PPI reduces re-bleeding. Endoscopic therapy: injection, clips, or heat.'},
-   xp:30},
-  {id:'obgyn',name:'OBGYN',color:'#ec4899',emoji:'🤰',waitDays:98,
-   caseTitle:'Vaginal bleeding and decreased fetal movement at 34 weeks',
-   caseDesc:'A 27-year-old G2P1 at 34 weeks with sudden painless vaginal bleeding and reduced fetal movements. Previous caesarean section.',
-   patient:{name:'Anastasia',gender:'Female',age:'27 Y',complaint:'Vaginal bleeding and decreased fetal movement'},
-   vitals:[{icon:'🌡️',label:'Temperature',val:'36.9°C'},{icon:'❤️',label:'Heart Rate',val:'96 bpm'},{icon:'📈',label:'Blood Pressure',val:'110/70 mmHg'},{icon:'🫁',label:'Respiratory Rate',val:'18/min'},{icon:'💧',label:'SpO2',val:'98% on room air'}],
-   history:['G2P1 at 34 weeks gestation.','Sudden onset painless vaginal bleeding this morning.','Reduced fetal movements since morning.','No uterine contractions.','Previous lower segment caesarean section.'],
-   physExam:['Anxious but haemodynamically stable.','Uterus soft — no abdominal tenderness.','Fetal heart rate borderline at 118 bpm.','Do NOT perform vaginal examination.'],
-   testCats:[{name:'Obstetric Investigations',icon:'🩺',tests:[{n:'Obstetric Ultrasound',c:true,r:'Placenta previa confirmed — anterior low-lying placenta'},{n:'CTG (Cardiotocography)',c:true,r:'Fetal bradycardia episodes — non-reassuring trace'},{n:'CBC + Coagulation',c:true,r:'Hb 9.8, platelets normal, coagulation normal'},{n:'Urine culture',c:false,r:'No growth'},{n:'MRI Brain',c:false,r:'Normal'}]}],
-   diagnoses:[{t:'Placenta Previa with Fetal Distress',c:true},{t:'Placental Abruption',c:false},{t:'Preterm Labour',c:false},{t:'Vasa Previa',c:false}],
-   dxCount:1,
-   treatCats:[{name:'Emergency Management',icon:'🚑',treats:[{n:'Emergency C-section',c:true},{n:'NICU standby',c:true},{n:'Blood transfusion ready',c:true},{n:'Tocolytics',c:false},{n:'Vaginal delivery with oxytocin',c:false}]}],
-   summary:{dx:'Placenta Previa with Fetal Distress',sub:'Painless antepartum haemorrhage',clues:'Painless bleeding, prior C-section, anterior low-lying placenta on ultrasound, non-reassuring CTG — classic previa with fetal compromise.',tests:'Obstetric ultrasound (not vaginal exam!), CTG for fetal wellbeing, CBC + coagulation screen.',mgmt:'Emergency C-section, NICU standby, cross-match blood preoperatively.',pitfalls:'Never do vaginal exam if placenta previa suspected. Delaying delivery when fetal compromise present.',other:'Abruption: painful bleeding + uterine tenderness. Preterm labour: contractions. Vasa previa: rupture of membranes + fetal bradycardia.',testRationale:'Ultrasound confirms placenta position. CTG assesses fetal wellbeing urgently. Coagulation screen for DIC risk.',treatSeq:'1. IV access + monitoring. 2. Emergency C-section decision. 3. Anaesthesia team. 4. NICU standby.',traps:'Avoid vaginal exam — catastrophic bleeding risk. Delay in delivery = fetal death.',loading:'Placenta previa: painless bleeding. Abruption: painful. Never examine vaginally without ruling out previa.'},
-   xp:30},
-];
+    // Setup global variables
+    var coins = 0, hearts = 5, streak = 0;
+    let sp = null, selTests = [], selTreats = [], selDiags = [], diagDone = false, resIdx = 0, slide = 0, fcIdx = 0, fcFlip = false;
 
-const FLASHCARDS=[
-  {q:"What is the classic triad of Parkinson's Disease?",a:"Tremor (resting), Rigidity (cogwheel), Bradykinesia"},
-  {q:"Aquagenic pruritus is pathognomonic for?",a:"Polycythemia Vera — itching triggered by warm water"},
-  {q:"What CSF findings confirm bacterial meningitis?",a:"Turbid CSF, WBC >100 neutrophils, high protein, LOW glucose"},
-  {q:"Malar rash + low complement + ANA = ?",a:"Systemic Lupus Erythematosus (SLE)"},
-  {q:"First-line treatment for SLE?",a:"Hydroxychloroquine for all; glucocorticoids for flares; ACE inhibitor if nephritis"},
-  {q:"Wood's lamp shows chalk-white in?",a:"Vitiligo — complete depigmentation"},
-];
-const LEAGUE=[
-  {name:'Meghna S.',xp:2840,rank:1,you:false,emoji:'👩‍⚕️'},
-  {name:'Rahul D.',xp:2650,rank:2,you:false,emoji:'👨‍⚕️'},
-  {name:'Priya N.',xp:2310,rank:3,you:false,emoji:'👩'},
-  {name:'Dr. Aryan',xp:1450,rank:4,you:true,emoji:'🌟'},
-  {name:'Aditya K.',xp:1320,rank:5,you:false,emoji:'👦'},
-  {name:'Sneha M.',xp:980,rank:6,you:false,emoji:'👩'},
-  {name:'Vikram R.',xp:760,rank:7,you:false,emoji:'👨'},
-  {name:'Lena P.',xp:640,rank:8,you:false,emoji:'👩‍🔬'},
-];
+    function show(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
+      const el = document.getElementById('s-' + id) || document.getElementById(id);
+      if (el) el.classList.add('active');
+      const nb = document.getElementById('n-' + id) || document.getElementById('n-s-' + id);
+      if (nb) nb.classList.add('active');
+      if (id === 'home' || id === 's-home') document.getElementById('n-home').classList.add('active');
+      if (id === 's-leagues') renderLeague();
+      if (id === 's-learning') loadFC();
+      if (id === 's-me') renderMe();
+    }
 
-// Setup global variables
-var coins=0,hearts=5,streak=0;
-let sp=null,selTests=[],selTreats=[],selDiags=[],diagDone=false,resIdx=0,slide=0,fcIdx=0,fcFlip=false;
-
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
-  const el=document.getElementById('s-'+id)||document.getElementById(id);
-  if(el)el.classList.add('active');
-  const nb=document.getElementById('n-'+id)||document.getElementById('n-s-'+id);
-  if(nb)nb.classList.add('active');
-  if(id==='home'||id==='s-home')document.getElementById('n-home').classList.add('active');
-  if(id==='s-leagues')renderLeague();
-  if(id==='s-learning')loadFC();
-  if(id==='s-me')renderMe();
-}
-
-// HOME
-function renderHome(){
-  document.getElementById('home-list').innerHTML=SPECS.map(s=>`
+    // HOME
+    function renderHome() {
+      document.getElementById('home-list').innerHTML = SPECS.map(s => `
     <div class="spec-card" onclick="openIntro('${s.id}')">
       <div class="spec-info">
         <div class="spec-name">${s.name}</div>
-        <div class="spec-case">${s.patient.name}, ${s.patient.age.replace(' Y','')+s.patient.gender[0]}, ${s.patient.complaint.toLowerCase()}, solve within 6h to get double XP</div>
+        <div class="spec-case">${s.patient.name}, ${s.patient.age.replace(' Y', '') + s.patient.gender[0]}, ${s.patient.complaint.toLowerCase()}, solve within 6h to get double XP</div>
         <div class="spec-trophies">
           <div class="trophy-item" style="background:#fff7ed;color:${s.color}"><span style="width:9px;height:9px;border-radius:50%;background:${s.color};display:inline-block"></span>4/10 🥉</div>
           <div class="trophy-item">0/50 🏆</div>
@@ -540,25 +1934,25 @@ function renderHome(){
       </div>
       <div class="play-btn"><div class="play-icon"></div></div>
     </div>`).join('');
-}
+    }
 
-// INTRO
-function openIntro(id){
-  sp=SPECS.find(s=>s.id===id);
-  selTests=[];selTreats=[];selDiags=[];diagDone=false;
-  document.getElementById('intro-wait').textContent='Waiting for the past '+sp.waitDays+' days';
-  document.getElementById('intro-img').textContent=sp.emoji;
-  document.getElementById('intro-tag').textContent=sp.name;
-  document.getElementById('intro-title').textContent=sp.caseTitle;
-  document.getElementById('intro-desc').textContent=sp.caseDesc;
-  show('intro');
-}
+    // INTRO
+    function openIntro(id) {
+      sp = SPECS.find(s => s.id === id);
+      selTests = []; selTreats = []; selDiags = []; diagDone = false;
+      document.getElementById('intro-wait').textContent = 'Waiting for the past ' + sp.waitDays + ' days';
+      document.getElementById('intro-img').textContent = sp.emoji;
+      document.getElementById('intro-tag').textContent = sp.name;
+      document.getElementById('intro-title').textContent = sp.caseTitle;
+      document.getElementById('intro-desc').textContent = sp.caseDesc;
+      show('intro');
+    }
 
-// CAROUSEL
-function startCarousel(){slide=0;buildCar();show('carousel');}
-function buildCar(){
-  const slides=[
-    `<div class="car-card">
+    // CAROUSEL
+    function startCarousel() { slide = 0; buildCar(); show('carousel'); }
+    function buildCar() {
+      const slides = [
+        `<div class="car-card">
       <div class="car-card-title">Basic Info &amp; Chief Complaint</div>
       <div class="car-img">${sp.emoji}</div>
       <div class="info-grid">
@@ -568,374 +1962,436 @@ function buildCar(){
       </div>
       <div class="cc-box"><div class="cc-lbl">📋 Chief Complaint</div><div class="cc-val">${sp.patient.complaint}</div></div>
     </div>`,
-    `<div class="car-card">
+        `<div class="car-card">
       <div class="car-card-title">Vitals</div>
-      ${sp.vitals.map(v=>`<div class="vital-row"><div class="vr-icon">${v.icon}</div><div><div class="vr-label">${v.label}</div><div class="vr-val">${v.val}</div></div></div>`).join('')}
+      ${sp.vitals.map(v => `<div class="vital-row"><div class="vr-icon">${v.icon}</div><div><div class="vr-label">${v.label}</div><div class="vr-val">${v.val}</div></div></div>`).join('')}
     </div>`,
-    `<div class="car-card">
+        `<div class="car-card">
       <div class="car-card-title">History (Hx)</div>
-      ${sp.history.map(h=>`<div class="hx-item"><div class="hx-dot"></div><div>${h}</div></div>`).join('')}
+      ${sp.history.map(h => `<div class="hx-item"><div class="hx-dot"></div><div>${h}</div></div>`).join('')}
     </div>`,
-    `<div class="car-card">
+        `<div class="car-card">
       <div class="car-card-title">Physical Examination</div>
-      ${sp.physExam.map(p=>`<div class="hx-item"><div class="hx-dot"></div><div>${p}</div></div>`).join('')}
+      ${sp.physExam.map(p => `<div class="hx-item"><div class="hx-dot"></div><div>${p}</div></div>`).join('')}
       <button class="view-exam-btn">View Exam Images →</button>
     </div>`,
-  ];
-  document.getElementById('car-body').innerHTML=slides.map((s,i)=>`<div id="cs${i}" style="${i?'display:none':''}">${s}</div>`).join('');
-  document.getElementById('car-dots').innerHTML=slides.map((_,i)=>`<div class="dot ${i===0?'active':''}" id="cd${i}"></div>`).join('');
-  renderCarNav();
-}
-function carGo(d){
-  const tot=4,nxt=slide+d;
-  if(nxt<0||nxt>tot)return;
-  if(nxt===tot){goToTests();return;}
-  document.getElementById('cs'+slide).style.display='none';
-  document.getElementById('cd'+slide).classList.remove('active');
-  slide=nxt;
-  document.getElementById('cs'+slide).style.display='';
-  document.getElementById('cd'+slide).classList.add('active');
-  document.getElementById('car-body').scrollTop=0;
-  renderCarNav();
-}
-function renderCarNav(){
-  const n=document.getElementById('car-nav');
-  if(slide===3){
-    n.innerHTML=`<button class="arrow-btn" onclick="carGo(-1)">‹</button><button class="order-btn" onclick="goToTests()">Order Tests →</button>`;
-  } else {
-    n.innerHTML=`<button class="arrow-btn ${slide===0?'ghost':''}" onclick="carGo(-1)">‹</button><button class="arrow-btn" onclick="carGo(1)">›</button>`;
-  }
-}
+      ];
+      document.getElementById('car-body').innerHTML = slides.map((s, i) => `<div id="cs${i}" style="${i ? 'display:none' : ''}">${s}</div>`).join('');
+      document.getElementById('car-dots').innerHTML = slides.map((_, i) => `<div class="dot ${i === 0 ? 'active' : ''}" id="cd${i}"></div>`).join('');
+      renderCarNav();
+    }
+    function carGo(d) {
+      const tot = 4, nxt = slide + d;
+      if (nxt < 0 || nxt > tot) return;
+      if (nxt === tot) { goToTests(); return; }
+      document.getElementById('cs' + slide).style.display = 'none';
+      document.getElementById('cd' + slide).classList.remove('active');
+      slide = nxt;
+      document.getElementById('cs' + slide).style.display = '';
+      document.getElementById('cd' + slide).classList.add('active');
+      document.getElementById('car-body').scrollTop = 0;
+      renderCarNav();
+    }
+    function renderCarNav() {
+      const n = document.getElementById('car-nav');
+      if (slide === 3) {
+        n.innerHTML = `<button class="arrow-btn" onclick="carGo(-1)">‹</button><button class="order-btn" onclick="goToTests()">Order Tests →</button>`;
+      } else {
+        n.innerHTML = `<button class="arrow-btn ${slide === 0 ? 'ghost' : ''}" onclick="carGo(-1)">‹</button><button class="arrow-btn" onclick="carGo(1)">›</button>`;
+      }
+    }
 
-// TESTS
-function goToTests(){selTests=[];buildTests();show('tests');}
-function esc(s){return s.replace(/'/g,"\'");}
-function buildTests(){
-  document.getElementById('test-list').innerHTML=sp.testCats.map(cat=>`
+    // TESTS
+    function goToTests() { selTests = []; buildTests(); show('tests'); }
+    function esc(s) { return s.replace(/'/g, "\'"); }
+    function buildTests() {
+      document.getElementById('test-list').innerHTML = sp.testCats.map(cat => `
     <div class="cat-head">${cat.icon} ${cat.name}</div>
-    ${cat.tests.map((t,i)=>{
-      const id=`T_${cat.name.slice(0,4)}_${i}`;
-      return`<div class="item-row"><div class="item-name">${t.n}</div>
+    ${cat.tests.map((t, i) => {
+        const id = `T_${cat.name.slice(0, 4)}_${i}`;
+        return `<div class="item-row"><div class="item-name">${t.n}</div>
         <button class="add-btn" id="b${id}" onclick="togTest('${id}','${esc(t.n)}','${esc(t.r)}',${t.c},this)">Add to Tray</button></div>`;
-    }).join('')}`).join('');
-  updTestTray();
-}
-function togTest(id,name,result,correct,btn){
-  const i=selTests.findIndex(t=>t.id===id);
-  if(i===-1){selTests.push({id,name,result,correct});btn.textContent='Remove';btn.classList.add('added');}
-  else{selTests.splice(i,1);btn.textContent='Add to Tray';btn.classList.remove('added');}
-  updTestTray();
-}
-function updTestTray(){
-  const chips=document.getElementById('test-chips'),empty=document.getElementById('test-empty'),cta=document.getElementById('test-cta');
-  if(selTests.length===0){chips.style.display='none';empty.style.display='flex';cta.classList.remove('on');}
-  else{chips.style.display='flex';empty.style.display='none';cta.classList.add('on');
-    chips.innerHTML=selTests.map(t=>`<div class="tray-chip"><span class="chip-name">${t.name}</span><span class="chip-x" onclick="rmTest('${t.id}')">✕</span></div>`).join('');}
-}
-function rmTest(id){
-  selTests=selTests.filter(t=>t.id!==id);
-  const b=document.getElementById('b'+id);if(b){b.textContent='Add to Tray';b.classList.remove('added');}
-  updTestTray();
-}
-function showResults(){
-  if(!selTests.length)return;
-  resIdx=0;buildResCards();
-  document.getElementById('modal-results').classList.remove('hide');
-}
-function buildResCards(){
-  document.getElementById('res-cards').innerHTML=selTests.map((t,i)=>`
-    <div class="res-card" id="rc${i}" style="${i?'display:none':''}">      <div class="res-name">${t.name}</div><div class="res-val">${t.result}</div></div>`).join('');
-  document.getElementById('res-dots').innerHTML=selTests.map((_,i)=>`<div class="rdot ${i===resIdx?'active':''}" onclick="goRes(${i})"></div>`).join('');
-  document.getElementById('res-counter').textContent=`${resIdx+1}/${selTests.length}`;
-  const cards=document.getElementById('res-cards');
-  let sx=0;
-  cards.ontouchstart=e=>sx=e.touches[0].clientX;
-  cards.ontouchend=e=>{const dx=e.changedTouches[0].clientX-sx;if(dx<-40)goRes(Math.min(resIdx+1,selTests.length-1));else if(dx>40)goRes(Math.max(resIdx-1,0));};
-}
-function goRes(i){
-  document.getElementById('rc'+resIdx).style.display='none';
-  document.querySelectorAll('.rdot')[resIdx].classList.remove('active');
-  resIdx=i;
-  document.getElementById('rc'+resIdx).style.display='';
-  document.querySelectorAll('.rdot')[resIdx].classList.add('active');
-  document.getElementById('res-counter').textContent=`${resIdx+1}/${selTests.length}`;
-}
-function closeModal(){document.getElementById('modal-results').classList.add('hide');}
-function goToDiag(){closeModal();buildDiag();show('diag');}
+      }).join('')}`).join('');
+      updTestTray();
+    }
+    function togTest(id, name, result, correct, btn) {
+      const i = selTests.findIndex(t => t.id === id);
+      if (i === -1) { selTests.push({ id, name, result, correct }); btn.textContent = 'Remove'; btn.classList.add('added'); }
+      else { selTests.splice(i, 1); btn.textContent = 'Add to Tray'; btn.classList.remove('added'); }
+      updTestTray();
+    }
+    function updTestTray() {
+      const chips = document.getElementById('test-chips'), empty = document.getElementById('test-empty'), cta = document.getElementById('test-cta');
+      if (selTests.length === 0) { chips.style.display = 'none'; empty.style.display = 'flex'; cta.classList.remove('on'); }
+      else {
+        chips.style.display = 'flex'; empty.style.display = 'none'; cta.classList.add('on');
+        chips.innerHTML = selTests.map(t => `<div class="tray-chip"><span class="chip-name">${t.name}</span><span class="chip-x" onclick="rmTest('${t.id}')">✕</span></div>`).join('');
+      }
+    }
+    function rmTest(id) {
+      selTests = selTests.filter(t => t.id !== id);
+      const b = document.getElementById('b' + id); if (b) { b.textContent = 'Add to Tray'; b.classList.remove('added'); }
+      updTestTray();
+    }
+    function showResults() {
+      if (!selTests.length) return;
+      resIdx = 0; buildResCards();
+      document.getElementById('modal-results').classList.remove('hide');
+    }
+    function buildResCards() {
+      document.getElementById('res-cards').innerHTML = selTests.map((t, i) => `
+    <div class="res-card" id="rc${i}" style="${i ? 'display:none' : ''}">      <div class="res-name">${t.name}</div><div class="res-val">${t.result}</div></div>`).join('');
+      document.getElementById('res-dots').innerHTML = selTests.map((_, i) => `<div class="rdot ${i === resIdx ? 'active' : ''}" onclick="goRes(${i})"></div>`).join('');
+      document.getElementById('res-counter').textContent = `${resIdx + 1}/${selTests.length}`;
+      const cards = document.getElementById('res-cards');
+      let sx = 0;
+      cards.ontouchstart = e => sx = e.touches[0].clientX;
+      cards.ontouchend = e => { const dx = e.changedTouches[0].clientX - sx; if (dx < -40) goRes(Math.min(resIdx + 1, selTests.length - 1)); else if (dx > 40) goRes(Math.max(resIdx - 1, 0)); };
+    }
+    function goRes(i) {
+      document.getElementById('rc' + resIdx).style.display = 'none';
+      document.querySelectorAll('.rdot')[resIdx].classList.remove('active');
+      resIdx = i;
+      document.getElementById('rc' + resIdx).style.display = '';
+      document.querySelectorAll('.rdot')[resIdx].classList.add('active');
+      document.getElementById('res-counter').textContent = `${resIdx + 1}/${selTests.length}`;
+    }
+    function closeModal() { document.getElementById('modal-results').classList.add('hide'); }
+    function goToDiag() { closeModal(); buildDiag(); show('diag'); }
 
-// DIAGNOSIS
-function buildDiag(){
-  selDiags=[];diagDone=false;
-  document.getElementById('diag-cnt').textContent=sp.dxCount;
-  document.getElementById('diag-list').innerHTML=sp.diagnoses.map((d,i)=>`
+    // DIAGNOSIS
+    function buildDiag() {
+      selDiags = []; diagDone = false;
+      document.getElementById('diag-cnt').textContent = sp.dxCount;
+      document.getElementById('diag-list').innerHTML = sp.diagnoses.map((d, i) => `
     <button class="dopt" id="dopt${i}" onclick="togDiag(${i})">${d.t}</button>`).join('');
-  document.getElementById('diag-cta').classList.remove('on');
-}
-function togDiag(i){
-  if(diagDone)return;
-  const idx=selDiags.indexOf(i);
-  if(idx===-1)selDiags.push(i);else selDiags.splice(idx,1);
-  document.querySelectorAll('.dopt').forEach((el,j)=>el.classList.toggle('sel',selDiags.includes(j)));
-  document.getElementById('diag-cta').classList.toggle('on',selDiags.length>0);
-}
-function confirmDiag(){
-  if(!selDiags.length)return;
-  diagDone=true;
-  sp.diagnoses.forEach((d,i)=>{
-    const el=document.getElementById('dopt'+i);
-    if(d.c)el.classList.add('correct');
-    else if(selDiags.includes(i)){el.classList.add('wrong');el.classList.remove('sel');}
-    else el.classList.remove('sel');
-  });
-  setTimeout(()=>{buildTreat();show('treat');},700);
-}
+      document.getElementById('diag-cta').classList.remove('on');
+    }
+    function togDiag(i) {
+      if (diagDone) return;
+      const idx = selDiags.indexOf(i);
+      if (idx === -1) selDiags.push(i); else selDiags.splice(idx, 1);
+      document.querySelectorAll('.dopt').forEach((el, j) => el.classList.toggle('sel', selDiags.includes(j)));
+      document.getElementById('diag-cta').classList.toggle('on', selDiags.length > 0);
+    }
+    function confirmDiag() {
+      if (!selDiags.length) return;
+      diagDone = true;
+      sp.diagnoses.forEach((d, i) => {
+        const el = document.getElementById('dopt' + i);
+        if (d.c) el.classList.add('correct');
+        else if (selDiags.includes(i)) { el.classList.add('wrong'); el.classList.remove('sel'); }
+        else el.classList.remove('sel');
+      });
+      setTimeout(() => { buildTreat(); show('treat'); }, 700);
+    }
 
-// TREATMENTS
-function buildTreat(){
-  selTreats=[];
-  document.getElementById('treat-list').innerHTML=sp.treatCats.map(cat=>`
+    // TREATMENTS
+    function buildTreat() {
+      selTreats = [];
+      document.getElementById('treat-list').innerHTML = sp.treatCats.map(cat => `
     <div class="cat-head">${cat.icon} ${cat.name}</div>
-    ${cat.treats.map((t,i)=>{
-      const id=`R_${cat.name.slice(0,4)}_${i}`;
-      return`<div class="item-row"><div class="item-name">${t.n}</div>
+    ${cat.treats.map((t, i) => {
+        const id = `R_${cat.name.slice(0, 4)}_${i}`;
+        return `<div class="item-row"><div class="item-name">${t.n}</div>
         <button class="add-btn" id="tb${id}" onclick="togTreat('${id}','${esc(t.n)}',${t.c},this)">Add to Tray</button></div>`;
-    }).join('')}`).join('');
-  updTreatTray();
-}
-function togTreat(id,name,correct,btn){
-  const i=selTreats.findIndex(t=>t.id===id);
-  if(i===-1){selTreats.push({id,name,correct});btn.textContent='Remove';btn.classList.add('added');}
-  else{selTreats.splice(i,1);btn.textContent='Add to Tray';btn.classList.remove('added');}
-  updTreatTray();
-}
-function updTreatTray(){
-  const chips=document.getElementById('treat-chips'),empty=document.getElementById('treat-empty'),cta=document.getElementById('treat-cta');
-  if(selTreats.length===0){chips.style.display='none';empty.style.display='flex';cta.classList.remove('on');}
-  else{chips.style.display='flex';empty.style.display='none';cta.classList.add('on');
-    chips.innerHTML=selTreats.map(t=>`<div class="tray-chip"><span class="chip-name">${t.name}</span><span class="chip-x" onclick="rmTreat('${t.id}')">✕</span></div>`).join('');}
-}
-function rmTreat(id){
-  selTreats=selTreats.filter(t=>t.id!==id);
-  const b=document.getElementById('tb'+id);if(b){b.textContent='Add to Tray';b.classList.remove('added');}
-  updTreatTray();
-}
-function completeCase(){
-  if(!selTreats.length)return;
-  
-  coins+=sp.xp;
-  updateBars();
-  showXP('+'+sp.xp+' XP');
-  document.getElementById('comp-xp').textContent=sp.xp;
-  
-  // Call the global Firebase save function
-  if (window.saveAtriumProgress) {
-      window.saveAtriumProgress(sp.xp);
-  }
+      }).join('')}`).join('');
+      updTreatTray();
+    }
+    function togTreat(id, name, correct, btn) {
+      const i = selTreats.findIndex(t => t.id === id);
+      if (i === -1) { selTreats.push({ id, name, correct }); btn.textContent = 'Remove'; btn.classList.add('added'); }
+      else { selTreats.splice(i, 1); btn.textContent = 'Add to Tray'; btn.classList.remove('added'); }
+      updTreatTray();
+    }
+    function updTreatTray() {
+      const chips = document.getElementById('treat-chips'), empty = document.getElementById('treat-empty'), cta = document.getElementById('treat-cta');
+      if (selTreats.length === 0) { chips.style.display = 'none'; empty.style.display = 'flex'; cta.classList.remove('on'); }
+      else {
+        chips.style.display = 'flex'; empty.style.display = 'none'; cta.classList.add('on');
+        chips.innerHTML = selTreats.map(t => `<div class="tray-chip"><span class="chip-name">${t.name}</span><span class="chip-x" onclick="rmTreat('${t.id}')">✕</span></div>`).join('');
+      }
+    }
+    function rmTreat(id) {
+      selTreats = selTreats.filter(t => t.id !== id);
+      const b = document.getElementById('tb' + id); if (b) { b.textContent = 'Add to Tray'; b.classList.remove('added'); }
+      updTreatTray();
+    }
+    function completeCase() {
+      if (!selTreats.length) return;
 
-  const allRight=selDiags.length>0&&selDiags.every(i=>sp.diagnoses[i].c);
-  document.getElementById('comp-h').textContent=allRight?'🎉 Outstanding clinical reasoning!':'Tough case, but real progress starts here';
-  document.getElementById('comp-thumb').textContent=sp.emoji;
-  show('complete');
-}
+      coins += sp.xp;
+      updateBars();
+      showXP('+' + sp.xp + ' XP');
+      document.getElementById('comp-xp').textContent = sp.xp;
 
-// REVIEW
-function goToReview(){
-  const s=sp.summary;
-  document.getElementById('rev-thumb').textContent=sp.emoji;
-  document.getElementById('rev-dx').textContent=s.dx;
-  document.getElementById('rev-sub').textContent=s.sub;
-  // Tests tab
-  const good=selTests.filter(t=>t.correct),bad=selTests.filter(t=>!t.correct);
-  const allCor=sp.testCats.flatMap(c=>c.tests.filter(t=>t.c));
-  const missed=allCor.filter(ct=>!selTests.find(st=>st.name===ct.n));
-  document.getElementById('tp-tests').innerHTML=
-    sec('✓','chk-g','green','Efficient Test Choices',good.map(t=>t.name))+
-    sec('✕','chk-r','red','Inefficient Test Choices',bad.map(t=>t.name))+
-    sec('ℹ','chk-a','amber','Tests You Missed',missed.map(t=>t.n));
-  // Diag tab
-  const corDx=sp.diagnoses.filter(d=>d.c);
-  const wrDx=selDiags.filter(i=>!sp.diagnoses[i].c).map(i=>sp.diagnoses[i]);
-  document.getElementById('tp-diag').innerHTML=
-    sec('✓','chk-g','green','Correct Diagnoses',corDx.map(d=>d.t))+
-    sec('✕','chk-r','red','Incorrect Selections',wrDx.map(d=>d.t));
-  // Treatment tab
-  const corTr=sp.treatCats.flatMap(c=>c.treats.filter(t=>t.c));
-  const chCor=selTreats.filter(t=>t.correct),chWr=selTreats.filter(t=>!t.correct);
-  document.getElementById('tp-treatment').innerHTML=
-    sec('✓','chk-g','green','Correct Treatments',chCor.map(t=>t.name))+
-    sec('✕','chk-r','red','Incorrect Treatments',chWr.map(t=>t.name))+
-    sec('ℹ','chk-a','amber','All Correct Treatments',corTr.map(t=>t.n));
-  // Insights
-  document.getElementById('ins-body').innerHTML=`
+      // Call the global Firebase save function
+      if (window.saveAtriumProgress) {
+        window.saveAtriumProgress(sp.xp);
+      }
+
+      const allRight = selDiags.length > 0 && selDiags.every(i => sp.diagnoses[i].c);
+      document.getElementById('comp-h').textContent = allRight ? '🎉 Outstanding clinical reasoning!' : 'Tough case, but real progress starts here';
+      document.getElementById('comp-thumb').textContent = sp.emoji;
+      show('complete');
+    }
+
+    // REVIEW
+    function goToReview() {
+      const s = sp.summary;
+      document.getElementById('rev-thumb').textContent = sp.emoji;
+      document.getElementById('rev-dx').textContent = s.dx;
+      document.getElementById('rev-sub').textContent = s.sub;
+      // Tests tab
+      const good = selTests.filter(t => t.correct), bad = selTests.filter(t => !t.correct);
+      const allCor = sp.testCats.flatMap(c => c.tests.filter(t => t.c));
+      const missed = allCor.filter(ct => !selTests.find(st => st.name === ct.n));
+      document.getElementById('tp-tests').innerHTML =
+        sec('✓', 'chk-g', 'green', 'Efficient Test Choices', good.map(t => t.name)) +
+        sec('✕', 'chk-r', 'red', 'Inefficient Test Choices', bad.map(t => t.name)) +
+        sec('ℹ', 'chk-a', 'amber', 'Tests You Missed', missed.map(t => t.n));
+      // Diag tab
+      const corDx = sp.diagnoses.filter(d => d.c);
+      const wrDx = selDiags.filter(i => !sp.diagnoses[i].c).map(i => sp.diagnoses[i]);
+      document.getElementById('tp-diag').innerHTML =
+        sec('✓', 'chk-g', 'green', 'Correct Diagnoses', corDx.map(d => d.t)) +
+        sec('✕', 'chk-r', 'red', 'Incorrect Selections', wrDx.map(d => d.t));
+      // Treatment tab
+      const corTr = sp.treatCats.flatMap(c => c.treats.filter(t => t.c));
+      const chCor = selTreats.filter(t => t.correct), chWr = selTreats.filter(t => !t.correct);
+      document.getElementById('tp-treatment').innerHTML =
+        sec('✓', 'chk-g', 'green', 'Correct Treatments', chCor.map(t => t.name)) +
+        sec('✕', 'chk-r', 'red', 'Incorrect Treatments', chWr.map(t => t.name)) +
+        sec('ℹ', 'chk-a', 'amber', 'All Correct Treatments', corTr.map(t => t.n));
+      // Insights
+      document.getElementById('ins-body').innerHTML = `
     <div class="ins-h">Correct Diagnosis</div><div class="ins-pt"><div class="ins-bul"></div><div>${s.dx}.</div></div>
     <div class="ins-h">Key Clues</div><div class="ins-pt"><div class="ins-bul"></div><div>${s.clues}</div></div>
     <div class="ins-h">Essential Tests</div><div class="ins-pt"><div class="ins-bul"></div><div>${s.tests}</div></div>
     <div class="ins-h">Immediate Management</div><div class="ins-pt"><div class="ins-bul"></div><div>${s.mgmt}</div></div>
     <div class="ins-h">Pitfalls to Avoid</div><div class="ins-pt"><div class="ins-bul"></div><div>${s.pitfalls}</div></div>`;
-  // Accordions
-  const accs=[
-    {l:"Why Other Diagnoses Didn't Fit",cl:'acc-teal',b:s.other||'See case summary above.'},
-    {l:'Test Selection Rationale',cl:'acc-orange',b:s.testRationale||'See case summary above.'},
-    {l:'Treatment Priorities & Sequencing',cl:'acc-teal',b:s.treatSeq||'See case summary above.'},
-    {l:'Clinical Traps to Avoid',cl:'acc-orange',b:s.traps||'See case summary above.'},
-    {l:'Learning Points',cl:'acc-teal',b:s.learning||'See case summary above.'},
-  ];
-  document.getElementById('accordions').innerHTML=accs.map((a,i)=>`
+      // Accordions
+      const accs = [
+        { l: "Why Other Diagnoses Didn't Fit", cl: 'acc-teal', b: s.other || 'See case summary above.' },
+        { l: 'Test Selection Rationale', cl: 'acc-orange', b: s.testRationale || 'See case summary above.' },
+        { l: 'Treatment Priorities & Sequencing', cl: 'acc-teal', b: s.treatSeq || 'See case summary above.' },
+        { l: 'Clinical Traps to Avoid', cl: 'acc-orange', b: s.traps || 'See case summary above.' },
+        { l: 'Learning Points', cl: 'acc-teal', b: s.learning || 'See case summary above.' },
+      ];
+      document.getElementById('accordions').innerHTML = accs.map((a, i) => `
     <button class="acc-btn ${a.cl}" onclick="togAcc(${i})">${a.l}<div class="acc-arr" id="aar${i}">▾</div></button>
     <div class="acc-body" id="ac${i}">${a.b}</div>
     <div class="dna">🧬🧬🧬</div>`).join('');
-  // Reset tabs
-  document.querySelectorAll('.rtab').forEach((t,i)=>t.classList.toggle('active',i===0));
-  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===0));
-  show('review');
-}
-function sec(ico,cls,col,title,items){
-  if(!items.length)return'';
-  return`<div class="rev-section">
-    <div class="rev-sec-head"><div class="chk ${cls}">${ico}</div><span style="color:var(--${col==='amber'?'gold':col});font-weight:700">${title}</span></div>
-    ${items.map(it=>`<div class="rev-pt"><div class="rev-bullet"></div><div>${it}</div></div>`).join('')}
+      // Reset tabs
+      document.querySelectorAll('.rtab').forEach((t, i) => t.classList.toggle('active', i === 0));
+      document.querySelectorAll('.tab-pane').forEach((p, i) => p.classList.toggle('active', i === 0));
+      show('review');
+    }
+    function sec(ico, cls, col, title, items) {
+      if (!items.length) return '';
+      return `<div class="rev-section">
+    <div class="rev-sec-head"><div class="chk ${cls}">${ico}</div><span style="color:var(--${col === 'amber' ? 'gold' : col});font-weight:700">${title}</span></div>
+    ${items.map(it => `<div class="rev-pt"><div class="rev-bullet"></div><div>${it}</div></div>`).join('')}
   </div>`;
-}
-function switchTab(name,el){
-  document.querySelectorAll('.rtab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
-  const m={tests:0,diag:1,treatment:2};
-  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===m[name]));
-}
-function toggleIns(){
-  const b=document.getElementById('ins-body'),btn=document.querySelector('.ins-tog');
-  const open=b.style.display!=='none';b.style.display=open?'none':'block';btn.textContent=open?'▼':'▲';
-}
-function togAcc(i){
-  const c=document.getElementById('ac'+i),a=document.getElementById('aar'+i);
-  const open=c.classList.contains('open');c.classList.toggle('open',!open);a.textContent=open?'▾':'▴';
-}
+    }
+    function switchTab(name, el) {
+      document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active')); el.classList.add('active');
+      const m = { tests: 0, diag: 1, treatment: 2 };
+      document.querySelectorAll('.tab-pane').forEach((p, i) => p.classList.toggle('active', i === m[name]));
+    }
+    function toggleIns() {
+      const b = document.getElementById('ins-body'), btn = document.querySelector('.ins-tog');
+      const open = b.style.display !== 'none'; b.style.display = open ? 'none' : 'block'; btn.textContent = open ? '▼' : '▲';
+    }
+    function togAcc(i) {
+      const c = document.getElementById('ac' + i), a = document.getElementById('aar' + i);
+      const open = c.classList.contains('open'); c.classList.toggle('open', !open); a.textContent = open ? '▾' : '▴';
+    }
 
-// LEAGUES
-function renderLeague(){
-  document.getElementById('league-list').innerHTML=LEAGUE.map((p,i)=>`
-    <div class="league-row ${p.you?'lr-you':''}">
-      <div style="font-size:15px;width:26px;text-align:center">${['🥇','🥈','🥉'][i]||p.rank}</div>
+    // LEAGUES
+    function renderLeague() {
+      // Use real data if loaded, otherwise show a loading placeholder
+      const leagueData = (window.dynamicLeague && window.dynamicLeague.length > 0)
+        ? window.dynamicLeague
+        : [{ name: 'Loading players...', xp: 0, rank: '-', isMe: false, emoji: '⏳' }];
+
+      document.getElementById('league-list').innerHTML = leagueData.map((p, i) => `
+    <div class="league-row ${p.isMe ? 'lr-you' : ''}">
+      <div style="font-size:15px;width:26px;text-align:center">${['🥇', '🥈', '🥉'][i] || p.rank}</div>
       <div class="avatar-circle">${p.emoji}</div>
-      <div style="flex:1"><div style="font-size:14px;font-weight:${p.you?700:500}">${p.name}${p.you?' (You)':''}</div>
-        <div class="xpbar"><div class="xpfill" style="width:${Math.round(p.xp/2840*100)}%"></div></div></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:${p.isMe ? 700 : 500}">${p.name}${p.isMe ? ' (You)' : ''}</div>
+        <div class="xpbar"><div class="xpfill" style="width:${Math.round(p.xp / 3000 * 100)}%"></div></div></div>
       <div style="font-size:13px;font-weight:700;color:var(--orange)">${p.xp.toLocaleString()}</div>
     </div>`).join('');
-    
-  // Sync your own league XP visually
-  document.getElementById('league-me-xp').textContent = window.coins.toLocaleString();
-  document.getElementById('league-me-bar').style.width = Math.min(100, Math.round((window.coins/3000)*100)) + '%';
-}
 
-// FLASHCARDS
-function loadFC(){
-  const f=FLASHCARDS[fcIdx];
-  document.getElementById('fc-front').textContent=f.q;
-  document.getElementById('fc-back').textContent=f.a;
-  document.getElementById('fc-prog').textContent=`Card ${fcIdx+1} of ${FLASHCARDS.length}`;
-  document.getElementById('fc-bar').style.width=Math.round((fcIdx+1)/FLASHCARDS.length*100)+'%';
-  document.getElementById('fc').classList.remove('flipped');fcFlip=false;
-}
-function flipFC(){fcFlip=!fcFlip;document.getElementById('fc').classList.toggle('flipped',fcFlip);}
-function rateFC(){fcIdx=(fcIdx+1)%FLASHCARDS.length;loadFC();}
+      // Sync your own league XP visually
+      const myXp = window.coins || 0;
+      const xpEl = document.getElementById('league-me-xp');
+      if (xpEl) xpEl.textContent = myXp.toLocaleString();
+      const barEl = document.getElementById('league-me-bar');
+      if (barEl) barEl.style.width = Math.min(100, Math.round((myXp / 3000) * 100)) + '%';
+    }
 
-// ME
-function renderMe(){
-  const m=document.getElementById('me-coins');if(m)m.textContent=window.coins.toLocaleString();
-  const mh=document.getElementById('me-hearts');if(mh)mh.textContent=window.hearts;
-  const ms=document.getElementById('me-streak');if(ms)ms.textContent=window.streak;
-  
-  const skills=[{name:'General Medicine',pct:50,color:'#f97316'},{name:'Cardiology',pct:30,color:'#ef4444'},{name:'OBGYN',pct:20,color:'#ec4899'},{name:'Neurology',pct:10,color:'#10b981'}];
-  document.getElementById('skill-list').innerHTML=skills.map(s=>`
+    // FLASHCARDS
+    function loadFC() {
+      const f = FLASHCARDS[fcIdx];
+      document.getElementById('fc-front').textContent = f.q;
+      document.getElementById('fc-back').textContent = f.a;
+      document.getElementById('fc-prog').textContent = `Card ${fcIdx + 1} of ${FLASHCARDS.length}`;
+      document.getElementById('fc-bar').style.width = Math.round((fcIdx + 1) / FLASHCARDS.length * 100) + '%';
+      document.getElementById('fc').classList.remove('flipped'); fcFlip = false;
+    }
+    function flipFC() { fcFlip = !fcFlip; document.getElementById('fc').classList.toggle('flipped', fcFlip); }
+    function rateFC() { fcIdx = (fcIdx + 1) % FLASHCARDS.length; loadFC(); }
+
+    // ME
+    function renderMe() {
+      const m = document.getElementById('me-coins'); if (m) m.textContent = window.coins.toLocaleString();
+      const mh = document.getElementById('me-hearts'); if (mh) mh.textContent = window.hearts;
+      const ms = document.getElementById('me-streak'); if (ms) ms.textContent = window.streak;
+
+      const skills = [{ name: 'General Medicine', pct: 0, color: '#f97316' }, { name: 'Cardiology', pct: 0, color: '#ef4444' }, { name: 'OBGYN', pct: 0, color: '#ec4899' }, { name: 'Neurology', pct: 0, color: '#10b981' }];
+      document.getElementById('skill-list').innerHTML = skills.map(s => `
     <div class="skill-row"><span>${s.name}</span><span style="color:${s.color};font-weight:700">${s.pct}%</span></div>
     <div class="pbar"><div class="pbfill" style="width:${s.pct}%;background:${s.color}"></div></div>`).join('');
-}
+    }
 
-// HELPERS
-function updateBars(){
-  ['','2'].forEach(s=>{
-    const c=document.getElementById('coins'+s),h=document.getElementById('hearts'+s),st=document.getElementById('streak'+s);
-    if(c)c.textContent=window.coins.toLocaleString();if(h)h.textContent=window.hearts;if(st)st.textContent=window.streak;
-  });
-  renderMe();
-}
-function showXP(txt){
-  const el=document.createElement('div');el.className='xp-popup';el.textContent=txt;
-  document.body.appendChild(el);setTimeout(()=>el.remove(),2000);
-}
+    // HELPERS
+    function updateBars() {
+      ['', '2'].forEach(s => {
+        const c = document.getElementById('coins' + s), h = document.getElementById('hearts' + s), st = document.getElementById('streak' + s);
+        if (c) c.textContent = window.coins.toLocaleString(); if (h) h.textContent = window.hearts; if (st) st.textContent = window.streak;
+      });
+      renderMe();
+    }
+    function showXP(txt) {
+      const el = document.createElement('div'); el.className = 'xp-popup'; el.textContent = txt;
+      document.body.appendChild(el); setTimeout(() => el.remove(), 2000);
+    }
 
-renderHome();renderLeague();loadFC();renderMe();
-</script>
+    renderHome(); renderLeague(); loadFC(); renderMe();
+  </script>
 
-<script type="module">
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
     import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
-        authDomain: "samvad-bafaa.firebaseapp.com",
-        projectId: "samvad-bafaa",
-        storageBucket: "samvad-bafaa.appspot.com",
-        messagingSenderId: "131803431466",
-        appId: "1:131803431466:web:b7b107308ea7197f013953",
-        measurementId: "G-M90SYY2MP9"
+      apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
+      authDomain: "samvad-bafaa.firebaseapp.com",
+      projectId: "samvad-bafaa",
+      storageBucket: "samvad-bafaa.appspot.com",
+      messagingSenderId: "131803431466",
+      appId: "1:131803431466:web:b7b107308ea7197f013953",
+      measurementId: "G-M90SYY2MP9"
     };
 
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    // Ensure the user is logged in via the main platform
+    // Global variable to store leaderboard data
+    window.dynamicLeague = [];
+
     const userName = localStorage.getItem('mbbs_saved_user');
+    window.currentUserName = userName; // Save globally to highlight "You" in leaderboard
+
     if (!userName) {
-        window.location.replace("index.html"); 
+      window.location.replace("index.html");
     } else {
-        // Dynamically update the profile name based on their login
-        const meNameDisp = document.getElementById('me-name-disp');
-        if (meNameDisp) meNameDisp.textContent = "Dr. " + userName.charAt(0).toUpperCase() + userName.slice(1);
+      const meNameDisp = document.getElementById('me-name-disp');
+      if (meNameDisp) meNameDisp.textContent = "Dr. " + userName.charAt(0).toUpperCase() + userName.slice(1);
     }
 
     const userRef = ref(database, 'users/' + userName);
-    
+
     async function loadAtriumData() {
-        try {
-            const snapshot = await get(userRef);
-            if (snapshot.exists()) {
-                const userData = snapshot.val();
-                
-                // Load existing data or set defaults
-                if (userData.atrium) {
-                    window.coins = userData.atrium.coins || 0;
-                    window.hearts = userData.atrium.hearts || 5;
-                    window.streak = userData.atrium.streak || 0;
-                } else {
-                    window.coins = 0;
-                    window.hearts = 5;
-                    window.streak = 0;
-                }
-                
-                // Update the DOM globally
-                updateBars(); 
-            }
-        } catch (error) {
-            console.error("Error loading Atrium data:", error);
+      try {
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+
+          if (userData.atrium) {
+            window.coins = userData.atrium.coins || 0;
+            window.hearts = userData.atrium.hearts || 5;
+            window.streak = userData.atrium.streak || 0;
+          } else {
+            window.coins = 0;
+            window.hearts = 5;
+            window.streak = 0;
+          }
+          updateBars();
         }
+      } catch (error) {
+        console.error("Error loading Atrium data:", error);
+      }
     }
 
-    // Attach to window so the standard script can call it
-    window.saveAtriumProgress = async function(xpGained) {
-        try {
-            await update(userRef, {
-                'atrium/coins': window.coins,
-                'atrium/hearts': window.hearts,
-                'atrium/streak': window.streak,
-                'atrium/last_played': new Date().toISOString()
-            });
-            console.log("Atrium progress securely synced to Firebase.");
-        } catch (error) {
-            console.error("Error saving progress:", error);
+    // NEW: Fetch all users and build the live leaderboard
+    async function loadLeaderboard() {
+      try {
+        const usersRef = ref(database, 'users');
+        const snapshot = await get(usersRef);
+
+        if (snapshot.exists()) {
+          const allUsers = snapshot.val();
+          let players = [];
+
+          // Loop through all users in your database
+          for (const key in allUsers) {
+            const u = allUsers[key];
+            // Only add users to leaderboard if they have played Atrium and earned coins
+            if (u.atrium && typeof u.atrium.coins !== 'undefined') {
+              let displayName = u.name || key;
+              displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1); // Capitalize
+
+              players.push({
+                name: displayName,
+                xp: u.atrium.coins,
+                isMe: (key.toLowerCase() === window.currentUserName.toLowerCase())
+              });
+            }
+          }
+
+          // Sort players by XP from highest to lowest
+          players.sort((a, b) => b.xp - a.xp);
+
+          // Format them with ranks and emojis
+          window.dynamicLeague = players.map((p, index) => ({
+            ...p,
+            rank: index + 1,
+            emoji: ['🥇', '🥈', '🥉'][index] || '👨‍⚕️'
+          }));
+
+          // Re-render the leaderboard with the live data
+          renderLeague();
         }
+      } catch (error) {
+        console.error("Error loading leaderboard:", error);
+      }
+    }
+
+    window.saveAtriumProgress = async function (xpGained) {
+      try {
+        await update(userRef, {
+          'atrium/coins': window.coins,
+          'atrium/hearts': window.hearts,
+          'atrium/streak': window.streak,
+          'atrium/last_played': new Date().toISOString()
+        });
+        console.log("Atrium progress securely synced to Firebase.");
+
+        // Refresh the leaderboard after saving new XP
+        loadLeaderboard();
+      } catch (error) {
+        console.error("Error saving progress:", error);
+      }
     };
 
-    loadAtriumData();
-</script>
+    // Load personal data, then load the live leaderboard
+    loadAtriumData().then(() => {
+      loadLeaderboard();
+    });
+  </script>
 </body>
+
 </html>
