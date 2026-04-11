@@ -177,22 +177,22 @@ window.goBack = () => { if (navHistory.length === 0) showMainMenu(); else histor
 window.isFullscreenState = false;
 window.ignoreNextPopState = false;
 
-window.addEventListener('popstate', (e) => { 
+window.addEventListener('popstate', (e) => {
     if (window.ignoreNextPopState) {
         window.ignoreNextPopState = false;
         return;
     }
-    
+
     if (window.isFullscreenState) {
         window.isFullscreenState = false;
         let ext = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-        if (ext && (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement)) { 
-            ext.call(document); 
+        if (ext && (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement)) {
+            ext.call(document);
         }
         return;
     }
 
-    if (navHistory.length > 0) handleInternalBack(); 
+    if (navHistory.length > 0) handleInternalBack();
 });
 
 
@@ -320,14 +320,14 @@ window.onload = () => {
                         const safeName = savedUser.toLowerCase().replace(/[.#$\[\]]/g, '_');
                         const dbUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}.json`;
                         const dbData = await (await fetch(dbUrl)).json();
-                        
+
                         // Check against the correct new slot (app_id or web_id)
                         const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
                         const slotName = isInsideApp ? "app_id" : "web_id";
                         const localId = localStorage.getItem('mbbs_device_id');
 
                         if (dbData && typeof dbData === 'object' && dbData[slotName] !== localId) {
-                            console.error("Device mismatch detected."); 
+                            console.error("Device mismatch detected.");
                             handleLogout();
                         }
                     } catch (e) { console.error('BG verify error', e); }
@@ -430,6 +430,11 @@ function renderHome() {
                 <div class="portal-card" onclick="filterCategory('notes')"><i class="fas fa-clipboard-list"></i><h3>Notes</h3></div>
                 <div class="portal-card" onclick="filterCategory('quizzes')"><i class="fas fa-microscope"></i><h3>Quizzes</h3></div>
                 <div class="portal-card" onclick="filterCategory('qbank')"><i class="fas fa-dna"></i><h3>Q-Bank</h3></div>
+                
+                <div class="portal-card" onclick="window.location.href='atrium.html'" style="border: 2px solid #0ea5e9;">
+                    <i class="fas fa-hospital-user" style="color: #0ea5e9;"></i>
+                    <h3 style="color: #0ea5e9;">Atrium</h3>
+                </div>
             </div>
         </div>
     `;
@@ -450,12 +455,12 @@ function renderContent() {
                 const item = document.createElement('div'); item.className = 'chapter-card';
                 const videoId = getYoutubeVideoId(v.link);
                 const isWatched = localStorage.getItem('completed_' + currentUser + '_' + videoId) === 'true';
-                
+
                 if (isWatched) {
                     item.style.backgroundColor = '#d1fae5';
                     item.style.borderColor = '#10b981';
                 }
-                
+
                 item.onclick = () => { logStudentActivity(currentSubject, v.title); pushNavState(); selectedChapterIdx = idx; renderContent(); };
                 const checkIcon = isWatched ? '<i class="fas fa-check-circle" style="color:#059669; margin-left:10px; font-size:1.1rem;"></i>' : '';
                 item.innerHTML = `<div class="chapter-icon"><i class="fas fa-play" style="${isWatched ? 'color:#10b981;' : ''}"></i></div><div style="flex-grow:1; font-weight:500; display:flex; justify-content:space-between; align-items:center;"><span>Chapter ${idx + 1}: ${v.title}</span> ${checkIcon}</div>`;
@@ -488,21 +493,21 @@ function renderItems() {
         }
 
         card.className = `chapter-card ${item.isPremium ? 'is-premium' : ''}`;
-        
+
         if (isCompleted) {
             card.style.backgroundColor = '#d1fae5';
             card.style.borderColor = '#10b981';
         }
 
-        card.onclick = () => { 
-            logStudentActivity(currentSubject, item.title); 
+        card.onclick = () => {
+            logStudentActivity(currentSubject, item.title);
             if (isQuiz) {
-                openQuiz(item.link); 
+                openQuiz(item.link);
             } else {
                 openFile(item.link);
             }
         };
-        
+
         const checkIcon = isCompleted ? '<i class="fas fa-check-circle" style="color:#059669; margin-left:10px; font-size:1.1rem;"></i>' : '';
         const baseIcon = isQuiz ? 'fa-lightbulb' : 'fa-file-pdf';
         const iconColor = isCompleted ? 'color:#10b981;' : '';
@@ -666,7 +671,7 @@ window.seekBy = (seconds, uid) => {
 window.toggleFullScreen = (btn) => {
     const c = btn.closest('.card');
     const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
-    
+
     if (!isFullscreen) {
         let req = c.requestFullscreen || c.webkitRequestFullscreen || c.mozRequestFullScreen || c.msRequestFullscreen;
         if (req) {
@@ -702,7 +707,7 @@ function tryLockLandscape() {
         } else if (screen.msLockOrientation) {
             screen.msLockOrientation('landscape');
         }
-    } catch(e) { console.log('Lock error:', e); }
+    } catch (e) { console.log('Lock error:', e); }
 }
 
 function handleExitFullscreen() {
@@ -718,8 +723,8 @@ function handleExitFullscreen() {
             } else if (screen.msUnlockOrientation) {
                 screen.msUnlockOrientation();
             }
-        } catch(e) { console.log('Unlock error:', e); }
-        
+        } catch (e) { console.log('Unlock error:', e); }
+
         if (window.isFullscreenState) {
             window.isFullscreenState = false;
             window.ignoreNextPopState = true;
@@ -768,7 +773,7 @@ window.openQuiz = (url) => { pushNavState(); document.getElementById('fileViewer
 window.openFile = (urlOrContent) => { pushNavState(); document.getElementById('fileViewer').src = urlOrContent.startsWith('http') ? formatDriveLink(urlOrContent) : urlOrContent; document.getElementById('fileModal').style.display = 'block'; document.body.style.overflow = 'hidden'; };
 window.closeModal = () => { if (navHistory.length > 0) goBack(); else { cleanupIframes(); if (window.uiTimer) clearInterval(window.uiTimer); document.getElementById('fileModal').style.display = 'none'; document.body.style.overflow = 'auto'; } };
 
-window.addEventListener('message', function(e) {
+window.addEventListener('message', function (e) {
     if (e.data && e.data.type === 'quiz_fully_completed') {
         const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
         let completedItemTitle = null;
@@ -780,7 +785,7 @@ window.addEventListener('message', function(e) {
                 }
             }
             if (completedItemTitle) break;
-            
+
             for (const item of mbbsData[subjKey].qbank) {
                 if (item.link.includes(e.data.url_path)) {
                     completedItemTitle = item.title;
@@ -789,12 +794,84 @@ window.addEventListener('message', function(e) {
             }
             if (completedItemTitle) break;
         }
-        
+
         if (completedItemTitle) {
             localStorage.setItem('completed_quiz_' + currentUser + '_' + completedItemTitle, 'true');
             if (currentView === 'quizzes' || currentView === 'qbank') {
                 renderContent();
             }
         }
+    }
+});
+
+function launchGuidedTour() {
+    const driver = window.driver.js.driver;
+
+    const driverObj = driver({
+        showProgress: true,
+        steps: [
+            {
+                popover: {
+                    title: 'Welcome to MBBS World! 🩺',
+                    description: 'Let us show you how to navigate your medical resources efficiently.'
+                }
+            },
+            {
+                element: '.nav-brand',
+                popover: {
+                    title: 'Your Home Base',
+                    description: 'Click here anytime to return to the main dashboard.'
+                }
+            },
+            {
+                element: '.search-toggle-btn',
+                popover: {
+                    title: 'Quick Search',
+                    description: 'Looking for a specific topic like "Anatomy" or "PSM"? Find it instantly here.'
+                }
+            },
+            {
+                element: '#mainNav',
+                popover: {
+                    title: 'Study Categories',
+                    description: 'Switch between Video lectures, PDF Notes, and high-yield Question Banks.'
+                }
+            },
+            {
+                element: '#btn-live-quiz',
+                popover: {
+                    title: 'Live Multiplayer Quiz 🎮',
+                    description: 'Challenge your MPMSU batchmates in real-time! (App Exclusive)'
+                }
+            },
+            {
+                element: '#btn-daily-case',
+                popover: {
+                    title: 'The Daily Case AI 🩺',
+                    description: 'Practice clinical diagnosis with our AI patient simulator. Perfect for your OPD postings!'
+                }
+            },
+            {
+                element: '#userProfileBtn',
+                popover: {
+                    title: 'Track Your Progress',
+                    description: 'See how many hours you have studied and check your quiz accuracy here.'
+                }
+            }
+        ]
+    });
+
+    driverObj.drive();
+}
+
+// Auto-launch for New Users only
+window.addEventListener('load', () => {
+    const tourDone = localStorage.getItem('mbbs_tour_completed');
+    if (!tourDone) {
+        // Short delay to ensure everything is rendered
+        setTimeout(() => {
+            launchGuidedTour();
+            localStorage.setItem('mbbs_tour_completed', 'true');
+        }, 1500);
     }
 });

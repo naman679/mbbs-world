@@ -3,26 +3,15 @@ import base64
 import requests
 
 # --- CONFIGURATION ---
-GITHUB_TOKEN = "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"  # Replace with your Personal Access Token
+GITHUB_TOKEN = "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"  # Replace with your Personal Access Token
 REPO_OWNER = "naman679"
 REPO_NAME = "mbbs-world"
 BRANCH = "main"
 
 # Files to upload (relative to script location)
 FILES_TO_UPLOAD = [
-    "index.html",
-    "dashboard.html",
-    "daily-case.html",
-    "firebase-config.js",
-    "js/dashboard.js",
-    "js/login.js",
-    "js/network-status.js",
-    "js/daily-case.js",
-    "css/dashboard.css",
-    "css/login.css",
-    "css/network-status.css",
     "css/daily-case.css",
-    "live-game.html",
+    "js/daily-case.js"
 ]
 
 def upload_file(file_path):
@@ -49,7 +38,7 @@ def upload_file(file_path):
         content = base64.b64encode(f.read()).decode("utf-8")
 
     data = {
-        "message": f"Update {github_path} via automation",
+        "message": "Daily Case: Mobile keyboard UX improvements and viewport fixes",
         "content": content,
         "branch": BRANCH
     }
