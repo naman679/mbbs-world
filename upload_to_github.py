@@ -11,7 +11,12 @@ BRANCH = "main"
 # Files to upload (relative to script location)
 FILES_TO_UPLOAD = [
     "css/daily-case.css",
-    "js/daily-case.js"
+    "js/daily-case.js",
+    "dashboard.html",
+    "js/dashboard.js",
+    "atrium.html",
+    "delete_from_github.py",
+    "upload_to_github.py"
 ]
 
 def upload_file(file_path):
@@ -38,7 +43,7 @@ def upload_file(file_path):
         content = base64.b64encode(f.read()).decode("utf-8")
 
     data = {
-        "message": "Daily Case: Mobile keyboard UX improvements and viewport fixes",
+        "message": "Update Daily Case, Dashboard Tour, and Repository Tools",
         "content": content,
         "branch": BRANCH
     }
