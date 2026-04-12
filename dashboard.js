@@ -294,6 +294,12 @@ window.onload = () => {
         handleLogout();
         return;
     }
+    // ---> PASTE THIS HERE <---
+    // This dynamically passes the actual logged-in student's name to your Android App
+    if (window.AndroidApp) {
+        window.AndroidApp.loginUser(savedUser);
+    }
+    // -------------------------
 
     window.userSessionName = savedUser.split('_')[0] || "Student";
     updateUserMenu();

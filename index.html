@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/network-status.css">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4359263469597920"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4359263469597920"
+        crossorigin="anonymous"></script>
 </head>
 
 <body oncontextmenu="return false;">
@@ -32,7 +32,8 @@
         </div>
 
         <div class="login-form">
-            <label for="student-name" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);">Full Name</label>
+            <label for="student-name"
+                style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);">Full Name</label>
             <input type="text" id="student-name" class="login-input" placeholder="Enter your full name"
                 autocomplete="name" aria-label="Enter your full name">
             <button id="login-submit-btn" class="login-btn">
@@ -50,111 +51,117 @@
 
     <script src="js/login.js?v=2"></script>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-    import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
-        authDomain: "samvad-bafaa.firebaseapp.com",
-        projectId: "samvad-bafaa",
-        storageBucket: "samvad-bafaa.appspot.com",
-        messagingSenderId: "131803431466",
-        appId: "1:131803431466:web:b7b107308ea7197f013953",
-        measurementId: "G-M90SYY2MP9"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
+            authDomain: "samvad-bafaa.firebaseapp.com",
+            projectId: "samvad-bafaa",
+            storageBucket: "samvad-bafaa.appspot.com",
+            messagingSenderId: "131803431466",
+            appId: "1:131803431466:web:b7b107308ea7197f013953",
+            measurementId: "G-M90SYY2MP9"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-    // 1. AUTO-LOGIN CHECK
-    window.addEventListener('DOMContentLoaded', () => {
-        const savedUser = localStorage.getItem('mbbs_saved_user');
-        const savedId = localStorage.getItem('mbbs_device_id');
-        if (savedUser && savedId) {
-            sessionStorage.setItem('mbbs_user', savedUser); // Sync memory
-            window.location.replace("dashboard.html");
-        }
-    });
-
-    const loginBtn = document.getElementById('login-submit-btn');
-    const nameInput = document.getElementById('student-name');
-    const errorDiv = document.getElementById('error-message');
-
-    loginBtn.addEventListener('click', async () => {
-        // Sanitize name so Firebase doesn't crash on special characters
-        const rawName = nameInput.value.trim().toLowerCase();
-        const userName = rawName.replace(/[.#$\[\]]/g, '_'); 
-        
-        if (!userName) {
-            errorDiv.style.display = 'block';
-            errorDiv.innerText = "Please enter your name.";
-            return;
-        }
-
-        errorDiv.style.display = 'none';
-        loginBtn.disabled = true;
-        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying...';
-
-        let currentDeviceId;
-        let slotName = 'web_id';
-
-        // 1. Android App Logic (The fix Antigravity gave you)
-        if (window.injectedAppId) {
-            currentDeviceId = window.injectedAppId;
-            slotName = 'app_id';
-            localStorage.setItem('mbbs_device_id', currentDeviceId);  // persist immediately
-        } 
-        // 2. Regular Web Browser Logic (Keep your original fallback)
-        else {
-            currentDeviceId = localStorage.getItem('mbbs_device_id');
-            if (!currentDeviceId) {
-                currentDeviceId = 'web_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('mbbs_device_id', currentDeviceId);
+        // 1. AUTO-LOGIN CHECK
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('mbbs_saved_user');
+            const savedId = localStorage.getItem('mbbs_device_id');
+            if (savedUser && savedId) {
+                sessionStorage.setItem('mbbs_user', savedUser); // Sync memory
+                window.location.replace("dashboard.html");
             }
-        }
-        const userRef = ref(database, 'users/' + userName);
+        });
 
-        try {
-            const snapshot = await get(userRef);
-            if (snapshot.exists()) {
-                const userData = snapshot.val();
-                const savedSlotId = userData[slotName];
+        const loginBtn = document.getElementById('login-submit-btn');
+        const nameInput = document.getElementById('student-name');
+        const errorDiv = document.getElementById('error-message');
 
-                if (!savedSlotId || savedSlotId === currentDeviceId) {
-                    await update(userRef, { [slotName]: currentDeviceId });
-                    finalizeLogin(userName);
-                } else {
-                    errorDiv.style.display = 'block';
-                    errorDiv.innerText = "Access Denied! Account linked to another device.";
-                    loginBtn.disabled = false;
-                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+        loginBtn.addEventListener('click', async () => {
+            // Sanitize name so Firebase doesn't crash on special characters
+            const rawName = nameInput.value.trim().toLowerCase();
+            const userName = rawName.replace(/[.#$\[\]]/g, '_');
+
+            if (!userName) {
+                errorDiv.style.display = 'block';
+                errorDiv.innerText = "Please enter your name.";
+                return;
+            }
+
+            errorDiv.style.display = 'none';
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying...';
+
+            let currentDeviceId;
+            let slotName = 'web_id';
+
+            // 1. Android App Logic (The fix Antigravity gave you)
+            if (window.injectedAppId) {
+                currentDeviceId = window.injectedAppId;
+                slotName = 'app_id';
+                localStorage.setItem('mbbs_device_id', currentDeviceId);  // persist immediately
+            }
+            // 2. Regular Web Browser Logic (Keep your original fallback)
+            else {
+                currentDeviceId = localStorage.getItem('mbbs_device_id');
+                if (!currentDeviceId) {
+                    currentDeviceId = 'web_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('mbbs_device_id', currentDeviceId);
                 }
-            } else {
-                await set(userRef, {
-                    name: userName,
-                    [slotName]: currentDeviceId,
-                    created_at: new Date().toISOString()
-                });
-                finalizeLogin(userName);
             }
-        } catch (error) {
-            console.error(error);
-            errorDiv.style.display = 'block';
-            errorDiv.innerText = "Database Error. Check your internet.";
-            loginBtn.disabled = false;
-            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
-        }
-    });
+            const userRef = ref(database, 'users/' + userName);
 
-    function finalizeLogin(name) {
-        localStorage.setItem('mbbs_saved_user', name);
-        sessionStorage.setItem('mbbs_user', name); // Crucial for stopping the loop
-        setTimeout(() => {
-            window.location.replace("dashboard.html");
-        }, 150);
-    }
-</script>
-<script src="js/network-status.js"></script>
+            try {
+                const snapshot = await get(userRef);
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    const savedSlotId = userData[slotName];
+
+                    if (!savedSlotId || savedSlotId === currentDeviceId) {
+                        await update(userRef, { [slotName]: currentDeviceId });
+                        finalizeLogin(userName);
+                    } else {
+                        errorDiv.style.display = 'block';
+                        errorDiv.innerText = "Access Denied! Account linked to another device.";
+                        loginBtn.disabled = false;
+                        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+                    }
+                } else {
+                    await set(userRef, {
+                        name: userName,
+                        [slotName]: currentDeviceId,
+                        created_at: new Date().toISOString()
+                    });
+                    finalizeLogin(userName);
+                }
+            } catch (error) {
+                console.error(error);
+                errorDiv.style.display = 'block';
+                errorDiv.innerText = "Database Error. Check your internet.";
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+            }
+        });
+
+        function finalizeLogin(name) {
+            localStorage.setItem('mbbs_saved_user', name);
+            sessionStorage.setItem('mbbs_user', name); // Crucial for stopping the loop
+            // ---> PASTE THIS HERE <---
+            if (window.AndroidApp) {
+                window.AndroidApp.loginUser(name);
+            }
+            // -------------------------
+            setTimeout(() => {
+                window.location.replace("dashboard.html");
+            }, 150);
+        }
+    </script>
+    <script src="js/network-status.js"></script>
 </body>
+
 </html>

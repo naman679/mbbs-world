@@ -13072,6 +13072,2423 @@
           learning: 'IBD Flare + Loperamide + Distension/Shock = Toxic Megacolon. KUB > 6cm. Never scope them. Never give Barium. Stop opioids/loperamide. Treat with IV Steroids and Fluids. If they fail to improve, cut out the colon.'
         },
         xp: 40
+      },
+      // ─────────────────────────────────────────────────────────────
+      // 54. PEDIATRICS — Level 1: Acute Croup
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'peds1', name: 'Pediatrics: Level 1', color: '#06b6d4', emoji: '👶', waitDays: 1,
+        caseTitle: 'Barking cough and noisy breathing in a toddler',
+        caseDesc: 'An 18-month-old male presents with a sudden "seal-like" barking cough and inspiratory stridor that worsens when he is agitated. Differentiate upper airway swelling from more lethal obstructions and execute the steroid/nebulizer protocol.',
+        patient: { name: 'Leo', gender: 'Male', age: '18 M', weight: '11 kg', complaint: 'Barking cough and noisy breathing' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '38.1°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '130 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '95/60 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '34/min' },
+          { icon: '💧', label: 'SpO2', val: '95% on room air' }
+        ],
+        history: [
+          '1. Developed a mild runny nose and "sniffles" 2 days ago.',
+          '2. Woke up suddenly at midnight with a harsh, barking cough that sounds like a seal.',
+          '3. Mother noticed a high-pitched "squeak" when he breathes in (Inspiratory Stridor).',
+          '4. Stridor becomes noticeably louder and more frequent when the child cries.',
+          '5. Voice is noted to be slightly hoarse.',
+          '6. Patient is still able to swallow saliva and drink from a sippy cup.',
+          '7. No history of choking on small toys or coins recently.',
+          '8. Immunizations are up to date, including Hib and PCV13.',
+          '9. No history of prior respiratory hospitalizations or asthma.',
+          '10. Symptoms slightly improved when the mother took him out into the cold night air to the car.'
+        ],
+        physExam: [
+          '1. General: Alert, crying, mildly distressed but not toxic. Sitting on mother\'s lap.',
+          '2. Vitals: Mildly tachypneic. Low-grade fever.',
+          '3. Airway: Audible inspiratory stridor noted only when agitated; quiet at rest.',
+          '4. Respiratory: Barking, non-productive cough. Mild subcostal retractions noted during crying.',
+          '5. Respiratory: Lung fields are clear to auscultation bilaterally (no wheezing).',
+          '6. HEENT: No drooling. Oropharynx is mildly erythematous, no swelling of the tonsils.',
+          '7. HEENT: No "thumb sign" or cherry-red epiglottis visible (not that you should look!).',
+          '8. Cardiovascular: Tachycardic but regular. Capillary refill < 2 seconds.',
+          '9. Neurological: Normal tone, interactive with mother.',
+          '10. Skin: No rashes, no cyanosis.'
+        ],
+        testCats: [
+          {
+            name: 'Radiography', icon: '🩻', tests: [
+              { n: 'Soft Tissue Neck X-Ray (AP and Lateral)', c: true, r: 'Shows subglottic narrowing known as the "Steeple Sign." Epiglottis appears normal.' },
+              { n: 'Chest X-Ray (PA/Lateral)', c: true, r: 'Clear lung fields. No foreign body seen.' },
+              { n: 'Abdominal X-Ray', c: false, r: 'Irrelevant.' },
+              { n: 'Computed Tomography (CT) Neck', c: false, r: 'Trap! Unnecessary radiation for a clinical diagnosis.' },
+              { n: 'MRI Airway', c: false, r: 'Contraindicated due to time and stability.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Scores', icon: '🩺', tests: [
+              { n: 'Westley Croup Score Calculation', c: true, r: 'Score = 4 (Moderate Croup).' },
+              { n: 'Point-of-Care Capillary Glucose', c: true, r: '98 mg/dL.' },
+              { n: 'Pulse Oximetry (Continuous)', c: true, r: '95-97%.' },
+              { n: 'Urine hCG', c: false, r: 'Patient is a male toddler.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: false, r: 'Mild lymphocytosis (Viral pattern). Usually unnecessary for croup.' },
+              { n: 'Type and Screen', c: false, r: 'Not indicated.' },
+              { n: 'Peripheral Blood Smear', c: false, r: 'Normal.' },
+              { n: 'Erythrocyte Sedimentation Rate (ESR)', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Metabolic', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: false, r: 'Normal.' },
+              { n: 'Serum Lactate', c: false, r: 'Normal.' },
+              { n: 'C-Reactive Protein (CRP)', c: false, r: 'Normal.' },
+              { n: 'Serum Lead Level', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Respiratory Pathogen PCR Panel (Swab)', c: true, r: 'Positive for Parainfluenza Virus Type 1.' },
+              { n: 'Blood Cultures', c: false, r: 'Not indicated for croup.' },
+              { n: 'Throat Culture', c: false, r: 'Contraindicated if Epiglottitis is suspected.' },
+              { n: 'Rapid Strep Test', c: false, r: 'Negative.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia.' },
+              { n: 'Echocardiogram', c: false, r: 'Normal.' },
+              { n: 'High-Sensitivity Troponin', c: false, r: 'Irrelevant.' },
+              { n: 'BNP', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH', c: false, r: 'Normal.' },
+              { n: 'Growth Hormone', c: false, r: 'Irrelevant.' },
+              { n: 'HbA1c', c: false, r: 'Normal.' },
+              { n: 'Cortisol', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Airway Evaluation', icon: '🔍', tests: [
+              { n: 'Direct Laryngoscopy', c: false, r: 'Trap! Agitating a child with croup/epiglottitis can cause total airway closure. Perform only in controlled OR setting.' },
+              { n: 'Flexible Fiberoptic Bronchoscopy', c: false, r: 'Not indicated for simple croup.' },
+              { n: 'Sleep Study', c: false, r: 'Irrelevant.' },
+              { n: 'Peak Flow Monitoring', c: false, r: 'Age-inappropriate.' }
+            ]
+          },
+          {
+            name: 'Blood Gas', icon: '💉', tests: [
+              { n: 'Venous Blood Gas', c: false, r: 'Normal.' },
+              { n: 'Arterial Blood Gas', c: false, r: 'Too traumatic/unnecessary.' },
+              { n: 'Carboxyhemoglobin', c: false, r: 'Normal.' },
+              { n: 'Capnography (EtCO2)', c: true, r: 'Normal (38 mmHg).' }
+            ]
+          },
+          {
+            name: 'Toxicology', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Lead Screen', c: false, r: 'Negative.' },
+              { n: 'Acetaminophen Level', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Urinalysis', icon: '🚽', tests: [
+              { n: 'Urinalysis', c: false, r: 'Normal.' },
+              { n: 'Urine Culture', c: false, r: 'Normal.' },
+              { n: 'Urine Osmolality', c: false, r: 'Normal.' },
+              { n: 'Microalbuminuria', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Coagulation', icon: '⏱️', tests: [
+              { n: 'PT/INR', c: false, r: 'Normal.' },
+              { n: 'aPTT', c: false, r: 'Normal.' },
+              { n: 'Fibrinogen', c: false, r: 'Normal.' },
+              { n: 'D-Dimer', c: false, r: 'Normal.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Acute Croup (Laryngotracheobronchitis)', c: true },
+          { t: 'Acute Epiglottitis', c: false },
+          { t: 'Foreign Body Aspiration', c: false },
+          { t: 'Bacterial Tracheitis', c: false },
+          { t: 'Retropharyngeal Abscess', c: false },
+          { t: 'Asthma Exacerbation', c: false },
+          { t: 'Peritonsillar Abscess', c: false },
+          { t: 'Angioedema', c: false },
+          { t: 'Laryngomalacia', c: false },
+          { t: 'Bronchiolitis', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Systemic Medications (First-Line)', icon: '💊', treats: [
+              { n: 'Oral Dexamethasone (0.6 mg/kg single dose)', c: true },
+              { n: 'IM Dexamethasone (if unable to swallow)', c: true },
+              { n: 'Oral Prednisolone', c: false },
+              { n: 'IV Methylprednisolone', c: false },
+              { n: 'Aspirin', c: false }
+            ]
+          },
+          {
+            name: 'Nebulized Therapy', icon: '🌬️', treats: [
+              { n: 'Nebulized Racemic Epinephrine', c: true },
+              { n: 'Nebulized Albuterol', c: false },
+              { n: 'Nebulized Saline (Cool Mist)', c: true },
+              { n: 'Nebulized Budesonide', c: true },
+              { n: 'Nebulized Ipratropium', c: false }
+            ]
+          },
+          {
+            name: 'Airway & Oxygenation', icon: '🫁', treats: [
+              { n: '"Blow-by" Oxygen (if hypoxic)', c: true },
+              { n: 'Immediate Endotracheal Intubation', c: false },
+              { n: 'Keep child calm on mother\'s lap (Avoid agitation)', c: true },
+              { n: 'Humidified Air', c: true },
+              { n: 'Heliox Therapy', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'No antibiotics indicated (Viral etiology)', c: true },
+              { n: 'IV Ceftriaxone', c: false },
+              { n: 'Oral Amoxicillin', c: false },
+              { n: 'IV Vancomycin', c: false }
+            ]
+          },
+          {
+            name: 'Gastrointestinal & Fluids', icon: '💧', treats: [
+              { n: 'Encourage oral hydration', c: true },
+              { n: 'IV Normal Saline maintenance', c: false },
+              { n: 'Strict NPO', c: false },
+              { n: 'NG Tube feeding', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics', icon: '🌡️', treats: [
+              { n: 'Acetaminophen (Paracetamol) for fever/comfort', c: true },
+              { n: 'Ibuprofen', c: true },
+              { n: 'IV Morphine', c: false },
+              { n: 'Codeine', c: false }
+            ]
+          },
+          {
+            name: 'Surgical & Procedures', icon: '🔪', treats: [
+              { n: 'No surgical intervention indicated', c: true },
+              { n: 'Cricothyrotomy', c: false },
+              { n: 'Tonsillectomy', c: false },
+              { n: 'Bronchoscopy', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular', icon: '❤️', treats: [
+              { n: 'No intervention needed', c: true },
+              { n: 'Epinephrine IV', c: false },
+              { n: 'Atropine', c: false },
+              { n: 'Dopamine', c: false }
+            ]
+          },
+          {
+            name: 'Systemic Anti-Inflammatories', icon: '🧬', treats: [
+              { n: 'No additional therapy', c: true },
+              { n: 'Colchicine', c: false },
+              { n: 'Cyclosporine', c: false },
+              { n: 'Infliximab', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic', icon: '🧪', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Insulin', c: false },
+              { n: 'Potassium', c: false },
+              { n: 'Sodium Bicarbonate', c: false }
+            ]
+          },
+          {
+            name: 'Reversal Agents', icon: '🚫', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Naloxone', c: false },
+              { n: 'Flumazenil', c: false },
+              { n: 'Vitamin K', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Observe for 3-4 hours after Racemic Epinephrine (to monitor for rebound)', c: true },
+              { n: 'Discharge home if stridor-free at rest', c: true },
+              { n: 'Admit for respiratory distress/hypoxia', c: true },
+              { n: 'Transfer to PICU', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Acute Croup (Laryngotracheobronchitis)',
+          sub: 'Subglottic airway inflammation typically caused by Parainfluenza virus',
+          clues: 'The seal-like barking cough, inspiratory stridor, and hoarseness are the classic triad. The fact that it improves with cold air and follows a viral prodrome is textbook. Crucially, the child is NOT drooling (rules out epiglottitis).',
+          tests: 'Croup is a clinical diagnosis. The "Steeple Sign" on neck X-ray (narrowing of the subglottic trachea) is classic but not required. Parainfluenza PCR can confirm.',
+          mgmt: 'For moderate croup (stridor at rest), the treatment is Dexamethasone (single dose) and nebulized Racemic Epinephrine. Epinephrine provides rapid, temporary relief of mucosal edema.',
+          pitfalls: 'The "Rebound Phenomenon": After Racemic Epinephrine wears off (~2 hours), the stridor can return worse than before. Never discharge a child immediately after an Epi neb; they must be observed for 3-4 hours.',
+          other: 'Epiglottitis features drooling and a toxic appearance. Foreign body has a sudden onset without viral symptoms.',
+          testRationale: 'The Steeple Sign occurs due to edema in the subglottic region, the narrowest part of the pediatric airway.',
+          treatSeq: '1. Keep calm → 2. Dexamethasone → 3. Racemic Epinephrine (if stridor at rest) → 4. Observe for 4 hours.',
+          traps: 'Ordering a CT Neck. It is unnecessary radiation and requires the child to lie flat, which can worsen respiratory distress.',
+          learning: 'Croup = Barking Cough + Stridor + Steeple Sign. Treat with Dexamethasone. Use Racemic Epi for stridor at rest and observe for rebound.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 55. PEDIATRICS — Level 1: Acute Epiglottitis
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'peds2', name: 'Pediatrics: Level 1', color: '#be123c', emoji: '🚑', waitDays: 1,
+        caseTitle: 'Drooling, high fever, and the "tripod" position',
+        caseDesc: 'A 4-year-old female presents with rapid-onset high fever and inability to swallow her own saliva. This is a surgical airway emergency. Avoid agitating the child, forgo the throat exam, and secure the airway in the OR.',
+        patient: { name: 'Sophie', gender: 'Female', age: '4 Y', weight: '16 kg', complaint: 'Difficulty breathing and drooling' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '39.8°C (High Fever)' },
+          { icon: '❤️', label: 'Heart Rate', val: '150 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '100/70 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '40/min' },
+          { icon: '💧', label: 'SpO2', val: '92% (Hypoxic)' }
+        ],
+        history: [
+          '1. Symptoms started suddenly 6 hours ago with a very sore throat.',
+          '2. Fever spiked rapidly to 103.5°F (39.7°C).',
+          '3. Now refuses to speak or swallow; saliva is seen dripping from her mouth (Drooling).',
+          '4. Parent notes she is sitting leaning forward with her chin pushed out (Tripod position).',
+          '5. No barking cough (Unlike croup).',
+          '6. No history of prior similar episodes.',
+          '7. Recently moved to the country; immunization status is "behind" and unclear.',
+          '8. Breathing has become increasingly noisy and labored.',
+          '9. No history of asthma or allergies.',
+          '10. Voice sounds muffled, described as a "hot potato voice."'
+        ],
+        physExam: [
+          '1. General: Toxic appearing, highly anxious, sitting in a tripod position on the stretcher.',
+          '2. Vitals: Severe tachycardia, high fever, tachypneic.',
+          '3. Airway: Continuous inspiratory stridor. Active drooling.',
+          '4. Respiratory: Severe suprasternal and intercostal retractions.',
+          '5. Respiratory: Lung sounds are distant but clear of wheezing.',
+          '6. HEENT: Muffled voice. Neck appears extended.',
+          '7. HEENT: Examination of the throat with a tongue depressor is DEFERRED (Lethal Trap).',
+          '8. Cardiovascular: Tachycardic. Normal pulses.',
+          '9. Neurological: Awake and alert but terrified.',
+          '10. Skin: Pale, diaphoretic.'
+        ],
+        testCats: [
+          {
+            name: 'Radiography (Bedside/Portable)', icon: '🩻', tests: [
+              { n: 'Portable Lateral Neck X-Ray', c: true, r: 'Shows a massive, swollen epiglottis known as the "Thumb Sign." Narrowing of the vallexula.' },
+              { n: 'Portable Chest X-Ray', c: false, r: 'Lung fields clear, but not the priority.' },
+              { n: 'CT Neck', c: false, r: 'LETHAL TRAP! Never send an unstable epiglottitis patient to the "Tube of Death" (CT/MRI).' },
+              { n: 'AP Neck X-Ray', c: false, r: 'Lateral is required to see the epiglottis.' },
+              { n: 'Skull X-Ray', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Blood Cultures (x2 sets)', c: true, r: 'Pending (Likely Haemophilus influenzae type b or Streptococcus). Do not perform until airway is secured.' },
+              { n: 'Throat Culture', c: false, r: 'Trap! Swabbing the throat can trigger laryngospasm and death.' },
+              { n: 'Respiratory PCR Panel', c: false, r: 'Irrelevant in this bacterial emergency.' },
+              { n: 'Rapid Antigen for Hib', c: true, r: 'Positive.' },
+              { n: 'CSF Culture', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'WBC 22k with left shift. Hb 12.5.' },
+              { n: 'Type and Screen', c: true, r: 'A Positive. (Mandatory for potential surgical airway).' },
+              { n: 'Peripheral Smear', c: false, r: 'Normal.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Normal.' },
+              { n: 'PT/INR', c: true, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Inflammatory', icon: '🧪', tests: [
+              { n: 'C-Reactive Protein (CRP)', c: true, r: '120 mg/L (High).' },
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: false, r: 'Normal.' },
+              { n: 'Serum Lactate', c: true, r: '2.5 mmol/L.' },
+              { n: 'Serum Amylase', c: false, r: 'Normal.' },
+              { n: 'Procalcitonin', c: true, r: 'Elevated.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Clinical Scores', icon: '🩺', tests: [
+              { n: 'Pulse Oximetry', c: true, r: '91%.' },
+              { n: 'Point-of-Care Capillary Glucose', c: true, r: '115 mg/dL.' },
+              { n: 'Urine Dipstick', c: false, r: 'Normal.' },
+              { n: 'Urine hCG', c: false, r: 'Age inappropriate.' },
+              { n: 'Glasgow Coma Scale', c: true, r: '15.' }
+            ]
+          },
+          {
+            name: 'Airway Evaluation (Controlled)', icon: '🔍', tests: [
+              { n: 'Direct Visualization in Operating Room', c: true, r: 'Under anesthesia, confirms a "cherry-red," swollen epiglottis.' },
+              { n: 'Bedside Throat Exam with Tongue Depressor', c: false, r: 'LETHAL TRAP! Can cause immediate total airway obstruction.' },
+              { n: 'Flexible Nasopharyngoscopy', c: false, r: 'Only to be done by an expert with surgical backup ready.' },
+              { n: 'Peak Flow', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Blood Gas', icon: '💉', tests: [
+              { n: 'Venous Blood Gas', c: false, r: 'Shows respiratory acidosis, but do not waste time.' },
+              { n: 'Arterial Blood Gas', c: false, r: 'Trap! Pain will agitate the child and close the airway.' },
+              { n: 'Capnography', c: true, r: 'High CO2.' },
+              { n: 'Methemoglobin', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia.' },
+              { n: 'Troponin', c: false, r: 'Normal.' },
+              { n: 'Echocardiogram', c: false, r: 'Normal.' },
+              { n: 'Stress Test', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Toxicology', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Salicylate Level', c: false, r: 'Normal.' },
+              { n: 'Lead', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH', c: false, r: 'Normal.' },
+              { n: 'HbA1c', c: false, r: 'Normal.' },
+              { n: 'Growth Hormone', c: false, r: 'Normal.' },
+              { n: 'Cortisol', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Urinalysis', icon: '🚽', tests: [
+              { n: 'Urinalysis', c: false, r: 'Normal.' },
+              { n: 'Urine Culture', c: false, r: 'Normal.' },
+              { n: 'Specific Gravity', c: false, r: 'Normal.' },
+              { n: 'Proteinuria', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Coagulation', icon: '⏱️', tests: [
+              { n: 'PT/INR', c: false, r: 'Normal.' },
+              { n: 'aPTT', c: false, r: 'Normal.' },
+              { n: 'Fibrinogen', c: false, r: 'Normal.' },
+              { n: 'Bleeding Time', c: false, r: 'Normal.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Acute Epiglottitis', c: true },
+          { t: 'Acute Croup', c: false },
+          { t: 'Foreign Body Aspiration', c: false },
+          { t: 'Retropharyngeal Abscess', c: false },
+          { t: 'Peritonsillar Abscess', c: false },
+          { t: 'Bacterial Tracheitis', c: false },
+          { t: 'Diphtheria', c: false },
+          { t: 'Laryngospasm', c: false },
+          { t: 'Anaphylaxis', c: false },
+          { t: 'Ludwig\'s Angina', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Airway Management (The ONLY priority)', icon: '🫁', treats: [
+              { n: 'Immediate transfer to Operating Room for controlled intubation', c: true },
+              { n: 'Prepare for emergency surgical tracheostomy/cricothyrotomy', c: true },
+              { n: 'Bag-Valve-Mask ventilation PRN', c: true },
+              { n: 'Keep child in upright, comfortable position', c: true },
+              { n: 'Sedate child in the ED to "calm them down"', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'IV Ceftriaxone + Vancomycin (After airway is secured)', c: true },
+              { n: 'Oral Amoxicillin', c: false },
+              { n: 'IV Fluconazole', c: false },
+              { n: 'Wait for cultures before starting', c: false },
+              { n: 'Topical Antibiotics', c: false }
+            ]
+          },
+          {
+            name: 'Systemic Medications', icon: '💊', treats: [
+              { n: 'IV Methylprednisolone', c: true },
+              { n: 'Aspirin', c: false },
+              { n: 'Oral Ibuprofen', c: false },
+              { n: 'Nebulized Albuterol', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids', icon: '💧', treats: [
+              { n: 'Establish IV access only AFTER airway secured or in the OR', c: true },
+              { n: 'Aggressive 2L fluid bolus', c: false },
+              { n: 'IV Albumin', c: false },
+              { n: 'Strict Fluid Restriction', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Sedation', icon: '🌡️', treats: [
+              { n: 'Avoid all sedation until airway secured', c: true },
+              { n: 'Acetaminophen Suppository (post-intubation)', c: true },
+              { n: 'IV Fentanyl (In OR)', c: true },
+              { n: 'Ketamine drip in ED', c: false }
+            ]
+          },
+          {
+            name: 'Radiological Interventions', icon: '📷', treats: [
+              { n: 'No intervention indicated', c: true },
+              { n: 'Thoracentesis', c: false },
+              { n: 'Paracentesis', c: false },
+              { n: 'Abscess drainage (bedside)', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular', icon: '❤️', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Vasopressors', c: false },
+              { n: 'Nitroglycerin', c: false },
+              { n: 'Atropine', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic', icon: '🧪', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Sodium Bicarbonate', c: false },
+              { n: 'Insulin', c: false },
+              { n: 'Potassium Chloride', c: false }
+            ]
+          },
+          {
+            name: 'Gastrointestinal', icon: '胃', treats: [
+              { n: 'Strict NPO', c: true },
+              { n: 'NG Tube', c: false },
+              { n: 'Laxatives', c: false },
+              { n: 'Antacids', c: false }
+            ]
+          },
+          {
+            name: 'Positioning', icon: '🪑', treats: [
+              { n: 'Keep in "Tripod" or preferred position', c: true },
+              { n: 'Force patient to lie flat for exam', c: false },
+              { n: 'Trendelenburg', c: false },
+              { n: 'Prone position', c: false }
+            ]
+          },
+          {
+            name: 'Reversal Agents', icon: '🚫', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Naloxone', c: false },
+              { n: 'Flumazenil', c: false },
+              { n: 'Vitamin K', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Transfer to Pediatric ICU (PICU) post-intubation', c: true },
+              { n: 'Discharge home with PO antibiotics', c: false },
+              { n: 'Psychiatric hold', c: false },
+              { n: 'Rifampin prophylaxis for close contacts (if Hib confirmed)', c: true }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Acute Epiglottitis',
+          sub: 'Supraglottic infection causing life-threatening airway obstruction',
+          clues: 'The 3 D\'s: Drooling, Dysphagia, and Distress. Rapid onset, high fever, and the tripod position in an un-immunized child are the hallmarks. Unlike croup, there is no barking cough.',
+          tests: 'This is a CLINICAL emergency. A lateral neck X-ray showing the "Thumb Sign" is diagnostic, but do not send the child to the radiology suite; perform a portable film or go straight to the OR. NEVER use a tongue depressor or swab the throat—this can cause a fatal spasm.',
+          mgmt: 'Rule #1: Do not agitate the child. Any crying or anxiety can close the airway. The most senior anesthesiologist/ENT must take the child to the OR for controlled intubation. Once the airway is safe, start IV Ceftriaxone and Vancomycin.',
+          pitfalls: 'Ordering a CT scan. The child must lie flat in the scanner; a child with epiglottitis who lies flat will experience immediate airway collapse. Another trap is attempting to look at the throat in the ED.',
+          other: 'Croup has a seal-like cough and a "Steeple sign" (subglottic). Retropharyngeal abscess has neck pain/stiffness and a widened prevertebral space.',
+          testRationale: 'The Thumb Sign is the visualization of the massively swollen epiglottis on a lateral X-ray.',
+          treatSeq: '1. Calm environment → 2. Mobilize ENT/Anesthesia → 3. Transfer to OR → 4. Intubate → 5. IV Antibiotics.',
+          traps: 'Attempting IV access or labs while the child is still agitated and the airway is unsecured.',
+          learning: 'Epiglottitis = Drooling + Tripod + High Fever. It is a surgical airway emergency. NEVER look in the throat. Secure the airway in the OR.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 56. PEDIATRICS — Level 1: Hypertrophic Pyloric Stenosis
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'peds3', name: 'Pediatrics: Level 1', color: '#eab308', emoji: '🍼', waitDays: 1,
+        caseTitle: 'Projectile vomiting after every feed in a 4-week-old',
+        caseDesc: 'A 4-week-old first-born male presents with forceful, non-bilious projectile vomiting. Identify the metabolic hallmark, find the "olive" on palpation, and correct the electrolytes before the surgical fix.',
+        patient: { name: 'Oliver', gender: 'Male', age: '4 W', weight: '3.5 kg', complaint: 'Vomiting after feeding' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.8°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '165 bpm (Tachycardic)' },
+          { icon: '📈', label: 'Blood Pressure', val: '75/45 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '30/min' },
+          { icon: '💧', label: 'SpO2', val: '99% on room air' }
+        ],
+        history: [
+          '1. Born full-term, first-born male child.',
+          '2. Started having mild spit-ups 1 week ago, which has now turned into forceful "projectile" vomiting.',
+          '3. Vomiting occurs immediately after every breastfeeding session.',
+          '4. The vomitus is never green (non-bilious); it looks like curdled milk.',
+          '5. The infant is "hungry" immediately after vomiting and wants to feed again (Hungry vomiter).',
+          '6. Mother notes the baby is having fewer wet diapers (2 in the last 24 hours).',
+          '7. No history of fever, diarrhea, or cough.',
+          '8. Pregnancy and delivery were uncomplicated.',
+          '9. No known family history of similar issues.',
+          '10. Mother was treated with Erythromycin for a UTI during late pregnancy.'
+        ],
+        physExam: [
+          '1. General: Small infant, appears alert but hungry/fussy. Sunken fontanelle.',
+          '2. Vitals: Tachycardic, borderline hypotensive for age (Dehydration).',
+          '3. HEENT: Dry mucous membranes. Sunken eyes.',
+          '4. Abdomen (Inspection): Visible peristaltic waves moving across the upper abdomen from left to right.',
+          '5. Abdomen (Palpation): A firm, mobile, 2cm "olive-shaped" mass is palpable in the RUQ/epigastrium.',
+          '6. Abdomen (Percussion): Non-distended. No rebound.',
+          '7. Genitourinary: Normal male anatomy.',
+          '8. Skin: Poor skin turgor (tenting).',
+          '9. Cardiovascular: Tachycardic. Brisk pulses.',
+          '10. Neurological: Normal tone and reflexes.'
+        ],
+        testCats: [
+          {
+            name: 'Radiography & Ultrasound', icon: '🩻', tests: [
+              { n: 'Abdominal Ultrasound (RUQ)', c: true, r: 'Shows a pyloric muscle thickness of 4.5mm and a pyloric channel length of 18mm. Diagnostic for Pyloric Stenosis.' },
+              { n: 'Upper GI Series (Barium Swallow)', c: true, r: 'Shows a "String Sign" (narrowed pyloric channel) and "Shoulder Sign." (Used only if US is inconclusive).' },
+              { n: 'Abdominal X-Ray (KUB)', c: true, r: 'Large gastric bubble with minimal distal bowel gas.' },
+              { n: 'Chest X-Ray', c: false, r: 'Normal.' },
+              { n: 'Renal Ultrasound', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Metabolic', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Na 132, K 3.0 (Low), Cl 88 (Low), HCO3 34 (High). (Classic Hypochloremic Hypokalemic Metabolic Alkalosis).' },
+              { n: 'Serum Lactate', c: true, r: '1.8 mmol/L.' },
+              { n: 'BUN / Creatinine', c: true, r: 'BUN 35, Cr 0.6 (Elevated for an infant, confirms dehydration).' },
+              { n: 'Serum Lipase', c: false, r: 'Normal.' },
+              { n: 'C-Reactive Protein', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Bedside', icon: '🩺', tests: [
+              { n: 'Capillary Blood Gas (CBG)', c: true, r: 'pH 7.55, pCO2 48, HCO3 34. Confirms Metabolic Alkalosis.' },
+              { n: 'Point-of-Care Capillary Glucose', c: true, r: '75 mg/dL.' },
+              { n: 'Urinalysis', c: true, r: 'Specific gravity 1.035 (Concentrated). Negative for infection.' },
+              { n: 'Urine hCG', c: false, r: 'Patient is an infant.' },
+              { n: 'Pulse Oximetry', c: true, r: '99%.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'Hb 16.5 (Hemoconcentrated). WBC 9.0k.' },
+              { n: 'Type and Screen', c: true, r: 'O Positive. (Mandatory pre-op).' },
+              { n: 'Peripheral Smear', c: false, r: 'Normal.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Stool Culture', c: false, r: 'Not indicated. No diarrhea.' },
+              { n: 'Blood Cultures', c: false, r: 'Not indicated. Child is afebrile.' },
+              { n: 'Urine Culture', c: false, r: 'Negative.' },
+              { n: 'Stool for Ova & Parasites', c: false, r: 'Negative.' }
+            ]
+          },
+          {
+            name: 'Blood Gas Analysis', icon: '💉', tests: [
+              { n: 'Venous Blood Gas', c: true, r: 'pH 7.54.' },
+              { n: 'Arterial Blood Gas', c: false, r: 'Painful and unnecessary.' },
+              { n: 'Methemoglobin', c: false, r: 'Normal.' },
+              { n: 'Carboxyhemoglobin', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Gastroenterology / Hepatic', icon: '胃', tests: [
+              { n: 'Liver Function Tests', c: false, r: 'Normal.' },
+              { n: 'Serum Ammonia', c: false, r: 'Normal.' },
+              { n: 'Amylase', c: false, r: 'Normal.' },
+              { n: 'Fecal Occult Blood', c: false, r: 'Negative.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia.' },
+              { n: 'Echocardiogram', c: false, r: 'Normal.' },
+              { n: 'Troponin', c: false, r: 'Normal.' },
+              { n: 'BNP', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Toxicology Screen', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Acetaminophen', c: false, r: 'Normal.' },
+              { n: 'Salicylate', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
+              { n: 'PT/INR, aPTT', c: true, r: 'Normal.' },
+              { n: 'Fibrinogen', c: false, r: 'Normal.' },
+              { n: 'D-Dimer', c: false, r: 'Normal.' },
+              { n: 'Bleeding Time', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH', c: false, r: 'Normal.' },
+              { n: 'Cortisol', c: false, r: 'Normal.' },
+              { n: 'HbA1c', c: false, r: 'Normal.' },
+              { n: 'Growth Hormone', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Advanced Cross-Sectional Imaging', icon: '📷', tests: [
+              { n: 'CT Abdomen/Pelvis', c: false, r: 'Trap! Too much radiation. Ultrasound is the gold standard.' },
+              { n: 'MRI Abdomen', c: false, r: 'Too slow and unnecessary.' },
+              { n: 'CT Head', c: false, r: 'Irrelevant.' },
+              { n: 'PET Scan', c: false, r: 'Irrelevant.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Hypertrophic Pyloric Stenosis', c: true },
+          { t: 'Duodenal Atresia', c: false },
+          { t: 'Gastroesophageal Reflux Disease (GERD)', c: false },
+          { t: 'Malrotation with Midgut Volvulus', c: false },
+          { t: 'Acute Gastroenteritis', c: false },
+          { t: 'Necrotizing Enterocolitis', c: false },
+          { t: 'Intussusception', c: false },
+          { t: 'Milk Protein Allergy', c: false },
+          { t: 'Congenital Adrenal Hyperplasia', c: false },
+          { t: 'Increased Intracranial Pressure', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Surgical & Procedural Interventions', icon: '🔪', treats: [
+              { n: 'Laparoscopic Pyloromyotomy (Fredet-Ramstedt)', c: true },
+              { n: 'Exploratory Laparotomy', c: false },
+              { n: 'Appendectomy', c: false },
+              { n: 'Endoscopic Balloon Dilation', c: false },
+              { n: 'Ladd\'s Procedure', c: false }
+            ]
+          },
+          {
+            name: 'Fluid Resuscitation & Electrolytes', icon: '💧', treats: [
+              { n: 'Bolus 20 mL/kg Normal Saline (0.9% NaCl)', c: true },
+              { n: 'Maintenance D5NS + 20 mEq/L KCl', c: true },
+              { n: 'Sodium Bicarbonate IV', c: false },
+              { n: 'IV Potassium replacement (Wait for urine output)', c: true },
+              { n: 'Strict Fluid Restriction', c: false }
+            ]
+          },
+          {
+            name: 'Gastrointestinal Support', icon: '胃', treats: [
+              { n: 'Strict NPO (Nothing by mouth)', c: true },
+              { n: 'Nasogastric (NG) Tube to suction (decompress stomach)', c: true },
+              { n: 'Clear liquid diet', c: false },
+              { n: 'Force breastfeeding', c: false }
+            ]
+          },
+          {
+            name: 'Timing of Surgery (Trap Zone)', icon: '⏱️', treats: [
+              { n: 'Delay surgery until electrolytes and alkalosis are corrected', c: true },
+              { n: 'Emergency surgery before fluid resuscitation', c: false },
+              { n: 'Wait 7 days for resolution', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'Pre-operative Cefazolin only', c: true },
+              { n: 'Broad-spectrum Sepsis Antibiotics', c: false },
+              { n: 'Oral Amoxicillin', c: false },
+              { n: 'No antibiotics needed', c: true }
+            ]
+          },
+          {
+            name: 'Analgesics & Sedation', icon: '🌡️', treats: [
+              { n: 'Acetaminophen (Paracetamol) post-op', c: true },
+              { n: 'IV Morphine', c: false },
+              { n: 'Local Lidocaine block', c: false },
+              { n: 'Oral Ibuprofen', c: false }
+            ]
+          },
+          {
+            name: 'Airway Support', icon: '🫁', treats: [
+              { n: 'Room air observation', c: true },
+              { n: 'Supplemental Oxygen', c: false },
+              { n: 'Intubation', c: false }
+            ]
+          },
+          {
+            name: 'Antithrombotic Therapy', icon: '🩸', treats: [
+              { n: 'No anticoagulation indicated', c: true },
+              { n: 'Subcutaneous Heparin', c: false },
+              { n: 'Aspirin', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular', icon: '❤️', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Vasopressors', c: false },
+              { n: 'Atropine', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic Correction', icon: '⚖️', treats: [
+              { n: 'Correct Chloride and Potassium before OR', c: true },
+              { n: 'Insulin', c: false },
+              { n: 'Calcium', c: false }
+            ]
+          },
+          {
+            name: 'Reversal Agents', icon: '🚫', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Naloxone', c: false },
+              { n: 'Flumazenil', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit to Pediatric Surgery ward', c: true },
+              { n: 'Discharge home with thickened feeds', c: false },
+              { n: 'Psychiatric hold', c: false },
+              { n: 'Transfer to NICU', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Hypertrophic Pyloric Stenosis',
+          sub: 'Hypertrophy of the pyloric sphincter causing gastric outlet obstruction',
+          clues: 'A "hungry vomiter": a 3-6 week old infant with projectile, non-bilious vomiting. The "olive-shaped" mass in the RUQ and visible peristaltic waves are pathognomonic. History of macrolide use (Erythromycin) is a known risk factor.',
+          tests: 'Abdominal Ultrasound is the gold standard (Thickness > 4mm, Length > 14mm). Chemistry is the most important lab: it reveals the classic Hypochloremic Hypokalemic Metabolic Alkalosis due to loss of HCl from the stomach and subsequent renal compensation.',
+          mgmt: 'Pyloric stenosis is a MEDICAL emergency, not a surgical one initially. The most lethal mistake is taking the baby to the OR immediately. You MUST first correct the electrolytes and the alkalosis with IV Normal Saline + Potassium. Operating on a child with metabolic alkalosis risks fatal post-operative apnea. The definitive fix is a Pyloromyotomy.',
+          pitfalls: 'Ordering a CT scan. Ultrasound is safer and more effective. Another trap is failing to check electrolytes; the surgery itself is simple, but the anesthesia in the setting of alkalosis is the danger.',
+          other: 'Duodenal Atresia causes BILIOUS vomiting and presents on day 1 of life with a "double bubble." Malrotation with Volvulus is a true surgical emergency with bilious vomiting.',
+          testRationale: 'Metabolic alkalosis occurs because the stomach loses H+ and Cl- in the vomit. The kidneys try to save H+ at the expense of K+, leading to hypokalemia.',
+          treatSeq: '1. NPO & NG Tube → 2. Aggressive Fluid Resuscitation (NS) → 3. Correct K+ and Alkalosis → 4. Ultrasound confirmation → 5. Pyloromyotomy.',
+          traps: 'Assuming bilious (green) vomit. Pyloric stenosis is ABOVE the Ampulla of Vater, so vomit should ALWAYS be non-bilious.',
+          learning: 'Pyloric Stenosis = 4-week-old + Projectile Non-bilious Vomit + RUQ Olive. Diagnosis: Ultrasound. Labs: Hypochloremic Metabolic Alkalosis. FIX ELECTROYLTES BEFORE SURGERY.'
+        },
+        xp: 40
+      },
+      // ─────────────────────────────────────────────────────────────
+      // 57. PEDIATRICS — Level 1: Acute Bronchiolitis (RSV)
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'peds4', name: 'Pediatrics: Level 1', color: '#0ea5e9', emoji: '🫁', waitDays: 1,
+        caseTitle: 'Wheezing and increased work of breathing in a 6-month-old',
+        caseDesc: 'A 6-month-old female presents with nasal congestion, a wet cough, and audible wheezing. Master the supportive care approach for the leading cause of infant hospitalization and avoid the common traps of unnecessary medications.',
+        patient: { name: 'Chloe', gender: 'Female', age: '6 M', weight: '7 kg', complaint: 'Fast breathing and wheezing' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '38.0°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '145 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '85/55 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '52/min (Tachypneic)' },
+          { icon: '💧', label: 'SpO2', val: '91% on room air' }
+        ],
+        history: [
+          '1. Symptoms started 3 days ago with a clear runny nose and sneezing.',
+          '2. Developed a "wet" sounding cough yesterday that has progressively worsened.',
+          '3. Mother notes the baby is breathing much faster than normal today.',
+          '4. Endorses difficulty feeding; the baby gets tired and pulls off the bottle after a few seconds.',
+          '5. Only had 3 wet diapers in the last 24 hours (decreased from baseline of 6-7).',
+          '6. No history of prior wheezing or asthma.',
+          '7. Born at 34 weeks gestation (Premature), stayed in the NICU for 2 weeks.',
+          '8. Older sibling attends daycare and has a similar "cold."',
+          '9. No history of choking episodes or foreign body aspiration.',
+          '10. Home is heated with a wood-burning stove; parents smoke outside.'
+        ],
+        physExam: [
+          '1. General: Fussy but consolable. Not toxic-appearing but clearly working to breathe.',
+          '2. Vitals: Tachypneic and mildly hypoxic. Normal blood pressure for age.',
+          '3. Respiratory: Diffuse, fine end-expiratory wheezing heard throughout all lung fields.',
+          '4. Respiratory: Significant subcostal and intercostal retractions noted.',
+          '5. Respiratory: Nasal flaring present. No grunting.',
+          '6. HEENT: Copious clear rhinorrhea (nasal mucus) obstructing the nares.',
+          '7. HEENT: Tympanic membranes are clear; oropharynx is normal.',
+          '8. Cardiovascular: Tachycardic. Capillary refill is 3 seconds (Mildly delayed).',
+          '9. Neurological: Normal tone. Responds to stimuli.',
+          '10. Abdomen: Soft, non-distended. No organomegaly.'
+        ],
+        testCats: [
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Respiratory Viral PCR Panel (Nasopharyngeal)', c: true, r: 'Positive for Respiratory Syncytial Virus (RSV).' },
+              { n: 'Blood Cultures', c: false, r: 'Not indicated for stable bronchiolitis.' },
+              { n: 'Rapid Strep Test', c: false, r: 'Negative.' },
+              { n: 'Sputum Culture', c: false, r: 'Age-inappropriate.' },
+              { n: 'Urine Culture', c: false, r: 'Not indicated without higher fever.' }
+            ]
+          },
+          {
+            name: 'Radiography', icon: '🩻', tests: [
+              { n: 'Chest X-Ray (AP/Lateral)', c: true, r: 'Hyperinflation of lung fields, flattened diaphragms, and peribronchial thickening. No focal consolidations.' },
+              { n: 'CT Chest', c: false, r: 'Trap! Unnecessary radiation for a clinical diagnosis.' },
+              { n: 'Soft Tissue Neck X-Ray', c: false, r: 'Normal. No steeple sign.' },
+              { n: 'Abdominal X-Ray', c: false, r: 'Irrelevant.' },
+              { n: 'MRI Chest', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Bedside', icon: '🩺', tests: [
+              { n: 'Continuous Pulse Oximetry', c: true, r: '91-93% on room air.' },
+              { n: 'Point-of-Care Glucose', c: true, r: '90 mg/dL.' },
+              { n: 'Suctioning of Nares', c: true, r: 'Cleared large amount of thick clear mucus; SpO2 improved to 94%.' },
+              { n: 'Urine Dipstick', c: false, r: 'Normal.' },
+              { n: 'Transcutaneous CO2', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: false, r: 'Normal WBC. (Routine CBC is not recommended in bronchiolitis).' },
+              { n: 'Peripheral Blood Smear', c: false, r: 'Normal.' },
+              { n: 'ESR', c: false, r: 'Normal.' },
+              { n: 'Type and Screen', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Metabolic', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'BUN 25, Cr 0.4 (Mild dehydration). Na 138, K 4.1.' },
+              { n: 'Serum Lactate', c: false, r: 'Normal.' },
+              { n: 'C-Reactive Protein (CRP)', c: false, r: 'Normal.' },
+              { n: 'Serum Lead', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Blood Gas Analysis', icon: '💉', tests: [
+              { n: 'Capillary Blood Gas (CBG)', c: true, r: 'pH 7.38, pCO2 42. (Rules out respiratory failure).' },
+              { n: 'Arterial Blood Gas (ABG)', c: false, r: 'Trap! Painful and unnecessary.' },
+              { n: 'Venous Blood Gas', c: false, r: 'Normal.' },
+              { n: 'Carboxyhemoglobin', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia.' },
+              { n: 'Echocardiogram', c: false, r: 'Normal.' },
+              { n: 'BNP', c: false, r: 'Normal.' },
+              { n: 'Troponin', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH', c: false, r: 'Normal.' },
+              { n: 'HbA1c', c: false, r: 'Normal.' },
+              { n: 'Cortisol', c: false, r: 'Normal.' },
+              { n: 'Sweat Chloride Test', c: false, r: 'Not indicated acutely, though could consider later for CF screen if recurrent.' }
+            ]
+          },
+          {
+            name: 'Toxicology', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Acetaminophen', c: false, r: 'Normal.' },
+              { n: 'Salicylate', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Coagulation', icon: '⏱️', tests: [
+              { n: 'PT/INR', c: false, r: 'Normal.' },
+              { n: 'aPTT', c: false, r: 'Normal.' },
+              { n: 'Fibrinogen', c: false, r: 'Normal.' },
+              { n: 'D-Dimer', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Invasive Diagnostics', icon: '🔍', tests: [
+              { n: 'Lumbar Puncture', c: false, r: 'Trap! Absolutely not indicated for respiratory symptoms.' },
+              { n: 'Bronchoscopy', c: false, r: 'Not indicated.' },
+              { n: 'Gastric Aspirate', c: false, r: 'Irrelevant.' },
+              { n: 'Pleural Tap', c: false, r: 'No effusion seen.' }
+            ]
+          },
+          {
+            name: 'Specialty Assays', icon: '🧪', tests: [
+              { n: 'Procalcitonin', c: false, r: 'Normal.' },
+              { n: 'Alpha-1 Antitrypsin', c: false, r: 'Irrelevant.' },
+              { n: 'ANCA Panel', c: false, r: 'Irrelevant.' },
+              { n: 'Immunoglobulin levels', c: false, r: 'Normal.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Acute Bronchiolitis (RSV)', c: true },
+          { t: 'Asthma Exacerbation', c: false },
+          { t: 'Bacterial Pneumonia', c: false },
+          { t: 'Foreign Body Aspiration', c: false },
+          { t: 'Cystic Fibrosis Flare', c: false },
+          { t: 'Congestive Heart Failure', c: false },
+          { t: 'Croup', c: false },
+          { t: 'Pertussis', c: false },
+          { t: 'Vocal Cord Dysfunction', c: false },
+          { t: 'Gastroesophageal Reflux Disease', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Respiratory Support (First-Line)', icon: '🌬️', treats: [
+              { n: 'Deep Nasal Suctioning (Bulb or Wall suction)', c: true },
+              { n: 'Humidified Supplemental Oxygen (via Cannula)', c: true },
+              { n: 'High-Flow Nasal Cannula (HFNC)', c: true },
+              { n: 'Frequent position changes (Upright)', c: true },
+              { n: 'Incentive Spirometry', c: false }
+            ]
+          },
+          {
+            name: 'Medications to AVOID (Trap Zone)', icon: '⚠️', treats: [
+              { n: 'Albuterol Nebulizer Trial', c: false },
+              { n: 'Oral or IV Corticosteroids', c: false },
+              { n: 'Epinephrine Nebulizer', c: false },
+              { n: 'Chest Physiotherapy', c: false },
+              { n: 'Hypertonic Saline (3%) Nebulizer (Not recommended in ED)', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids & Nutrition', icon: '💧', treats: [
+              { n: 'IV Normal Saline maintenance fluids', c: true },
+              { n: 'Nasogastric (NG) tube feeds (if RR > 60)', c: true },
+              { n: 'Encourage oral breastfeeding/formula as tolerated', c: true },
+              { n: 'Aggressive 40 mL/kg fluid bolus', c: false },
+              { n: 'Strict Fluid Restriction', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'No antibiotics indicated (Viral)', c: true },
+              { n: 'IV Ceftriaxone', c: false },
+              { n: 'Oral Amoxicillin', c: false },
+              { n: 'Acyclovir', c: false },
+              { n: 'Azithromycin', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Antipyretics', icon: '🌡️', treats: [
+              { n: 'Acetaminophen (Paracetamol) PRN fever', c: true },
+              { n: 'Ibuprofen (if >6 months old)', c: true },
+              { n: 'IV Morphine', c: false },
+              { n: 'Codeine', c: false }
+            ]
+          },
+          {
+            name: 'Airway Management', icon: '🫁', treats: [
+              { n: 'Bag-Valve-Mask at bedside PRN', c: true },
+              { n: 'Immediate RSI Intubation', c: false },
+              { n: 'Cricothyrotomy', c: false }
+            ]
+          },
+          {
+            name: 'Systemic Anti-Inflammatories', icon: '🧬', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Methotrexate', c: false },
+              { n: 'Colchicine', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular', icon: '❤️', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Vasopressors', c: false },
+              { n: 'Nitroglycerin', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic', icon: '🧪', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Insulin', c: false },
+              { n: 'Bicarbonate', c: false }
+            ]
+          },
+          {
+            name: 'Reversal Agents', icon: '🚫', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Naloxone', c: false },
+              { n: 'Vitamin K', c: false }
+            ]
+          },
+          {
+            name: 'Gastrointestinal', icon: '胃', treats: [
+              { n: 'Elevate head of bed', c: true },
+              { n: 'Proton Pump Inhibitor', c: false },
+              { n: 'Laxatives', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit to Pediatrics Ward (due to hypoxia and poor feeding)', c: true },
+              { n: 'Discharge home with Albuterol inhaler', c: false },
+              { n: 'Counsel on smoking cessation for parents', c: true },
+              { n: 'Palivizumab education for future seasons (if eligible)', c: true }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Acute Bronchiolitis (Respiratory Syncytial Virus)',
+          sub: 'Viral-induced inflammation of the small airways (bronchioles) in infants',
+          clues: 'A 6-month-old with a viral prodrome (rhinorrhea) followed by tachypnea, diffuse wheezing, and increased work of breathing. The SpO2 of 91% and the "hungry/tired" feeding history confirm the need for admission.',
+          tests: 'Bronchiolitis is a clinical diagnosis. An RSV PCR panel can confirm the virus but does not change management. A Chest X-Ray is only indicated if the child is toxic or fails to improve (to look for pneumonia/pneumothorax), here showing classic hyperinflation.',
+          mgmt: 'Supportive care is the ONLY correct treatment. 1. Suction the nose (infants are obligate nasal breathers). 2. Humidified Oxygen if SpO2 < 90-92%. 3. Hydration (IV fluids or NG tube if respiratory rate is too high for safe oral feeding).',
+          pitfalls: 'Giving Albuterol or Steroids. Large studies (AAP Guidelines) show that Bronchiolitis is NOT like asthma; the wheezing is from debris and edema in the small tubes, not bronchospasm. Albuterol and Steroids do NOT work and are considered a trap in pediatric board exams. Chest PT is also not recommended.',
+          other: 'Asthma is rare before age 2 and usually follows a different pattern. Bacterial pneumonia has focal lung findings and high fever. Foreign body aspiration has sudden onset asymmetrical breath sounds.',
+          testRationale: 'Chest X-ray shows hyperinflation because the inflamed, mucus-filled bronchioles allow air in but trap it on the way out (Check-valve effect).',
+          treatSeq: '1. Suctioning → 2. Supplemental Oxygen → 3. Hydration → 4. Supportive monitoring.',
+          traps: 'Ordering a CBC. WBC is usually normal and does not help distinguish viral from bacterial in this age group.',
+          learning: 'Bronchiolitis = Suction + Oxygen + Hydration. DO NOT give Albuterol, Steroids, or Antibiotics. It is the most common cause of infant hospitalization.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 58. PEDIATRICS — Level 1: Intussusception
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'peds5', name: 'Pediatrics: Level 1', color: '#8b5cf6', emoji: '🍓', waitDays: 1,
+        caseTitle: 'Intermittent crying and "currant jelly" stools in an infant',
+        caseDesc: 'An 8-month-old male presents with episodes of screaming and drawing his legs to his chest, alternating with periods of lethargy. Identify the telescoping bowel and execute the non-operative reduction before the bowel becomes necrotic.',
+        patient: { name: 'Noah', gender: 'Male', age: '8 M', weight: '9 kg', complaint: 'Severe stomach pain episodes' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.5°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '140 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '90/60 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '30/min' },
+          { icon: '💧', label: 'SpO2', val: '100% on room air' }
+        ],
+        history: [
+          '1. Sudden onset of severe, colicky abdominal pain episodes starting 8 hours ago.',
+          '2. During episodes, the infant screams and pulls his knees to his chest.',
+          '3. Episodes occur every 15-20 minutes and last for 2-3 minutes.',
+          '4. In between episodes, the baby is noted to be unusually sleepy and lethargic.',
+          '5. Vomited twice; the second episode was noted to be yellowish/green (Bilious).',
+          '6. Had a normal bowel movement this morning, but just passed a stool looking like "red jelly" (Currant jelly stool).',
+          '7. Recently recovered from a viral upper respiratory infection 1 week ago.',
+          '8. No history of prior abdominal surgeries or hernias.',
+          '9. No fever or diarrhea noted previously.',
+          '10. Birth and developmental history are normal.'
+        ],
+        physExam: [
+          '1. General: Currently quiet and lethargic. Does not protest the exam during the "quiet phase."',
+          '2. Vitals: Mild tachycardia. Hemodynamically stable.',
+          '3. Abdomen (Inspection): Mild distension.',
+          '4. Abdomen (Palpation): A firm, "sausage-shaped" mass is palpable in the Right Upper Quadrant.',
+          '5. Abdomen (Palpation): The Right Lower Quadrant feels "empty" (Dance\'s sign).',
+          '6. Abdomen (Percussion): No rebound tenderness or rigidity noted yet.',
+          '7. Rectal Exam: Reveals gross "currant jelly" stool (blood and mucus) on the glove.',
+          '8. Cardiovascular: Tachycardic but regular. Brisk pulses.',
+          '9. Neurological: Markedly lethargic (can be a primary presenting symptom).',
+          '10. Lungs: Clear.'
+        ],
+        testCats: [
+          {
+            name: 'Radiography & Ultrasound (First-Line)', icon: '🩻', tests: [
+              { n: 'Abdominal Ultrasound', c: true, r: 'Shows a 3.5cm "Target Sign" or "Donut Sign" in the RUQ. Diagnostic for Intussusception.' },
+              { n: 'Abdominal X-Ray (KUB)', c: true, r: 'Shows a "crescent sign" in the RUQ and lack of gas in the cecum. No free air under the diaphragm.' },
+              { n: 'Air / Contrast Enema', c: true, r: 'Diagnostic and therapeutic. Shows a "Coiled Spring" appearance where the air column meets the intussusceptum.' },
+              { n: 'Chest X-Ray', c: false, r: 'Normal.' },
+              { n: 'Pelvic Ultrasound', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Advanced Cross-Sectional Imaging', icon: '📷', tests: [
+              { n: 'CT Abdomen/Pelvis', c: false, r: 'Trap! Unnecessary radiation. Ultrasound is the gold standard in children.' },
+              { n: 'MRI Abdomen', c: false, r: 'Too slow.' },
+              { n: 'CT Head', c: false, r: 'Not indicated despite lethargy.' },
+              { n: 'PET Scan', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Inflammatory', icon: '🧪', tests: [
+              { n: 'Serum Lactate', c: true, r: '1.4 mmol/L (Normal. Reassuring that the bowel is not yet ischemic).' },
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'BUN 22, Cr 0.4. Normal electrolytes.' },
+              { n: 'C-Reactive Protein (CRP)', c: false, r: 'Normal.' },
+              { n: 'Serum Lipase', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'WBC 11k. Hb 11.5.' },
+              { n: 'Type and Screen', c: true, r: 'A Positive. (Mandatory in case enema fails/perforates).' },
+              { n: 'Peripheral Smear', c: false, r: 'Normal.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Stool Culture', c: false, r: 'Trap. Pain is too episodic for gastroenteritis.' },
+              { n: 'Blood Cultures', c: false, r: 'Not indicated.' },
+              { n: 'Stool for Ova & Parasites', c: false, r: 'Normal.' },
+              { n: 'Respiratory PCR', c: false, r: 'Not priority.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Bedside', icon: '🩺', tests: [
+              { n: 'Fecal Occult Blood Test', c: true, r: 'Positive.' },
+              { n: 'Point-of-Care Glucose', c: true, r: '95 mg/dL.' },
+              { n: 'Urine Dipstick', c: false, r: 'Normal.' },
+              { n: 'Urine hCG', c: false, r: 'Infant.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
+              { n: 'PT/INR, aPTT', c: true, r: 'Normal. (Pre-op requirement).' },
+              { n: 'Fibrinogen', c: false, r: 'Normal.' },
+              { n: 'D-Dimer', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Blood Gas Analysis', icon: '💉', tests: [
+              { n: 'Venous Blood Gas', c: false, r: 'Normal.' },
+              { n: 'Arterial Blood Gas', c: false, r: 'Not indicated.' },
+              { n: 'Lactate (POC)', c: true, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Gastroenterology / Hepatic', icon: '胃', tests: [
+              { n: 'Liver Function Tests', c: false, r: 'Normal.' },
+              { n: 'Amylase', c: false, r: 'Normal.' },
+              { n: 'Fecal Calprotectin', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia.' },
+              { n: 'Troponin', c: false, r: 'Normal.' },
+              { n: 'Echocardiogram', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH', c: false, r: 'Normal.' },
+              { n: 'Cortisol', c: false, r: 'Normal.' },
+              { n: 'HbA1c', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Toxicology Screen', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Acetaminophen', c: false, r: 'Normal.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Intussusception', c: true },
+          { t: 'Meckel\'s Diverticulum', c: false },
+          { t: 'Malrotation with Midgut Volvulus', c: false },
+          { t: 'Acute Appendicitis', c: false },
+          { t: 'Henoch-Schönlein Purpura (HSP)', c: false },
+          { t: 'Infectious Gastroenteritis', c: false },
+          { t: 'Pyloric Stenosis', c: false },
+          { t: 'Constipation / Hirschsprung\'s', c: false },
+          { t: 'Bowel Obstruction (Adhesive)', c: false },
+          { t: 'Acute Pancreatitis', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Procedural Interventions (First-Line)', icon: '💨', treats: [
+              { n: 'Air Contrast Enema (Pneumatic Reduction)', c: true },
+              { n: 'Liquid Contrast Enema (Hydrostatic Reduction)', c: true },
+              { n: 'Immediate Open Laparotomy (Skip Enema)', c: false },
+              { n: 'Colonoscopy', c: false },
+              { n: 'NG Tube Decompression', c: true }
+            ]
+          },
+          {
+            name: 'Surgical Interventions (Back-up)', icon: '🔪', treats: [
+              { n: 'Surgical Consult for manual reduction in OR (if enema fails)', c: true },
+              { n: 'Bowel Resection (if necrotic)', c: true },
+              { n: 'Appendectomy', c: false },
+              { n: 'Diagnostic Laparoscopy', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids & Resuscitation', icon: '💧', treats: [
+              { n: 'IV Normal Saline (20 mL/kg Bolus)', c: true },
+              { n: 'Maintenance fluids with D5NS', c: true },
+              { n: 'Strict Fluid Restriction', c: false },
+              { n: 'Massive Transfusion', c: false }
+            ]
+          },
+          {
+            name: 'Gastrointestinal Support', icon: '胃', treats: [
+              { n: 'Strict NPO (Nothing by mouth)', c: true },
+              { n: 'Nasogastric (NG) tube to suction', c: true },
+              { n: 'Oral Laxatives', c: false },
+              { n: 'Clear liquid diet', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'No antibiotics indicated for simple reduction', c: true },
+              { n: 'IV Cefazolin (if heading to OR)', c: true },
+              { n: 'IV Zosyn + Vancomycin', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Sedation', icon: '🌡️', treats: [
+              { n: 'IV Morphine or Fentanyl (Judiciously for pain)', c: true },
+              { n: 'Acetaminophen PRN', c: true },
+              { n: 'Ibuprofen', c: false }
+            ]
+          },
+          {
+            name: 'Airway Support', icon: '🫁', treats: [
+              { n: 'Room air observation', c: true },
+              { n: 'Supplemental O2', c: false }
+            ]
+          },
+          {
+            name: 'Antithrombotic Therapy', icon: '🩸', treats: [
+              { n: 'No anticoagulation indicated', c: true },
+              { n: 'Heparin', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular', icon: '❤️', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Vasopressors', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic', icon: '🧪', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Bicarbonate', c: false }
+            ]
+          },
+          {
+            name: 'Reversal Agents', icon: '🚫', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Naloxone', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit for observation for 24 hours (monitor for recurrence)', c: true },
+              { n: 'Discharge home immediately after reduction', c: false },
+              { n: 'Transfer to PICU', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Intussusception',
+          sub: 'Telescoping of a proximal segment of bowel into a distal segment (usually ileocecal)',
+          clues: 'The intermittent, colicky abdominal pain (knees-to-chest) alternating with lethargy is pathognomonic. The "currant jelly" stool and a sausage-shaped RUQ mass make the diagnosis definitive. Often follows a viral infection (hypertrophy of Peyer\'s patches acting as a lead point).',
+          tests: 'Abdominal Ultrasound is the gold standard (Target/Donut sign). An Air Contrast Enema is both diagnostic and therapeutic, often "popping" the bowel back into place.',
+          mgmt: 'Make the infant NPO, start IV fluids, and consult Radiology for an Air Enema reduction. If the enema fails three times, or if the child has peritonitis/free air, they must go to the Operating Room for manual reduction or resection.',
+          pitfalls: 'Ordering a CT scan. Ultrasound is safer and more sensitive. Another trap is failing to admit the child post-reduction; intussusception has a ~10% recurrence rate, usually within the first 24 hours.',
+          other: 'Meckel\'s Diverticulum causes painless bleeding. Volvulus features unrelenting pain and bilious vomiting. Gastroenteritis features fever and diarrhea.',
+          testRationale: 'Dance\'s sign (empty RLQ) occurs because the cecum has moved up into the RUQ as part of the intussusception.',
+          treatSeq: '1. NPO & IV Fluids → 2. Ultrasound → 3. Air Contrast Enema → 4. 24-hour observation.',
+          traps: 'Assuming lethargy means a head issue. Lethargy in an infant can be the primary sign of an intra-abdominal disaster like intussusception.',
+          learning: 'Intussusception = Sausage mass + Currant jelly stool + Episodic pain. First test: Ultrasound. First treatment: Air Enema. Watch for recurrence.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 59. PEDIATRICS — Level 1: Biliary Atresia
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'peds6', name: 'Pediatrics: Level 1', color: '#f59e0b', emoji: '🟡', waitDays: 1,
+        caseTitle: 'Persistent jaundice and pale stools in a 3-week-old',
+        caseDesc: 'A 3-week-old full-term infant presents with worsening jaundice that failed to clear. Identify the conjugated hyperbilirubinemia, recognize the surgical biliary obstruction, and initiate the workup for a Kasai procedure.',
+        patient: { name: 'Amelia', gender: 'Female', age: '3 W', weight: '4.2 kg', complaint: 'Yellow skin and eyes' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.9°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '140 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '75/50 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '35/min' },
+          { icon: '💧', label: 'SpO2', val: '100% on room air' }
+        ],
+        history: [
+          '1. Noticed to be "a little yellow" on day 3 of life; mother was told it would go away.',
+          '2. Jaundice has not improved; it is now noted to be deeper and involves the whole body.',
+          '3. Born full-term, uncomplicated pregnancy and delivery.',
+          '4. Exclusively breastfed; feeding well and gaining weight appropriately.',
+          '5. Mother notes the baby\'s diapers contain very pale, "white-ish" stools (Acholic stools).',
+          '6. Urine is noted to be dark yellow/orange and stains the diaper.',
+          '7. No history of fever, vomiting, or irritability.',
+          '8. No known family history of metabolic disorders or liver disease.',
+          '9. Mother has O+ blood type; baby is A+ (Direct Coombs was negative).',
+          '10. Newborn screening results are pending.'
+        ],
+        physExam: [
+          '1. General: Well-appearing, alert, non-toxic infant.',
+          '2. Vitals: Stable. Afebrile.',
+          '3. Skin/Eyes: Significant jaundice involving the face, trunk, and extremities. Scleral icterus present.',
+          '4. Abdomen (Palpation): Firm, enlarged liver (Hepatomegaly) palpable 3 cm below the costal margin.',
+          '5. Abdomen (Palpation): Spleen is palpable (early Splenomegaly).',
+          '6. Abdomen (Inspection): Non-distended. No caput medusae.',
+          '7. HEENT: Normal fontanelle. No dysmorphic features.',
+          '8. Cardiovascular: Normal rate and rhythm. No murmurs.',
+          '9. Neurological: Normal tone and reflexes. No encephalopathy.',
+          '10. Rectal: Pale, acholic stool noted on exam.'
+        ],
+        testCats: [
+          {
+            name: 'Gastroenterology / Hepatic (Mandatory)', icon: '胃', tests: [
+              { n: 'Fractionated Bilirubin (Total & Direct)', c: true, r: 'Total Bilirubin 12.5 mg/dL, Direct Bilirubin 6.8 mg/dL. (Diagnostic for Conjugated Hyperbilirubinemia).' },
+              { n: 'Liver Function Tests (AST/ALT/Alk Phos)', c: true, r: 'GGT 450 (High), Alk Phos 500 (High), AST 120, ALT 105. (Indicates biliary obstruction).' },
+              { n: 'Serum Ammonia', c: false, r: 'Normal.' },
+              { n: 'Alpha-1 Antitrypsin Level', c: true, r: 'Normal. (Rule out deficiency).' },
+              { n: 'Sweat Chloride', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Radiography & Ultrasound', icon: '🩻', tests: [
+              { n: 'Right Upper Quadrant (RUQ) Ultrasound', c: true, r: 'Absent or small/contracted gallbladder. "Triangular Cord Sign" noted (fibrous remnant at the porta hepatis). Common Bile Duct not visualized.' },
+              { n: 'HIDA Scan (with Phenobarbital premedication)', c: true, r: 'Excellent uptake of tracer by the liver, but NO excretion into the small intestine after 24 hours. Confirms biliary obstruction.' },
+              { n: 'Chest X-Ray', c: false, r: 'Normal.' },
+              { n: 'Abdominal X-Ray', c: false, r: 'Normal gas pattern.' },
+              { n: 'Renal Ultrasound', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Invasive Diagnostics', icon: '🔍', tests: [
+              { n: 'Percutaneous Liver Biopsy', c: true, r: 'Shows bile duct proliferation, portal fibrosis, and bile plugs. Highly suggestive of Biliary Atresia.' },
+              { n: 'Intraoperative Cholangiography', c: true, r: 'Gold standard. Performed during surgery to definitively confirm the lack of biliary patency.' },
+              { n: 'ERCP', c: false, r: 'Trap! Not technically feasible in a 3-week-old infant.' },
+              { n: 'Diagnostic Laparoscopy', c: true, r: 'Used to visualize the biliary tree.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Metabolic', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Normal BUN/Cr. Glucose 85.' },
+              { n: 'Serum Lactate', c: false, r: 'Normal.' },
+              { n: 'C-Reactive Protein (CRP)', c: false, r: 'Normal.' },
+              { n: 'Alpha-fetoprotein', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'Normal.' },
+              { n: 'Type and Screen', c: true, r: 'A Positive. (Mandatory for surgery).' },
+              { n: 'Reticulocyte Count', c: true, r: 'Normal. (Rules out hemolysis).' },
+              { n: 'Peripheral Smear', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Clinical Scores', icon: '🩺', tests: [
+              { n: 'Direct Coombs Test', c: true, r: 'Negative. (Rules out ABO/Rh incompatibility).' },
+              { n: 'Stool Color Card Assessment', c: true, r: 'Matches acholic (pale) category.' },
+              { n: 'Point-of-Care Glucose', c: true, r: '88 mg/dL.' },
+              { n: 'Urine hCG', c: false, r: 'Infant.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'TORCH Screen (Toxoplasmosis, Rubella, CMV, HSV)', c: true, r: 'Negative. (Infection can mimic BA).' },
+              { n: 'Blood Cultures', c: false, r: 'Not indicated.' },
+              { n: 'Hepatitis A/B/C Serology', c: true, r: 'Negative.' },
+              { n: 'Urine Culture', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
+              { n: 'PT/INR, aPTT', c: true, r: 'INR 1.4 (Mildly elevated due to Vitamin K malabsorption). Corrects with Vitamin K.' },
+              { n: 'Fibrinogen', c: false, r: 'Normal.' },
+              { n: 'D-Dimer', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH', c: true, r: 'Normal. (Rule out hypothyroidism as cause of jaundice).' },
+              { n: 'Cortisol', c: false, r: 'Normal.' },
+              { n: 'HbA1c', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Toxicology Screen', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Heavy Metals', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Radiological Procedures', icon: '📷', tests: [
+              { n: 'CT Abdomen', c: false, r: 'Not indicated.' },
+              { n: 'MRI / MRCP', c: false, r: 'Not indicated acutely.' },
+              { n: 'Bone Age', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Specialty Assays', icon: '🧪', tests: [
+              { n: 'Serum Cholesterol', c: true, r: 'Elevated.' },
+              { n: 'Serum Albumin', c: true, r: 'Low-normal.' },
+              { n: 'Prealbumin', c: false, r: 'Normal.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Biliary Atresia', c: true },
+          { t: 'Physiological Jaundice', c: false },
+          { t: 'Breast Milk Jaundice', c: false },
+          { t: 'Choledochal Cyst', c: false },
+          { t: 'Alpha-1 Antitrypsin Deficiency', c: false },
+          { t: 'Alagille Syndrome', c: false },
+          { t: 'Neonatal Hepatitis', c: false },
+          { t: 'ABO Incompatibility', c: false },
+          { t: 'Galactosemia', c: false },
+          { t: 'Crigler-Najjar Syndrome', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Surgical Interventions (Definitive)', icon: '🔪', treats: [
+              { n: 'Kasai Procedure (Hepatoportoenterostomy)', c: true },
+              { n: 'Liver Transplantation (Ultimate fallback)', c: true },
+              { n: 'Laparoscopic Cholecystectomy', c: false },
+              { n: 'ERCP with stenting', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic & Vitamin Support', icon: '💊', treats: [
+              { n: 'Supplement Fat-Soluble Vitamins (A, D, E, K)', c: true },
+              { n: 'IM Vitamin K injection', c: true },
+              { n: 'Ursodeoxycholic Acid', c: true },
+              { n: 'Medium-chain triglyceride (MCT) formula', c: true },
+              { n: 'Iron supplementation', c: false }
+            ]
+          },
+          {
+            name: 'Timing of Procedure (Trap Zone)', icon: '⏱️', treats: [
+              { n: 'Perform Kasai procedure BEFORE 60 days of life', c: true },
+              { n: 'Wait until 6 months of age for surgery', c: false },
+              { n: 'Monitor for 1 year', c: false }
+            ]
+          },
+          {
+            name: 'Gastrointestinal Support', icon: '胃', treats: [
+              { n: 'Optimize nutrition to support liver function', c: true },
+              { n: 'Strict NPO', c: false },
+              { n: 'Phototherapy (Trap: only helps unconjugated)', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'No acute antibiotics needed', c: true },
+              { n: 'Post-operative antibiotics to prevent cholangitis', c: true }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids', icon: '💧', treats: [
+              { n: 'Maintenance fluids only if poor PO', c: true },
+              { n: 'Fluid restriction', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics', icon: '🌡️', treats: [
+              { n: 'Acetaminophen PRN', c: true },
+              { n: 'Avoid NSAIDs in liver disease', c: true }
+            ]
+          },
+          {
+            name: 'Cardiovascular', icon: '❤️', treats: [
+              { n: 'No intervention', c: true }
+            ]
+          },
+          {
+            name: 'Airway Support', icon: '🫁', treats: [
+              { n: 'Room air observation', c: true }
+            ]
+          },
+          {
+            name: 'Antithrombotic Therapy', icon: '🩸', treats: [
+              { n: 'No anticoagulation', c: true }
+            ]
+          },
+          {
+            name: 'Reversal Agents', icon: '🚫', treats: [
+              { n: 'No intervention', c: true }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit for surgical workup', c: true },
+              { n: 'Refer to Pediatric Hepatology', c: true },
+              { n: 'Discharge with counseling on stool color monitoring', c: true }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Biliary Atresia',
+          sub: 'Idiopathic fibrosing obliteration of the extrahepatic biliary tree',
+          clues: 'A 3-week-old infant with jaundice that is NOT improving. The pathognomonic clues are the "acholic" (pale/white) stools and dark urine, indicating that bilirubin is not reaching the gut but is being filtered by the kidneys. Hepatomegaly on exam confirms liver involvement.',
+          tests: 'The most important first step is fractionating the bilirubin: Direct (conjugated) bilirubin > 2 mg/dL or > 20% of total is pathological. RUQ Ultrasound shows the "Triangular Cord Sign." HIDA scan shows uptake but NO excretion into the bowel.',
+          mgmt: 'Biliary atresia is a surgical emergency of the infant. The Kasai procedure (connecting the liver directly to the small bowel) must be done before 60 days of age to be successful. If delayed, cirrhosis becomes irreversible and the child will require a liver transplant.',
+          pitfalls: 'Ordering Phototherapy. Phototherapy is for UNCONJUGATED jaundice (physiological/breast milk). It does nothing for conjugated jaundice (biliary atresia). Another trap is ignoring persistent jaundice after 2 weeks of age.',
+          other: 'Breast milk jaundice is unconjugated and stool color is normal. Choledochal cysts are rare and usually present with a palpable mass and pain.',
+          testRationale: 'Direct Bilirubin is elevated because the liver can still conjugate it, but it cannot exit the liver due to the blocked ducts, so it leaks back into the blood.',
+          treatSeq: '1. Total/Direct Bilirubin → 2. RUQ US → 3. HIDA Scan → 4. Liver Biopsy → 5. Kasai Procedure.',
+          traps: 'Assuming all jaundice in the first month is "physiological." Any jaundice persisting past 14 days MUST be screened with a direct bilirubin.',
+          learning: 'Pale Stools + Persistent Jaundice = Biliary Atresia. Workup: Fractionated Bilirubin and HIDA. Treatment: Kasai procedure before age 2 months.'
+        },
+        xp: 40
+      },
+      // ─────────────────────────────────────────────────────────────
+      // 60. PEDIATRICS — Level 1: Neonatal Sepsis
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'peds7', name: 'Pediatrics: Level 1', color: '#dc2626', emoji: '🤒', waitDays: 1,
+        caseTitle: 'Fever and poor feeding in a 3-week-old infant',
+        caseDesc: 'A 21-day-old infant presents with a fever of 38.3°C (101°F). Recognize the absolute mandate for a full septic workup in neonates, avoid the deadly Ceftriaxone trap, and initiate empiric Ampicillin and Gentamicin.',
+        patient: { name: 'Elijah', gender: 'Male', age: '21 Days', weight: '3.8 kg', complaint: 'Fever and sleepiness' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '38.4°C (101.1°F)' },
+          { icon: '❤️', label: 'Heart Rate', val: '175 bpm (Tachycardic)' },
+          { icon: '📈', label: 'Blood Pressure', val: '70/45 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '45/min' },
+          { icon: '💧', label: 'SpO2', val: '99% on room air' }
+        ],
+        history: [
+          '1. Mother noticed the infant felt "warm" this morning and checked a rectal temperature: 38.3°C.',
+          '2. The infant has been feeding poorly, only nursing for 5 minutes at a time (usually 20 mins).',
+          '3. Appears much more lethargic and sleepy today compared to yesterday.',
+          '4. Born at 39 weeks via spontaneous vaginal delivery.',
+          '5. Maternal Group B Strep (GBS) status was POSITIVE; mother received only 1 dose of Penicillin 2 hours before delivery.',
+          '6. No history of cough, rhinorrhea, or vomiting.',
+          '7. Has had 3 wet diapers today (slightly decreased).',
+          '8. Umbilical stump fell off 4 days ago; no redness noted by mother.',
+          '9. First-born child; no sick contacts at home.',
+          '10. Infant has not received any medications, including Tylenol.'
+        ],
+        physExam: [
+          '1. General: Lethargic, minimally responsive to exam but awakens to painful stimuli. Weak cry.',
+          '2. Vitals: Febrile and tachycardic.',
+          '3. HEENT: Anterior fontanelle is flat but slightly full when crying.',
+          '4. HEENT: Mucous membranes are slightly tacky (Mild dehydration).',
+          '5. Skin: Mottled appearance on the trunk and extremities. Capillary refill is 3-4 seconds (Delayed).',
+          '6. Respiratory: Clear to auscultation bilaterally. Mild tachypnea without retractions.',
+          '7. Cardiovascular: Tachycardic. No murmurs.',
+          '8. Abdomen: Soft, non-distended. Bowel sounds present.',
+          '9. Genitourinary: Normal male. Circumcision site is clean and healing.',
+          '10. Neurological: Decreased tone (floppy), but moves all extremities.'
+        ],
+        testCats: [
+          {
+            name: 'Clinical Microbiology (The Septic Workup)', icon: '🦠', tests: [
+              { n: 'Blood Culture (Aerobic/Anaerobic)', c: true, r: 'Pending. (Mandatory part of full septic workup).' },
+              { n: 'Urine Culture (via Bladder Catheterization)', c: true, r: 'Pending. (Mandatory. Do NOT use a bagged specimen in neonates).' },
+              { n: 'Cerebrospinal Fluid (CSF) Culture', c: true, r: 'Pending. (Mandatory part of full septic workup for < 28 days old).' },
+              { n: 'Respiratory Viral Panel (RSV/Flu/COVID)', c: true, r: 'Negative. (Important, but does NOT rule out concurrent bacterial sepsis).' },
+              { n: 'Surface/Skin Swab', c: false, r: 'Trap! Wastes time, does not test for invasive systemic disease.' }
+            ]
+          },
+          {
+            name: 'Invasive Diagnostics (Lumbar Puncture)', icon: '🔍', tests: [
+              { n: 'CSF Cell Count & Differential', c: true, r: 'WBC 85/mm3 (Elevated, >20 is abnormal in neonates), 80% neutrophils. Suggests Bacterial Meningitis.' },
+              { n: 'CSF Protein & Glucose', c: true, r: 'Protein 120 mg/dL (High), Glucose 25 mg/dL (Low). Classic bacterial pattern.' },
+              { n: 'CSF Gram Stain', c: true, r: 'Gram-positive cocci in chains (Likely Group B Strep).' },
+              { n: 'CSF HSV PCR', c: true, r: 'Pending. (Standard to check in neonates with fever/meningitis).' },
+              { n: 'CSF VDRL (Syphilis)', c: false, r: 'Not indicated unless maternal screen was positive.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC) with diff', c: true, r: 'WBC 4.5k (Leukopenia is more ominous than leukocytosis in neonates). 25% Bands (Left shift).' },
+              { n: 'Peripheral Blood Smear', c: false, r: 'Normal.' },
+              { n: 'Type and Screen', c: false, r: 'Not heading to surgery.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Not indicated.' },
+              { n: 'Erythrocyte Sedimentation Rate (ESR)', c: true, r: 'Elevated.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Inflammatory', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'BUN 15, Cr 0.3. Normal electrolytes.' },
+              { n: 'C-Reactive Protein (CRP)', c: true, r: '85 mg/L (Markedly elevated).' },
+              { n: 'Procalcitonin', c: true, r: 'Elevated. (Highly specific for bacterial sepsis).' },
+              { n: 'Serum Lactate', c: true, r: '3.1 mmol/L (Elevated, signs of early septic shock).' },
+              { n: 'Serum Ammonia', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Urinalysis', icon: '🚽', tests: [
+              { n: 'Urinalysis (Catheterized specimen)', c: true, r: 'Positive for leukocyte esterase and nitrites. >50 WBCs/hpf.' },
+              { n: 'Urinalysis (Bagged specimen)', c: false, r: 'TRAP! High contamination rate. Never base treatment on a bagged urine in a neonate.' },
+              { n: 'Urine Toxicology', c: false, r: 'Not indicated.' },
+              { n: 'Urine Specific Gravity', c: false, r: 'Normal.' },
+              { n: 'Urine hCG', c: false, r: 'Infant.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Bedside', icon: '🩺', tests: [
+              { n: 'Point-of-Care Capillary Glucose', c: true, r: '65 mg/dL. (Neonates deplete glucose rapidly during sepsis).' },
+              { n: 'Pulse Oximetry', c: true, r: '99% on room air.' },
+              { n: 'Orthostatic Vitals', c: false, r: 'Not applicable to infants.' },
+              { n: 'Fecal Occult Blood', c: false, r: 'Not indicated.' },
+              { n: 'Transcutaneous Bilirubin', c: false, r: 'Not the primary issue.' }
+            ]
+          },
+          {
+            name: 'Radiography & Ultrasound', icon: '🩻', tests: [
+              { n: 'Chest X-Ray (AP/Lateral)', c: true, r: 'Clear lung fields. No consolidations.' },
+              { n: 'Renal Ultrasound', c: false, r: 'Not indicated acutely, but may be needed later if UTI is confirmed.' },
+              { n: 'Abdominal X-Ray (KUB)', c: false, r: 'Not indicated.' },
+              { n: 'Head Ultrasound', c: false, r: 'Not indicated for meningitis diagnosis.' },
+              { n: 'Bone Scan', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Advanced Cross-Sectional Imaging', icon: '📷', tests: [
+              { n: 'CT Head without contrast', c: false, r: 'Trap! Unnecessary radiation. Fontanelle is open, LP is safe without CT.' },
+              { n: 'CT Abdomen/Pelvis', c: false, r: 'Not indicated.' },
+              { n: 'MRI Brain', c: false, r: 'Too slow.' },
+              { n: 'CT Chest', c: false, r: 'Not indicated.' },
+              { n: 'PET Scan', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary Diagnostics', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia.' },
+              { n: 'Echocardiogram', c: false, r: 'Not indicated acutely.' },
+              { n: 'Troponin', c: false, r: 'Not indicated.' },
+              { n: 'BNP', c: false, r: 'Not indicated.' },
+              { n: 'Stress Test', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Blood Gas Analysis', icon: '💉', tests: [
+              { n: 'Capillary Blood Gas (CBG)', c: true, r: 'pH 7.31, pCO2 35, HCO3 16. (Metabolic acidosis from sepsis).' },
+              { n: 'Arterial Blood Gas (ABG)', c: false, r: 'Too traumatic.' },
+              { n: 'Venous Blood Gas', c: false, r: 'CBG preferred.' },
+              { n: 'Carboxyhemoglobin', c: false, r: 'Normal.' },
+              { n: 'Methemoglobin', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Endocrine & Metabolic', icon: '🧬', tests: [
+              { n: 'TSH / Free T4', c: false, r: 'Newborn screen was normal.' },
+              { n: 'Cortisol', c: false, r: 'Normal.' },
+              { n: '17-OH Progesterone', c: false, r: 'Not indicated.' },
+              { n: 'Ammonia', c: false, r: 'Normal.' },
+              { n: 'Amino Acid Profile', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
+              { n: 'PT/INR, aPTT', c: true, r: 'Mildly elevated (DIC check for sepsis).' },
+              { n: 'D-Dimer', c: false, r: 'Elevated.' },
+              { n: 'Fibrinogen', c: true, r: 'Low-normal.' },
+              { n: 'Bleeding Time', c: false, r: 'Not indicated.' },
+              { n: 'TEG', c: false, r: 'Not indicated.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Neonatal Sepsis (Group B Streptococcus)', c: true },
+          { t: 'Viral Upper Respiratory Infection', c: false },
+          { t: 'Urinary Tract Infection (Isolated)', c: false },
+          { t: 'Congenital Heart Disease', c: false },
+          { t: 'Necrotizing Enterocolitis', c: false },
+          { t: 'Inborn Error of Metabolism', c: false },
+          { t: 'Infant Botulism', c: false },
+          { t: 'Neonatal Herpes Simplex Virus (HSV)', c: false },
+          { t: 'Gastroenteritis', c: false },
+          { t: 'Physiologic Jaundice', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Antimicrobial Therapy (First-Line)', icon: '🦠', treats: [
+              { n: 'IV Ampicillin (Covers Listeria/GBS) + IV Gentamicin', c: true },
+              { n: 'IV Ampicillin + IV Cefotaxime (Alternative)', c: true },
+              { n: 'IV Ceftriaxone', c: false },
+              { n: 'IV Vancomycin only', c: false },
+              { n: 'Oral Amoxicillin', c: false },
+              { n: 'Discharge with close follow-up without antibiotics', c: false }
+            ]
+          },
+          {
+            name: 'Antiviral Therapy', icon: '💊', treats: [
+              { n: 'IV Acyclovir (Empiric for HSV until PCR returns negative)', c: true },
+              { n: 'Oral Oseltamivir (Tamiflu)', c: false },
+              { n: 'IV Ganciclovir', c: false },
+              { n: 'No antivirals needed immediately', c: false },
+              { n: 'Oral Valacyclovir', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids & Resuscitation', icon: '💧', treats: [
+              { n: 'IV Normal Saline Bolus (10-20 mL/kg) for tachycardia/mottling', c: true },
+              { n: 'Maintenance IV Fluids (D10W + NaCl)', c: true },
+              { n: 'Strict Fluid Restriction', c: false },
+              { n: 'Oral Rehydration Salts only', c: false },
+              { n: 'IV Albumin', c: false }
+            ]
+          },
+          {
+            name: 'Airway & Oxygenation Support', icon: '🫁', treats: [
+              { n: 'Room air observation (SpO2 is 99%)', c: true },
+              { n: 'Intubation', c: false },
+              { n: 'BiPAP', c: false },
+              { n: 'High-Flow Nasal Cannula', c: false },
+              { n: 'Bag-Valve-Mask', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular Medications', icon: '❤️', treats: [
+              { n: 'No cardiovascular meds indicated currently', c: true },
+              { n: 'Epinephrine IV', c: false },
+              { n: 'Dopamine', c: false },
+              { n: 'Vasopressors', c: false },
+              { n: 'Prostaglandin E1 (Alprostadil)', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Antipyretics', icon: '🌡️', treats: [
+              { n: 'Acetaminophen (Paracetamol) PRN for fever', c: true },
+              { n: 'Ibuprofen', c: false },
+              { n: 'Aspirin', c: false },
+              { n: 'IV Morphine', c: false },
+              { n: 'Ketamine', c: false }
+            ]
+          },
+          {
+            name: 'Surgical & Procedural Interventions', icon: '🔪', treats: [
+              { n: 'No surgery indicated', c: true },
+              { n: 'Exploratory Laparotomy', c: false },
+              { n: 'Circumcision revision', c: false },
+              { n: 'VP Shunt Placement', c: false },
+              { n: 'Chest Tube', c: false }
+            ]
+          },
+          {
+            name: 'Gastrointestinal Support', icon: '胃', treats: [
+              { n: 'NPO until hemodynamically stable', c: true },
+              { n: 'Force oral feeds', c: false },
+              { n: 'NG Tube feeding', c: false },
+              { n: 'Laxatives', c: false },
+              { n: 'Proton Pump Inhibitors', c: false }
+            ]
+          },
+          {
+            name: 'Systemic Anti-Inflammatories', icon: '🧬', treats: [
+              { n: 'No steroids indicated', c: true },
+              { n: 'IV Dexamethasone', c: false },
+              { n: 'Oral Prednisone', c: false },
+              { n: 'Colchicine', c: false },
+              { n: 'Infliximab', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic & Endocrine', icon: '🧪', treats: [
+              { n: 'IV Dextrose (if hypoglycemic)', c: true },
+              { n: 'Sodium Bicarbonate', c: false },
+              { n: 'Insulin', c: false },
+              { n: 'Calcium Gluconate', c: false },
+              { n: 'Hydrocortisone', c: false }
+            ]
+          },
+          {
+            name: 'Reversal Agents', icon: '🚫', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Naloxone', c: false },
+              { n: 'Flumazenil', c: false },
+              { n: 'Vitamin K', c: false },
+              { n: 'Protamine', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit directly to Neonatal Intensive Care Unit (NICU)', c: true },
+              { n: 'Discharge home with PO Amoxicillin', c: false },
+              { n: 'Transfer to standard pediatric floor', c: false },
+              { n: 'Discharge home with Tylenol and 24-hour follow-up', c: false },
+              { n: 'Social Work consult', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Neonatal Sepsis / Meningitis (Group B Strep)',
+          sub: 'Systemic bacterial infection in an infant < 28 days old',
+          clues: 'Any fever (≥ 38.0°C or 100.4°F) in an infant under 28 days of age is considered Meningitis/Sepsis until proven otherwise. The history of inadequate maternal GBS prophylaxis and the infant\'s lethargy/mottling make this a high-risk presentation.',
+          tests: 'A "Full Septic Workup" is absolutely mandatory: Blood Culture, Catheterized Urine Culture, and a Lumbar Puncture (CSF). Do not skip the LP. A bagged urine is useless due to contamination. Do not delay antibiotics for the LP if the infant is unstable, but ideally draw CSF first.',
+          mgmt: 'Empiric antibiotics MUST cover GBS, E. coli, and Listeria. The standard regimen is IV Ampicillin + IV Gentamicin (or Cefotaxime). Acyclovir is often added empirically to cover neonatal HSV until the CSF PCR returns negative.',
+          pitfalls: 'LETHAL TRAP: Giving IV Ceftriaxone to a neonate (< 28 days). Ceftriaxone displaces bilirubin from albumin, causing fatal kernicterus (brain damage) and biliary sludging. Use Cefotaxime or Gentamicin instead. Another massive trap is sending a 3-week-old with a fever home with "Tylenol for a viral cold." They will die.',
+          other: 'While RSV or a viral URI can cause fever, you cannot assume a virus is the *only* cause in a neonate; they frequently have concurrent bacterial infections because their immune system is immature.',
+          testRationale: 'Leukopenia (low WBC count) is actually a worse prognostic sign in neonates than leukocytosis, as it indicates the bone marrow has been completely overwhelmed and depleted by the infection.',
+          treatSeq: '1. Septic Workup (Blood/Urine/CSF) → 2. IV Ampicillin + Gentamicin + Acyclovir → 3. IV Fluid Resuscitation → 4. NICU Admission.',
+          traps: 'Waiting for culture results to start antibiotics. In neonates, time is brain/tissue. Shoot first (draw labs), then ask questions later (give antibiotics immediately).',
+          learning: 'Fever < 28 days = Full Septic Workup (Blood, Urine, LP). Treat with Ampicillin + Gentamicin. NEVER use Ceftriaxone in neonates (Kernicterus). Never discharge.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 61. PEDIATRICS — Level 1: Status Asthmaticus
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'peds8', name: 'Pediatrics: Level 1', color: '#8b5cf6', emoji: '🫁', waitDays: 5,
+        caseTitle: 'Severe wheezing unresponsive to home inhalers',
+        caseDesc: 'A 7-year-old male with a history of asthma presents in severe respiratory distress. Step through the aggressive algorithmic escalation of bronchodilators, steroids, and adjuncts, while recognizing the ominous sign of a "normal" pCO2.',
+        patient: { name: 'Julian', gender: 'Male', age: '7 Y', weight: '24 kg', complaint: 'Cannot breathe, inhaler not working' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.2°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '145 bpm (Tachycardic)' },
+          { icon: '📈', label: 'Blood Pressure', val: '110/70 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '42/min (Severe Tachypnea)' },
+          { icon: '💧', label: 'SpO2', val: '88% on room air' }
+        ],
+        history: [
+          '1. History of moderate persistent asthma, usually well-controlled on inhaled fluticasone.',
+          '2. Developed a runny nose and cough 2 days ago (viral trigger).',
+          '3. Woke up this morning with severe shortness of breath and chest tightness.',
+          '4. Mother administered his Albuterol rescue inhaler 4 times over the last 2 hours with ZERO improvement.',
+          '5. He is now unable to speak in full sentences, only speaking 1-2 words at a time.',
+          '6. Has been admitted to the PICU once before for a severe asthma exacerbation at age 4.',
+          '7. Has not had any recent systemic steroid bursts.',
+          '8. Denies any fever, choking episodes, or known new allergies.',
+          '9. No history of cardiac disease.',
+          '10. Family has a pet cat, but the cat has been in the house for years.'
+        ],
+        physExam: [
+          '1. General: Sitting upright, leaning forward, highly anxious, sweating. Speaking in 1-word syllables.',
+          '2. Vitals: Hypoxic, severely tachypneic, and tachycardic.',
+          '3. Respiratory: Severe suprasternal, intercostal, and subcostal retractions.',
+          '4. Respiratory: Prolonged expiratory phase with loud, high-pitched, diffuse expiratory wheezing.',
+          '5. Respiratory: Air entry is poor bilaterally (Tight lungs).',
+          '6. HEENT: Nasal flaring present. No stridor. No drooling.',
+          '7. Cardiovascular: Tachycardic. Pulsus paradoxus is present (>15 mmHg drop in systolic BP on inspiration).',
+          '8. Skin: Pale, but no frank cyanosis yet.',
+          '9. Neurological: Agitated but fully conscious.',
+          '10. Abdomen: Soft, moving vigorously with respirations.'
+        ],
+        testCats: [
+          {
+            name: 'Point-of-Care & Clinical Scores', icon: '🩺', tests: [
+              { n: 'Continuous Pulse Oximetry', c: true, r: '88% on room air. Improves to 92% on 4L O2.' },
+              { n: 'Pediatric Asthma Score (PAS)', c: true, r: 'Score = 12 (Severe Exacerbation).' },
+              { n: 'Peak Expiratory Flow Rate (PEFR)', c: false, r: 'Trap! Child is in severe distress and cannot perform the maneuver properly. Do not force it.' },
+              { n: 'Point-of-Care Glucose', c: true, r: '115 mg/dL.' },
+              { n: 'Orthostatic Vitals', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Blood Gas Analysis (Crucial)', icon: '💉', tests: [
+              { n: 'Capillary Blood Gas (CBG)', c: true, r: 'pH 7.36, pCO2 42 mmHg, HCO3 22.' },
+              { n: 'Arterial Blood Gas (ABG)', c: false, r: 'Trap! The pain of the needle stick will agitate the child and worsen bronchospasm. CBG or VBG is sufficient.' },
+              { n: 'Venous Blood Gas', c: true, r: 'pH 7.35, pCO2 44 mmHg. (Normal/High pCO2 is an ominous sign of muscle fatigue).' },
+              { n: 'Carboxyhemoglobin', c: false, r: 'Not indicated.' },
+              { n: 'Methemoglobin', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Radiography', icon: '🩻', tests: [
+              { n: 'Chest X-Ray (AP/Lateral)', c: true, r: 'Hyperinflation, flattened diaphragms. No pneumothorax, no focal consolidation.' },
+              { n: 'Soft Tissue Neck X-Ray', c: false, r: 'No stridor, not indicated.' },
+              { n: 'CT Chest', c: false, r: 'Unnecessary radiation.' },
+              { n: 'Abdominal X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'MRI Chest', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Inflammatory', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'K 3.5 (Borderline low due to heavy Albuterol use). Normal BUN/Cr.' },
+              { n: 'Serum Lactate', c: true, r: '2.5 mmol/L (Elevated due to increased work of breathing and Albuterol side effect).' },
+              { n: 'C-Reactive Protein (CRP)', c: false, r: 'Normal.' },
+              { n: 'Serum Lipase', c: false, r: 'Normal.' },
+              { n: 'Serum Magnesium', c: true, r: '1.8 mg/dL (Normal, check before giving IV Mg).' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: false, r: 'Not strictly necessary unless suspecting secondary bacterial pneumonia.' },
+              { n: 'Type and Screen', c: false, r: 'Not indicated.' },
+              { n: 'Peripheral Smear', c: false, r: 'Not indicated.' },
+              { n: 'ESR', c: false, r: 'Not indicated.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Respiratory Viral PCR Panel (Swab)', c: true, r: 'Positive for Rhinovirus (The viral trigger).' },
+              { n: 'Blood Cultures', c: false, r: 'Not indicated.' },
+              { n: 'Sputum Culture', c: false, r: 'Not indicated.' },
+              { n: 'Rapid Strep', c: false, r: 'Not indicated.' },
+              { n: 'COVID-19 PCR', c: true, r: 'Negative.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary Diagnostics', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia (expected with Albuterol).' },
+              { n: 'Echocardiogram', c: false, r: 'Not indicated.' },
+              { n: 'Troponin', c: false, r: 'Not indicated.' },
+              { n: 'BNP', c: false, r: 'Not indicated.' },
+              { n: 'Stress Test', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Endocrine & Autoimmune', icon: '🧬', tests: [
+              { n: 'IgE Levels', c: false, r: 'Not indicated in the acute setting.' },
+              { n: 'TSH', c: false, r: 'Not indicated.' },
+              { n: 'Cortisol', c: false, r: 'Not indicated.' },
+              { n: 'HbA1c', c: false, r: 'Not indicated.' },
+              { n: 'ANA', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Toxicology', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Acetaminophen Level', c: false, r: 'Normal.' },
+              { n: 'Lead Screen', c: false, r: 'Normal.' },
+              { n: 'Salicylate Level', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Coagulation', icon: '⏱️', tests: [
+              { n: 'PT/INR', c: false, r: 'Normal.' },
+              { n: 'aPTT', c: false, r: 'Normal.' },
+              { n: 'D-Dimer', c: false, r: 'Normal.' },
+              { n: 'Fibrinogen', c: false, r: 'Normal.' },
+              { n: 'Bleeding Time', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Urinalysis', icon: '🚽', tests: [
+              { n: 'Urinalysis', c: false, r: 'Normal.' },
+              { n: 'Urine Culture', c: false, r: 'Normal.' },
+              { n: 'Specific Gravity', c: false, r: 'Normal.' },
+              { n: 'Microalbuminuria', c: false, r: 'Normal.' },
+              { n: 'Urine Ketones', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Invasive Diagnostics', icon: '🔍', tests: [
+              { n: 'Bronchoscopy', c: false, r: 'Contraindicated.' },
+              { n: 'Lumbar Puncture', c: false, r: 'Contraindicated.' },
+              { n: 'Pleural Fluid Analysis', c: false, r: 'No effusion.' },
+              { n: 'Gastric Lavage', c: false, r: 'Irrelevant.' },
+              { n: 'Skin Biopsy', c: false, r: 'Irrelevant.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Status Asthmaticus (Severe Exacerbation)', c: true },
+          { t: 'Anaphylaxis', c: false },
+          { t: 'Foreign Body Aspiration', c: false },
+          { t: 'Acute Bronchiolitis', c: false },
+          { t: 'Croup', c: false },
+          { t: 'Pneumothorax', c: false },
+          { t: 'Congestive Heart Failure', c: false },
+          { t: 'Pertussis', c: false },
+          { t: 'Vocal Cord Dysfunction', c: false },
+          { t: 'Cystic Fibrosis Flare', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Airway & Oxygenation Support', icon: '🫁', treats: [
+              { n: 'Supplemental Oxygen to keep SpO2 > 92%', c: true },
+              { n: 'High-Flow Nasal Cannula (HFNC) or CPAP', c: true },
+              { n: 'Immediate RSI Intubation', c: false },
+              { n: 'Bag-Valve-Mask', c: false },
+              { n: 'Heliox (Helium-Oxygen mixture)', c: true }
+            ]
+          },
+          {
+            name: 'Inhaled Bronchodilators (Step 1)', icon: '🌬️', treats: [
+              { n: 'Continuous Nebulized Albuterol', c: true },
+              { n: 'Nebulized Ipratropium Bromide (Atrovent)', c: true },
+              { n: 'Racemic Epinephrine', c: false },
+              { n: 'Nebulized Hypertonic Saline', c: false },
+              { n: 'Discontinue Albuterol since it failed at home', c: false }
+            ]
+          },
+          {
+            name: 'Systemic Anti-Inflammatories (Step 2)', icon: '🧬', treats: [
+              { n: 'IV Methylprednisolone (Solu-Medrol) 2 mg/kg', c: true },
+              { n: 'Oral Dexamethasone (if tolerating PO)', c: true },
+              { n: 'Inhaled Fluticasone only', c: false },
+              { n: 'NSAIDs (Ibuprofen)', c: false },
+              { n: 'IV Infliximab', c: false }
+            ]
+          },
+          {
+            name: 'Adjunct Medical Therapy (Step 3)', icon: '💊', treats: [
+              { n: 'IV Magnesium Sulfate (Smooth muscle relaxant)', c: true },
+              { n: 'IM or SC Epinephrine (Terbutaline/Epi)', c: true },
+              { n: 'IV Ketamine (Bronchodilatory sedative if preparing for intubation)', c: true },
+              { n: 'IV Theophylline', c: false },
+              { n: 'Oral Montelukast (Singulair)', c: false }
+            ]
+          },
+          {
+            name: 'Medications to AVOID (Trap Zone)', icon: '⚠️', treats: [
+              { n: 'IV Lorazepam (Benzodiazepines for anxiety)', c: false },
+              { n: 'IV Morphine (Opioids)', c: false },
+              { n: 'Cough Suppressants (Dextromethorphan)', c: false },
+              { n: 'Oral Antihistamines (Benadryl)', c: false },
+              { n: 'Beta-Blockers', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids & Resuscitation', icon: '💧', treats: [
+              { n: 'Maintenance IV Normal Saline (Child is losing fluid through tachypnea)', c: true },
+              { n: 'Aggressive 3L Fluid Bolus', c: false },
+              { n: 'Strict Fluid Restriction', c: false },
+              { n: 'IV Albumin', c: false },
+              { n: 'Massive Transfusion Protocol', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'No antibiotics indicated (Trigger is viral)', c: true },
+              { n: 'IV Ceftriaxone', c: false },
+              { n: 'Oral Azithromycin (Unless atypical pneumonia suspected)', c: false },
+              { n: 'IV Vancomycin', c: false },
+              { n: 'Oseltamivir', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular Medications', icon: '❤️', treats: [
+              { n: 'No routine cardiovascular meds needed', c: true },
+              { n: 'Vasopressors', c: false },
+              { n: 'Atropine', c: false },
+              { n: 'Amiodarone', c: false },
+              { n: 'Nitroglycerin', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic & Electrolyte Correction', icon: '🧪', treats: [
+              { n: 'Monitor and replete Potassium (Albuterol drives K+ into cells)', c: true },
+              { n: 'Sodium Bicarbonate', c: false },
+              { n: 'IV Insulin', c: false },
+              { n: 'IV Calcium', c: false },
+              { n: 'Oral Phosphate', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics', icon: '🌡️', treats: [
+              { n: 'Acetaminophen PRN', c: true },
+              { n: 'Ketorolac', c: false },
+              { n: 'Codeine', c: false },
+              { n: 'Tramadol', c: false },
+              { n: 'Fentanyl', c: false }
+            ]
+          },
+          {
+            name: 'Surgical & Procedural', icon: '🔪', treats: [
+              { n: 'No surgical intervention indicated', c: true },
+              { n: 'Chest Tube Placement', c: false },
+              { n: 'Cricothyrotomy', c: false },
+              { n: 'Diagnostic Laparoscopy', c: false },
+              { n: 'Tracheostomy', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit to Pediatric Intensive Care Unit (PICU) for continuous nebs', c: true },
+              { n: 'Discharge home with nebulizer', c: false },
+              { n: 'Admit to general pediatric floor', c: false },
+              { n: 'Prescribe home oral steroids for 5 days', c: true },
+              { n: 'Refer for allergy testing today', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Status Asthmaticus (Severe Exacerbation)',
+          sub: 'Severe, prolonged bronchospasm and airway inflammation unresponsive to standard outpatient therapy',
+          clues: 'A known asthmatic presenting with severe retractions, speaking in 1-word sentences, and failing home Albuterol. Pulsus paradoxus (drop in BP on inspiration) indicates severe negative intrathoracic pressure generated by fighting against tight airways.',
+          tests: 'The most critical test is the Blood Gas (CBG/VBG). A tachypneic child should be blowing off CO2 (low pCO2). If the pCO2 is "normal" (40-45) or high, it is an ominous sign that their respiratory muscles are fatiguing and they are about to undergo respiratory arrest. A CXR is useful to rule out a pneumothorax (a common complication of severe asthma).',
+          mgmt: 'Escalate therapy rapidly: 1. Continuous Nebulized Albuterol + Ipratropium. 2. Systemic Steroids (IV Methylprednisolone). 3. If failing, give IV Magnesium Sulfate (a potent smooth muscle relaxant). 4. Escalate to BiPAP or Heliox if needed. Avoid intubation if at all possible, as asthmatics have high peak airway pressures and frequently code during intubation.',
+          pitfalls: 'LETHAL TRAP: Giving a sedative (like Lorazepam) to "calm the child down." The child is anxious because they are suffocating. A sedative will depress their respiratory drive and cause an immediate cardiopulmonary arrest. Another trap is drawing a painful ABG—making the child scream worsens bronchospasm; use a venous or capillary gas instead.',
+          other: 'Anaphylaxis would have hives, lip/tongue swelling, and hypotension. Bronchiolitis occurs in infants < 2 years old. Foreign body has a sudden onset without a viral prodrome and focal/unilateral wheezing.',
+          testRationale: 'Potassium drops during severe asthma attacks because Albuterol (a Beta-2 agonist) drives potassium directly into the cells. Watch the K+ levels closely.',
+          treatSeq: '1. Oxygen & Continuous Albuterol/Ipratropium → 2. IV Steroids → 3. IV Magnesium → 4. PICU Admission.',
+          traps: 'Assuming a "normal" CO2 on the blood gas means the child is fine. Normal CO2 in a child breathing 45 times a minute means they are failing.',
+          learning: 'Status Asthmaticus = Continuous Nebs + Systemic Steroids + IV Magnesium. Normal pCO2 = Impending failure. NEVER give sedatives to an asthmatic in distress. Intubation is the absolute last resort.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 62. PEDIATRICS — Level 1: Non-Accidental Trauma (Child Abuse)
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'peds9', name: 'Pediatrics: Level 1', color: '#111827', emoji: '⚠️', waitDays: 3,
+        caseTitle: 'Lethargy, vomiting, and a history that "doesn\'t add up"',
+        caseDesc: 'A 4-month-old infant is brought in for lethargy and vomiting. The parents claim the baby rolled off a low couch. Recognize the highly inconsistent history, identify the classic triad of Shaken Baby Syndrome, and protect the child.',
+        patient: { name: 'Mia', gender: 'Female', age: '4 M', weight: '6 kg', complaint: 'Sleepy and throwing up' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.8°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '110 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '85/55 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '28/min' },
+          { icon: '💧', label: 'SpO2', val: '98% on room air' }
+        ],
+        history: [
+          '1. Mother\'s boyfriend states the infant "rolled off the couch" (about 2 feet high) onto a carpeted floor 2 hours ago.',
+          '2. Infant has vomited forcefully 3 times since the alleged fall.',
+          '3. Infant has been unusually lethargic, difficult to rouse, and not feeding.',
+          '4. The story has changed twice; initially, he said the baby fell off the bed, then changed it to the couch.',
+          '5. 4-month-old infants generally cannot roll over completely on their own (developmental milestone mismatch).',
+          '6. No history of fever, diarrhea, or sick contacts.',
+          '7. Mother is currently at work; boyfriend is the sole caregiver today.',
+          '8. Review of medical records shows a previous ED visit at 2 months of age for a "broken collarbone" (suspicious in an infant).',
+          '9. The caregiver appears more annoyed by the crying than concerned for the child\'s health.',
+          '10. No history of bleeding disorders or brittle bone disease.'
+        ],
+        physExam: [
+          '1. General: Lethargic, poorly responsive. Emits a high-pitched, weak cry when stimulated.',
+          '2. Vitals: Afebrile. Bradycardic for age (concerning for increased Intracranial Pressure - ICP).',
+          '3. HEENT: Anterior fontanelle is tense and bulging (Sign of increased ICP).',
+          '4. HEENT (Fundoscopy): Bilateral, diffuse retinal hemorrhages observed.',
+          '5. Head: No palpable skull fractures, no external bruising or swelling on the scalp.',
+          '6. Chest: Faint, old yellowish bruising noted over the lateral ribs bilaterally.',
+          '7. Abdomen: Soft, non-distended.',
+          '8. Extremities: Deformity and swelling noted over the left femur (appears to be a fresh fracture).',
+          '9. Neurological: Decreased tone. Pupils are sluggish to react to light.',
+          '10. Skin: Multiple bruises in various stages of healing on the back and buttocks (non-mobile areas).'
+        ],
+        testCats: [
+          {
+            name: 'Advanced Cross-Sectional Imaging', icon: '📷', tests: [
+              { n: 'CT Head WITHOUT Contrast', c: true, r: 'Bilateral subdural hematomas of varying ages (acute on chronic). Loss of gray-white differentiation (cerebral edema).' },
+              { n: 'MRI Brain', c: true, r: 'Gold standard for dating the hemorrhages, but CT is faster for initial ED stabilization.' },
+              { n: 'CT Head WITH Contrast', c: false, r: 'Not ideal for acute hemorrhage.' },
+              { n: 'CT Abdomen/Pelvis', c: true, r: 'Indicated to rule out solid organ lacerations (liver/spleen) from blunt abdominal trauma.' },
+              { n: 'CT Cervical Spine', c: true, r: 'Often ordered to check for severe whiplash/ligamentous injury.' }
+            ]
+          },
+          {
+            name: 'Radiography (The Skeletal Survey)', icon: '🩻', tests: [
+              { n: 'Complete Skeletal Survey (X-Rays of all bones)', c: true, r: 'Shows a healing clavicle fracture, posterior rib fractures (from squeezing), and a fresh spiral fracture of the left femur. Highly specific for abuse.' },
+              { n: 'Chest X-Ray only', c: false, r: 'Trap. Will miss extremity and skull fractures.' },
+              { n: 'Left Femur X-Ray only', c: false, r: 'Trap. You must look for hidden fractures everywhere.' },
+              { n: 'Whole Body Bone Scan', c: false, r: 'Sometimes used as an adjunct, but plain film skeletal survey is standard.' },
+              { n: 'Abdominal X-Ray', c: false, r: 'Not indicated for trauma.' }
+            ]
+          },
+          {
+            name: 'Ophthalmologic Evaluation', icon: '👁️', tests: [
+              { n: 'Formal Dilated Fundoscopic Exam (by Ophthalmology)', c: true, r: 'Confirms extensive, multilayered retinal hemorrhages extending to the periphery (Classic for shearing forces in Shaken Baby Syndrome).' },
+              { n: 'Visual Acuity Test', c: false, r: 'Age inappropriate.' },
+              { n: 'Slit Lamp Exam', c: false, r: 'Not the primary test.' },
+              { n: 'Fluorescein Staining', c: false, r: 'Checks for corneal abrasions, not retinal bleeds.' },
+              { n: 'Tonometry (Eye Pressure)', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
+              { n: 'Coagulation Panel (PT/INR, aPTT)', c: true, r: 'Normal. (Crucial to rule out a bleeding disorder like Hemophilia or Vitamin K deficiency causing the bruising/bleeds).' },
+              { n: 'Factor VIII and IX Levels', c: true, r: 'Normal.' },
+              { n: 'Von Willebrand Factor', c: true, r: 'Normal.' },
+              { n: 'Bleeding Time', c: false, r: 'Outdated test.' },
+              { n: 'TEG', c: false, r: 'Not indicated acutely.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Metabolic', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'AST 250, ALT 210 (Elevated transaminases highly suspicious for blunt abdominal trauma/liver injury). Normal electrolytes.' },
+              { n: 'Serum Lipase', c: true, r: 'Elevated (Suggests pancreatic injury from seatbelt/blunt force trauma).' },
+              { n: 'Serum Lactate', c: true, r: '1.9 mmol/L.' },
+              { n: 'Calcium, Magnesium, Phosphorus', c: true, r: 'Normal. (Rule out metabolic bone disease causing easy fractures).' },
+              { n: 'Serum Ammonia', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'Hb 8.5 (Anemia from intracranial/internal bleeding). Normal WBC.' },
+              { n: 'Type and Screen', c: true, r: 'A Positive. (Mandatory for trauma/bleeding).' },
+              { n: 'Peripheral Smear', c: false, r: 'Normal.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Elevated.' },
+              { n: 'Iron Studies', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Invasive Diagnostics', icon: '🔍', tests: [
+              { n: 'Lumbar Puncture', c: false, r: 'LETHAL TRAP! Infant has a bulging fontanelle and a subdural hematoma. LP will cause fatal brain herniation.' },
+              { n: 'Diagnostic Peritoneal Lavage', c: false, r: 'Outdated.' },
+              { n: 'Bone Marrow Biopsy', c: false, r: 'Irrelevant.' },
+              { n: 'Muscle Biopsy', c: false, r: 'Irrelevant.' },
+              { n: 'Bronchoscopy', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Endocrine & Genetic', icon: '🧬', tests: [
+              { n: 'Osteogenesis Imperfecta (Type I Collagen) Gene Panel', c: true, r: 'Pending. (Often ordered medically/legally to completely rule out "brittle bone disease").' },
+              { n: 'TSH', c: false, r: 'Not indicated.' },
+              { n: 'Cortisol', c: false, r: 'Not indicated.' },
+              { n: 'Newborn Screen Review', c: true, r: 'Normal.' },
+              { n: 'HbA1c', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Clinical Scores', icon: '🩺', tests: [
+              { n: 'Point-of-Care Glucose', c: true, r: '105 mg/dL.' },
+              { n: 'Glasgow Coma Scale', c: true, r: 'GCS 10 (Depressed).' },
+              { n: 'Urine Dipstick', c: false, r: 'Normal.' },
+              { n: 'Fecal Occult Blood', c: true, r: 'Negative.' },
+              { n: 'Pulse Oximetry', c: true, r: '98%.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Blood Cultures', c: false, r: 'Not indicated. Afebrile, trauma picture.' },
+              { n: 'Urine Culture', c: false, r: 'Not indicated.' },
+              { n: 'CSF Culture', c: false, r: 'LP is contraindicated.' },
+              { n: 'Stool Culture', c: false, r: 'Not indicated.' },
+              { n: 'Wound Swab', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary Diagnostics', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus bradycardia (Cushing reflex from ICP).' },
+              { n: 'Echocardiogram', c: false, r: 'Not indicated.' },
+              { n: 'Troponin', c: false, r: 'Not indicated.' },
+              { n: 'BNP', c: false, r: 'Not indicated.' },
+              { n: 'Stress Test', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Toxicology Screen', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: true, r: 'Negative. (Important to rule out intentional poisoning/sedation by caregiver).' },
+              { n: 'Blood Alcohol', c: true, r: 'Negative.' },
+              { n: 'Acetaminophen Level', c: true, r: 'Normal.' },
+              { n: 'Salicylate Level', c: true, r: 'Normal.' },
+              { n: 'Heavy Metals Screen', c: false, r: 'Not indicated.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Non-Accidental Trauma (Abusive Head Trauma / Shaken Baby Syndrome)', c: true },
+          { t: 'Accidental Fall from Couch', c: false },
+          { t: 'Osteogenesis Imperfecta', c: false },
+          { t: 'Hemophilia A', c: false },
+          { t: 'Meningitis', c: false },
+          { t: 'Vitamin K Deficiency Bleeding', c: false },
+          { t: 'Leukemia', c: false },
+          { t: 'Hydrocephalus', c: false },
+          { t: 'Intussusception', c: false },
+          { t: 'Gastroenteritis', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Neurological & Intracranial Pressure (ICP) Management', icon: '🧠', treats: [
+              { n: 'Elevate Head of Bed to 30 degrees', c: true },
+              { n: 'IV Hypertonic Saline (3%) or Mannitol (for severe cerebral edema)', c: true },
+              { n: 'Neurosurgery Consult for possible subdural evacuation/drain', c: true },
+              { n: 'Emergency Lumbar Puncture', c: false },
+              { n: 'Lay patient flat', c: false }
+            ]
+          },
+          {
+            name: 'Legal & Protective Actions (Mandatory)', icon: '⚖️', treats: [
+              { n: 'Mandatory immediate report to Child Protective Services (CPS) / State Agency', c: true },
+              { n: 'Admit child to hospital (Do NOT discharge back to caregiver)', c: true },
+              { n: 'Social Work and Child Abuse Pediatrics team consult', c: true },
+              { n: 'Confront caregiver aggressively in the ED', c: false },
+              { n: 'Discharge home with follow-up', c: false }
+            ]
+          },
+          {
+            name: 'Surgical & Orthopedic Interventions', icon: '🦴', treats: [
+              { n: 'Orthopedic Consult for femur fracture splinting/casting', c: true },
+              { n: 'Exploratory Laparotomy', c: false },
+              { n: 'Appendectomy', c: false },
+              { n: 'Closed reduction in ED without sedation', c: false },
+              { n: 'Amputation', c: false }
+            ]
+          },
+          {
+            name: 'Airway & Oxygenation Support', icon: '🫁', treats: [
+              { n: 'Intubation (RSI) if GCS drops < 8 or breathing fails', c: true },
+              { n: 'Supplemental Oxygen PRN', c: true },
+              { n: 'BiPAP', c: false },
+              { n: 'High-Flow Nasal Cannula', c: false },
+              { n: 'Tracheostomy', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids & Resuscitation', icon: '💧', treats: [
+              { n: 'IV Normal Saline (Judiciously to maintain perfusion without worsening brain edema)', c: true },
+              { n: 'Aggressive 3L fluid bolus', c: false },
+              { n: 'Strict fluid restriction', c: false },
+              { n: 'IV Albumin', c: false },
+              { n: 'Oral hydration', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Sedation', icon: '🌡️', treats: [
+              { n: 'IV Fentanyl (Short-acting, preserves neuro exam better than morphine)', c: true },
+              { n: 'IV Lorazepam (Benzodiazepine) only if actively seizing', c: true },
+              { n: 'Oral Ibuprofen', c: false },
+              { n: 'Avoid all pain meds', c: false },
+              { n: 'Ketamine (May raise ICP)', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'No antibiotics indicated', c: true },
+              { n: 'IV Ceftriaxone', c: false },
+              { n: 'Oral Amoxicillin', c: false },
+              { n: 'IV Vancomycin', c: false },
+              { n: 'Topical Antibiotics', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular Medications', icon: '❤️', treats: [
+              { n: 'No intervention unless hypotensive', c: true },
+              { n: 'Vasopressors', c: false },
+              { n: 'Beta-blockers', c: false },
+              { n: 'Atropine', c: false },
+              { n: 'Epinephrine', c: false }
+            ]
+          },
+          {
+            name: 'Systemic Anti-Inflammatories', icon: '🧬', treats: [
+              { n: 'No steroids indicated (Steroids do not help traumatic brain injury)', c: true },
+              { n: 'IV Dexamethasone', c: false },
+              { n: 'Oral Prednisone', c: false },
+              { n: 'Methotrexate', c: false },
+              { n: 'Colchicine', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic & Electrolyte Correction', icon: '🧪', treats: [
+              { n: 'Monitor Sodium closely (Risk of SIADH/DI from brain injury)', c: true },
+              { n: 'IV Potassium', c: false },
+              { n: 'IV Insulin', c: false },
+              { n: 'IV Calcium', c: false },
+              { n: 'Magnesium', c: false }
+            ]
+          },
+          {
+            name: 'Antithrombotic Therapy', icon: '🩸', treats: [
+              { n: 'Withhold all anticoagulants (Intracranial bleeding)', c: true },
+              { n: 'IV Heparin', c: false },
+              { n: 'Aspirin', c: false },
+              { n: 'Clopidogrel', c: false },
+              { n: 'Warfarin', c: false }
+            ]
+          },
+          {
+            name: 'Blood Products', icon: '🩸', treats: [
+              { n: 'Transfuse PRBCs if severely anemic or in hemorrhagic shock', c: true },
+              { n: 'FFP', c: false },
+              { n: 'Platelets', c: false },
+              { n: 'Cryoprecipitate', c: false },
+              { n: 'Whole Blood', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Non-Accidental Trauma (Abusive Head Trauma / Shaken Baby Syndrome)',
+          sub: 'Severe inflicted brain and skeletal injury due to violent shaking and blunt impact',
+          clues: 'The absolute hallmark of child abuse is a history that does not match the developmental age or the severity of the injury. A 4-month-old cannot roll off a couch, and a 2-foot fall does not cause a subdural hematoma, retinal hemorrhages, and a spiral femur fracture. Bruises on "non-cruising" areas (back/buttocks) in an immobile infant are highly specific for abuse.',
+          tests: 'A Non-Contrast CT Head is mandatory to detect acute intracranial bleeding (Subdural Hematoma is the most common). A Full Skeletal Survey is legally and medically required to find hidden, healing fractures (like posterior rib fractures from squeezing). A dilated eye exam by ophthalmology will reveal the classic multilayered retinal hemorrhages caused by severe acceleration-deceleration shearing forces. Order Coags to rule out a bleeding disorder.',
+          mgmt: 'Your medical duty is to stabilize the child (Manage ICP with head elevation and Hypertonic Saline, consult neurosurgery). Your ethical and legal duty is to REPORT to Child Protective Services (CPS) immediately and ADMIT the child to the hospital. Do NOT discharge the child back to the abuser.',
+          pitfalls: '1. Performing a Lumbar Puncture. The vomiting, lethargy, and bulging fontanelle are from increased ICP (Subdural bleeding). An LP will cause fatal herniation. 2. Confronting the abuser aggressively in the ED; this can cause them to flee with the child before authorities arrive. Simply state the child is very sick and needs admission. 3. Believing the history without question.',
+          other: 'Osteogenesis Imperfecta can cause fractures but does not cause subdural hematomas or retinal hemorrhages. Simple accidental falls from low heights generally cause linear skull fractures at worst, rarely deep brain shearing injuries.',
+          testRationale: 'Spiral fractures of long bones (like the femur) in non-walking infants are highly specific for abuse, as they require a forceful twisting mechanism that does not happen in simple falls.',
+          treatSeq: '1. CT Head + Skeletal Survey → 2. Stabilize ICP/Airway → 3. Mandatory CPS Report → 4. Admit to PICU → 5. Ortho/Neuro Consults.',
+          traps: 'Assuming the vomiting is a GI bug. Vomiting without diarrhea or fever in an infant is a classic sign of increased intracranial pressure.',
+          learning: 'Inconsistent history + Retinal Hemorrhages + Subdural Hematoma + Posterior Rib Fractures = Shaken Baby Syndrome. Report to CPS immediately. Admit the child. Do NOT do an LP.'
+        },
+        xp: 40
       }
 
 
