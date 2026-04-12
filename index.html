@@ -100,16 +100,22 @@
             let currentDeviceId;
             let slotName = 'web_id';
 
-            // 1. Android App Logic (The fix Antigravity gave you)
-            if (window.injectedAppId) {
-                currentDeviceId = window.injectedAppId;
+            // Use the same User-Agent check as your dashboard
+            const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
+
+            if (isInsideApp) {
                 slotName = 'app_id';
-                localStorage.setItem('mbbs_device_id', currentDeviceId);  // persist immediately
-            }
-            // 2. Regular Web Browser Logic (Keep your original fallback)
-            else {
                 currentDeviceId = localStorage.getItem('mbbs_device_id');
-                if (!currentDeviceId) {
+                // If there's no ID, or if an old web_id got stuck, generate a fresh app_id
+                if (!currentDeviceId || currentDeviceId.startsWith('web_')) {
+                    currentDeviceId = 'app_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('mbbs_device_id', currentDeviceId);
+                }
+            } else {
+                slotName = 'web_id';
+                currentDeviceId = localStorage.getItem('mbbs_device_id');
+                // If there's no ID, or if an old app_id got stuck, generate a fresh web_id
+                if (!currentDeviceId || currentDeviceId.startsWith('app_')) {
                     currentDeviceId = 'web_' + Math.random().toString(36).substr(2, 9);
                     localStorage.setItem('mbbs_device_id', currentDeviceId);
                 }
