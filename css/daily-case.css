@@ -22,16 +22,15 @@ body {
     background: #000;
     display: flex;
     justify-content: center;
-    /* Use 100vh as a fallback, but rely on fixed positioning for mobile */
-    height: 100vh;
+    margin: 0;
+
+    /* Use dynamic viewport height so it resizes on mobile */
     height: 100dvh;
+
+    /* Keep this so only your chat container scrolls, not the whole page */
     overflow: hidden;
-    position: fixed;
-    /* This prevents the entire body from scrolling up */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+
+    /* ❌ REMOVED: position: fixed, top, left, right, bottom */
 }
 
 .sim-container {

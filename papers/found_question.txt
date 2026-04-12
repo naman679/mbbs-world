@@ -1,4 +1,0 @@
-FOUND ISSUE:
-Full Object: {"text": "A patient after an RTA was received in an emergency with the following cannula in the picture. What is the maximum flow rate of fluid through this cannula?", "options": [{"label": "A", "text": "86 ml/min", "correct": false}, {"label": "B", "text": "66 ml/min", "correct": false}, {"label": "C", "text": "96 ml/min", "correct": true}, {"label": "D", "text": "106 ml/min", "correct": false}], "correct_answer": "C. 96 ml/min", "question_images": [], "explanation_images": [], "explanation": "<p><strong>Solution:</strong></p><p>96 ml/min Flow with an 18 G cannula is approximately 100 ml/minute.</p>\n<p><strong>Extraedge:</strong></p><p>Gauge Color Flow (ml/min.) 14 Orange 240 16 Grey 200 18 Green 96-100 20 Pink 64 22 Blue 38 24 Yellow 22 26 Purple 14</p>\n<p>@dams_new_robot</p>", "bot": "@dams_new_robot", "video": ""}
-
-Snippet for search: A patient after an RTA was received in an emergenc

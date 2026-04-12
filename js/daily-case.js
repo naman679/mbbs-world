@@ -37,43 +37,69 @@ const sendBtn = document.getElementById('sendBtn');
 const chatContainer = document.getElementById('chatContainer');
 const quickChipsDiv = document.getElementById('quickChips');
 
+// --- DAILY LIMIT CHECK ---
+function isLimitReached() {
+    const currentUser = sessionStorage.getItem('mbbs_user');
+    if (currentUser && currentUser.toLowerCase() === "naman") return false;
+
+    const today = new Date().toDateString();
+    const lastDate = localStorage.getItem('daily_case_date');
+    const count = parseInt(localStorage.getItem('daily_case_count') || "0");
+
+    return (lastDate === today && count >= 2);
+}
+
+function showLimitScreen() {
+    document.body.innerHTML = `
+        <div style="height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#0f172a; color:white; text-align:center; padding:30px; font-family: 'Inter', sans-serif;">
+            <i class="fas fa-lock" style="font-size:4rem; color:#ef4444; margin-bottom:20px;"></i>
+            <h1 style="margin-bottom:10px;">Daily Limit Reached</h1>
+            <p style="color:#94a3b8; max-width:300px;">You have already solved 2 cases today. Come back tomorrow for more clinical practice!</p>
+            <button onclick="window.location.href='dashboard.html'" style="margin-top:30px; padding:12px 24px; background:#059669; border:none; color:white; border-radius:8px; font-weight:600; cursor:pointer;">Back to Dashboard</button>
+        </div>`;
+}
+
 window.onload = () => {
-    startNewCase();
-    switchPhase('history');
+    if (isLimitReached()) {
+        showLimitScreen();
+    } else {
+        startNewCase();
+        switchPhase('history');
+    }
 }
 
 async function startNewCase() {
-    // --- NON-REPEATING WHITELIST LOGIC ---
+    // --- UPDATE DAILY COUNT ---
+    const currentUser = sessionStorage.getItem('mbbs_user');
+    if (!currentUser || currentUser.toLowerCase() !== "naman") {
+        const today = new Date().toDateString();
+        const lastDate = localStorage.getItem('daily_case_date');
+        let count = (lastDate === today) ? parseInt(localStorage.getItem('daily_case_count') || "0") : 0;
 
-    // 1. Fetch completed diseases from Local Storage (or DB later)
-    let completedDiseases = JSON.parse(localStorage.getItem('mbbs_completed_cases')) || [];
-
-    // 2. Filter the master bank to only show diseases the user HAS NOT done
-    let availableDiseases = diseaseBank.filter(disease => !completedDiseases.includes(disease));
-
-    // 3. Handle the scenario where the user has completed all 70+ cases
-    if (availableDiseases.length === 0) {
-        alert("Awesome job! You have completed all available clinical cases. We will reset your progress so you can practice again.");
-        completedDiseases = []; // Reset the list
-        localStorage.setItem('mbbs_completed_cases', JSON.stringify(completedDiseases));
-        availableDiseases = [...diseaseBank]; // Refill available diseases
+        localStorage.setItem('daily_case_date', today);
+        localStorage.setItem('daily_case_count', count + 1);
     }
 
-    // Select a random disease from the AVAILABLE list
-    activeCustomDisease = availableDiseases[Math.floor(Math.random() * availableDiseases.length)];
+    // --- NON-REPEATING WHITELIST LOGIC ---
+    let completedDiseases = JSON.parse(localStorage.getItem('mbbs_completed_cases')) || [];
+    let availableDiseases = diseaseBank.filter(disease => !completedDiseases.includes(disease));
 
-    // Log Activity to Google Sheet
+    if (availableDiseases.length === 0) {
+        alert("Awesome job! You have completed all available clinical cases. Progress reset.");
+        completedDiseases = [];
+        localStorage.setItem('mbbs_completed_cases', JSON.stringify(completedDiseases));
+        availableDiseases = [...diseaseBank];
+    }
+
+    activeCustomDisease = availableDiseases[Math.floor(Math.random() * availableDiseases.length)];
     logStudentActivity("Daily Case", activeCustomDisease);
 
-    // 5. Save this new disease to completed list so it doesn't repeat next time
     completedDiseases.push(activeCustomDisease);
     localStorage.setItem('mbbs_completed_cases', JSON.stringify(completedDiseases));
 
-    // --------------------------------------
-
+    // Reset UI
     messageHistory = [];
     chatContainer.innerHTML = '';
-
     appendMessage("system", `🔄 **NEXT PATIENT CALLED!** \n\nA new patient has just walked into your cabin.`);
 
     chatInput.disabled = true;
@@ -87,13 +113,13 @@ async function startNewCase() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 messages: tempHistory,
-                customDisease: activeCustomDisease, // Sends the unique disease to Cloudflare
+                customDisease: activeCustomDisease,
                 phase: currentPhase
             })
         });
 
         const data = await response.json();
-        document.getElementById(loadingId).remove();
+        if (document.getElementById(loadingId)) document.getElementById(loadingId).remove();
 
         if (data.errorFromGroq) {
             appendMessage("ai", `System Error: ${data.errorFromGroq}`);
@@ -160,8 +186,12 @@ async function handleSend() {
 
     const lowerText = text.toLowerCase();
     if (lowerText === "change the case" || lowerText === "change case" || lowerText === "next patient") {
-        chatInput.value = '';
-        startNewCase();
+        if (isLimitReached()) {
+            showLimitScreen();
+        } else {
+            chatInput.value = '';
+            startNewCase();
+        }
         return;
     }
 
@@ -186,7 +216,7 @@ async function handleSend() {
         });
 
         const data = await response.json();
-        document.getElementById(loadingId).remove();
+        if (document.getElementById(loadingId)) document.getElementById(loadingId).remove();
 
         if (data.errorFromGroq) {
             appendMessage("ai", `System Error: ${data.errorFromGroq}`);
@@ -199,7 +229,7 @@ async function handleSend() {
         }
 
     } catch (error) {
-        document.getElementById(loadingId).remove();
+        if (document.getElementById(loadingId)) document.getElementById(loadingId).remove();
         appendMessage("ai", `Connection Error. Check Cloudflare Worker.`);
     } finally {
         chatInput.disabled = false;
@@ -249,13 +279,19 @@ chatInput.addEventListener('keypress', e => {
 });
 
 chatInput.addEventListener('focus', () => {
-    // Set a tiny timeout to wait for the keyboard to fully animate up
     setTimeout(() => {
-        // Scroll the input area into view smoothly
-        chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
-
-        // Ensure the chat container scrolls to the very bottom so messages aren't hidden
         chatContainer.scrollTop = chatContainer.scrollHeight;
-    }, 300);
+    }, 150); // Shortened the timeout slightly for better responsiveness
 });
+// --- MOBILE KEYBOARD FIX ---
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', () => {
+        // Force the body height to match the visible area above the keyboard
+        document.body.style.height = `${window.visualViewport.height}px`;
 
+        // Immediately scroll the chat to the bottom so the latest message is visible
+        if (chatContainer) {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    });
+}
