@@ -3634,6 +3634,1017 @@
           learning: 'Stroke protocol: Non-con CT + Glucose + BP < 185/110. Do not give any other blood thinners (like Aspirin or Heparin) in the first 24 hours after tPA.'
         },
         xp: 60
+      },
+      // ─────────────────────────────────────────────────────────────
+      // 15. GENERAL MEDICINE — Level 1: Community-Acquired Pneumonia
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'gm1_1', name: 'General Medicine: Level 1', color: '#f97316', emoji: '🫁', waitDays: 5,
+        caseTitle: 'Productive cough, fever, and right-sided chest pain',
+        caseDesc: 'A 45-year-old male presents to the ED with a 3-day history of fever, rust-colored sputum, and right-sided pleuritic chest pain. Evaluate his respiratory status and initiate appropriate empiric therapy while avoiding unnecessary advanced imaging.',
+        patient: { name: 'David', gender: 'Male', age: '45 Y', complaint: 'Fever and productive cough' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '38.9°C (Febrile)' },
+          { icon: '❤️', label: 'Heart Rate', val: '110 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '118/72 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '24/min (Tachypneic)' },
+          { icon: '💧', label: 'SpO2', val: '93% on room air' }
+        ],
+        history: [
+          '1. 3-day history of progressively worsening fever and chills.',
+          '2. Productive cough with thick, rust-colored sputum starting yesterday.',
+          '3. Sharp, stabbing pain on the right side of the chest that worsens with deep inspiration (pleuritic).',
+          '4. Endorses general myalgias, fatigue, and loss of appetite.',
+          '5. Grandchild had a "chest cold" last week and was visiting.',
+          '6. Mild shortness of breath when walking up a flight of stairs.',
+          '7. No recent hospitalizations or IV antibiotic use in the last 90 days.',
+          '8. Childhood history of mild asthma, but uses no daily inhalers.',
+          '9. No weight loss, night sweats, or hemoptysis.',
+          '10. Non-smoker, drinks alcohol socially (1-2 beers/week).'
+        ],
+        physExam: [
+          '1. General: Flushed, diaphoretic, using mild accessory muscles to breathe.',
+          '2. Vitals: Tachypneic at 24/min, febrile to 38.9°C.',
+          '3. Pulmonary (Auscultation): Bronchial breath sounds and coarse crackles over the Right Lower Lobe (RLL).',
+          '4. Pulmonary (Percussion): Dullness to percussion over the RLL.',
+          '5. Pulmonary (Palpation): Increased tactile fremitus over the RLL (indicates consolidation).',
+          '6. Cardiovascular: Tachycardic, regular rhythm. No murmurs. No JVD.',
+          '7. Extremities: Warm and well-perfused. No cyanosis, no clubbing.',
+          '8. Lower Limbs: No calf swelling, tenderness, or edema bilaterally.',
+          '9. Abdomen: Soft, non-tender, active bowel sounds.',
+          '10. Neurological: Alert and oriented x4. No confusion or lethargy.'
+        ],
+        testCats: [
+          {
+            name: 'Bedside & Point-of-Care', icon: '🩺', tests: [
+              { n: 'Pulse Oximetry (Continuous)', c: true, r: '93% on room air (Requires supplemental O2)' },
+              { n: '12-Lead ECG', c: true, r: 'Sinus tachycardia at 110 bpm. No ischemic changes.' },
+              { n: 'Point-of-Care Glucose', c: true, r: '115 mg/dL (Normal)' }
+            ]
+          },
+          {
+            name: 'Arterial & Venous Blood Gas', icon: '💉', tests: [
+              { n: 'Arterial Blood Gas (ABG) on Room Air', c: false, r: 'PaO2 68, PaCO2 35, pH 7.42. (Painful and unnecessary since SpO2 is reliable at 93%)' },
+              { n: 'Venous Blood Gas (VBG)', c: false, r: 'Normal pH. (Not indicated for simple CAP)' }
+            ]
+          },
+          {
+            name: 'Hematology & Coagulation', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC) with diff', c: true, r: 'WBC 16.5k with 85% neutrophils and 10% bands (Left shift). Hb 14.0, Plt 280k.' },
+              { n: 'Coagulation Panel (PT/INR, aPTT)', c: false, r: 'Normal. (Unnecessary in routine pneumonia)' },
+              { n: 'D-Dimer', c: false, r: 'Elevated (Non-specific in infection. Do not order unless PE is the primary suspicion)' }
+            ]
+          },
+          {
+            name: 'Chemistry & Metabolic Panel', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'BUN 22, Creatinine 1.0, Na 136. (Calculates CURB-65 score)' },
+              { n: 'Serum Lactate', c: true, r: '1.8 mmol/L (Normal. Rules out severe sepsis/hypoperfusion)' },
+              { n: 'Procalcitonin', c: true, r: '2.5 ng/mL (Elevated. Strongly suggests bacterial vs viral etiology)' }
+            ]
+          },
+          {
+            name: 'Microbiology & Infectious Disease', icon: '🦠', tests: [
+              { n: 'Blood Cultures (Set of 2)', c: true, r: 'Pending. (Required before IV antibiotics for admitted patients)' },
+              { n: 'Sputum Gram Stain & Culture', c: true, r: 'Gram-positive diplococci (Streptococcus pneumoniae)' },
+              { n: 'Urine Streptococcus pneumoniae Antigen', c: true, r: 'Positive (Rapid confirmation of typical CAP)' },
+              { n: 'Urine Legionella Antigen', c: true, r: 'Negative' },
+              { n: 'Respiratory Viral Panel (PCR)', c: true, r: 'Negative for Influenza A/B, RSV, and COVID-19' }
+            ]
+          },
+          {
+            name: 'Diagnostic Imaging', icon: '🩻', tests: [
+              { n: 'Chest X-Ray (PA and Lateral)', c: true, r: 'Dense lobar consolidation in the Right Lower Lobe. No pleural effusion.' },
+              { n: 'CT Chest with IV Contrast', c: false, r: 'Unnecessary radiation. CXR is sufficient for uncomplicated CAP.' },
+              { n: 'CT Pulmonary Angiogram (CTPA)', c: false, r: 'Trap! Fever, productive cough, and consolidation point to CAP, not PE.' }
+            ]
+          },
+          {
+            name: 'Advanced Pulmonary Diagnostics', icon: '🌬️', tests: [
+              { n: 'Bronchoscopy with BAL', c: false, r: 'Highly invasive. Reserved for non-resolving pneumonia or immunocompromised hosts.' },
+              { n: 'Spirometry (PFTs)', c: false, r: 'Contraindicated during acute respiratory infection.' }
+            ]
+          },
+          {
+            name: 'Cardiac Biomarkers', icon: '❤️', tests: [
+              { n: 'High-Sensitivity Troponin', c: false, r: 'Negative. (Chest pain is clearly pleuritic/infectious, not ischemic)' },
+              { n: 'BNP (Brain Natriuretic Peptide)', c: false, r: 'Normal. (Rules out heart failure, but unnecessary here)' }
+            ]
+          },
+          {
+            name: 'Autoimmune & Rheumatic', icon: '🧬', tests: [
+              { n: 'Antinuclear Antibody (ANA)', c: false, r: 'Negative. (Irrelevant to acute infectious presentation)' },
+              { n: 'Rheumatoid Factor', c: false, r: 'Negative.' }
+            ]
+          },
+          {
+            name: 'Toxicology & Screening', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology Screen', c: false, r: 'Negative. (Wastes hospital resources)' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Community-Acquired Pneumonia (Typical)', c: true },
+          { t: 'Pulmonary Embolism', c: false },
+          { t: 'Acute Bronchitis', c: false },
+          { t: 'COVID-19 Pneumonia', c: false },
+          { t: 'Tuberculosis', c: false },
+          { t: 'Congestive Heart Failure Exacerbation', c: false },
+          { t: 'Asthma Exacerbation', c: false },
+          { t: 'Lung Cancer with Post-Obstructive Pneumonia', c: false },
+          { t: 'Aspiration Pneumonia', c: false },
+          { t: 'Pneumocystis jirovecii Pneumonia (PJP)', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Airway & Oxygenation', icon: '🫁', treats: [
+              { n: 'Supplemental O2 via Nasal Cannula (Target SpO2 > 94%)', c: true },
+              { n: 'BiPAP (Non-Invasive Ventilation)', c: false },
+              { n: 'Endotracheal Intubation', c: false }
+            ]
+          },
+          {
+            name: 'Empiric Antibiotic Therapy (Inpatient)', icon: '💊', treats: [
+              { n: 'IV Ceftriaxone + IV Azithromycin', c: true },
+              { n: 'IV Levofloxacin (Monotherapy alternative)', c: true },
+              { n: 'Oral Amoxicillin alone (Inadequate for admitted patient)', c: false },
+              { n: 'IV Vancomycin + Piperacillin-Tazobactam (Overkill, no MRSA/Pseudomonas risk factors)', c: false }
+            ]
+          },
+          {
+            name: 'Supportive Fluids & Hemodynamics', icon: '💧', treats: [
+              { n: 'IV Lactated Ringers or Normal Saline (Maintenance)', c: true },
+              { n: 'IV Furosemide (Diuretic)', c: false },
+              { n: 'Vasopressors (Norepinephrine)', c: false }
+            ]
+          },
+          {
+            name: 'Antipyretics & Analgesia', icon: '🌡️', treats: [
+              { n: 'Acetaminophen (Paracetamol) 1000mg PRN Fever', c: true },
+              { n: 'IV Morphine', c: false }
+            ]
+          },
+          {
+            name: 'Bronchodilators & Steroids', icon: '🌬️', treats: [
+              { n: 'Albuterol/Salbutamol Nebulizer PRN wheeze', c: true },
+              { n: 'Systemic Corticosteroids (IV Methylprednisolone)', c: false }
+            ]
+          },
+          {
+            name: 'Antiviral & Antifungal', icon: '🦠', treats: [
+              { n: 'Oseltamivir (Tamiflu)', c: false },
+              { n: 'IV Fluconazole', c: false }
+            ]
+          },
+          {
+            name: 'VTE Prophylaxis', icon: '🩸', treats: [
+              { n: 'Subcutaneous Heparin or Enoxaparin (Prophylactic dose)', c: true },
+              { n: 'Therapeutic IV Heparin Infusion', c: false }
+            ]
+          },
+          {
+            name: 'Cardiac & Blood Pressure', icon: '❤️', treats: [
+              { n: 'IV Metoprolol', c: false },
+              { n: 'Sublingual Nitroglycerin', c: false }
+            ]
+          },
+          {
+            name: 'Procedural Interventions', icon: '🔪', treats: [
+              { n: 'Thoracentesis', c: false },
+              { n: 'Chest Tube Insertion', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Prevention', icon: '🛡️', treats: [
+              { n: 'Pneumococcal Vaccine (Administer prior to discharge)', c: true },
+              { n: 'Influenza Vaccine (Administer prior to discharge)', c: true }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Community-Acquired Pneumonia (Streptococcus pneumoniae)',
+          sub: 'Lobar consolidation due to typical bacterial infection',
+          clues: 'Fever, rust-colored sputum, tachypnea, and localized physical exam findings (dullness to percussion, increased fremitus, crackles) in a single lobe point directly to a typical bacterial lobar pneumonia. Rust-colored sputum is classically associated with Strep pneumo.',
+          tests: 'A simple Chest X-Ray is the diagnostic gold standard, showing lobar consolidation. Blood cultures, sputum cultures, and urine antigens (Strep/Legionella) guide antibiotic de-escalation. Procalcitonin helps differentiate bacterial from viral causes.',
+          mgmt: 'This patient requires admission (hypoxia SpO2 93%, tachycardia, tachypnea). Empiric inpatient treatment requires a beta-lactam + macrolide (Ceftriaxone + Azithromycin) to cover both typical and atypical organisms. Supplemental O2 and maintenance fluids are required.',
+          pitfalls: 'Ordering a CT Pulmonary Angiogram or D-Dimer. While PE causes pleuritic chest pain, the presence of high fever, productive cough, and focal lung consolidation on exam makes CAP the obvious diagnosis. D-Dimer will be falsely elevated in pneumonia.',
+          other: 'COVID-19/Viral pneumonia typically presents with bilateral, diffuse interstitial infiltrates, not a single dense lobar consolidation. Acute bronchitis does not cause high fevers, hypoxia, or lobar consolidation.',
+          testRationale: 'Increased tactile fremitus occurs because sound travels faster through the fluid/pus-filled consolidated lung than through normal air-filled lung tissue. This distinguishes consolidation from a pleural effusion (which has decreased fremitus).',
+          treatSeq: '1. O2 via Nasal Cannula → 2. Draw blood/sputum cultures → 3. IV Ceftriaxone + Azithromycin → 4. VTE Prophylaxis → 5. Vaccinate before discharge.',
+          traps: 'Starting ultra-broad-spectrum antibiotics (Vancomycin + Zosyn) in a community-dwelling patient with no MRSA or Pseudomonas risk factors. This breeds antibiotic resistance.',
+          learning: 'Typical CAP (Strep pneumo) presents with high fever, productive cough, and focal lobar signs. Inpatient treatment requires coverage for both typicals (Ceftriaxone) and atypicals (Azithromycin).'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 16. GENERAL MEDICINE — Level 1: Deep Vein Thrombosis (DVT)
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'gm1_2', name: 'General Medicine: Level 1', color: '#ef4444', emoji: '🦵', waitDays: 4,
+        caseTitle: 'Unilateral left calf swelling and pain after a long flight',
+        caseDesc: 'A 32-year-old female presents with an acutely swollen, painful left calf 4 days after returning from a 14-hour international flight. Evaluate her probability of venous thromboembolism and choose the correct diagnostic imaging over misleading blood tests.',
+        patient: { name: 'Sarah', gender: 'Female', age: '32 Y', complaint: 'Left calf swelling and pain' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.1°C (Afebrile)' },
+          { icon: '❤️', label: 'Heart Rate', val: '82 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '120/78 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '14/min' },
+          { icon: '💧', label: 'SpO2', val: '99% on room air' }
+        ],
+        history: [
+          '1. Progressive left calf pain and cramping over the last 2 days.',
+          '2. Left leg is noticeably more swollen than the right leg.',
+          '3. Returned from a 14-hour direct flight from Tokyo to New York 4 days ago.',
+          '4. Takes combined oral contraceptive pills (Estrogen/Progesterone) daily.',
+          '5. Smokes 5 cigarettes a day (increases estrogen-related clot risk).',
+          '6. Denies any shortness of breath, chest pain, or hemoptysis.',
+          '7. No prior history of blood clots or family history of clotting disorders.',
+          '8. No recent trauma, cast immobilization, or surgeries.',
+          '9. No history of active cancer or recent weight loss.',
+          '10. Pain worsens when she walks and improves when the leg is elevated.'
+        ],
+        physExam: [
+          '1. General: Comfortable at rest, no respiratory distress.',
+          '2. Vitals: Completely stable. No tachycardia, no hypoxia.',
+          '3. Left Lower Extremity: Left calf circumference is 4.5 cm larger than the right calf.',
+          '4. Left Lower Extremity: Mild erythema and localized warmth over the posterior calf.',
+          '5. Left Lower Extremity: Deep tenderness to palpation along the popliteal and calf veins.',
+          '6. Left Lower Extremity: Positive Homan\'s sign (calf pain on abrupt dorsiflexion of the foot).',
+          '7. Pulses: Dorsalis pedis and posterior tibial pulses are 2+ and symmetric bilaterally.',
+          '8. Right Lower Extremity: Completely normal. No swelling or tenderness.',
+          '9. Cardiovascular: Regular rate and rhythm. Lungs are clear to auscultation bilaterally.',
+          '10. Neurological: Sensation and motor function of the left foot are fully intact.'
+        ],
+        testCats: [
+          {
+            name: 'Point-of-Care & Bedside', icon: '🩺', tests: [
+              { n: 'Wells Score Calculation (Clinical)', c: true, r: 'Score = 3 (High Probability of DVT). Proceed directly to Ultrasound.' },
+              { n: '12-Lead ECG', c: true, r: 'Normal sinus rhythm. (Baseline necessary)' }
+            ]
+          },
+          {
+            name: 'Coagulation & Thrombosis Biomarkers', icon: '🩸', tests: [
+              { n: 'D-Dimer Assay', c: false, r: 'TRAP! Patient has a HIGH Wells Score. D-Dimer is only useful to rule out DVT in LOW probability patients. Go straight to imaging.' },
+              { n: 'Coagulation Panel (PT/INR, aPTT)', c: true, r: 'Normal. (Required baseline before starting anticoagulants)' }
+            ]
+          },
+          {
+            name: 'Vascular Imaging (Core)', icon: '📷', tests: [
+              { n: 'Venous Duplex Ultrasound (Left Leg)', c: true, r: 'Non-compressible popliteal and proximal peroneal veins with visible echogenic thrombus. DIAGNOSTIC for acute proximal DVT.' },
+              { n: 'Venous Duplex Ultrasound (Right Leg)', c: false, r: 'Normal. (Unnecessary to scan the asymptomatic leg)' }
+            ]
+          },
+          {
+            name: 'Hematology & Chemistry', icon: '🧪', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'Normal Hb, WBC, and Platelets (Required baseline)' },
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Normal renal and hepatic function (Required for DOAC dosing)' }
+            ]
+          },
+          {
+            name: 'Chest Imaging', icon: '🩻', tests: [
+              { n: 'Chest X-Ray', c: false, r: 'Normal. (Unnecessary, patient has no respiratory symptoms)' },
+              { n: 'CT Pulmonary Angiogram (CTPA)', c: false, r: 'Unnecessary. Patient has normal SpO2, no tachycardia, and no chest pain. Do not hunt for asymptomatic PEs.' }
+            ]
+          },
+          {
+            name: 'Thrombophilia Screening', icon: '🧬', tests: [
+              { n: 'Factor V Leiden & Prothrombin Gene Mutation', c: false, r: 'Do not test in the acute setting. Clot was provoked by OCPs and long flight.' },
+              { n: 'Protein C, Protein S, Antithrombin III Levels', c: false, r: 'Inaccurate during an acute thrombotic event or while on anticoagulants.' }
+            ]
+          },
+          {
+            name: 'Cardiac Biomarkers', icon: '❤️', tests: [
+              { n: 'High-Sensitivity Troponin', c: false, r: 'Normal. (Not indicated for isolated DVT)' },
+              { n: 'BNP', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Autoimmune & Malignancy', icon: '🛡️', tests: [
+              { n: 'Antinuclear Antibody (ANA)', c: false, r: 'Negative.' },
+              { n: 'Cancer Screening (CT Chest/Abd/Pelvis)', c: false, r: 'Not indicated for a provoked DVT in a healthy 32-year-old.' }
+            ]
+          },
+          {
+            name: 'Infectious Disease', icon: '🦠', tests: [
+              { n: 'Blood Cultures', c: false, r: 'Negative. (Not a cellulitis, no fever)' },
+              { n: 'CRP / ESR', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Toxicology', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Acute Proximal Deep Vein Thrombosis (DVT)', c: true },
+          { t: 'Ruptured Baker\'s Cyst', c: false },
+          { t: 'Lower Extremity Cellulitis', c: false },
+          { t: 'Gastrocnemius Muscle Tear', c: false },
+          { t: 'Superficial Thrombophlebitis', c: false },
+          { t: 'Chronic Venous Insufficiency', c: false },
+          { t: 'Lymphedema', c: false },
+          { t: 'Popliteal Artery Aneurysm', c: false },
+          { t: 'Compartment Syndrome', c: false },
+          { t: 'Acute Pulmonary Embolism', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Initial Anticoagulation', icon: '💊', treats: [
+              { n: 'Oral DOAC (Apixaban or Rivaroxaban) - Loading Dose', c: true },
+              { n: 'Subcutaneous Low-Molecular-Weight Heparin (LMWH) bridge to Warfarin', c: true },
+              { n: 'IV Unfractionated Heparin Drip', c: false }
+            ]
+          },
+          {
+            name: 'Long-Term Anticoagulation Strategy', icon: '⏳', treats: [
+              { n: 'Continue DOAC for 3 months (Provoked DVT)', c: true },
+              { n: 'Lifelong DOAC therapy', c: false }
+            ]
+          },
+          {
+            name: 'Hormonal Management', icon: '🧬', treats: [
+              { n: 'Discontinue Oral Contraceptive Pills (Estrogen-containing)', c: true },
+              { n: 'Switch to Progestin-only pill or IUD for future contraception', c: true }
+            ]
+          },
+          {
+            name: 'Thrombolytics & Interventions', icon: '💉', treats: [
+              { n: 'Systemic tPA (Thrombolytics)', c: false },
+              { n: 'Catheter-Directed Thrombolysis', c: false },
+              { n: 'IVC Filter Placement', c: false }
+            ]
+          },
+          {
+            name: 'Mobility & Physical Therapy', icon: '🚶', treats: [
+              { n: 'Early ambulation as tolerated', c: true },
+              { n: 'Strict bedrest for 5 days', c: false }
+            ]
+          },
+          {
+            name: 'Compression Therapy', icon: '🧦', treats: [
+              { n: 'Graduated compression stockings (For symptom relief)', c: true },
+              { n: 'Pneumatic compression devices (SCDs)', c: false }
+            ]
+          },
+          {
+            name: 'Analgesia', icon: '🌡️', treats: [
+              { n: 'Acetaminophen (Paracetamol) PRN', c: true },
+              { n: 'NSAIDs (Ibuprofen)', c: false }
+            ]
+          },
+          {
+            name: 'Reversal Agents', icon: '🚫', treats: [
+              { n: 'Protamine Sulfate', c: false },
+              { n: 'Vitamin K', c: false }
+            ]
+          },
+          {
+            name: 'Antibiotics', icon: '🦠', treats: [
+              { n: 'Oral Cephalexin (For Cellulitis)', c: false },
+              { n: 'IV Vancomycin', c: false }
+            ]
+          },
+          {
+            name: 'Airway & Oxygenation', icon: '🫁', treats: [
+              { n: 'Supplemental O2 via Nasal Cannula', c: false },
+              { n: 'Incentive Spirometry', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Acute Proximal Deep Vein Thrombosis (Left Popliteal Vein)',
+          sub: 'Provoked venous thromboembolism due to stasis and estrogen use',
+          clues: 'Unilateral calf swelling >3cm, deep vein tenderness, recent prolonged immobilization (14-hour flight), and combined oral contraceptive use (estrogen) form the classic triad (Virchow\'s triad: stasis, hypercoagulability, endothelial injury).',
+          tests: 'For a HIGH probability Wells score (Score 3), D-Dimer is useless. A negative D-Dimer would not be trusted, and a positive one adds nothing. You must go straight to Compression Ultrasound. Normal baseline CBC, PT/INR, and CMP are needed before prescribing blood thinners.',
+          mgmt: 'Direct Oral Anticoagulants (DOACs like Apixaban/Rivaroxaban) are first-line. Because this is a *provoked* clot (flight + OCPs), 3 months of anticoagulation is sufficient. Estrogen-containing OCPs must be stopped immediately. Early ambulation is encouraged; bedrest is outdated and promotes further stasis.',
+          pitfalls: 'Ordering a D-Dimer in a high-probability patient. Ordering a CT Pulmonary Angiogram when the patient has zero respiratory symptoms (hunting for asymptomatic PEs). Recommending "strict bedrest," which worsens venous stasis.',
+          other: 'Cellulitis presents with high fever, sharply demarcated erythema, and leukocytosis. Ruptured Baker\'s cyst causes a crescent-shaped hematoma at the medial malleolus and often has a history of knee osteoarthritis.',
+          testRationale: 'Compression ultrasound is the gold standard. A normal vein collapses completely when pressed with the ultrasound probe. A vein filled with a clot (thrombus) cannot be compressed.',
+          treatSeq: '1. Calculate Wells Score → 2. Venous Ultrasound → 3. Baseline CBC/CMP/Coags → 4. Start Apixaban → 5. Stop Estrogen OCPs → 6. Treat for exactly 3 months.',
+          traps: 'Ordering a Thrombophilia screen (Factor V Leiden) in the ER. Acute thrombosis and active anticoagulants make these tests wildly inaccurate. They should only be done weeks after anticoagulation is stopped, and only if the clot was unprovoked.',
+          learning: 'Wells Score dictates the pathway: Low probability = D-Dimer. High probability = Straight to Ultrasound. Estrogen + Smoking + Long Flight = Massive DVT risk. Provoked DVTs only require 3 months of treatment.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 17. GENERAL MEDICINE — Level 1: Acute Gout Flare
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'gm1_3', name: 'General Medicine: Level 1', color: '#f59e0b', emoji: '🦶', waitDays: 9,
+        caseTitle: 'Sudden onset of severe, exquisitely tender swelling of the big toe',
+        caseDesc: 'A 55-year-old male wakes up at 3 AM with unbearable pain, redness, and swelling in his right big toe. He recently attended a steak and beer dinner. Diagnose the crystalline arthropathy and treat the acute flare without making the classic chronic medication mistake.',
+        patient: { name: 'Robert', gender: 'Male', age: '55 Y', complaint: 'Severe right toe pain' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.3°C (Afebrile)' },
+          { icon: '❤️', label: 'Heart Rate', val: '92 bpm (Secondary to pain)' },
+          { icon: '📈', label: 'Blood Pressure', val: '145/88 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '16/min' },
+          { icon: '💧', label: 'SpO2', val: '98% on room air' }
+        ],
+        history: [
+          '1. Woke up abruptly at 3 AM with maximum intensity pain in the right big toe.',
+          '2. The toe is exquisitely tender; states he cannot even let the bedsheet touch it.',
+          '3. Attended a celebration last night involving heavy beer consumption and a large steak.',
+          '4. History of essential hypertension, currently managed with Hydrochlorothiazide (HCTZ).',
+          '5. Recalls a similar, milder episode in the same toe 2 years ago that resolved in a week.',
+          '6. Denies any trauma, stubbing the toe, or new footwear.',
+          '7. No other joints are involved (monoarticular).',
+          '8. No fevers, chills, or systemic symptoms.',
+          '9. No history of IV drug use or recent tick bites.',
+          '10. Does not take any daily uric-acid-lowering medications.'
+        ],
+        physExam: [
+          '1. General: Uncomfortable, guarding the right foot, unable to bear weight.',
+          '2. Vitals: Afebrile, mild hypertension and tachycardia secondary to pain.',
+          '3. Right Foot: 1st Metatarsophalangeal (MTP) joint is markedly swollen and erythematous.',
+          '4. Right Foot: Joint is warm to the touch and exquisitely tender to light palpation.',
+          '5. Right Foot: Range of motion of the 1st MTP is severely limited due to pain.',
+          '6. Left Foot: Completely normal. No effusions or erythema.',
+          '7. Knees/Ankles: Bilaterally normal, no effusions.',
+          '8. Skin: Small, firm, yellowish nodules (tophi) noted on the helix of the right ear.',
+          '9. Cardiovascular: Regular rate, no murmurs.',
+          '10. Pulses: Dorsalis pedis and posterior tibial pulses are strong and bounding.'
+        ],
+        testCats: [
+          {
+            name: 'Joint Fluid Analysis', icon: '💉', tests: [
+              { n: 'Arthrocentesis with Synovial Microscopy', c: true, r: 'Needle-shaped, strongly negatively birefringent crystals under polarized light. WBC 25,000.' },
+              { n: 'Synovial Fluid Gram Stain & Culture', c: true, r: 'Negative. (Must rule out concurrent septic arthritis)' }
+            ]
+          },
+          {
+            name: 'Chemistry & Metabolic', icon: '🧪', tests: [
+              { n: 'Serum Uric Acid Level', c: true, r: '8.5 mg/dL (Elevated, but can paradoxically be normal during an acute flare)' },
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Creatinine 1.1. (Renal function is normal, safe for NSAIDs)' }
+            ]
+          },
+          {
+            name: 'Inflammatory Markers', icon: '🔥', tests: [
+              { n: 'Erythrocyte Sedimentation Rate (ESR)', c: true, r: '45 mm/hr (Elevated)' },
+              { n: 'C-Reactive Protein (CRP)', c: true, r: '32 mg/L (Elevated)' }
+            ]
+          },
+          {
+            name: 'Hematology', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'WBC 11.5k (Mild inflammatory leukocytosis)' },
+              { n: 'Blood Cultures', c: false, r: 'Negative. (Patient is afebrile)' }
+            ]
+          },
+          {
+            name: 'Radiography', icon: '🩻', tests: [
+              { n: 'Plain X-Ray of Right Foot', c: true, r: 'Soft tissue swelling around 1st MTP. Punched-out erosions with overhanging edges.' }
+            ]
+          },
+          {
+            name: 'Advanced Imaging', icon: '📷', tests: [
+              { n: 'MRI Right Foot', c: false, r: 'Unnecessary. X-ray and arthrocentesis are sufficient.' },
+              { n: 'Ultrasound of 1st MTP Joint', c: true, r: '"Double contour" sign visible over cartilage.' }
+            ]
+          },
+          {
+            name: 'Autoimmune Diagnostics', icon: '🧬', tests: [
+              { n: 'Rheumatoid Factor (RF)', c: false, r: 'Negative.' },
+              { n: 'Anti-CCP Antibody', c: false, r: 'Negative.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Bedside', icon: '🩺', tests: [
+              { n: 'Point-of-Care Capillary Glucose', c: false, r: '105 mg/dL' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Endocrine Panel', icon: '🦋', tests: [
+              { n: 'Thyroid Stimulating Hormone (TSH)', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
+              { n: 'PT/INR, aPTT', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Toxicology Screen', icon: '🗑️', tests: [
+              { n: 'Urine Drug Screen', c: false, r: 'Negative.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Acute Gout (Monosodium Urate Crystalline Arthropathy)', c: true },
+          { t: 'Pseudogout (CPPD)', c: false },
+          { t: 'Septic Arthritis', c: false },
+          { t: 'Cellulitis of the Foot', c: false },
+          { t: 'Reactive Arthritis', c: false },
+          { t: 'Osteoarthritis Flare', c: false },
+          { t: 'Trauma / Stress Fracture', c: false },
+          { t: 'Rheumatoid Arthritis', c: false },
+          { t: 'Psoriatic Arthritis', c: false },
+          { t: 'Charcot Arthropathy', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Systemic Anti-Inflammatories', icon: '💊', treats: [
+              { n: 'Oral NSAIDs (Indomethacin or Naproxen) - High Dose', c: true },
+              { n: 'Oral Colchicine (If within 36 hours of onset)', c: true },
+              { n: 'Oral Corticosteroids (Prednisone taper)', c: true }
+            ]
+          },
+          {
+            name: 'Urate Lowering Therapy', icon: '📉', treats: [
+              { n: 'Start Allopurinol immediately today', c: false },
+              { n: 'Start Febuxostat immediately today', c: false },
+              { n: 'Schedule follow-up to start Allopurinol AFTER the flare resolves', c: true }
+            ]
+          },
+          {
+            name: 'Procedural Therapeutics', icon: '💉', treats: [
+              { n: 'Intra-articular Corticosteroid Injection', c: true },
+              { n: 'Surgical Debridement', c: false }
+            ]
+          },
+          {
+            name: 'Antihypertensive Management', icon: '📈', treats: [
+              { n: 'Discontinue Hydrochlorothiazide (HCTZ)', c: true },
+              { n: 'Switch BP med to Losartan', c: true },
+              { n: 'Start Beta-blocker', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'IV Vancomycin + Ceftriaxone', c: false },
+              { n: 'Oral Cephalexin', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Pain Control', icon: '🌡️', treats: [
+              { n: 'Acetaminophen (Paracetamol)', c: true },
+              { n: 'IV Morphine', c: false },
+              { n: 'Fentanyl Transdermal Patch', c: false }
+            ]
+          },
+          {
+            name: 'Nutritional Counseling', icon: '🥩', treats: [
+              { n: 'Dietary consult: Restrict purine-rich foods', c: true },
+              { n: 'Dietary consult: Restrict alcohol (especially beer)', c: true }
+            ]
+          },
+          {
+            name: 'Physical Therapy & Rehab', icon: '🚶', treats: [
+              { n: 'Immediate weight-bearing physical therapy', c: false }
+            ]
+          },
+          {
+            name: 'VTE Prophylaxis', icon: '🦵', treats: [
+              { n: 'Subcutaneous Heparin', c: false }
+            ]
+          },
+          {
+            name: 'Topical & Local Care', icon: '🧊', treats: [
+              { n: 'Apply ice packs to the joint', c: true },
+              { n: 'Apply hot packs to the joint', c: false }
+            ]
+          },
+          {
+            name: 'Reversal Agents', icon: '🚫', treats: [
+              { n: 'Naloxone', c: false }
+            ]
+          },
+          {
+            name: 'Discharge Planning', icon: '🏥', treats: [
+              { n: 'Discharge to home with outpatient Rheumatology follow-up', c: true },
+              { n: 'Admit to medical ward', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Acute Gouty Arthritis (Podagra)',
+          sub: 'Monosodium urate crystal deposition in the 1st MTP joint',
+          clues: 'Sudden onset of exquisitely tender monoarthritis in the big toe (podagra) waking the patient from sleep, triggered by purine-rich foods (steak) and alcohol (beer). The presence of ear tophi confirms a chronic history. HCTZ use is a classic pharmacological trigger.',
+          tests: 'Arthrocentesis is the gold standard, revealing needle-shaped, negatively birefringent crystals under polarized light. Always send fluid for gram stain/culture to rule out concurrent septic arthritis. X-rays show classic "rat-bite" erosions in chronic cases.',
+          mgmt: 'Acute treatment relies on powerful anti-inflammatories: NSAIDs, Colchicine, or Corticosteroids. Modify long-term triggers: stop HCTZ, switch to Losartan, and counsel on a low-purine diet.',
+          pitfalls: 'Selecting Allopurinol from the "Urate Lowering Therapy" category during an acute flare is a massive clinical trap. Starting it now will cause rapid shifts in serum uric acid, mobilizing tissue stores and worsening the attack. You must wait 2-4 weeks after the flare resolves.',
+          other: 'Pseudogout (CPPD) typically affects the knee or wrist and shows rhomboid, positively birefringent crystals. Septic arthritis presents with fever and >50k WBCs in the joint fluid. Cellulitis lacks the rapid onset and is an infection of the skin, not the joint space.',
+          testRationale: 'Serum uric acid levels can be misleadingly NORMAL during an acute flare because acute phase reactants (like cytokines) increase renal excretion of uric acid. Never use a normal serum uric acid level to rule out acute gout.',
+          treatSeq: '1. Arthrocentesis (if safe) → 2. High-dose NSAIDs or Colchicine → 3. Rest/Ice joint → 4. Stop HCTZ → 5. Schedule outpatient follow-up to initiate Allopurinol.',
+          traps: 'Assuming a red, hot, swollen joint is cellulitis and prescribing antibiotics. Without a break in the skin, gout is far more likely in the 1st MTP.',
+          learning: 'Gout = Needle-shaped, NEGATIVELY birefringent crystals. Acute attack = NSAIDs, Colchicine, Steroids. Chronic prevention = Allopurinol. Never start Allopurinol during an acute flare. Beer and HCTZ are major triggers.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 18. GENERAL MEDICINE — Level 1: Uncomplicated Pyelonephritis
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'gm1_4', name: 'General Medicine: Level 1', color: '#10b981', emoji: '🔥', waitDays: 6,
+        caseTitle: 'Flank pain, fever, and dysuria in a young woman',
+        caseDesc: 'A 24-year-old female presents with fever, right-sided flank pain, and burning with urination. Diagnose her ascending urinary tract infection and select the appropriate tissue-penetrating antibiotics, avoiding common drug traps.',
+        patient: { name: 'Jessica', gender: 'Female', age: '24 Y', complaint: 'Fever and back pain' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '38.8°C (Febrile)' },
+          { icon: '❤️', label: 'Heart Rate', val: '105 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '110/70 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '18/min' },
+          { icon: '💧', label: 'SpO2', val: '99% on room air' }
+        ],
+        history: [
+          '1. 2-day history of progressively worsening right-sided back/flank pain.',
+          '2. Fevers up to 39.0°C at home with associated shaking chills (rigors).',
+          '3. Dysuria (burning with urination), frequency, and urgency started 4 days ago.',
+          '4. Endorses nausea and had one episode of non-bloody vomiting this morning.',
+          '5. Denies any vaginal discharge, itching, or abnormal bleeding.',
+          '6. Sexually active with a new partner, uses condoms inconsistently.',
+          '7. Last menstrual period was 2 weeks ago (normal).',
+          '8. No history of prior UTIs or kidney stones.',
+          '9. No gross hematuria (visible blood in urine).',
+          '10. Otherwise healthy, no immunosuppressive medications or diabetes.'
+        ],
+        physExam: [
+          '1. General: Uncomfortable, shifting positions, flushed face.',
+          '2. Vitals: Febrile (38.8°C), tachycardic (105 bpm), BP stable.',
+          '3. Back: Pronounced tenderness to percussion over the Right Costovertebral Angle (CVA).',
+          '4. Abdomen: Mild suprapubic tenderness to deep palpation.',
+          '5. Abdomen: Soft, active bowel sounds. No rebound tenderness, no guarding.',
+          '6. Lungs: Clear to auscultation bilaterally.',
+          '7. Skin: Warm and dry. No rashes, no jaundice.',
+          '8. Cardiovascular: Regular rhythm, no murmurs.',
+          '9. Extremities: No edema, normal capillary refill.',
+          '10. Neurological: Alert and oriented, no altered mental status.'
+        ],
+        testCats: [
+          {
+            name: 'Point-of-Care & Urinalysis', icon: '🚽', tests: [
+              { n: 'Urine Dipstick', c: true, r: 'Positive Leukocyte Esterase, Positive Nitrites, 1+ Blood.' },
+              { n: 'Urine Microscopy', c: true, r: '>50 WBCs/hpf, many bacteria, WBC casts present (Pathognomonic for renal involvement).' },
+              { n: 'Urine Pregnancy Test (hCG)', c: true, r: 'Negative. (Mandatory in women of childbearing age before prescribing antibiotics/imaging)' }
+            ]
+          },
+          {
+            name: 'Microbiology', icon: '🦠', tests: [
+              { n: 'Urine Culture & Sensitivity', c: true, r: 'Pending. (Mandatory for pyelonephritis to tailor antibiotics)' },
+              { n: 'Blood Cultures (x2)', c: true, r: 'Pending. (Bacteremia is common in pyelonephritis)' },
+              { n: 'Vaginal Swabs for Gonorrhea/Chlamydia', c: false, r: 'Negative. (No vaginal symptoms, dysuria is from UTI)' }
+            ]
+          },
+          {
+            name: 'Hematology', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'WBC 14.5k with 80% neutrophils. Hb 13.5.' },
+              { n: 'Coagulation Panel', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Inflammatory', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Creatinine 0.8 (Normal renal function), normal electrolytes.' },
+              { n: 'Serum Lactate', c: true, r: '1.5 mmol/L (Normal. Rules out severe sepsis)' },
+              { n: 'C-Reactive Protein (CRP)', c: true, r: 'Elevated at 45 mg/L.' }
+            ]
+          },
+          {
+            name: 'Diagnostic Imaging', icon: '🩻', tests: [
+              { n: 'Renal Ultrasound', c: false, r: 'Normal right kidney, no hydronephrosis. (Imaging is NOT routinely needed for first-episode uncomplicated pyelonephritis in young women unless they fail to improve after 72 hours of antibiotics)' },
+              { n: 'CT Abdomen/Pelvis Without Contrast', c: false, r: 'Negative for kidney stones. (Unnecessary radiation)' },
+              { n: 'CT Abdomen/Pelvis With IV Contrast', c: false, r: 'Unnecessary.' }
+            ]
+          },
+          {
+            name: 'Gynecological Exam', icon: '🩺', tests: [
+              { n: 'Pelvic Examination', c: false, r: 'Deferred. (CVA tenderness, nitrites, and WBC casts make pyelonephritis obvious; no need for invasive pelvic exam without vaginal symptoms)' }
+            ]
+          },
+          {
+            name: 'Cardiac Diagnostics', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia.' },
+              { n: 'Troponin', c: false, r: 'Negative.' }
+            ]
+          },
+          {
+            name: 'Respiratory Diagnostics', icon: '🌬️', tests: [
+              { n: 'Chest X-Ray', c: false, r: 'Clear.' }
+            ]
+          },
+          {
+            name: 'Hepatic & Biliary', icon: '🟡', tests: [
+              { n: 'Liver Function Tests (LFTs)', c: false, r: 'Normal.' },
+              { n: 'RUQ Ultrasound', c: false, r: 'Normal gallbladder.' }
+            ]
+          },
+          {
+            name: 'Toxicology', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Acute Uncomplicated Pyelonephritis', c: true },
+          { t: 'Uncomplicated Cystitis (Lower UTI)', c: false },
+          { t: 'Nephrolithiasis (Kidney Stone)', c: false },
+          { t: 'Pelvic Inflammatory Disease (PID)', c: false },
+          { t: 'Acute Appendicitis', c: false },
+          { t: 'Ectopic Pregnancy', c: false },
+          { t: 'Ovarian Torsion', c: false },
+          { t: 'Acute Cholecystitis', c: false },
+          { t: 'Lower Lobe Pneumonia', c: false },
+          { t: 'Musculoskeletal Back Pain', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Empiric Antibiotic Therapy (Tissue Penetrating)', icon: '💊', treats: [
+              { n: 'IV Ceftriaxone (1g once in ED, then transition to oral)', c: true },
+              { n: 'Oral Ciprofloxacin or Levofloxacin (7 days)', c: true },
+              { n: 'Oral Nitrofurantoin (Macrobid)', c: false },
+              { n: 'Oral Fosfomycin', c: false }
+            ]
+          },
+          {
+            name: 'Supportive Fluids', icon: '💧', treats: [
+              { n: 'IV Lactated Ringers (1L bolus for tachycardia/vomiting)', c: true },
+              { n: 'Strict Fluid Restriction', c: false }
+            ]
+          },
+          {
+            name: 'Symptom Relief', icon: '🌡️', treats: [
+              { n: 'Acetaminophen (Paracetamol) PRN Fever', c: true },
+              { n: 'Ondansetron (Zofran) PRN Nausea', c: true },
+              { n: 'Phenazopyridine (Pyridium) for dysuria', c: true }
+            ]
+          },
+          {
+            name: 'Surgical & Urological Interventions', icon: '🔪', treats: [
+              { n: 'Percutaneous Nephrostomy Tube', c: false },
+              { n: 'Ureteral Stent Placement', c: false },
+              { n: 'Appendectomy', c: false }
+            ]
+          },
+          {
+            name: 'Antivirals & Antifungals', icon: '🦠', treats: [
+              { n: 'Oral Fluconazole', c: false },
+              { n: 'Acyclovir', c: false }
+            ]
+          },
+          {
+            name: 'Gynecological Mgmt', icon: '🩺', treats: [
+              { n: 'IM Ceftriaxone + PO Doxycycline (PID Treatment)', c: false }
+            ]
+          },
+          {
+            name: 'VTE Prophylaxis', icon: '🩸', treats: [
+              { n: 'Subcutaneous Heparin', c: false }
+            ]
+          },
+          {
+            name: 'Cardiac/BP Meds', icon: '❤️', treats: [
+              { n: 'Vasopressors', c: false }
+            ]
+          },
+          {
+            name: 'Gastrointestinal Meds', icon: '胃', treats: [
+              { n: 'Proton Pump Inhibitors (Pantoprazole)', c: false }
+            ]
+          },
+          {
+            name: 'Discharge Planning', icon: '🏥', treats: [
+              { n: 'Discharge home with PO antibiotics (Patient is young, stable, tolerating PO after antiemetics)', c: true },
+              { n: 'Admit to ICU', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Acute Uncomplicated Pyelonephritis',
+          sub: 'Ascending bacterial infection reaching the renal parenchyma',
+          clues: 'The progression from dysuria/frequency to fever, rigors, and focal CVA tenderness indicates an ascending infection. The presence of WBC casts in the urine microscopy is the hallmark sign that the inflammation has reached the kidney tubules, definitively separating this from simple cystitis.',
+          tests: 'A urine pregnancy test is mandatory in this demographic. Urinalysis shows classic infection signs (leukocyte esterase, nitrites). Urine and blood cultures are required. Imaging (CT or Ultrasound) is explicitly NOT recommended for young, healthy women with a classic first episode unless they fail to improve after 48-72 hours.',
+          mgmt: 'Since she is hemodynamically stable and her vomiting resolved with Ondansetron, she can be given a dose of IV Ceftriaxone in the ED and discharged home on tissue-penetrating oral antibiotics (like Ciprofloxacin) for 7 days. Ensure she returns if symptoms worsen.',
+          pitfalls: 'Prescribing Nitrofurantoin (Macrobid) or Fosfomycin. These drugs concentrate EXCLUSIVELY in the bladder and do not reach therapeutic levels in the kidney tissue. Treating pyelonephritis with Nitrofurantoin will result in treatment failure and potential urosepsis.',
+          other: 'Cystitis lacks systemic symptoms (no fever, no CVA tenderness). Nephrolithiasis causes colicky, writhing pain and gross hematuria, usually without fever. PID causes cervical motion tenderness and vaginal discharge.',
+          testRationale: 'Nitrites in the urine dipstick are highly specific for Enterobacteriaceae (E. coli, the most common UTI pathogen), as these bacteria convert dietary nitrates into nitrites.',
+          treatSeq: '1. R/O Pregnancy → 2. UA & Cultures → 3. IV Fluids & Antiemetics → 4. First dose IV Ceftriaxone → 5. Discharge on PO Fluoroquinolone → 6. Follow-up culture results.',
+          traps: 'Ordering a CT Abdomen/Pelvis out of reflex. Uncomplicated pyelonephritis is a clinical diagnosis. Radiation exposure should be avoided unless a complication (like an obstructing stone or renal abscess) is suspected.',
+          learning: 'CVA tenderness + Fever + Dysuria = Pyelonephritis. WBC Casts = Renal origin. Do NOT use Nitrofurantoin or Fosfomycin for pyelonephritis. Imaging is not needed for a first-time uncomplicated presentation.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 19. GENERAL MEDICINE — Level 1: Iron Deficiency Anemia
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'gm1_5', name: 'General Medicine: Level 1', color: '#be123c', emoji: '🩸', waitDays: 14,
+        caseTitle: 'Progressive fatigue, pallor, and ice craving',
+        caseDesc: 'A 29-year-old female vegan presents with 6 months of worsening fatigue, heavy periods, and a bizarre craving to chew ice. Confirm the specific nutritional deficiency and choose the correct repletion pathway, avoiding unnecessary and dangerous interventions.',
+        patient: { name: 'Chloe', gender: 'Female', age: '29 Y', complaint: 'Constant fatigue and shortness of breath' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.7°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '100 bpm (Mildly tachycardic)' },
+          { icon: '📈', label: 'Blood Pressure', val: '115/75 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '16/min' },
+          { icon: '💧', label: 'SpO2', val: '99% on room air' }
+        ],
+        history: [
+          '1. 6-month history of slowly progressive fatigue and generalized weakness.',
+          '2. Shortness of breath when climbing a single flight of stairs (new onset).',
+          '3. Reports a constant, irresistible urge to chew on ice cubes (pagophagia).',
+          '4. Menstrual cycles are heavy (menorrhagia), lasting 8 days, changing super tampons every 2 hours.',
+          '5. Occasional lightheadedness upon standing rapidly.',
+          '6. Has been on a strict vegan diet for the past 2 years without vitamin supplementation.',
+          '7. Denies melena (black tarry stools), hematochezia, or hematemesis.',
+          '8. No family history of blood disorders, sickle cell, or thalassemia.',
+          '9. Denies any bone pain, easy bruising, or recurrent infections.',
+          '10. Denies tingling, numbness, or balance issues (no neuropathy).'
+        ],
+        physExam: [
+          '1. General: Alert, answering questions appropriately, appears remarkably pale.',
+          '2. Vitals: Mild resting tachycardia (100 bpm) compensating for low oxygen-carrying capacity.',
+          '3. Eyes: Marked pallor of the palpebral conjunctiva.',
+          '4. Hands: Marked pallor of the palmar creases.',
+          '5. Mouth: Glossitis (smooth, red, depapillated tongue).',
+          '6. Mouth: Angular cheilitis (painful fissures at the corners of the mouth).',
+          '7. Nails: Koilonychia (spoon-shaped, concave fingernails).',
+          '8. Cardiovascular: Grade 2/6 systolic flow murmur heard at the left sternal border.',
+          '9. Abdomen: No splenomegaly, no hepatomegaly. Soft and non-tender.',
+          '10. Neurological: Proprioception and vibratory sensation are fully intact bilaterally.'
+        ],
+        testCats: [
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'Hb 8.2 (Low), MCV 68 (Microcytic), MCH 22 (Hypochromic), RDW 18% (Elevated).' },
+              { n: 'Reticulocyte Count', c: true, r: '0.8% (Low absolute count, inadequate marrow response).' },
+              { n: 'Peripheral Blood Smear', c: true, r: 'Microcytic, hypochromic cells with pencil cells. No hypersegmented neutrophils.' }
+            ]
+          },
+          {
+            name: 'Iron Studies', icon: '⛓️', tests: [
+              { n: 'Serum Ferritin', c: true, r: '6 ng/mL (Critically low. Pathognomonic for absent iron stores).' },
+              { n: 'Total Iron Binding Capacity (TIBC)', c: true, r: '450 mcg/dL (Elevated).' },
+              { n: 'Transferrin Saturation', c: true, r: '8% (Severely low).' }
+            ]
+          },
+          {
+            name: 'Nutritional Assays', icon: '💊', tests: [
+              { n: 'Serum Vitamin B12', c: true, r: '450 pg/mL (Normal. Evaluated to rule out mixed deficiency).' },
+              { n: 'Serum Folate', c: true, r: '12 ng/mL (Normal).' }
+            ]
+          },
+          {
+            name: 'Hemolysis Panel', icon: '💥', tests: [
+              { n: 'Lactate Dehydrogenase (LDH)', c: false, r: 'Normal.' },
+              { n: 'Haptoglobin', c: false, r: 'Normal.' },
+              { n: 'Direct Coombs Test', c: false, r: 'Negative.' }
+            ]
+          },
+          {
+            name: 'Gastroenterology Diagnostics', icon: '胃', tests: [
+              { n: 'Fecal Occult Blood Test (FOBT)', c: true, r: 'Negative x3. (Crucial to rule out occult GI bleeding).' },
+              { n: 'Celiac Disease Serology (Anti-tTG IgA)', c: true, r: 'Negative. (Celiac can cause iron malabsorption).' },
+              { n: 'Upper Endoscopy & Colonoscopy', c: false, r: 'Deferred. Not first-line in a 29-year-old with obvious menorrhagia.' }
+            ]
+          },
+          {
+            name: 'Gynecological Imaging', icon: '🩺', tests: [
+              { n: 'Pelvic Ultrasound', c: true, r: 'Multiple intramural fibroids identified. (Confirms anatomical cause of menorrhagia).' }
+            ]
+          },
+          {
+            name: 'Metabolic & Chemistry', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Endocrine Function', icon: '🦋', tests: [
+              { n: 'Thyroid Stimulating Hormone (TSH)', c: true, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
+              { n: 'PT/INR, aPTT', c: false, r: 'Normal.' },
+              { n: 'Von Willebrand Factor Antigen', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Bone Marrow Evaluation', icon: '🦴', tests: [
+              { n: 'Bone Marrow Aspirate/Biopsy', c: false, r: 'Highly invasive and entirely unnecessary.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia.' }
+            ]
+          },
+          {
+            name: 'Infectious Disease', icon: '🦠', tests: [
+              { n: 'Parvovirus B19 Serology', c: false, r: 'Negative.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Iron Deficiency Anemia (Secondary to Menorrhagia/Diet)', c: true },
+          { t: 'Vitamin B12 Deficiency Anemia', c: false },
+          { t: 'Folate Deficiency Anemia', c: false },
+          { t: 'Beta-Thalassemia Minor', c: false },
+          { t: 'Autoimmune Hemolytic Anemia', c: false },
+          { t: 'Aplastic Anemia', c: false },
+          { t: 'Hypothyroidism-induced Anemia', c: false },
+          { t: 'Sickle Cell Trait', c: false },
+          { t: 'Lead Poisoning', c: false },
+          { t: 'Anemia of Chronic Disease', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Mineral Replacement Therapy', icon: '💊', treats: [
+              { n: 'Oral Ferrous Sulfate 325mg every other day', c: true },
+              { n: 'Co-administer with Vitamin C (Ascorbic Acid)', c: true },
+              { n: 'IV Iron (Ferric Carboxymaltose) - If oral iron poorly tolerated', c: true }
+            ]
+          },
+          {
+            name: 'Transfusion Medicine', icon: '🩸', treats: [
+              { n: 'Transfuse 2 Units Packed Red Blood Cells (PRBCs) immediately', c: false },
+              { n: 'Withhold transfusion (Patient is hemodynamically stable)', c: true }
+            ]
+          },
+          {
+            name: 'Gynecological Management', icon: '🌸', treats: [
+              { n: 'Combined Oral Contraceptive Pills (To control bleeding)', c: true },
+              { n: 'Levonorgestrel IUD (Mirena)', c: true },
+              { n: 'Emergency Hysterectomy', c: false }
+            ]
+          },
+          {
+            name: 'Nutritional & Vitamin Supplements', icon: '🥗', treats: [
+              { n: 'Nutrition consult: Incorporate iron-rich plant foods', c: true },
+              { n: 'IM Vitamin B12 Injections', c: false },
+              { n: 'Oral Folate 5mg', c: false }
+            ]
+          },
+          {
+            name: 'Growth Factors', icon: '🧬', treats: [
+              { n: 'Erythropoietin (EPO) Injections', c: false }
+            ]
+          },
+          {
+            name: 'Gastrointestinal Medications', icon: '胃', treats: [
+              { n: 'Prescribe Proton Pump Inhibitor (Omeprazole)', c: false },
+              { n: 'Counsel patient that oral iron will cause dark/black stools', c: true }
+            ]
+          },
+          {
+            name: 'Cardiovascular Support', icon: '❤️', treats: [
+              { n: 'Beta-blockers (Metoprolol) for the tachycardia', c: false },
+              { n: 'IV Normal Saline Bolus', c: false }
+            ]
+          },
+          {
+            name: 'Surgical & Procedural', icon: '🔪', treats: [
+              { n: 'Uterine Fibroid Embolization (UFE) consult', c: true },
+              { n: 'Bone Marrow Transplant', c: false }
+            ]
+          },
+          {
+            name: 'Immunosuppression', icon: '🛡️', treats: [
+              { n: 'Corticosteroids (Prednisone)', c: false }
+            ]
+          },
+          {
+            name: 'VTE Prophylaxis', icon: '🦵', treats: [
+              { n: 'Aspirin 81mg', c: false },
+              { n: 'Subcutaneous Heparin', c: false }
+            ]
+          },
+          {
+            name: 'Chelation Therapy', icon: '🧪', treats: [
+              { n: 'Deferoxamine', c: false }
+            ]
+          },
+          {
+            name: 'Discharge Planning', icon: '🏥', treats: [
+              { n: 'Discharge home with outpatient OBGYN and Hematology follow-up', c: true }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Iron Deficiency Anemia (IDA)',
+          sub: 'Microcytic hypochromic anemia due to chronic blood loss and low dietary intake',
+          clues: 'Progressive fatigue, ice craving (pagophagia/pica), heavy menses (menorrhagia), and a strict vegan diet. Physical exam shows classic signs of tissue iron deficiency: koilonychia (spoon nails), glossitis, angular cheilitis, and a flow murmur caused by hyperdynamic circulation.',
+          tests: 'CBC shows a microcytic (MCV <80), hypochromic anemia with an elevated RDW. The core diagnostic test is Serum Ferritin (<15 is pathognomonic for IDA). TIBC is elevated. B12 was checked because her vegan diet puts her at risk, but normal proprioception and lack of macrocytosis rule it out.',
+          mgmt: 'Replete iron stores using oral Ferrous Sulfate. Dosing every other day maximizes absorption by avoiding hepcidin spikes. Co-administer with Vitamin C to acidify the gut and enhance absorption. Treat the underlying cause (menorrhagia) using OCPs or an IUD.',
+          pitfalls: 'Selecting Blood Transfusion from the "Transfusion Medicine" category is a massive trap. While her Hb is 8.2, she developed this slowly and is hemodynamically stable. Transfusions carry risks and are strictly reserved for Hb <7 or active, unstable bleeding. Another trap is prescribing beta-blockers for her tachycardia—her heart is beating fast to maintain oxygen delivery; blocking it will cause collapse.',
+          other: 'B12 and Folate deficiency cause MACROcytic anemia. Thalassemia minor causes microcytic anemia, but ferritin will be normal or high.',
+          testRationale: 'Ferritin is the body\'s iron storage protein. It is the first value to drop in iron deficiency, long before hemoglobin falls. An elevated RDW indicates cells of varying sizes, typical of early nutritional deficiency.',
+          treatSeq: '1. Diagnose IDA via Ferritin → 2. Investigate source of loss → 3. Start Oral Iron + Vitamin C → 4. Manage menorrhagia → 5. Recheck Reticulocyte count in 2 weeks.',
+          traps: 'Prescribing a Proton Pump Inhibitor (PPI) alongside oral iron. Iron requires an acidic gastric environment to be absorbed. A PPI will neutralize stomach acid and completely block iron absorption.',
+          learning: 'Pica (ice craving) + Microcytosis + Low Ferritin + High TIBC = Iron Deficiency Anemia. Always look for the source of blood loss. Do not transfuse a stable, chronic anemia patient just because the number looks low.'
+        },
+        xp: 40
       }
 
 
