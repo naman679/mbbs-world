@@ -280,7 +280,18 @@ chatInput.addEventListener('keypress', e => {
 
 chatInput.addEventListener('focus', () => {
     setTimeout(() => {
-        chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
         chatContainer.scrollTop = chatContainer.scrollHeight;
-    }, 300);
+    }, 150); // Shortened the timeout slightly for better responsiveness
 });
+// --- MOBILE KEYBOARD FIX ---
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', () => {
+        // Force the body height to match the visible area above the keyboard
+        document.body.style.height = `${window.visualViewport.height}px`;
+
+        // Immediately scroll the chat to the bottom so the latest message is visible
+        if (chatContainer) {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    });
+}
