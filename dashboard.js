@@ -174,7 +174,26 @@ function handleInternalBack() {
 }
 
 window.goBack = () => { if (navHistory.length === 0) showMainMenu(); else history.back(); };
-window.addEventListener('popstate', (e) => { if (navHistory.length > 0) handleInternalBack(); });
+window.isFullscreenState = false;
+window.ignoreNextPopState = false;
+
+window.addEventListener('popstate', (e) => {
+    if (window.ignoreNextPopState) {
+        window.ignoreNextPopState = false;
+        return;
+    }
+
+    if (window.isFullscreenState) {
+        window.isFullscreenState = false;
+        let ext = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        if (ext && (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement)) {
+            ext.call(document);
+        }
+        return;
+    }
+
+    if (navHistory.length > 0) handleInternalBack();
+});
 
 
 function injectWatermark() {
@@ -264,10 +283,6 @@ function updateNavActive(view) {
     if (activeLink) activeLink.classList.add('active');
 }
 
-window.closeWelcomeModal = () => {
-    const modal = document.getElementById('welcomeModal');
-    if (modal) { modal.classList.remove('visible'); localStorage.setItem('welcome_seen_v1', 'true'); setTimeout(() => modal.style.display = 'none', 500); }
-};
 
 window.onload = () => {
     const savedTheme = localStorage.getItem('mbbs_theme') || 'light';
@@ -286,10 +301,7 @@ window.onload = () => {
     fetchSheetData();
     injectWatermark();
 
-    if (!localStorage.getItem('welcome_seen_v1')) {
-        const modal = document.getElementById('welcomeModal');
-        if (modal) { modal.style.display = 'flex'; setTimeout(() => modal.classList.add('visible'), 10); }
-    }
+
 
     // --- UPDATED BACKGROUND DATABASE CHECK ---
     fetch(`https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec?name=${encodeURIComponent(savedUser)}`)
@@ -301,14 +313,14 @@ window.onload = () => {
                         const safeName = savedUser.toLowerCase().replace(/[.#$\[\]]/g, '_');
                         const dbUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}.json`;
                         const dbData = await (await fetch(dbUrl)).json();
-                        
+
                         // Check against the correct new slot (app_id or web_id)
                         const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
                         const slotName = isInsideApp ? "app_id" : "web_id";
                         const localId = localStorage.getItem('mbbs_device_id');
 
                         if (dbData && typeof dbData === 'object' && dbData[slotName] !== localId) {
-                            console.error("Device mismatch detected."); 
+                            console.error("Device mismatch detected.");
                             handleLogout();
                         }
                     } catch (e) { console.error('BG verify error', e); }
@@ -411,6 +423,11 @@ function renderHome() {
                 <div class="portal-card" onclick="filterCategory('notes')"><i class="fas fa-clipboard-list"></i><h3>Notes</h3></div>
                 <div class="portal-card" onclick="filterCategory('quizzes')"><i class="fas fa-microscope"></i><h3>Quizzes</h3></div>
                 <div class="portal-card" onclick="filterCategory('qbank')"><i class="fas fa-dna"></i><h3>Q-Bank</h3></div>
+                
+                <div class="portal-card" onclick="window.location.href='atrium.html'" style="border: 2px solid #0ea5e9;">
+                    <i class="fas fa-hospital-user" style="color: #0ea5e9;"></i>
+                    <h3 style="color: #0ea5e9;">Atrium</h3>
+                </div>
             </div>
         </div>
     `;
@@ -426,10 +443,20 @@ function renderContent() {
         const data = mbbsData[currentSubject];
         if (selectedChapterIdx === null) {
             const list = document.createElement('div'); list.className = 'chapter-list';
+            const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
             data.videos.forEach((v, idx) => {
                 const item = document.createElement('div'); item.className = 'chapter-card';
+                const videoId = getYoutubeVideoId(v.link);
+                const isWatched = localStorage.getItem('completed_' + currentUser + '_' + videoId) === 'true';
+
+                if (isWatched) {
+                    item.style.backgroundColor = '#d1fae5';
+                    item.style.borderColor = '#10b981';
+                }
+
                 item.onclick = () => { logStudentActivity(currentSubject, v.title); pushNavState(); selectedChapterIdx = idx; renderContent(); };
-                item.innerHTML = `<div class="chapter-icon"><i class="fas fa-play"></i></div><div style="flex-grow:1; font-weight:500;">Chapter ${idx + 1}: ${v.title}</div>`;
+                const checkIcon = isWatched ? '<i class="fas fa-check-circle" style="color:#059669; margin-left:10px; font-size:1.1rem;"></i>' : '';
+                item.innerHTML = `<div class="chapter-icon"><i class="fas fa-play" style="${isWatched ? 'color:#10b981;' : ''}"></i></div><div style="flex-grow:1; font-weight:500; display:flex; justify-content:space-between; align-items:center;"><span>Chapter ${idx + 1}: ${v.title}</span> ${checkIcon}</div>`;
                 list.appendChild(item);
             });
             area.appendChild(list);
@@ -447,11 +474,37 @@ function renderItems() {
     const container = document.getElementById('quiz-list-container'); if (!container) return;
     const data = mbbsData[currentSubject]; if (!data) return;
     let items = currentView === 'notes' ? data.notes : currentView === 'quizzes' ? data.quizzes : data.qbank.filter(i => i.platform === currentPlatform);
+    const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
+
     items.forEach((item) => {
-        const card = document.createElement('div'); card.className = `chapter-card ${item.isPremium ? 'is-premium' : ''}`;
+        const card = document.createElement('div');
         const isQuiz = item.Type && item.Type.includes('quiz');
-        card.onclick = () => { logStudentActivity(currentSubject, item.title); isQuiz ? openQuiz(item.link) : openFile(item.link); };
-        card.innerHTML = `<div class="chapter-icon"><i class="fas ${isQuiz ? 'fa-lightbulb' : 'fa-file-pdf'}"></i></div><div style="flex-grow:1; font-weight:500;">${item.title}</div>`;
+        let isCompleted = false;
+
+        if (isQuiz) {
+            isCompleted = localStorage.getItem('completed_quiz_' + currentUser + '_' + item.title) === 'true';
+        }
+
+        card.className = `chapter-card ${item.isPremium ? 'is-premium' : ''}`;
+
+        if (isCompleted) {
+            card.style.backgroundColor = '#d1fae5';
+            card.style.borderColor = '#10b981';
+        }
+
+        card.onclick = () => {
+            logStudentActivity(currentSubject, item.title);
+            if (isQuiz) {
+                openQuiz(item.link);
+            } else {
+                openFile(item.link);
+            }
+        };
+
+        const checkIcon = isCompleted ? '<i class="fas fa-check-circle" style="color:#059669; margin-left:10px; font-size:1.1rem;"></i>' : '';
+        const baseIcon = isQuiz ? 'fa-lightbulb' : 'fa-file-pdf';
+        const iconColor = isCompleted ? 'color:#10b981;' : '';
+        card.innerHTML = `<div class="chapter-icon"><i class="fas ${baseIcon}" style="${iconColor}"></i></div><div style="flex-grow:1; font-weight:500; display:flex; justify-content:space-between; align-items:center;"><span>${item.title}</span> ${checkIcon}</div>`;
         container.appendChild(card);
     });
 }
@@ -507,6 +560,7 @@ function createPlayer(uid, vid) {
         playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
         events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
     });
+    players[uid].videoId = cleanVidId; // Store for cross-origin safe access
 }
 
 function onReady(e, uid) {
@@ -517,7 +571,8 @@ function onReady(e, uid) {
     // RESUME LOGIC
     const vidData = e.target.getVideoData();
     const videoId = vidData.video_id;
-    const savedTime = localStorage.getItem('resume_' + videoId);
+    const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
+    const savedTime = localStorage.getItem('resume_' + currentUser + '_' + videoId) || localStorage.getItem('resume_' + videoId);
     if (savedTime) {
         e.target.seekTo(parseFloat(savedTime), true);
     }
@@ -528,32 +583,24 @@ function onReady(e, uid) {
 }
 
 function onStateChange(e, uid) {
-    const vidData = e.target.getVideoData();
-    const videoId = vidData.video_id;
+    const videoId = players[uid].videoId;
+    console.log(`Player ${uid} state changed to: ${e.data}`);
 
     if (e.data == YT.PlayerState.PLAYING) {
         window.activePlayerId = uid;
         updateOrientation();
         updatePlayPauseIcon(uid, true);
-        e.target.setPlaybackQuality('hd720');
 
         if (players[uid].timer) clearInterval(players[uid].timer);
         players[uid].timer = setInterval(() => {
             const t = e.target.getCurrentTime();
             const d = e.target.getDuration();
-
             const seekEl = document.getElementById(`seek-${uid}`);
             if (seekEl) seekEl.value = t;
-
             updateClock(uid, t, d);
-
-            // SAVE PROGRESS
-            localStorage.setItem('resume_' + videoId, t);
-
-            // TRACK COMPLETION (90%)
-            if (d > 0 && t > (d * 0.9)) {
-                localStorage.setItem('completed_' + videoId, 'true');
-            }
+            const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
+            localStorage.setItem('resume_' + currentUser + '_' + videoId, t);
+            if (d > 0 && t > (d * 0.9)) localStorage.setItem('completed_' + currentUser + '_' + videoId, 'true');
         }, 1000);
     } else {
         if (players[uid].timer) clearInterval(players[uid].timer);
@@ -616,12 +663,73 @@ window.seekBy = (seconds, uid) => {
 
 window.toggleFullScreen = (btn) => {
     const c = btn.closest('.card');
-    if (!document.fullscreenElement) {
-        c.requestFullscreen().then(updateOrientation).catch(e => console.error(e));
+    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+
+    if (!isFullscreen) {
+        let req = c.requestFullscreen || c.webkitRequestFullscreen || c.mozRequestFullScreen || c.msRequestFullscreen;
+        if (req) {
+            window.isFullscreenState = true;
+            history.pushState({ isFullscreenTrap: true }, '');
+            let promise = req.call(c);
+            if (promise && promise.then) {
+                promise.then(() => {
+                    tryLockLandscape();
+                    updateOrientation();
+                }).catch(e => console.error(e));
+            } else {
+                setTimeout(() => {
+                    tryLockLandscape();
+                    updateOrientation();
+                }, 100);
+            }
+        }
     } else {
-        document.exitFullscreen();
+        let ext = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        if (ext) ext.call(document);
     }
 };
+
+function tryLockLandscape() {
+    try {
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('landscape').catch(e => console.log('Ori lock fail:', e));
+        } else if (screen.lockOrientation) {
+            screen.lockOrientation('landscape');
+        } else if (screen.mozLockOrientation) {
+            screen.mozLockOrientation('landscape');
+        } else if (screen.msLockOrientation) {
+            screen.msLockOrientation('landscape');
+        }
+    } catch (e) { console.log('Lock error:', e); }
+}
+
+function handleExitFullscreen() {
+    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+    if (!isFullscreen) {
+        try {
+            if (screen.orientation && screen.orientation.unlock) {
+                screen.orientation.unlock();
+            } else if (screen.unlockOrientation) {
+                screen.unlockOrientation();
+            } else if (screen.mozUnlockOrientation) {
+                screen.mozUnlockOrientation();
+            } else if (screen.msUnlockOrientation) {
+                screen.msUnlockOrientation();
+            }
+        } catch (e) { console.log('Unlock error:', e); }
+
+        if (window.isFullscreenState) {
+            window.isFullscreenState = false;
+            window.ignoreNextPopState = true;
+            history.back();
+        }
+    }
+}
+
+document.addEventListener('fullscreenchange', handleExitFullscreen);
+document.addEventListener('webkitfullscreenchange', handleExitFullscreen);
+document.addEventListener('mozfullscreenchange', handleExitFullscreen);
+document.addEventListener('MSFullscreenChange', handleExitFullscreen);
 
 function updateOverlaySpeedButtons() {
     const container = document.getElementById('overlaySpeedRow');
@@ -657,3 +765,106 @@ function formatDriveLink(url) {
 window.openQuiz = (url) => { pushNavState(); document.getElementById('fileViewer').src = formatDriveLink(url); document.getElementById('fileModal').style.display = 'block'; document.body.style.overflow = 'hidden'; };
 window.openFile = (urlOrContent) => { pushNavState(); document.getElementById('fileViewer').src = urlOrContent.startsWith('http') ? formatDriveLink(urlOrContent) : urlOrContent; document.getElementById('fileModal').style.display = 'block'; document.body.style.overflow = 'hidden'; };
 window.closeModal = () => { if (navHistory.length > 0) goBack(); else { cleanupIframes(); if (window.uiTimer) clearInterval(window.uiTimer); document.getElementById('fileModal').style.display = 'none'; document.body.style.overflow = 'auto'; } };
+
+window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'quiz_fully_completed') {
+        const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
+        let completedItemTitle = null;
+        for (const subjKey in mbbsData) {
+            for (const item of mbbsData[subjKey].quizzes) {
+                if (item.link.includes(e.data.url_path)) {
+                    completedItemTitle = item.title;
+                    break;
+                }
+            }
+            if (completedItemTitle) break;
+
+            for (const item of mbbsData[subjKey].qbank) {
+                if (item.link.includes(e.data.url_path)) {
+                    completedItemTitle = item.title;
+                    break;
+                }
+            }
+            if (completedItemTitle) break;
+        }
+
+        if (completedItemTitle) {
+            localStorage.setItem('completed_quiz_' + currentUser + '_' + completedItemTitle, 'true');
+            if (currentView === 'quizzes' || currentView === 'qbank') {
+                renderContent();
+            }
+        }
+    }
+});
+
+function launchGuidedTour() {
+    const driver = window.driver.js.driver;
+
+    const driverObj = driver({
+        showProgress: true,
+        steps: [
+            {
+                popover: {
+                    title: 'Welcome to MBBS World! 🩺',
+                    description: 'Let us show you how to navigate your medical resources efficiently.'
+                }
+            },
+            {
+                element: '.nav-brand',
+                popover: {
+                    title: 'Your Home Base',
+                    description: 'Click here anytime to return to the main dashboard.'
+                }
+            },
+            {
+                element: '.search-toggle-btn',
+                popover: {
+                    title: 'Quick Search',
+                    description: 'Looking for a specific topic like "Anatomy" or "PSM"? Find it instantly here.'
+                }
+            },
+            {
+                element: '#mainNav',
+                popover: {
+                    title: 'Study Categories',
+                    description: 'Switch between Video lectures, PDF Notes, and high-yield Question Banks.'
+                }
+            },
+            {
+                element: '#btn-live-quiz',
+                popover: {
+                    title: 'Live Multiplayer Quiz 🎮',
+                    description: 'Challenge your MPMSU batchmates in real-time! (App Exclusive)'
+                }
+            },
+            {
+                element: '#btn-daily-case',
+                popover: {
+                    title: 'The Daily Case AI 🩺',
+                    description: 'Practice clinical diagnosis with our AI patient simulator. Perfect for your OPD postings!'
+                }
+            },
+            {
+                element: '#userProfileBtn',
+                popover: {
+                    title: 'Track Your Progress',
+                    description: 'See how many hours you have studied and check your quiz accuracy here.'
+                }
+            }
+        ]
+    });
+
+    driverObj.drive();
+}
+
+// Auto-launch for New Users only
+window.addEventListener('load', () => {
+    const tourDone = localStorage.getItem('mbbs_tour_completed');
+    if (!tourDone) {
+        // Short delay to ensure everything is rendered
+        setTimeout(() => {
+            launchGuidedTour();
+            localStorage.setItem('mbbs_tour_completed', 'true');
+        }, 1500);
+    }
+});

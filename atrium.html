@@ -13186,6 +13186,22 @@
 
     // INTRO
     function openIntro(id) {
+      // --- DAILY LIMIT LOGIC ---
+      const currentUser = sessionStorage.getItem('mbbs_user');
+      const today = new Date().toDateString();
+
+      // Skip check for "naman"
+      if (currentUser && currentUser.toLowerCase() !== "naman") {
+        const lastPlayDate = localStorage.getItem('atrium_last_play_date');
+        const playCount = parseInt(localStorage.getItem('atrium_play_count') || "0");
+
+        if (lastPlayDate === today && playCount >= 1) {
+          alert("Daily Limit Reached! You can only play 1 case per day in Atrium. See you tomorrow!");
+          return; // Stop execution
+        }
+      }
+      // -------------------------
+
       sp = SPECS.find(s => s.id === id);
       selTests = []; selTreats = []; selDiags = []; diagDone = false;
       document.getElementById('intro-wait').textContent = 'Waiting for the past ' + sp.waitDays + ' days';
@@ -13367,6 +13383,14 @@
     }
     function completeCase() {
       if (!selTreats.length) return;
+      // --- UPDATE DAILY LIMIT COUNT ---
+      const today = new Date().toDateString();
+      const lastPlayDate = localStorage.getItem('atrium_last_play_date');
+      let playCount = (lastPlayDate === today) ? parseInt(localStorage.getItem('atrium_play_count') || "0") : 0;
+
+      localStorage.setItem('atrium_last_play_date', today);
+      localStorage.setItem('atrium_play_count', playCount + 1);
+      // --------------------------------
 
       // 1. Calculate Mistakes
       const wrongTests = selTests.filter(t => !t.correct).length;
