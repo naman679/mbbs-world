@@ -3334,7 +3334,309 @@
           learning: 'Aquagenic pruritus = Polycythemia Vera (basophils release histamine triggered by water temperature change). The triad: High Hb/Hct + Low EPO + Positive JAK2 V617F. Phlebotomy + Aspirin = cornerstone treatment. Iron = absolutely contraindicated.'
         },
         xp: 40
+      },
+      // ─────────────────────────────────────────────────────────────
+      // 13. CARDIOLOGY — Level 3: STEMI & Cardiogenic Shock
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'cardio3', name: 'Cardiology: Level 3', color: '#e11d48', emoji: '❤️‍🔥', waitDays: 12,
+        caseTitle: 'Crushing chest pain followed by sudden collapse',
+        caseDesc: 'A 58-year-old male presents with severe chest pain and rapidly loses consciousness in the ER, showing no pulse. Navigate full ACLS, post-arrest cardiogenic shock, and emergency revascularization protocols. Do not let normal-sounding test categories trick you into ordering fatal distractors.',
+        patient: { name: 'Arthur', gender: 'Male', age: '58 Y', complaint: 'Chest pain and sudden collapse' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.1°C (Cool and clammy)' },
+          { icon: '❤️', label: 'Heart Rate', val: 'Unmeasurable (Monitor shows Ventricular Fibrillation)' },
+          { icon: '📈', label: 'Blood Pressure', val: 'Unmeasurable (No palpable pulse)' },
+          { icon: '🫁', label: 'Respiratory Rate', val: 'Agonal gasps' },
+          { icon: '💧', label: 'SpO2', val: 'Unable to trace' }
+        ],
+        history: [
+          'Brought in by EMS after experiencing 45 minutes of crushing, substernal chest pain radiating to the left arm.',
+          'Collapsed immediately upon transfer to the ER bed.',
+          'Wife reports a history of hypertension, hyperlipidemia, and heavy smoking (40 pack-years).',
+          'No known history of structural heart disease or heart failure.',
+          'Currently unresponsive, apneic, and pulseless.'
+        ],
+        physExam: [
+          'General: Unresponsive, cyanotic, diaphoretic.',
+          'Airway: Intact, but no spontaneous breathing effort beyond agonal gasps.',
+          'Cardiovascular: No palpable carotid or femoral pulses. Monitor shows coarse Ventricular Fibrillation (v-fib).',
+          'Extremities: Cold, mottled, capillary refill > 5 seconds.',
+          'Neurological: GCS 3. Pupils sluggish but reactive.'
+        ],
+        testCats: [
+          {
+            name: 'Bedside & Immediate Resuscitation', icon: '⚡', tests: [
+              { n: 'Rhythm Check / Telemetry Monitor', c: true, r: 'Coarse Ventricular Fibrillation (Shockable rhythm)' },
+              { n: 'Point-of-Care Capillary Glucose', c: true, r: '145 mg/dL (Normal, hypoglycemia is not the cause of arrest)' },
+              { n: 'Post-ROSC 12-Lead ECG', c: true, r: 'Massive ST-segment elevations in V1-V6, I, and aVL (Extensive Anterior STEMI)' },
+              { n: 'Arterial Blood Gas (ABG)', c: true, r: 'pH 7.15, PaCO2 55, PaO2 60, HCO3 16 (Severe mixed respiratory and metabolic acidosis)' },
+              { n: 'Urine Toxicology Screen', c: false, r: 'Negative for cocaine or amphetamines (Wastes time during active resuscitation)' }
+            ]
+          },
+          {
+            name: 'Cardiac Biomarkers & Peptides', icon: '💔', tests: [
+              { n: 'High-Sensitivity Troponin I', c: true, r: '4,500 ng/L (Massively elevated, confirming extensive myocardial infarction)' },
+              { n: 'BNP / NT-proBNP', c: true, r: '1,200 pg/mL (Elevated, indicating acute heart failure/stretch)' },
+              { n: 'CK-MB', c: false, r: 'Elevated (Outdated test, high-sensitivity troponin is the gold standard)' },
+              { n: 'Serum Myoglobin', c: false, r: 'Elevated (Non-specific, poor clinical utility for acute MI today)' }
+            ]
+          },
+          {
+            name: 'Haematology & Coagulation', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'WBC 14k (Stress leukocytosis), Hb 13.5, Plt 250k' },
+              { n: 'Coagulation Panel (PT/INR, aPTT)', c: true, r: 'Normal baseline. Crucial before giving systemic heparin or fibrinolytics.' },
+              { n: 'Type and Screen', c: true, r: 'A Positive. (Good to have in case of catastrophic bleeding during catheterization)' },
+              { n: 'D-Dimer', c: false, r: 'Elevated (Non-specific in cardiac arrest, ordering this suggests you suspect PE over the obvious STEMI)' }
+            ]
+          },
+          {
+            name: 'Chemistry & Metabolic Panel', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Creatinine 1.9 (Acute kidney injury from shock), K+ 4.1' },
+              { n: 'Serum Magnesium', c: true, r: '1.8 mg/dL (Normal. Important to check in severe arrhythmias)' },
+              { n: 'Serum Lactate', c: true, r: '8.5 mmol/L (Critically elevated due to systemic hypoperfusion/shock)' },
+              { n: 'Serum Ammonia', c: false, r: 'Normal. (Patient is comatose from cardiac arrest, not hepatic encephalopathy)' },
+              { n: 'Thyroid Panel (TSH, Free T4)', c: false, r: 'Normal. (Thyroid storm is not the cause of this V-fib arrest)' }
+            ]
+          },
+          {
+            name: 'Non-Invasive Imaging', icon: '📷', tests: [
+              { n: 'Bedside Echocardiogram (TTE)', c: true, r: 'LVEF 25%. Severe anterior and apical akinesis. No pericardial effusion (Rules out tamponade/rupture).' },
+              { n: 'Portable Chest X-Ray', c: true, r: 'Bilateral pulmonary edema (Acute cardiogenic shock) and confirmed endotracheal tube placement.' },
+              { n: 'FAST Exam (Abdominal US)', c: false, r: 'Negative. (Unnecessary in a clear primary cardiac presentation)' }
+            ]
+          },
+          {
+            name: 'Advanced Cross-Sectional Imaging', icon: '🩻', tests: [
+              { n: 'CT Pulmonary Angiogram (CTPA)', c: false, r: 'Patient too unstable. ECG already proves STEMI. Delays life-saving cath lab.' },
+              { n: 'CT Head without contrast', c: false, r: 'Normal. (Ordered for coma, but arrest cause is clearly cardiac. Delays heart cath).' },
+              { n: 'MRI Heart with Gadolinium', c: false, r: 'Impossible in an unstable, ventilated patient with an acute STEMI.' }
+            ]
+          },
+          {
+            name: 'Invasive Hemodynamics', icon: '📈', tests: [
+              { n: 'Arterial Line Placement', c: true, r: 'Placed in right radial artery. Continuous BP reads 75/40 (Severe shock).' },
+              { n: 'Central Venous Catheter (CVC)', c: true, r: 'Placed in right internal jugular. CVP is 18 mmHg (High, right heart overload).' },
+              { n: 'Pulmonary Artery (Swan-Ganz) Catheter', c: true, r: 'Cardiac Index 1.8 L/min/m2, PCWP 24 mmHg (Confirms severe Cardiogenic Shock).' }
+            ]
+          },
+          {
+            name: 'Definitive Angiography', icon: '📸', tests: [
+              { n: 'Emergent Coronary Angiography', c: true, r: '100% thrombotic occlusion of the proximal Left Anterior Descending (LAD) artery ("Widowmaker").' },
+              { n: 'Aortic Root Angiogram', c: false, r: 'Normal. (No aortic dissection present).' },
+              { n: 'Renal Angiography', c: false, r: 'Unnecessary (AKI is from shock, not renal artery stenosis).' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Anterior STEMI with Ventricular Fibrillation & Cardiogenic Shock', c: true },
+          { t: 'Massive Pulmonary Embolism', c: false },
+          { t: 'Aortic Dissection with Tamponade', c: false },
+          { t: 'Primary Respiratory Arrest', c: false },
+          { t: 'Cocaine-Induced Vasospasm', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'ACLS & Airway Interventions', icon: '🫁', treats: [
+              { n: 'Defibrillation (Biphasic 200J)', c: true },
+              { n: 'High-Quality Chest Compressions (CPR)', c: true },
+              { n: 'Endotracheal Intubation & Mechanical Ventilation', c: true },
+              { n: 'Synchronized Cardioversion', c: false },
+              { n: 'BiPAP / CPAP (Non-invasive)', c: false }
+            ]
+          },
+          {
+            name: 'Vasoactive & Antiarrhythmic Medications', icon: '💓', treats: [
+              { n: 'IV Epinephrine 1mg every 3-5 mins (During CPR)', c: true },
+              { n: 'IV Amiodarone 300mg (for refractory V-Fib)', c: true },
+              { n: 'IV Norepinephrine (Levophed) infusion (Post-ROSC)', c: true },
+              { n: 'IV Dobutamine infusion (Inotrope for cardiac output)', c: true },
+              { n: 'IV Metoprolol (Beta-blocker)', c: false },
+              { n: 'Sublingual Nitroglycerin', c: false },
+              { n: 'IV Calcium Channel Blockers (Diltiazem)', c: false }
+            ]
+          },
+          {
+            name: 'Antithrombotic Therapy', icon: '💊', treats: [
+              { n: 'Aspirin 300mg chewed/NG tube', c: true },
+              { n: 'Ticagrelor or Prasugrel load', c: true },
+              { n: 'IV Unfractionated Heparin bolus + drip', c: true },
+              { n: 'Oral Warfarin', c: false },
+              { n: 'Systemic Thrombolytics (tPA)', c: false }
+            ]
+          },
+          {
+            name: 'Mechanical & Revascularization', icon: '🔧', treats: [
+              { n: 'Percutaneous Coronary Intervention (PCI) / Stenting', c: true },
+              { n: 'Intra-Aortic Balloon Pump (IABP) or Impella Device', c: true },
+              { n: 'Coronary Artery Bypass Graft (CABG)', c: false },
+              { n: 'Pericardiocentesis', c: false }
+            ]
+          },
+          {
+            name: 'Neuroprotection & Post-Arrest', icon: '🧊', treats: [
+              { n: 'Targeted Temperature Management (Therapeutic Hypothermia 32-36°C)', c: true },
+              { n: 'Continuous EEG monitoring (Rule out non-convulsive seizures)', c: true },
+              { n: 'Empiric Broad Spectrum IV Antibiotics', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Anterior STEMI complicated by Ventricular Fibrillation Arrest and Cardiogenic Shock',
+          sub: 'Complete LAD occlusion leading to pump failure and lethal arrhythmia',
+          clues: 'The sudden collapse, absent pulse, and coarse V-fib on the monitor confirm sudden cardiac arrest. Post-ROSC, the BP of 75/40 with cold extremities and pulmonary edema indicates pump failure (Cardiogenic Shock).',
+          tests: 'ACLS is immediate (No labs before CPR/Shock). Post-ROSC, an ECG is the most critical test, showing an Anterior STEMI. An Echo confirms severe LV dysfunction. Arterial lines and Swan-Ganz catheters help manage the complex shock state. CT scans for a coma in this specific context are a massive waste of time—the brain is hypoxic because the heart stopped.',
+          mgmt: '1. Shock the V-fib + CPR + Epi/Amiodarone. 2. Intubate. 3. Start Norepinephrine/Dobutamine to fix the blood pressure. 4. Load with Aspirin, P2Y12 inhibitor, and Heparin. 5. Rush to the Cath Lab for PCI (stenting). 6. Start Targeted Temperature Management (cooling) to protect the brain.',
+          pitfalls: 'Selecting Metoprolol or Nitroglycerin under the "Vasoactive" category is a fatal trap. In cardiogenic shock (BP 75/40), beta-blockers and nitrates will completely crash their remaining cardiac output. Delaying the cath lab for a CT Head to evaluate coma is also a classic, fatal mistake.',
+          other: 'Aortic dissection causes tearing back pain and unequal pulses. Pulmonary embolism causes right heart strain, not massive left-sided V1-V6 ST elevations.',
+          testRationale: 'A Swan-Ganz (Pulmonary Artery) catheter is highly specific for distinguishing cardiogenic shock (High PCWP, Low Cardiac Index) from septic or hypovolemic shock. High-sensitivity troponin confirms the massive myocardial necrosis.',
+          treatSeq: '1. Defibrillation & CPR → 2. Intubation & Epi → 3. Post-ROSC ECG → 4. Vasopressors & Heparin/Aspirin → 5. Emergent PCI → 6. Targeted Temperature Mgmt.',
+          traps: 'Relying on systemic thrombolytics (tPA) when a Cath Lab is available. In cardiogenic shock, PCI is vastly superior to tPA.',
+          learning: 'In an acute STEMI with cardiogenic shock, mechanical fixing (Cath lab/Impella) is required. Medical therapy alone (drugs) cannot fix a broken pump. Avoid all negative inotropes (beta-blockers, CCBs) and vasodilators (nitrates).'
+        },
+        xp: 60
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 14. NEUROLOGY — Level 3: Acute Ischemic Stroke
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'neuro3', name: 'Neurology: Level 3', color: '#6366f1', emoji: '🧠', waitDays: 8,
+        caseTitle: 'Sudden right-sided weakness and loss of speech',
+        caseDesc: 'A 68-year-old male is brought to the ED by his wife after suddenly losing the ability to speak and move his right side 90 minutes ago. Time is brain. Rapidly evaluate for reperfusion therapy and manage his hemodynamics without falling into hidden diagnostic traps.',
+        patient: { name: 'Elias', gender: 'Male', age: '68 Y', complaint: 'Right hemiparesis and aphasia' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.8°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '112 bpm (Irregularly irregular)' },
+          { icon: '📈', label: 'Blood Pressure', val: '195/110 mmHg (Hypertensive emergency)' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '18/min' },
+          { icon: '💧', label: 'SpO2', val: '96% on room air' }
+        ],
+        history: [
+          'Wife states they were eating breakfast when he suddenly dropped his fork and slumped to the right.',
+          'Last known normal was exactly 90 minutes ago.',
+          'He is completely unable to speak (expressive aphasia) but seems to understand simple commands.',
+          'History of hypertension and "some heart rhythm issue" but hasn\'t seen a doctor in years.',
+          'No history of recent surgery, trauma, or gastrointestinal bleeding.',
+          'Takes zero daily medications (non-compliant).'
+        ],
+        physExam: [
+          'General: Awake, alert, anxious, looking at his paralyzed right arm.',
+          'Neurological (NIHSS 18): Dense right facial droop. Right arm motor drift (0/5). Right leg motor drift (1/5).',
+          'Speech: Global aphasia. Cannot repeat words or name objects.',
+          'Cardiovascular: Tachycardic, irregularly irregular rhythm (Atrial Fibrillation).',
+          'Airway: Intact, protecting his own airway, handling secretions well.',
+          'Fundoscopy: No papilledema, no retinal hemorrhages.'
+        ],
+        testCats: [
+          {
+            name: 'Point-of-Care & Bedside', icon: '🩺', tests: [
+              { n: 'Point-of-Care Capillary Glucose', c: true, r: '105 mg/dL (Crucial: Hypoglycemia can perfectly mimic a stroke)' },
+              { n: '12-Lead ECG', c: true, r: 'Atrial Fibrillation with Rapid Ventricular Response (Identifies the cardioembolic source)' },
+              { n: 'Urine Toxicology Screen', c: false, r: 'Negative (Wastes time in a classic stroke presentation)' },
+              { n: 'Arterial Blood Gas (ABG)', c: false, r: 'Normal oxygenation (SpO2 is adequate, ABG is an unnecessary painful delay)' }
+            ]
+          },
+          {
+            name: 'Haematology & Coagulation', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'Normal Platelets 240k (Required before giving thrombolytics)' },
+              { n: 'Coagulation Panel (PT/INR, aPTT)', c: true, r: 'INR 1.1, aPTT normal (Crucial to ensure he is not auto-anticoagulated before tPA)' },
+              { n: 'Factor V Leiden Mutation Assay', c: false, r: 'Pending (Irrelevant for acute management, massive waste of money)' },
+              { n: 'Erythrocyte Sedimentation Rate (ESR)', c: false, r: 'Normal (Distractor for giant cell arteritis)' }
+            ]
+          },
+          {
+            name: 'Chemistry & Biomarkers', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Normal electrolytes and renal function (Needed baseline)' },
+              { n: 'High-Sensitivity Troponin', c: true, r: 'Negative (Rules out concurrent MI, common with AFib)' },
+              { n: 'Serum Ammonia', c: false, r: 'Normal (Hepatic encephalopathy does not cause dense unilateral paralysis)' },
+              { n: 'Thyroid Panel (TSH, Free T4)', c: false, r: 'Normal (Irrelevant in acute stroke setting)' }
+            ]
+          },
+          {
+            name: 'Neuroimaging', icon: '🩻', tests: [
+              { n: 'CT Head without contrast', c: true, r: 'No acute intracranial hemorrhage. Loss of insular ribbon on left (Early sign of MCA stroke)' },
+              { n: 'CT Angiography (CTA) of Head and Neck', c: true, r: 'Complete occlusion of the proximal left Middle Cerebral Artery (M1 segment)' },
+              { n: 'CT Perfusion Scan', c: true, r: 'Large ischemic penumbra with a small core infarct (Brain tissue is salvageable!)' },
+              { n: 'MRI Brain with and without contrast', c: false, r: 'Patient moving too much. Scan aborted. (Massive trap: MRI takes too long for acute tPA decisions)' },
+              { n: 'Carotid Ultrasound (Doppler)', c: false, r: 'Shows mild plaque. (Helpful later, but CTA is vastly superior in the acute phase)' }
+            ]
+          },
+          {
+            name: 'Cerebrospinal & Electrophysiology', icon: '⚡', tests: [
+              { n: 'Lumbar Puncture (CSF Analysis)', c: false, r: 'Patient deteriorated during procedure. (DANGEROUS trap: LP delays tPA and risks spinal hematoma if tPA is given later)' },
+              { n: 'Electroencephalogram (EEG)', c: false, r: 'Normal background. (Distractor: Seizures usually have positive symptoms like shaking, not negative symptoms like paralysis)' },
+              { n: 'Electromyography (EMG)', c: false, r: 'Normal. (Peripheral nerve tests are useless for a cortical stroke)' }
+            ]
+          },
+          {
+            name: 'Cardiovascular Diagnostics', icon: '❤️', tests: [
+              { n: 'Transthoracic Echocardiogram (TTE)', c: false, r: 'Ordered, but delays acute stroke therapy. (Do this on day 2 to look for the clot, not hour 1)' },
+              { n: '24-Hour Holter Monitor', c: false, r: 'Unnecessary (ECG already proved Atrial Fibrillation)' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Acute Ischemic Stroke (Left MCA territory)', c: true },
+          { t: 'Hemorrhagic Stroke (Intracerebral Hemorrhage)', c: false },
+          { t: 'Hypoglycemic Hemiparesis', c: false },
+          { t: 'Todd\'s Paralysis (Post-ictal state)', c: false },
+          { t: 'Complex Migraine with Aura', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Reperfusion Interventions', icon: '💉', treats: [
+              { n: 'IV Alteplase (tPA) or Tenecteplase (TNK)', c: true },
+              { n: 'Endovascular Mechanical Thrombectomy (EVT)', c: true },
+              { n: 'IV Heparin Infusion', c: false },
+              { n: 'Carotid Endarterectomy (Surgery)', c: false }
+            ]
+          },
+          {
+            name: 'Blood Pressure Management', icon: '📈', treats: [
+              { n: 'IV Labetalol or Nicardipine push (To lower BP < 185/110 before tPA)', c: true },
+              { n: 'IV Nitroprusside infusion', c: false },
+              { n: 'Sublingual Nifedipine (Procardia)', c: false },
+              { n: 'Aggressive BP lowering to < 120/80', c: false }
+            ]
+          },
+          {
+            name: 'Antithrombotic Therapy', icon: '💊', treats: [
+              { n: 'Aspirin 325mg immediately', c: false },
+              { n: 'Clopidogrel (Plavix) 300mg load', c: false },
+              { n: 'Oral Apixaban (Eliquis)', c: false },
+              { n: 'Delay all antiplatelets/anticoagulants for 24 hours post-tPA', c: true }
+            ]
+          },
+          {
+            name: 'Supportive & Neurocritical Care', icon: '🏥', treats: [
+              { n: 'Strict NPO (Nothing by mouth) until formal swallow screen', c: true },
+              { n: 'Elevate Head of Bed to 30 degrees', c: true },
+              { n: 'IV Normal Saline (0.9% NaCl) at maintenance rate', c: true },
+              { n: 'IV 5% Dextrose in Water (D5W) continuous fluids', c: false },
+              { n: 'Prophylactic Phenytoin (Anti-seizure)', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Acute Ischemic Stroke (Left Middle Cerebral Artery)',
+          sub: 'Cardioembolic stroke secondary to Atrial Fibrillation',
+          clues: 'Sudden, painless loss of function on one side of the body with expressive aphasia is a left-sided ischemic stroke until proven otherwise. The irregularly irregular tachycardia (AFib) pinpoints the source as a thrown blood clot from the heart.',
+          tests: 'Time is brain. You only need 3 things before giving tPA: A point-of-care glucose (to rule out hypoglycemia), a CT Head without contrast (to rule out bleeding), and an INR/Plt count (to ensure normal clotting). Ordering an MRI, EEG, or LP in the first 60 minutes wastes precious time and will lose you points.',
+          mgmt: '1. Lower his BP below 185/110 using IV Labetalol. (If BP is too high, tPA will cause brain bleeding). 2. Administer IV tPA/TNK since he is within the 4.5-hour window. 3. Send him immediately for Mechanical Thrombectomy since he has a large vessel occlusion (LVO). 4. Keep him NPO to prevent aspiration pneumonia.',
+          pitfalls: 'Selecting Aspirin, Plavix, or Heparin under "Antithrombotic Therapy" is a massive trap. You MUST wait 24 hours after giving tPA before giving any antiplatelets/anticoagulants, otherwise the brain will hemorrhage. Giving Sublingual Nifedipine or dropping the BP too low starves the ischemic brain penumbra of blood. Giving D5W fluids causes cerebral edema.',
+          other: 'Hemorrhagic stroke is ruled out by the clean CT scan. Hypoglycemia is ruled out by the glucose of 105. Todd\'s paralysis follows a visible seizure, which he did not have.',
+          testRationale: 'A non-contrast CT is very bad at seeing early stroke damage, but we don\'t order it to see the stroke—we order it to prove there is NO blood, clearing the way for thrombolytics. CTA proves the clot location for the surgeons.',
+          treatSeq: '1. Glucose & Non-con CT → 2. BP Control < 185/110 → 3. IV tPA/TNK → 4. CT Angiogram → 5. Mechanical Thrombectomy → 6. Aspirin/Anticoagulants AFTER 24 hours.',
+          traps: 'Ordering a Lumbar Puncture. This delays tPA, and if you give tPA right after jabbing a needle into the spine, the patient will develop a spinal epidural hematoma and become permanently paralyzed.',
+          learning: 'Stroke protocol: Non-con CT + Glucose + BP < 185/110. Do not give any other blood thinners (like Aspirin or Heparin) in the first 24 hours after tPA.'
+        },
+        xp: 60
       }
+
+
 
     ];
     // ═══════════════════════════════════════════════════════════════
