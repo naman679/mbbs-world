@@ -3667,7 +3667,7 @@
           '2. Vitals: Tachypneic at 24/min, febrile to 38.9°C.',
           '3. Pulmonary (Auscultation): Bronchial breath sounds and coarse crackles over the Right Lower Lobe (RLL).',
           '4. Pulmonary (Percussion): Dullness to percussion over the RLL.',
-          '5. Pulmonary (Palpation): Increased tactile fremitus over the RLL (indicates consolidation).',
+          '5. Pulmonary (Palpation): Increased tactile fremitus over the RLL.',
           '6. Cardiovascular: Tachycardic, regular rhythm. No murmurs. No JVD.',
           '7. Extremities: Warm and well-perfused. No cyanosis, no clubbing.',
           '8. Lower Limbs: No calf swelling, tenderness, or edema bilaterally.',
@@ -3676,69 +3676,78 @@
         ],
         testCats: [
           {
-            name: 'Bedside & Point-of-Care', icon: '🩺', tests: [
+            name: 'Point-of-Care & Bedside', icon: '🩺', tests: [
               { n: 'Pulse Oximetry (Continuous)', c: true, r: '93% on room air (Requires supplemental O2)' },
               { n: '12-Lead ECG', c: true, r: 'Sinus tachycardia at 110 bpm. No ischemic changes.' },
-              { n: 'Point-of-Care Glucose', c: true, r: '115 mg/dL (Normal)' }
+              { n: 'Point-of-Care Glucose', c: true, r: '115 mg/dL' }
             ]
           },
           {
-            name: 'Arterial & Venous Blood Gas', icon: '💉', tests: [
+            name: 'Blood Gas Analysis', icon: '💉', tests: [
               { n: 'Arterial Blood Gas (ABG) on Room Air', c: false, r: 'PaO2 68, PaCO2 35, pH 7.42. (Painful and unnecessary since SpO2 is reliable at 93%)' },
-              { n: 'Venous Blood Gas (VBG)', c: false, r: 'Normal pH. (Not indicated for simple CAP)' }
+              { n: 'Venous Blood Gas (VBG)', c: false, r: 'Normal pH.' }
             ]
           },
           {
-            name: 'Hematology & Coagulation', icon: '🩸', tests: [
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
               { n: 'Complete Blood Count (CBC) with diff', c: true, r: 'WBC 16.5k with 85% neutrophils and 10% bands (Left shift). Hb 14.0, Plt 280k.' },
-              { n: 'Coagulation Panel (PT/INR, aPTT)', c: false, r: 'Normal. (Unnecessary in routine pneumonia)' },
-              { n: 'D-Dimer', c: false, r: 'Elevated (Non-specific in infection. Do not order unless PE is the primary suspicion)' }
+              { n: 'Peripheral Blood Smear', c: false, r: 'Normocytic, normochromic. Toxic granulation present.' }
             ]
           },
           {
-            name: 'Chemistry & Metabolic Panel', icon: '🧪', tests: [
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
+              { n: 'Coagulation Panel (PT/INR, aPTT)', c: false, r: 'Normal.' },
+              { n: 'D-Dimer', c: false, r: 'Elevated (Non-specific in infection. Trap for hunting asymptomatic PEs).' }
+            ]
+          },
+          {
+            name: 'Chemistry & Inflammatory', icon: '🧪', tests: [
               { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'BUN 22, Creatinine 1.0, Na 136. (Calculates CURB-65 score)' },
-              { n: 'Serum Lactate', c: true, r: '1.8 mmol/L (Normal. Rules out severe sepsis/hypoperfusion)' },
-              { n: 'Procalcitonin', c: true, r: '2.5 ng/mL (Elevated. Strongly suggests bacterial vs viral etiology)' }
+              { n: 'Serum Lactate', c: true, r: '1.8 mmol/L (Normal. Rules out severe sepsis)' },
+              { n: 'Procalcitonin', c: true, r: '2.5 ng/mL (Elevated. Strongly suggests bacterial etiology)' }
             ]
           },
           {
-            name: 'Microbiology & Infectious Disease', icon: '🦠', tests: [
-              { n: 'Blood Cultures (Set of 2)', c: true, r: 'Pending. (Required before IV antibiotics for admitted patients)' },
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Blood Cultures (Set of 2)', c: true, r: 'Pending.' },
               { n: 'Sputum Gram Stain & Culture', c: true, r: 'Gram-positive diplococci (Streptococcus pneumoniae)' },
               { n: 'Urine Streptococcus pneumoniae Antigen', c: true, r: 'Positive (Rapid confirmation of typical CAP)' },
               { n: 'Urine Legionella Antigen', c: true, r: 'Negative' },
-              { n: 'Respiratory Viral Panel (PCR)', c: true, r: 'Negative for Influenza A/B, RSV, and COVID-19' }
+              { n: 'Respiratory Viral Panel (PCR)', c: true, r: 'Negative for Influenza and COVID-19' }
             ]
           },
           {
-            name: 'Diagnostic Imaging', icon: '🩻', tests: [
-              { n: 'Chest X-Ray (PA and Lateral)', c: true, r: 'Dense lobar consolidation in the Right Lower Lobe. No pleural effusion.' },
-              { n: 'CT Chest with IV Contrast', c: false, r: 'Unnecessary radiation. CXR is sufficient for uncomplicated CAP.' },
+            name: 'Radiography', icon: '🩻', tests: [
+              { n: 'Chest X-Ray (PA and Lateral)', c: true, r: 'Dense lobar consolidation in the Right Lower Lobe. No pleural effusion.' }
+            ]
+          },
+          {
+            name: 'Advanced Cross-Sectional Imaging', icon: '📷', tests: [
+              { n: 'CT Chest with IV Contrast', c: false, r: 'Unnecessary radiation. CXR is sufficient.' },
               { n: 'CT Pulmonary Angiogram (CTPA)', c: false, r: 'Trap! Fever, productive cough, and consolidation point to CAP, not PE.' }
             ]
           },
           {
-            name: 'Advanced Pulmonary Diagnostics', icon: '🌬️', tests: [
-              { n: 'Bronchoscopy with BAL', c: false, r: 'Highly invasive. Reserved for non-resolving pneumonia or immunocompromised hosts.' },
+            name: 'Pulmonary Diagnostics', icon: '🌬️', tests: [
+              { n: 'Bronchoscopy with BAL', c: false, r: 'Highly invasive. Reserved for non-resolving pneumonia.' },
               { n: 'Spirometry (PFTs)', c: false, r: 'Contraindicated during acute respiratory infection.' }
             ]
           },
           {
             name: 'Cardiac Biomarkers', icon: '❤️', tests: [
-              { n: 'High-Sensitivity Troponin', c: false, r: 'Negative. (Chest pain is clearly pleuritic/infectious, not ischemic)' },
-              { n: 'BNP (Brain Natriuretic Peptide)', c: false, r: 'Normal. (Rules out heart failure, but unnecessary here)' }
+              { n: 'High-Sensitivity Troponin', c: false, r: 'Negative.' },
+              { n: 'BNP (Brain Natriuretic Peptide)', c: false, r: 'Normal.' }
             ]
           },
           {
-            name: 'Autoimmune & Rheumatic', icon: '🧬', tests: [
-              { n: 'Antinuclear Antibody (ANA)', c: false, r: 'Negative. (Irrelevant to acute infectious presentation)' },
+            name: 'Autoimmune Diagnostics', icon: '🧬', tests: [
+              { n: 'Antinuclear Antibody (ANA)', c: false, r: 'Negative.' },
               { n: 'Rheumatoid Factor', c: false, r: 'Negative.' }
             ]
           },
           {
-            name: 'Toxicology & Screening', icon: '🗑️', tests: [
-              { n: 'Urine Toxicology Screen', c: false, r: 'Negative. (Wastes hospital resources)' }
+            name: 'Toxicology Screen', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology Screen', c: false, r: 'Negative.' }
             ]
           }
         ],
@@ -3757,37 +3766,42 @@
         dxCount: 1,
         treatCats: [
           {
-            name: 'Airway & Oxygenation', icon: '🫁', treats: [
+            name: 'Airway & Oxygenation Support', icon: '🫁', treats: [
               { n: 'Supplemental O2 via Nasal Cannula (Target SpO2 > 94%)', c: true },
               { n: 'BiPAP (Non-Invasive Ventilation)', c: false },
               { n: 'Endotracheal Intubation', c: false }
             ]
           },
           {
-            name: 'Empiric Antibiotic Therapy (Inpatient)', icon: '💊', treats: [
+            name: 'Antimicrobial Therapy', icon: '💊', treats: [
               { n: 'IV Ceftriaxone + IV Azithromycin', c: true },
               { n: 'IV Levofloxacin (Monotherapy alternative)', c: true },
-              { n: 'Oral Amoxicillin alone (Inadequate for admitted patient)', c: false },
-              { n: 'IV Vancomycin + Piperacillin-Tazobactam (Overkill, no MRSA/Pseudomonas risk factors)', c: false }
+              { n: 'Oral Amoxicillin alone', c: false },
+              { n: 'IV Vancomycin + Piperacillin-Tazobactam', c: false }
             ]
           },
           {
-            name: 'Supportive Fluids & Hemodynamics', icon: '💧', treats: [
+            name: 'Intravenous Fluids', icon: '💧', treats: [
               { n: 'IV Lactated Ringers or Normal Saline (Maintenance)', c: true },
-              { n: 'IV Furosemide (Diuretic)', c: false },
-              { n: 'Vasopressors (Norepinephrine)', c: false }
+              { n: 'Strict fluid restriction', c: false }
             ]
           },
           {
-            name: 'Antipyretics & Analgesia', icon: '🌡️', treats: [
+            name: 'Analgesics & Antipyretics', icon: '🌡️', treats: [
               { n: 'Acetaminophen (Paracetamol) 1000mg PRN Fever', c: true },
               { n: 'IV Morphine', c: false }
             ]
           },
           {
-            name: 'Bronchodilators & Steroids', icon: '🌬️', treats: [
+            name: 'Bronchodilators', icon: '🌬️', treats: [
               { n: 'Albuterol/Salbutamol Nebulizer PRN wheeze', c: true },
-              { n: 'Systemic Corticosteroids (IV Methylprednisolone)', c: false }
+              { n: 'Ipratropium Bromide', c: false }
+            ]
+          },
+          {
+            name: 'Corticosteroids', icon: '🧬', treats: [
+              { n: 'Systemic Corticosteroids (IV Methylprednisolone)', c: false },
+              { n: 'Inhaled Corticosteroids (Fluticasone)', c: false }
             ]
           },
           {
@@ -3797,13 +3811,13 @@
             ]
           },
           {
-            name: 'VTE Prophylaxis', icon: '🩸', treats: [
+            name: 'Thrombosis Prophylaxis', icon: '🩸', treats: [
               { n: 'Subcutaneous Heparin or Enoxaparin (Prophylactic dose)', c: true },
               { n: 'Therapeutic IV Heparin Infusion', c: false }
             ]
           },
           {
-            name: 'Cardiac & Blood Pressure', icon: '❤️', treats: [
+            name: 'Cardiovascular Medications', icon: '❤️', treats: [
               { n: 'IV Metoprolol', c: false },
               { n: 'Sublingual Nitroglycerin', c: false }
             ]
@@ -3815,7 +3829,12 @@
             ]
           },
           {
-            name: 'Discharge & Prevention', icon: '🛡️', treats: [
+            name: 'Gastrointestinal Support', icon: '胃', treats: [
+              { n: 'Proton Pump Inhibitor (Pantoprazole) prophylaxis', c: true }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive Care', icon: '🛡️', treats: [
               { n: 'Pneumococcal Vaccine (Administer prior to discharge)', c: true },
               { n: 'Influenza Vaccine (Administer prior to discharge)', c: true }
             ]
@@ -3824,15 +3843,15 @@
         summary: {
           dx: 'Community-Acquired Pneumonia (Streptococcus pneumoniae)',
           sub: 'Lobar consolidation due to typical bacterial infection',
-          clues: 'Fever, rust-colored sputum, tachypnea, and localized physical exam findings (dullness to percussion, increased fremitus, crackles) in a single lobe point directly to a typical bacterial lobar pneumonia. Rust-colored sputum is classically associated with Strep pneumo.',
-          tests: 'A simple Chest X-Ray is the diagnostic gold standard, showing lobar consolidation. Blood cultures, sputum cultures, and urine antigens (Strep/Legionella) guide antibiotic de-escalation. Procalcitonin helps differentiate bacterial from viral causes.',
-          mgmt: 'This patient requires admission (hypoxia SpO2 93%, tachycardia, tachypnea). Empiric inpatient treatment requires a beta-lactam + macrolide (Ceftriaxone + Azithromycin) to cover both typical and atypical organisms. Supplemental O2 and maintenance fluids are required.',
-          pitfalls: 'Ordering a CT Pulmonary Angiogram or D-Dimer. While PE causes pleuritic chest pain, the presence of high fever, productive cough, and focal lung consolidation on exam makes CAP the obvious diagnosis. D-Dimer will be falsely elevated in pneumonia.',
-          other: 'COVID-19/Viral pneumonia typically presents with bilateral, diffuse interstitial infiltrates, not a single dense lobar consolidation. Acute bronchitis does not cause high fevers, hypoxia, or lobar consolidation.',
+          clues: 'Fever, rust-colored sputum, tachypnea, and localized physical exam findings (dullness to percussion, increased fremitus, crackles) point directly to a typical bacterial lobar pneumonia. Rust-colored sputum is classic for Strep pneumo.',
+          tests: 'A Chest X-Ray is the diagnostic gold standard. Blood cultures, sputum cultures, and urine antigens guide antibiotic de-escalation. Procalcitonin helps differentiate bacterial from viral causes.',
+          mgmt: 'This patient requires admission (hypoxia SpO2 93%, tachycardia). Empiric inpatient treatment requires a beta-lactam + macrolide (Ceftriaxone + Azithromycin) to cover typicals and atypicals. Supplemental O2 and maintenance fluids are required.',
+          pitfalls: 'Selecting a CT Pulmonary Angiogram or D-Dimer from the categories. While PE causes pleuritic pain, the presence of high fever and focal consolidation makes CAP the obvious diagnosis. Selecting broad-spectrum Vancomycin/Zosyn is a trap for a community-dwelling patient.',
+          other: 'COVID-19/Viral pneumonia typically presents with bilateral, diffuse infiltrates, not a single dense lobar consolidation. Acute bronchitis does not cause hypoxia or lobar consolidation.',
           testRationale: 'Increased tactile fremitus occurs because sound travels faster through the fluid/pus-filled consolidated lung than through normal air-filled lung tissue. This distinguishes consolidation from a pleural effusion (which has decreased fremitus).',
-          treatSeq: '1. O2 via Nasal Cannula → 2. Draw blood/sputum cultures → 3. IV Ceftriaxone + Azithromycin → 4. VTE Prophylaxis → 5. Vaccinate before discharge.',
-          traps: 'Starting ultra-broad-spectrum antibiotics (Vancomycin + Zosyn) in a community-dwelling patient with no MRSA or Pseudomonas risk factors. This breeds antibiotic resistance.',
-          learning: 'Typical CAP (Strep pneumo) presents with high fever, productive cough, and focal lobar signs. Inpatient treatment requires coverage for both typicals (Ceftriaxone) and atypicals (Azithromycin).'
+          treatSeq: '1. O2 via Nasal Cannula → 2. Draw cultures → 3. IV Ceftriaxone + Azithromycin → 4. VTE Prophylaxis → 5. Vaccinate before discharge.',
+          traps: 'Starting ultra-broad-spectrum antibiotics in a patient with no MRSA or Pseudomonas risk factors breeds antibiotic resistance.',
+          learning: 'Typical CAP presents with high fever, productive cough, and focal lobar signs. Inpatient treatment requires coverage for both typicals (Ceftriaxone) and atypicals (Azithromycin).'
         },
         xp: 40
       },
@@ -3843,7 +3862,7 @@
       {
         id: 'gm1_2', name: 'General Medicine: Level 1', color: '#ef4444', emoji: '🦵', waitDays: 4,
         caseTitle: 'Unilateral left calf swelling and pain after a long flight',
-        caseDesc: 'A 32-year-old female presents with an acutely swollen, painful left calf 4 days after returning from a 14-hour international flight. Evaluate her probability of venous thromboembolism and choose the correct diagnostic imaging over misleading blood tests.',
+        caseDesc: 'A 32-year-old female presents with an acutely swollen, painful left calf 4 days after returning from a 14-hour international flight. Evaluate her probability of venous thromboembolism and choose the correct diagnostic imaging.',
         patient: { name: 'Sarah', gender: 'Female', age: '32 Y', complaint: 'Left calf swelling and pain' },
         vitals: [
           { icon: '🌡️', label: 'Temperature', val: '37.1°C (Afebrile)' },
@@ -3873,67 +3892,72 @@
           '6. Left Lower Extremity: Positive Homan\'s sign (calf pain on abrupt dorsiflexion of the foot).',
           '7. Pulses: Dorsalis pedis and posterior tibial pulses are 2+ and symmetric bilaterally.',
           '8. Right Lower Extremity: Completely normal. No swelling or tenderness.',
-          '9. Cardiovascular: Regular rate and rhythm. Lungs are clear to auscultation bilaterally.',
+          '9. Cardiovascular: Regular rate and rhythm. Lungs clear to auscultation.',
           '10. Neurological: Sensation and motor function of the left foot are fully intact.'
         ],
         testCats: [
           {
-            name: 'Point-of-Care & Bedside', icon: '🩺', tests: [
-              { n: 'Wells Score Calculation (Clinical)', c: true, r: 'Score = 3 (High Probability of DVT). Proceed directly to Ultrasound.' },
-              { n: '12-Lead ECG', c: true, r: 'Normal sinus rhythm. (Baseline necessary)' }
+            name: 'Point-of-Care & Clinical Scores', icon: '🩺', tests: [
+              { n: 'Wells Score Calculation', c: true, r: 'Score = 3 (High Probability of DVT). Proceed directly to Ultrasound.' },
+              { n: '12-Lead ECG', c: true, r: 'Normal sinus rhythm.' }
             ]
           },
           {
-            name: 'Coagulation & Thrombosis Biomarkers', icon: '🩸', tests: [
-              { n: 'D-Dimer Assay', c: false, r: 'TRAP! Patient has a HIGH Wells Score. D-Dimer is only useful to rule out DVT in LOW probability patients. Go straight to imaging.' },
+            name: 'Thrombosis Biomarkers', icon: '🩸', tests: [
+              { n: 'D-Dimer Assay', c: false, r: 'Trap. Patient has a HIGH Wells Score. D-Dimer is only useful to rule out DVT in LOW probability patients.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
               { n: 'Coagulation Panel (PT/INR, aPTT)', c: true, r: 'Normal. (Required baseline before starting anticoagulants)' }
             ]
           },
           {
-            name: 'Vascular Imaging (Core)', icon: '📷', tests: [
-              { n: 'Venous Duplex Ultrasound (Left Leg)', c: true, r: 'Non-compressible popliteal and proximal peroneal veins with visible echogenic thrombus. DIAGNOSTIC for acute proximal DVT.' },
+            name: 'Peripheral Vascular Imaging', icon: '📷', tests: [
+              { n: 'Venous Duplex Ultrasound (Left Leg)', c: true, r: 'Non-compressible popliteal veins with visible echogenic thrombus. DIAGNOSTIC for DVT.' },
               { n: 'Venous Duplex Ultrasound (Right Leg)', c: false, r: 'Normal. (Unnecessary to scan the asymptomatic leg)' }
             ]
           },
           {
-            name: 'Hematology & Chemistry', icon: '🧪', tests: [
-              { n: 'Complete Blood Count (CBC)', c: true, r: 'Normal Hb, WBC, and Platelets (Required baseline)' },
-              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Normal renal and hepatic function (Required for DOAC dosing)' }
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'Normal Hb, WBC, and Platelets (Required baseline)' }
             ]
           },
           {
-            name: 'Chest Imaging', icon: '🩻', tests: [
-              { n: 'Chest X-Ray', c: false, r: 'Normal. (Unnecessary, patient has no respiratory symptoms)' },
-              { n: 'CT Pulmonary Angiogram (CTPA)', c: false, r: 'Unnecessary. Patient has normal SpO2, no tachycardia, and no chest pain. Do not hunt for asymptomatic PEs.' }
+            name: 'Chemistry & Renal Function', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Normal renal function (Required for DOAC dosing)' }
             ]
           },
           {
-            name: 'Thrombophilia Screening', icon: '🧬', tests: [
-              { n: 'Factor V Leiden & Prothrombin Gene Mutation', c: false, r: 'Do not test in the acute setting. Clot was provoked by OCPs and long flight.' },
-              { n: 'Protein C, Protein S, Antithrombin III Levels', c: false, r: 'Inaccurate during an acute thrombotic event or while on anticoagulants.' }
+            name: 'Chest Radiography', icon: '🩻', tests: [
+              { n: 'Chest X-Ray', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Advanced Cross-Sectional Imaging', icon: '📷', tests: [
+              { n: 'CT Pulmonary Angiogram (CTPA)', c: false, r: 'Unnecessary. Patient has normal SpO2 and no chest pain. Do not hunt for asymptomatic PEs.' }
+            ]
+          },
+          {
+            name: 'Genetic & Thrombophilia Screening', icon: '🧬', tests: [
+              { n: 'Factor V Leiden Mutation', c: false, r: 'Do not test in the acute setting. Clot was provoked.' },
+              { n: 'Protein C & S Levels', c: false, r: 'Inaccurate during an acute thrombotic event.' }
             ]
           },
           {
             name: 'Cardiac Biomarkers', icon: '❤️', tests: [
-              { n: 'High-Sensitivity Troponin', c: false, r: 'Normal. (Not indicated for isolated DVT)' },
+              { n: 'High-Sensitivity Troponin', c: false, r: 'Normal.' },
               { n: 'BNP', c: false, r: 'Normal.' }
             ]
           },
           {
-            name: 'Autoimmune & Malignancy', icon: '🛡️', tests: [
-              { n: 'Antinuclear Antibody (ANA)', c: false, r: 'Negative.' },
-              { n: 'Cancer Screening (CT Chest/Abd/Pelvis)', c: false, r: 'Not indicated for a provoked DVT in a healthy 32-year-old.' }
+            name: 'Autoimmune Diagnostics', icon: '🛡️', tests: [
+              { n: 'Antinuclear Antibody (ANA)', c: false, r: 'Negative.' }
             ]
           },
           {
             name: 'Infectious Disease', icon: '🦠', tests: [
-              { n: 'Blood Cultures', c: false, r: 'Negative. (Not a cellulitis, no fever)' },
-              { n: 'CRP / ESR', c: false, r: 'Normal.' }
-            ]
-          },
-          {
-            name: 'Toxicology', icon: '🗑️', tests: [
-              { n: 'Urine Toxicology', c: false, r: 'Negative.' }
+              { n: 'Blood Cultures', c: false, r: 'Negative.' }
             ]
           }
         ],
@@ -3954,7 +3978,7 @@
           {
             name: 'Initial Anticoagulation', icon: '💊', treats: [
               { n: 'Oral DOAC (Apixaban or Rivaroxaban) - Loading Dose', c: true },
-              { n: 'Subcutaneous Low-Molecular-Weight Heparin (LMWH) bridge to Warfarin', c: true },
+              { n: 'Subcutaneous Low-Molecular-Weight Heparin (LMWH)', c: true },
               { n: 'IV Unfractionated Heparin Drip', c: false }
             ]
           },
@@ -3965,14 +3989,18 @@
             ]
           },
           {
-            name: 'Hormonal Management', icon: '🧬', treats: [
+            name: 'Hormonal Therapeutics', icon: '🧬', treats: [
               { n: 'Discontinue Oral Contraceptive Pills (Estrogen-containing)', c: true },
-              { n: 'Switch to Progestin-only pill or IUD for future contraception', c: true }
+              { n: 'Switch to Progestin-only pill or IUD', c: true }
             ]
           },
           {
-            name: 'Thrombolytics & Interventions', icon: '💉', treats: [
-              { n: 'Systemic tPA (Thrombolytics)', c: false },
+            name: 'Systemic Thrombolytics', icon: '💉', treats: [
+              { n: 'Systemic tPA (Thrombolytics)', c: false }
+            ]
+          },
+          {
+            name: 'Interventional Radiology', icon: '🔪', treats: [
               { n: 'Catheter-Directed Thrombolysis', c: false },
               { n: 'IVC Filter Placement', c: false }
             ]
@@ -3990,7 +4018,7 @@
             ]
           },
           {
-            name: 'Analgesia', icon: '🌡️', treats: [
+            name: 'Analgesics', icon: '🌡️', treats: [
               { n: 'Acetaminophen (Paracetamol) PRN', c: true },
               { n: 'NSAIDs (Ibuprofen)', c: false }
             ]
@@ -4002,30 +4030,34 @@
             ]
           },
           {
-            name: 'Antibiotics', icon: '🦠', treats: [
-              { n: 'Oral Cephalexin (For Cellulitis)', c: false },
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'Oral Cephalexin', c: false },
               { n: 'IV Vancomycin', c: false }
             ]
           },
           {
             name: 'Airway & Oxygenation', icon: '🫁', treats: [
-              { n: 'Supplemental O2 via Nasal Cannula', c: false },
-              { n: 'Incentive Spirometry', c: false }
+              { n: 'Supplemental O2 via Nasal Cannula', c: false }
+            ]
+          },
+          {
+            name: 'Gastrointestinal Support', icon: '胃', treats: [
+              { n: 'Proton Pump Inhibitors', c: false }
             ]
           }
         ],
         summary: {
           dx: 'Acute Proximal Deep Vein Thrombosis (Left Popliteal Vein)',
           sub: 'Provoked venous thromboembolism due to stasis and estrogen use',
-          clues: 'Unilateral calf swelling >3cm, deep vein tenderness, recent prolonged immobilization (14-hour flight), and combined oral contraceptive use (estrogen) form the classic triad (Virchow\'s triad: stasis, hypercoagulability, endothelial injury).',
-          tests: 'For a HIGH probability Wells score (Score 3), D-Dimer is useless. A negative D-Dimer would not be trusted, and a positive one adds nothing. You must go straight to Compression Ultrasound. Normal baseline CBC, PT/INR, and CMP are needed before prescribing blood thinners.',
-          mgmt: 'Direct Oral Anticoagulants (DOACs like Apixaban/Rivaroxaban) are first-line. Because this is a *provoked* clot (flight + OCPs), 3 months of anticoagulation is sufficient. Estrogen-containing OCPs must be stopped immediately. Early ambulation is encouraged; bedrest is outdated and promotes further stasis.',
-          pitfalls: 'Ordering a D-Dimer in a high-probability patient. Ordering a CT Pulmonary Angiogram when the patient has zero respiratory symptoms (hunting for asymptomatic PEs). Recommending "strict bedrest," which worsens venous stasis.',
-          other: 'Cellulitis presents with high fever, sharply demarcated erythema, and leukocytosis. Ruptured Baker\'s cyst causes a crescent-shaped hematoma at the medial malleolus and often has a history of knee osteoarthritis.',
-          testRationale: 'Compression ultrasound is the gold standard. A normal vein collapses completely when pressed with the ultrasound probe. A vein filled with a clot (thrombus) cannot be compressed.',
-          treatSeq: '1. Calculate Wells Score → 2. Venous Ultrasound → 3. Baseline CBC/CMP/Coags → 4. Start Apixaban → 5. Stop Estrogen OCPs → 6. Treat for exactly 3 months.',
-          traps: 'Ordering a Thrombophilia screen (Factor V Leiden) in the ER. Acute thrombosis and active anticoagulants make these tests wildly inaccurate. They should only be done weeks after anticoagulation is stopped, and only if the clot was unprovoked.',
-          learning: 'Wells Score dictates the pathway: Low probability = D-Dimer. High probability = Straight to Ultrasound. Estrogen + Smoking + Long Flight = Massive DVT risk. Provoked DVTs only require 3 months of treatment.'
+          clues: 'Unilateral calf swelling >3cm, deep vein tenderness, recent prolonged immobilization (14-hour flight), and combined oral contraceptive use (estrogen) form the classic Virchow\'s triad.',
+          tests: 'For a HIGH probability Wells score, D-Dimer is useless. You must go straight to Compression Ultrasound. Normal baseline CBC, PT/INR, and CMP are needed before prescribing blood thinners.',
+          mgmt: 'Direct Oral Anticoagulants (DOACs) are first-line. Because this is a *provoked* clot, 3 months of anticoagulation is sufficient. Estrogen OCPs must be stopped. Early ambulation is encouraged.',
+          pitfalls: 'Selecting D-Dimer from the "Thrombosis Biomarkers" category in a high-probability patient. Ordering a CT Pulmonary Angiogram when the patient has zero respiratory symptoms (hunting for asymptomatic PEs). Recommending "strict bedrest," which worsens venous stasis.',
+          other: 'Cellulitis presents with high fever and sharply demarcated erythema. Ruptured Baker\'s cyst causes a crescent-shaped hematoma at the medial malleolus.',
+          testRationale: 'Compression ultrasound is the gold standard. A normal vein collapses completely when pressed. A vein filled with a clot cannot be compressed.',
+          treatSeq: '1. Wells Score → 2. Venous Ultrasound → 3. Baseline Labs → 4. Start Apixaban → 5. Stop Estrogen OCPs → 6. Treat for exactly 3 months.',
+          traps: 'Ordering a Thrombophilia screen (Factor V Leiden) in the ER. Acute thrombosis and active anticoagulants make these tests wildly inaccurate.',
+          learning: 'High probability Wells Score = Straight to Ultrasound (No D-Dimer). Estrogen + Smoking + Long Flight = Massive DVT risk. Provoked DVTs only require 3 months of treatment.'
         },
         xp: 40
       },
@@ -4282,48 +4314,55 @@
         ],
         testCats: [
           {
-            name: 'Point-of-Care & Urinalysis', icon: '🚽', tests: [
+            name: 'Urinalysis & Point-of-Care', icon: '🚽', tests: [
               { n: 'Urine Dipstick', c: true, r: 'Positive Leukocyte Esterase, Positive Nitrites, 1+ Blood.' },
-              { n: 'Urine Microscopy', c: true, r: '>50 WBCs/hpf, many bacteria, WBC casts present (Pathognomonic for renal involvement).' },
-              { n: 'Urine Pregnancy Test (hCG)', c: true, r: 'Negative. (Mandatory in women of childbearing age before prescribing antibiotics/imaging)' }
+              { n: 'Urine Microscopy', c: true, r: '>50 WBCs/hpf, many bacteria, WBC casts present.' },
+              { n: 'Urine Pregnancy Test (hCG)', c: true, r: 'Negative. (Mandatory before prescribing antibiotics/imaging)' }
             ]
           },
           {
-            name: 'Microbiology', icon: '🦠', tests: [
-              { n: 'Urine Culture & Sensitivity', c: true, r: 'Pending. (Mandatory for pyelonephritis to tailor antibiotics)' },
-              { n: 'Blood Cultures (x2)', c: true, r: 'Pending. (Bacteremia is common in pyelonephritis)' },
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Urine Culture & Sensitivity', c: true, r: 'Pending.' },
+              { n: 'Blood Cultures (x2)', c: true, r: 'Pending. (Bacteremia is common in pyelonephritis)' }
+            ]
+          },
+          {
+            name: 'Gynecological Assays', icon: '🌸', tests: [
               { n: 'Vaginal Swabs for Gonorrhea/Chlamydia', c: false, r: 'Negative. (No vaginal symptoms, dysuria is from UTI)' }
             ]
           },
           {
-            name: 'Hematology', icon: '🩸', tests: [
-              { n: 'Complete Blood Count (CBC)', c: true, r: 'WBC 14.5k with 80% neutrophils. Hb 13.5.' },
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'WBC 14.5k with 80% neutrophils. Hb 13.5.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
               { n: 'Coagulation Panel', c: false, r: 'Normal.' }
             ]
           },
           {
             name: 'Chemistry & Inflammatory', icon: '🧪', tests: [
-              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Creatinine 0.8 (Normal renal function), normal electrolytes.' },
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Creatinine 0.8, normal electrolytes.' },
               { n: 'Serum Lactate', c: true, r: '1.5 mmol/L (Normal. Rules out severe sepsis)' },
               { n: 'C-Reactive Protein (CRP)', c: true, r: 'Elevated at 45 mg/L.' }
             ]
           },
           {
-            name: 'Diagnostic Imaging', icon: '🩻', tests: [
-              { n: 'Renal Ultrasound', c: false, r: 'Normal right kidney, no hydronephrosis. (Imaging is NOT routinely needed for first-episode uncomplicated pyelonephritis in young women unless they fail to improve after 72 hours of antibiotics)' },
+            name: 'Abdominal Imaging', icon: '🩻', tests: [
+              { n: 'Renal Ultrasound', c: false, r: 'Normal right kidney, no hydronephrosis. (Imaging NOT routinely needed for first-episode uncomplicated pyelonephritis)' },
               { n: 'CT Abdomen/Pelvis Without Contrast', c: false, r: 'Negative for kidney stones. (Unnecessary radiation)' },
               { n: 'CT Abdomen/Pelvis With IV Contrast', c: false, r: 'Unnecessary.' }
             ]
           },
           {
-            name: 'Gynecological Exam', icon: '🩺', tests: [
-              { n: 'Pelvic Examination', c: false, r: 'Deferred. (CVA tenderness, nitrites, and WBC casts make pyelonephritis obvious; no need for invasive pelvic exam without vaginal symptoms)' }
+            name: 'Pelvic Examination', icon: '🩺', tests: [
+              { n: 'Speculum and Bimanual Exam', c: false, r: 'Deferred. (CVA tenderness, nitrites, and WBC casts make pyelonephritis obvious)' }
             ]
           },
           {
             name: 'Cardiac Diagnostics', icon: '❤️', tests: [
-              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia.' },
-              { n: 'Troponin', c: false, r: 'Negative.' }
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia.' }
             ]
           },
           {
@@ -4338,7 +4377,7 @@
             ]
           },
           {
-            name: 'Toxicology', icon: '🗑️', tests: [
+            name: 'Toxicology Screen', icon: '🗑️', tests: [
               { n: 'Urine Toxicology', c: false, r: 'Negative.' }
             ]
           }
@@ -4358,30 +4397,43 @@
         dxCount: 1,
         treatCats: [
           {
-            name: 'Empiric Antibiotic Therapy (Tissue Penetrating)', icon: '💊', treats: [
+            name: 'Tissue-Penetrating Antimicrobials', icon: '💊', treats: [
               { n: 'IV Ceftriaxone (1g once in ED, then transition to oral)', c: true },
-              { n: 'Oral Ciprofloxacin or Levofloxacin (7 days)', c: true },
+              { n: 'Oral Ciprofloxacin or Levofloxacin (7 days)', c: true }
+            ]
+          },
+          {
+            name: 'Lower Urinary Tract Antimicrobials', icon: '🚽', treats: [
               { n: 'Oral Nitrofurantoin (Macrobid)', c: false },
               { n: 'Oral Fosfomycin', c: false }
             ]
           },
           {
-            name: 'Supportive Fluids', icon: '💧', treats: [
+            name: 'Intravenous Fluids', icon: '💧', treats: [
               { n: 'IV Lactated Ringers (1L bolus for tachycardia/vomiting)', c: true },
               { n: 'Strict Fluid Restriction', c: false }
             ]
           },
           {
-            name: 'Symptom Relief', icon: '🌡️', treats: [
+            name: 'Analgesics & Antipyretics', icon: '🌡️', treats: [
               { n: 'Acetaminophen (Paracetamol) PRN Fever', c: true },
-              { n: 'Ondansetron (Zofran) PRN Nausea', c: true },
               { n: 'Phenazopyridine (Pyridium) for dysuria', c: true }
             ]
           },
           {
-            name: 'Surgical & Urological Interventions', icon: '🔪', treats: [
+            name: 'Gastrointestinal Meds', icon: '胃', treats: [
+              { n: 'Ondansetron (Zofran) PRN Nausea', c: true },
+              { n: 'Proton Pump Inhibitors (Pantoprazole)', c: false }
+            ]
+          },
+          {
+            name: 'Urological Interventions', icon: '🔪', treats: [
               { n: 'Percutaneous Nephrostomy Tube', c: false },
-              { n: 'Ureteral Stent Placement', c: false },
+              { n: 'Ureteral Stent Placement', c: false }
+            ]
+          },
+          {
+            name: 'General Surgery', icon: '✂️', treats: [
               { n: 'Appendectomy', c: false }
             ]
           },
@@ -4392,28 +4444,23 @@
             ]
           },
           {
-            name: 'Gynecological Mgmt', icon: '🩺', treats: [
+            name: 'Gynecological Therapies', icon: '🩺', treats: [
               { n: 'IM Ceftriaxone + PO Doxycycline (PID Treatment)', c: false }
             ]
           },
           {
-            name: 'VTE Prophylaxis', icon: '🩸', treats: [
+            name: 'Thrombosis Prophylaxis', icon: '🩸', treats: [
               { n: 'Subcutaneous Heparin', c: false }
             ]
           },
           {
-            name: 'Cardiac/BP Meds', icon: '❤️', treats: [
+            name: 'Cardiovascular Medications', icon: '❤️', treats: [
               { n: 'Vasopressors', c: false }
             ]
           },
           {
-            name: 'Gastrointestinal Meds', icon: '胃', treats: [
-              { n: 'Proton Pump Inhibitors (Pantoprazole)', c: false }
-            ]
-          },
-          {
             name: 'Discharge Planning', icon: '🏥', treats: [
-              { n: 'Discharge home with PO antibiotics (Patient is young, stable, tolerating PO after antiemetics)', c: true },
+              { n: 'Discharge home with PO antibiotics', c: true },
               { n: 'Admit to ICU', c: false }
             ]
           }
@@ -4421,15 +4468,15 @@
         summary: {
           dx: 'Acute Uncomplicated Pyelonephritis',
           sub: 'Ascending bacterial infection reaching the renal parenchyma',
-          clues: 'The progression from dysuria/frequency to fever, rigors, and focal CVA tenderness indicates an ascending infection. The presence of WBC casts in the urine microscopy is the hallmark sign that the inflammation has reached the kidney tubules, definitively separating this from simple cystitis.',
-          tests: 'A urine pregnancy test is mandatory in this demographic. Urinalysis shows classic infection signs (leukocyte esterase, nitrites). Urine and blood cultures are required. Imaging (CT or Ultrasound) is explicitly NOT recommended for young, healthy women with a classic first episode unless they fail to improve after 48-72 hours.',
-          mgmt: 'Since she is hemodynamically stable and her vomiting resolved with Ondansetron, she can be given a dose of IV Ceftriaxone in the ED and discharged home on tissue-penetrating oral antibiotics (like Ciprofloxacin) for 7 days. Ensure she returns if symptoms worsen.',
-          pitfalls: 'Prescribing Nitrofurantoin (Macrobid) or Fosfomycin. These drugs concentrate EXCLUSIVELY in the bladder and do not reach therapeutic levels in the kidney tissue. Treating pyelonephritis with Nitrofurantoin will result in treatment failure and potential urosepsis.',
-          other: 'Cystitis lacks systemic symptoms (no fever, no CVA tenderness). Nephrolithiasis causes colicky, writhing pain and gross hematuria, usually without fever. PID causes cervical motion tenderness and vaginal discharge.',
-          testRationale: 'Nitrites in the urine dipstick are highly specific for Enterobacteriaceae (E. coli, the most common UTI pathogen), as these bacteria convert dietary nitrates into nitrites.',
-          treatSeq: '1. R/O Pregnancy → 2. UA & Cultures → 3. IV Fluids & Antiemetics → 4. First dose IV Ceftriaxone → 5. Discharge on PO Fluoroquinolone → 6. Follow-up culture results.',
-          traps: 'Ordering a CT Abdomen/Pelvis out of reflex. Uncomplicated pyelonephritis is a clinical diagnosis. Radiation exposure should be avoided unless a complication (like an obstructing stone or renal abscess) is suspected.',
-          learning: 'CVA tenderness + Fever + Dysuria = Pyelonephritis. WBC Casts = Renal origin. Do NOT use Nitrofurantoin or Fosfomycin for pyelonephritis. Imaging is not needed for a first-time uncomplicated presentation.'
+          clues: 'The progression from dysuria/frequency to fever, rigors, and focal CVA tenderness indicates an ascending infection. The presence of WBC casts in the urine microscopy is the hallmark sign that the inflammation has reached the kidney tubules.',
+          tests: 'A urine pregnancy test is mandatory in this demographic. Urinalysis shows classic infection signs. Urine and blood cultures are required. Imaging (CT or Ultrasound) is explicitly NOT recommended for young, healthy women with a classic first episode.',
+          mgmt: 'Since she is hemodynamically stable and vomiting resolved, she can be given a dose of IV Ceftriaxone in the ED and discharged home on tissue-penetrating oral antibiotics (like Ciprofloxacin).',
+          pitfalls: 'Selecting Nitrofurantoin or Fosfomycin from the "Lower Urinary Tract Antimicrobials" category. These drugs concentrate EXCLUSIVELY in the bladder and do not reach therapeutic levels in the kidney. Treating pyelonephritis with Nitrofurantoin will result in treatment failure.',
+          other: 'Cystitis lacks systemic symptoms (no fever, no CVA tenderness). Nephrolithiasis causes colicky pain and gross hematuria without fever.',
+          testRationale: 'Nitrites in the urine dipstick are highly specific for Enterobacteriaceae (E. coli, the most common UTI pathogen).',
+          treatSeq: '1. R/O Pregnancy → 2. UA & Cultures → 3. IV Fluids & Antiemetics → 4. First dose IV Ceftriaxone → 5. Discharge on PO Fluoroquinolone.',
+          traps: 'Ordering a CT Abdomen/Pelvis out of reflex. Uncomplicated pyelonephritis is a clinical diagnosis. Radiation exposure should be avoided.',
+          learning: 'CVA tenderness + Fever + Dysuria = Pyelonephritis. WBC Casts = Renal origin. Do NOT use Nitrofurantoin for pyelonephritis.'
         },
         xp: 40
       },
