@@ -1852,281 +1852,1495 @@
       { id: 'heme', name: 'Heme-Rheumatology', color: '#be123c', emoji: '🩸' }
     ];
     let currentCatId = null;
+    // ═══════════════════════════════════════════════════════════════
+    // REPLACE YOUR ENTIRE  const SPECS = [ ... ];  WITH THIS BLOCK
+    // ═══════════════════════════════════════════════════════════════
+
     const SPECS = [
+
+      // ─────────────────────────────────────────────────────────────
+      // 1. GENERAL MEDICINE — Cushing's Disease
+      // ─────────────────────────────────────────────────────────────
       {
         id: 'gm', name: 'General Medicine', color: '#f97316', emoji: '🩺', waitDays: 177,
         caseTitle: 'Fatigue, easy bruising, and progressive weight gain',
-        caseDesc: 'Evaluate common endocrine and autoimmune causes while differentiating from unrelated systems.',
+        caseDesc: 'A 32-year-old woman presents with 8 months of central weight gain, wide purple stretch marks, muscle weakness, and irregular periods. No exogenous steroid use. Rule out endocrine causes while avoiding cardiac and immunologic red herrings.',
         patient: { name: 'Seema Rathi', gender: 'Female', age: '32 Y', complaint: 'Fatigue, easy bruising, and progressive weight gain' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '37.1°C' }, { icon: '❤️', label: 'Heart Rate', val: '88 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '145/95 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '16/min' }, { icon: '💧', label: 'SpO2', val: '98%' }],
-        history: ['Progressive weight gain mostly around the abdomen over 8 months.', 'Noticeable purple stretch marks.', 'Muscle weakness when climbing stairs.', 'Irregular menstrual cycles.', 'No history of taking exogenous steroids.'],
-        physExam: ['Moon facies and buffalo hump.', 'Central obesity with thin extremities.', 'Violaceous striae (>1cm wide) on the abdomen.', 'Proximal muscle weakness.'],
-        testCats: [
-          { name: 'Endocrinology & Metabolism', icon: '🧠', tests: [{ n: '24-hour urine free cortisol', c: true, r: 'Elevated (3x upper limit)' }, { n: 'Overnight low-dose dexamethasone suppression test', c: true, r: 'Failure to suppress' }, { n: 'High-dose dexamethasone suppression test', c: true, r: 'Suppresses >50% (Pituitary source)' }, { n: 'Plasma ACTH level', c: true, r: 'Elevated at 85 pg/mL' }, { n: 'TSH and Free T4', c: false, r: 'Normal' }, { n: 'Serum Prolactin', c: false, r: 'Normal' }, { n: 'Growth Hormone (GH)', c: false, r: 'Normal' }, { n: 'Parathyroid Hormone (PTH)', c: false, r: 'Normal' }] },
-          { name: 'Radiology & Imaging', icon: '🩻', tests: [{ n: 'MRI Pituitary with contrast', c: true, r: '6mm microadenoma in anterior pituitary' }, { n: 'CT Abdomen/Adrenals', c: false, r: 'Bilateral adrenal hyperplasia (secondary to ACTH)' }, { n: 'DEXA Scan', c: true, r: 'Osteopenia in lumbar spine' }, { n: 'CT Head (without contrast)', c: false, r: 'Unremarkable. (MRI is better for pituitary)' }, { n: 'Ultrasound Pelvis', c: false, r: 'Normal ovaries, no cysts (Rules out PCOS)' }] },
-          { name: 'Cardiology & Pulmonary', icon: '❤️‍🩹', tests: [{ n: '12-Lead ECG', c: false, r: 'Normal sinus rhythm' }, { n: 'Echocardiogram', c: false, r: 'Normal EF, no hypertrophy' }, { n: 'Spirometry', c: false, r: 'Normal' }, { n: 'High-sensitivity Troponin', c: false, r: '< 0.01 ng/mL (Normal)' }] },
-          { name: 'Pathology & Blood', icon: '🔬', tests: [{ n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Hypokalemia (K 3.1), Hyperglycemia (Gluc 145)' }, { n: 'Complete Blood Count (CBC)', c: false, r: 'Mild leukocytosis' }, { n: 'HbA1c', c: true, r: '6.8% (new onset diabetes)' }, { n: 'Fasting Lipid Panel', c: true, r: 'Elevated LDL and Triglycerides' }, { n: 'Urinalysis', c: false, r: 'Normal, negative for protein' }] },
-          { name: 'Immunology & Toxicology', icon: '🧬', tests: [{ n: 'Antinuclear Antibody (ANA)', c: false, r: 'Negative' }, { n: 'Rheumatoid Factor', c: false, r: 'Negative' }, { n: 'Anti-CCP', c: false, r: 'Negative' }, { n: 'Urine Toxicology Screen', c: false, r: 'Negative for all substances' }] }
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.1°C (98.8°F)' },
+          { icon: '❤️', label: 'Heart Rate', val: '88 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '145/95 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '16/min' },
+          { icon: '💧', label: 'SpO2', val: '98% on room air' }
         ],
-        diagnoses: [{ t: 'Cushing Disease (Pituitary Adenoma)', c: true }, { t: 'Primary Adrenal Tumor', c: false }, { t: 'Ectopic ACTH Syndrome (Lung Cancer)', c: false }, { t: 'Hypothyroidism', c: false }, { t: 'Polycystic Ovary Syndrome (PCOS)', c: false }, { t: 'Metabolic Syndrome', c: false }],
+        history: [
+          'Progressive weight gain predominantly around abdomen and upper back over the past 8 months — approximately 12 kg gained.',
+          'Noticeable wide, purple-red stretch marks (striae) on her abdomen, thighs, and upper arms.',
+          'Profound muscle weakness especially when climbing stairs or rising from a chair (proximal myopathy).',
+          'Irregular and increasingly absent menstrual cycles over the past 6 months (secondary amenorrhea).',
+          'Easy bruising on arms and legs with minimal trauma. Skin feels paper-thin.',
+          'Persistent fatigue and low mood. Reduced libido.',
+          'Increased acne and mild facial hair growth (hirsutism).',
+          'No history of taking steroids (oral, inhaled, or injectable) for any condition.',
+          'No family history of endocrine tumors.'
+        ],
+        physExam: [
+          'General: Centrally obese with moon facies and dorsocervical fat pad (buffalo hump).',
+          'Skin: Wide violaceous striae (>1 cm) on abdomen and flanks. Multiple ecchymoses on arms.',
+          'Musculoskeletal: Significant proximal muscle weakness — difficulty rising from chair without arm support.',
+          'Abdomen: Soft, non-tender. Central obesity with thin extremities.',
+          'Cardiovascular: Regular rate and rhythm. BP 145/95 mmHg.',
+          'Neurological: Intact, no focal deficits. Mood appears low.',
+          'Skin texture: Thin, atrophic. Fine downy facial hair.'
+        ],
+        testCats: [
+          {
+            name: 'Basic Screening Labs', icon: '🧪', tests: [
+              { n: 'Complete Blood Count (CBC)', c: false, r: 'Mild leukocytosis and polycythemia — expected non-specific effect of cortisol excess; not diagnostic' },
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Hypokalemia K⁺ 3.1 mEq/L, Fasting glucose 148 mg/dL, normal renal function — cortisol-driven metabolic effects' },
+              { n: 'Urinalysis with Microscopy', c: false, r: 'Trace glycosuria from hyperglycemia; no RBCs, no infection — not useful for diagnosis' },
+              { n: 'HbA1c', c: true, r: '6.9% — new-onset steroid-induced diabetes mellitus' },
+              { n: 'Fasting Lipid Panel', c: true, r: 'LDL 198 mg/dL, Triglycerides 290 mg/dL — dyslipidemia driven by cortisol-induced gluconeogenesis' },
+              { n: 'Serum Uric Acid', c: false, r: 'Mildly elevated — incidental, not related to primary diagnosis' }
+            ]
+          },
+          {
+            name: 'Endocrinology Tier 1 — Confirm Hypercortisolism', icon: '🧠', tests: [
+              { n: '24-hour urine free cortisol (UFC)', c: true, r: 'Elevated — 3× upper limit of normal. Step 1 in confirming endogenous hypercortisolism' },
+              { n: 'Overnight 1mg low-dose dexamethasone suppression test (LDDST)', c: true, r: 'Failure to suppress cortisol below 1.8 mcg/dL — pathological, confirms hypercortisolism' },
+              { n: 'Late-night salivary cortisol (x2)', c: true, r: 'Elevated on both nights — loss of diurnal cortisol rhythm; highly sensitive outpatient screen' },
+              { n: 'Morning serum cortisol (8am)', c: false, r: 'Elevated at 28 mcg/dL but unreliable alone — not diagnostic due to stress-induced variation' },
+              { n: 'Random serum cortisol', c: false, r: 'Cannot interpret without diurnal context — not a valid screening test for Cushing\'s' }
+            ]
+          },
+          {
+            name: 'Endocrinology Tier 2 — Source Localisation', icon: '🔬', tests: [
+              { n: 'Plasma ACTH level (morning)', c: true, r: 'Elevated at 85 pg/mL — confirms ACTH-DEPENDENT hypercortisolism (pituitary or ectopic source)' },
+              { n: '2-day high-dose dexamethasone suppression test (HDDST)', c: true, r: 'Cortisol suppresses >50% — supports pituitary (Cushing\'s Disease) source over ectopic' },
+              { n: 'CRH stimulation test', c: true, r: 'ACTH and cortisol rise >35% after CRH — confirms pituitary origin (ectopic does not respond)' },
+              { n: 'Inferior petrosal sinus sampling (IPSS)', c: true, r: 'Central-to-peripheral ACTH gradient >2 (>3 post-CRH) — definitive confirmation of pituitary ACTH source; used if MRI equivocal' },
+              { n: 'TSH and Free T4', c: false, r: 'Normal — thyroid is suppressed but not the cause; hypothyroidism does not cause striae or proximal myopathy' },
+              { n: 'Serum Prolactin', c: false, r: 'Mildly elevated due to stalk effect — not the primary diagnosis' },
+              { n: 'LH, FSH, Estradiol', c: false, r: 'Low LH/FSH — hypothalamic suppression by cortisol; explains amenorrhea but does not change management' },
+              { n: 'IGF-1 (Growth Hormone surrogate)', c: false, r: 'Normal — no acromegaly features present' },
+              { n: 'Parathyroid Hormone (PTH)', c: false, r: 'Normal — no MEN1 features at this stage' }
+            ]
+          },
+          {
+            name: 'Radiology & Imaging', icon: '🩻', tests: [
+              { n: 'MRI Pituitary with dynamic gadolinium contrast', c: true, r: '6mm hypointense microadenoma in the left anterior pituitary — confirms pituitary source' },
+              { n: 'CT Abdomen and Adrenals (3mm protocol)', c: false, r: 'Bilateral adrenal hyperplasia — secondary to chronic ACTH stimulation; not the primary lesion' },
+              { n: 'DEXA Scan (Bone mineral density)', c: true, r: 'Osteopenia at lumbar spine L2–L4 (T-score –1.8) — cortisol suppresses osteoblasts; fracture risk increased' },
+              { n: 'CT Chest (Thorax)', c: false, r: 'Normal — no ectopic ACTH source (small cell lung, carcinoid) identified; IPSS already confirmed pituitary' },
+              { n: 'Ultrasound Pelvis', c: false, r: 'Normal ovaries bilaterally — PCOS not the primary diagnosis' },
+              { n: 'CT Head without contrast', c: false, r: 'Unremarkable — MRI pituitary is far superior for adenoma detection' },
+              { n: 'Nuclear Medicine Octreotide Scan (Somatostatin receptor scintigraphy)', c: false, r: 'Not indicated — IPSS has already confirmed pituitary source; this is used for ectopic ACTH search' }
+            ]
+          },
+          {
+            name: 'Cardiovascular & Pulmonary', icon: '❤️‍🩹', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Normal sinus rhythm — no ischemic changes; ordered for hypertension workup but not useful here' },
+              { n: 'Echocardiogram', c: false, r: 'Mildly reduced diastolic function — not the priority; does not change endocrine workup' },
+              { n: 'Chest X-Ray', c: false, r: 'Clear lung fields — no mass lesion, no cardiomegaly' },
+              { n: 'Spirometry (PFTs)', c: false, r: 'Normal — no pulmonary diagnosis here' },
+              { n: 'High-sensitivity Troponin', c: false, r: 'Negative — no ACS; completely irrelevant in this endocrine presentation' }
+            ]
+          },
+          {
+            name: 'Immunology, Toxicology & Other', icon: '🧬', tests: [
+              { n: 'Antinuclear Antibody (ANA)', c: false, r: 'Negative — not an autoimmune picture despite the fatigue and muscle weakness' },
+              { n: 'Rheumatoid Factor (RF)', c: false, r: 'Negative — arthritis pattern not present' },
+              { n: 'Anti-CCP Antibody', c: false, r: 'Negative — misguided if ordered for myopathy without joint findings' },
+              { n: 'Urine Toxicology Screen (for exogenous steroids)', c: false, r: 'Negative — no external steroid source; patient denied use and screen confirms it' },
+              { n: 'Vitamin D Level (25-OH)', c: true, r: 'Low at 18 ng/mL — common in cortisol excess; supplement required alongside osteoporosis management' },
+              { n: 'Serum Cortisol-binding globulin (CBG)', c: false, r: 'Useful research tool — not part of standard clinical Cushing\'s workup' },
+              { n: 'Genetic testing for MEN1 (Menin gene mutation)', c: false, r: 'Only indicated if multiple endocrine tumors identified — not routine in isolated pituitary adenoma' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Cushing Disease (Pituitary ACTH-secreting microadenoma)', c: true },
+          { t: 'Primary Adrenal Tumor (Adrenocortical adenoma)', c: false },
+          { t: 'Ectopic ACTH Syndrome (Small cell lung cancer)', c: false },
+          { t: 'Hypothyroidism', c: false },
+          { t: 'Polycystic Ovary Syndrome (PCOS)', c: false },
+          { t: 'Metabolic Syndrome', c: false }
+        ],
         dxCount: 1,
         treatCats: [
-          { name: 'Surgical Management', icon: '🔪', treats: [{ n: 'Transsphenoidal adenomectomy', c: true }, { n: 'Bilateral adrenalectomy', c: false }, { n: 'Oophorectomy', c: false }, { n: 'Gastric Bypass', c: false }] },
-          { name: 'Medical Management', icon: '💊', treats: [{ n: 'Ketoconazole or Metyrapone', c: true }, { n: 'Spironolactone for hypokalemia', c: true }, { n: 'Metformin for hyperglycemia', c: true }, { n: 'Glucocorticoid replacement (Post-op)', c: true }, { n: 'Levothyroxine', c: false }, { n: 'Oral Contraceptive Pills', c: false }, { n: 'IV Antibiotics (Broad Spectrum)', c: false }, { n: 'Chemotherapy', c: false }] }
+          {
+            name: 'Surgical Management', icon: '🔪', treats: [
+              { n: 'Transsphenoidal adenomectomy (Pituitary microsurgery)', c: true },
+              { n: 'Bilateral adrenalectomy', c: false },
+              { n: 'Oophorectomy', c: false },
+              { n: 'Laparoscopic gastric bypass', c: false }
+            ]
+          },
+          {
+            name: 'Medical Management', icon: '💊', treats: [
+              { n: 'Ketoconazole or Metyrapone (pre-op cortisol lowering)', c: true },
+              { n: 'Spironolactone for hypokalemia correction', c: true },
+              { n: 'Metformin for steroid-induced hyperglycemia', c: true },
+              { n: 'Glucocorticoid replacement (Post-op — adrenal insufficiency)', c: true },
+              { n: 'Levothyroxine', c: false },
+              { n: 'Oral Contraceptive Pills', c: false },
+              { n: 'IV Antibiotics (Broad Spectrum)', c: false },
+              { n: 'Chemotherapy', c: false }
+            ]
+          }
         ],
-        summary: { dx: 'Cushing Disease (Pituitary Adenoma)', sub: 'ACTH-dependent Hypercortisolism', clues: 'Central obesity, wide purple striae, proximal weakness, hypokalemia, hyperglycemia.', tests: 'Confirm hypercortisolism (24h urine, low-dose dex), then find source (ACTH level). Distractors like Troponin or Tox screens waste resources.', mgmt: 'Transsphenoidal surgery is definitive. Manage BP, potassium, and glucose medically.', pitfalls: 'Ordering CT Head instead of MRI, or ordering irrelevant cardiac screens.', other: 'PCOS causes hirsutism/irregular periods but not proximal weakness or wide striae.', testRationale: 'ACTH level differentiates primary adrenal (low) from secondary pituitary (high).', treatSeq: '1. Confirm hypercortisolism 2. Check ACTH 3. MRI 4. Surgery.', traps: 'Forgetting post-op glucocorticoid replacement, causing adrenal crisis.', learning: 'Cushing "Disease" refers to a pituitary adenoma. Cushing "Syndrome" is the general state of high cortisol.' },
+        summary: {
+          dx: "Cushing's Disease (Pituitary ACTH-secreting Microadenoma)",
+          sub: 'ACTH-dependent Hypercortisolism',
+          clues: 'Central obesity with buffalo hump and moon facies, wide violaceous striae >1cm, proximal myopathy, hypokalemia, hyperglycemia, secondary amenorrhea, hypertension — all driven by chronic cortisol excess.',
+          tests: 'Step 1: Confirm hypercortisolism (24h UFC or overnight low-dose dex suppression test). Step 2: Determine source using ACTH level — high ACTH means pituitary or ectopic; low ACTH means adrenal. Step 3: MRI pituitary to locate the adenoma. Cardiac tests (Troponin, Echo) and Tox screens are distractors.',
+          mgmt: 'Transsphenoidal pituitary microsurgery is first-line and curative in 80% of cases. Bridge medically with steroidogenesis inhibitors (Ketoconazole). Post-op glucocorticoid replacement is mandatory as the remaining adrenal tissue is suppressed.',
+          pitfalls: "Ordering CT Head instead of MRI pituitary. Confusing Cushing's Disease (pituitary) with Cushing's Syndrome (any cortisol excess). Forgetting post-op cortisol replacement causing Addisonian crisis.",
+          other: 'PCOS causes hirsutism and irregular cycles but NOT proximal myopathy or wide striae. Ectopic ACTH (lung tumor) shows extremely high ACTH and does not suppress on high-dose dex. Primary adrenal tumor has LOW ACTH.',
+          testRationale: 'ACTH level is the critical pivot — it separates ACTH-dependent causes (pituitary, ectopic) from ACTH-independent causes (adrenal tumor). High-dose dex suppression then identifies pituitary vs. ectopic.',
+          treatSeq: '1. Confirm hypercortisolism → 2. Check ACTH level → 3. MRI pituitary → 4. Transsphenoidal surgery → 5. Post-op hydrocortisone replacement.',
+          traps: "Forgetting post-op glucocorticoid replacement, precipitating Addisonian crisis. Prescribing SSRIs without addressing the underlying cortisol excess causing depression.",
+          learning: "Cushing's DISEASE = pituitary adenoma secreting ACTH. Cushing's SYNDROME = the general state of cortisol excess from any cause. The 4 widest purple striae are the most specific physical finding."
+        },
         xp: 40
       },
 
+      // ─────────────────────────────────────────────────────────────
+      // 2. ACUTE CARE & SURGERY — Bleeding Duodenal Ulcer
+      // ─────────────────────────────────────────────────────────────
       {
         id: 'acs', name: 'Acute Care & Surgery', color: '#ef4444', emoji: '🚑', waitDays: 142,
         caseTitle: 'Vomiting blood and fainting in a young man',
-        caseDesc: 'A 26-year-old male brought to ED after hematemesis and syncope. Evaluate and manage urgently amidst noise.',
+        caseDesc: 'A 26-year-old male is rushed to the emergency department after two episodes of large-volume bright red vomiting and a syncopal episode. He is pale, sweating, and hypotensive. Stabilize and diagnose efficiently — do not send an unstable patient to the CT scanner.',
         patient: { name: 'Dawid', gender: 'Male', age: '26 Y', complaint: 'Vomiting blood and fainting' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '37.0°C' }, { icon: '❤️', label: 'Heart Rate', val: '122 bpm (Tachycardic)' }, { icon: '📈', label: 'Blood Pressure', val: '85/55 mmHg (Hypotensive)' }, { icon: '🫁', label: 'Respiratory Rate', val: '24/min' }, { icon: '💧', label: 'SpO2', val: '96%' }],
-        history: ['2 episodes of large-volume bright red hematemesis.', 'Syncopal episode this morning.', 'Regular ibuprofen use (800mg TID) for back pain over 3 months.'],
-        physExam: ['Pale, diaphoretic, anxious.', 'Cool extremities with delayed capillary refill.', 'Epigastric tenderness on palpation.', 'Neurologically intact.'],
-        testCats: [
-          { name: 'Resuscitation & Vitals', icon: '🩸', tests: [{ n: 'Insert 2 large-bore (16G) peripheral IVs', c: true, r: 'Access secured' }, { n: 'Type and Crossmatch for 4 units PRBCs', c: true, r: 'Blood pending' }, { n: 'Central venous catheter placement', c: false, r: 'Delays initial fluid resuscitation' }, { n: 'Arterial Line Placement', c: false, r: 'Unnecessary delay for initial management' }] },
-          { name: 'Pathology & Blood', icon: '🧪', tests: [{ n: 'Complete Blood Count (CBC)', c: true, r: 'Hb 6.8 g/dL (Severe anemia)' }, { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'BUN 45, Creatinine 1.0 (BUN/Cr ratio > 30)' }, { n: 'Coagulation Panel (PT/INR)', c: true, r: 'Normal' }, { n: 'Serum Lactate', c: true, r: '4.2 mmol/L (Elevated)' }, { n: 'Amylase and Lipase', c: false, r: 'Normal' }, { n: 'Liver Function Tests', c: false, r: 'Normal' }] },
-          { name: 'Imaging', icon: '🩻', tests: [{ n: 'Upright Chest X-Ray', c: false, r: 'No free air under diaphragm' }, { n: 'CT Abdomen with IV Contrast', c: false, r: 'Patient too unstable, delays endoscopy' }, { n: 'CT Head (without contrast)', c: false, r: 'Normal. Syncope was due to blood loss, not a stroke.' }, { n: 'FAST Ultrasound', c: false, r: 'No free fluid in abdomen' }] },
-          { name: 'Cardiology & Neuro', icon: '🧠', tests: [{ n: '12-Lead ECG', c: false, r: 'Sinus Tachycardia' }, { n: 'High-sensitivity Troponin', c: false, r: 'Negative' }, { n: 'Lumbar Puncture', c: false, r: 'Patient refused. Highly contraindicated.' }] },
-          { name: 'Specialized Procedures', icon: '📸', tests: [{ n: 'Urgent Upper GI Endoscopy (EGD)', c: true, r: 'Active spurting bleeding from a 2cm duodenal ulcer' }, { n: 'Colonoscopy', c: false, r: 'Incorrect route for hematemesis' }, { n: 'Bronchoscopy', c: false, r: 'Blood is from GI tract, not lungs' }] }
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.0°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '122 bpm (Tachycardic)' },
+          { icon: '📈', label: 'Blood Pressure', val: '85/55 mmHg (Hypotensive)' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '24/min' },
+          { icon: '💧', label: 'SpO2', val: '96% on room air' }
         ],
-        diagnoses: [{ t: 'Bleeding Peptic Ulcer Disease (Duodenal)', c: true }, { t: 'Esophageal Varices', c: false }, { t: 'Mallory-Weiss Tear', c: false }, { t: 'Gastric Perforation', c: false }, { t: 'Acute Subarachnoid Hemorrhage', c: false }, { t: 'Myocardial Infarction', c: false }],
+        history: [
+          'Two episodes of large-volume, bright red hematemesis this morning.',
+          'Syncopal episode in the bathroom — fell to the floor but did not lose consciousness for long.',
+          'Regular high-dose Ibuprofen (800mg three times daily) for chronic low back pain over the past 3 months — no gastroprotective agent.',
+          'Reports "gnawing" epigastric discomfort worse when fasting, mildly relieved by food, for 6 weeks prior.',
+          'No prior GI bleeds. No liver disease, no alcohol excess. No blood thinners.',
+          'No recent travel or sick contacts. Non-smoker.'
+        ],
+        physExam: [
+          'General: Pale, diaphoretic, anxious. Appears unwell.',
+          'Cardiovascular: Tachycardic at 122 bpm. BP 85/55 — hemodynamic compromise. Cool extremities. Capillary refill > 3 seconds.',
+          'Abdominal: Epigastric tenderness on deep palpation. No guarding, no rigidity. No hepatosplenomegaly. No ascites.',
+          'Rectal: Melena on gloved finger (confirms upper GI source).',
+          'Neurological: Intact. GCS 15.'
+        ],
+        testCats: [
+          {
+            name: 'Immediate Resuscitation (Do These First)', icon: '🚨', tests: [
+              { n: 'Insert 2 large-bore (16G) peripheral IVs + 1L Lactated Ringers bolus', c: true, r: 'Access secured — BP improves to 98/65 after rapid fluid bolus; this is the first priority' },
+              { n: 'Type and Crossmatch for 4 units packed RBCs', c: true, r: 'O-negative blood available immediately; matched blood ready in 30 min' },
+              { n: 'Foley catheter insertion and urine output monitoring', c: true, r: 'Urine output 15mL/hr — confirms significant hypovolemia; target >0.5 mL/kg/hr' },
+              { n: 'Central venous catheter (CVC) placement before resuscitation', c: false, r: 'Wastes critical time — peripheral large-bore access is faster and sufficient for initial resuscitation' },
+              { n: 'Arterial line placement (A-line)', c: false, r: 'Useful in ICU but delays resuscitation; cuff BP is adequate initially' }
+            ]
+          },
+          {
+            name: 'Essential Blood Tests', icon: '🧪', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'Hb 6.8 g/dL — severe anemia from blood loss; WBC 11,200 mild leukocytosis (stress response); platelets 220,000' },
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'BUN 48 mg/dL, Creatinine 1.0. BUN:Creatinine ratio >30 — highly specific for upper GI bleed (digested blood raises BUN)' },
+              { n: 'Coagulation Panel (PT/INR, aPTT, Fibrinogen)', c: true, r: 'INR 1.1, aPTT 28s — normal coagulation. No coagulopathy to correct.' },
+              { n: 'Serum Lactate', c: true, r: '4.2 mmol/L — elevated, confirms tissue hypoperfusion from hemorrhagic shock; target normalization with resuscitation' },
+              { n: 'Blood Group and Screen (G&S)', c: true, r: 'Group O positive — crossmatch arranged; critical safety step before transfusion' },
+              { n: 'Amylase and Lipase', c: false, r: 'Normal — no pancreatic involvement; pain is epigastric-ulcer, not radiating to back' },
+              { n: 'Liver Function Tests (LFTs)', c: false, r: 'Normal bilirubin, albumin, ALT — no cirrhosis, no portal hypertension, no varices' },
+              { n: 'D-Dimer', c: false, r: 'Elevated non-specifically from trauma/shock — irrelevant; no PE suspicion' },
+              { n: 'Serum Iron Studies', c: false, r: 'Depleted — chronic low-grade bleed; not relevant to acute management' },
+              { n: 'Thyroid Function Tests', c: false, r: 'Normal — completely irrelevant to GI hemorrhage' }
+            ]
+          },
+          {
+            name: 'Cardiac Evaluation', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia at 122 bpm — entirely a response to acute blood loss, not a primary cardiac event' },
+              { n: 'High-sensitivity Troponin I', c: false, r: 'Negative — not an MI; do not delay endoscopy chasing a cardiac diagnosis' },
+              { n: 'Echocardiogram (bedside)', c: false, r: 'Normal function — no pericardial effusion; not the cause of hypotension here' },
+              { n: 'BNP (Brain Natriuretic Peptide)', c: false, r: 'Normal — no heart failure; irrelevant in hemorrhagic shock' }
+            ]
+          },
+          {
+            name: 'Imaging', icon: '🩻', tests: [
+              { n: 'Upright Chest X-Ray', c: false, r: 'No free air under diaphragm — hollow viscus perforation excluded; lung fields clear' },
+              { n: 'CT Abdomen with IV Contrast', c: false, r: 'CONTRAINDICATED in hemodynamically unstable patient — delays lifesaving endoscopy by 30-60 minutes; contrast also nephrotoxic' },
+              { n: 'Bedside FAST Ultrasound', c: false, r: 'No free intraperitoneal fluid — this is intraluminal bleeding, not hemoperitoneum' },
+              { n: 'CT Head without contrast', c: false, r: 'Normal — syncope was due to blood loss and orthostatic hypotension, not a neurological event' },
+              { n: 'Mesenteric CT Angiography', c: false, r: 'Reserved for massive uncontrolled GI bleed where endoscopy has failed — not first-line' }
+            ]
+          },
+          {
+            name: 'Neurological & Infectious', icon: '🧠', tests: [
+              { n: 'Lumbar Puncture', c: false, r: 'Absolutely contraindicated in a hemodynamically unstable patient — neurological cause completely excluded' },
+              { n: 'Blood Culture x2', c: false, r: 'No fever, no signs of sepsis — not indicated' },
+              { n: 'Helicobacter pylori Urea Breath Test', c: false, r: 'Cannot perform during active bleed — relevant post-healing to reduce ulcer recurrence; do later' }
+            ]
+          },
+          {
+            name: 'Definitive Diagnostic Procedure', icon: '📸', tests: [
+              { n: 'Urgent Upper GI Endoscopy (EGD) within 24h of stabilization', c: true, r: 'Active spurting vessel from 2cm posterior duodenal ulcer — Forrest Class Ia; hemostasis performed' },
+              { n: 'Colonoscopy', c: false, r: 'Wrong direction — hematemesis + melena = upper GI source; colonoscopy examines lower GI' },
+              { n: 'Capsule Endoscopy', c: false, r: 'Not appropriate in acute bleed — used for obscure GI bleeding in stable patients' },
+              { n: 'Bronchoscopy', c: false, r: 'Completely irrelevant — bleeding is gastrointestinal, not pulmonary' },
+              { n: 'ERCP (Endoscopic Retrograde Cholangiopancreatography)', c: false, r: 'No biliary pathology — wrong procedure entirely' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Bleeding Peptic Ulcer Disease — Duodenal (NSAID-induced)', c: true },
+          { t: 'Esophageal Varices', c: false },
+          { t: 'Mallory-Weiss Tear', c: false },
+          { t: 'Gastric Perforation with Peritonitis', c: false },
+          { t: 'Acute Subarachnoid Hemorrhage', c: false },
+          { t: 'Myocardial Infarction', c: false }
+        ],
         dxCount: 1,
         treatCats: [
-          { name: 'Hemodynamic Support', icon: '💧', treats: [{ n: 'Rapid IV bolus of Lactated Ringers', c: true }, { n: 'Transfuse 2 units PRBCs', c: true }, { n: 'Vasopressors (Norepinephrine)', c: false }, { n: 'IV Furosemide (Lasix)', c: false }, { n: 'Therapeutic Phlebotomy', c: false }] },
-          { name: 'Pharmacotherapy & Procedures', icon: '💊', treats: [{ n: 'IV Pantoprazole (80mg bolus)', c: true }, { n: 'Endoscopic clipping and epinephrine injection', c: true }, { n: 'IV Octreotide', c: false }, { n: 'IV Ceftriaxone', c: false }, { n: 'Emergency craniotomy', c: false }, { n: 'IV Heparin', c: false }] }
+          {
+            name: 'Hemodynamic Resuscitation', icon: '💧', treats: [
+              { n: 'Rapid IV Lactated Ringers 1L bolus', c: true },
+              { n: 'Transfuse 2 units packed RBCs (Hb < 7 threshold)', c: true },
+              { n: 'Vasopressors (Norepinephrine)', c: false },
+              { n: 'IV Furosemide (Lasix)', c: false },
+              { n: 'Therapeutic Phlebotomy', c: false }
+            ]
+          },
+          {
+            name: 'Pharmacotherapy & Endoscopy', icon: '💊', treats: [
+              { n: 'IV Pantoprazole 80mg bolus then 8mg/hr infusion', c: true },
+              { n: 'Endoscopic clipping and epinephrine injection (hemostasis)', c: true },
+              { n: 'Oral Omeprazole only (insufficient for active bleed)', c: false },
+              { n: 'IV Ranitidine (H2 blocker — outdated, insufficient)', c: false },
+              { n: 'Thrombolytics', c: false }
+            ]
+          }
         ],
-        summary: { dx: 'Bleeding Duodenal Ulcer', sub: 'Hemorrhagic Shock', clues: 'Hematemesis, syncope, tachycardia, hypotension, Hb 6.8, NSAID use.', tests: 'Immediate IVs and blood typing. EGD is the gold standard. Ordering CT Heads or Troponins wastes precious time in a hemorrhagic shock patient.', mgmt: 'ABC priority. Resuscitate with crystalloids and blood. IV PPI drip. Urgent therapeutic endoscopy.', pitfalls: 'Sending an unstable patient to the CT scanner for syncope when the obvious cause is massive blood loss.', other: 'Varices unlikely without liver disease. Octreotide is only used for variceal bleeds.', testRationale: 'Endoscopy directly stops the bleeding via clips or heat.', treatSeq: '1. 2 large IVs + Fluids 2. Crossmatch/Transfuse 3. IV PPI 4. Endoscopy.', traps: 'Using vasopressors before adequately replacing blood volume (empty tank).', learning: 'Syncope in the setting of hematemesis is hemorrhagic shock until proven otherwise.' },
+        summary: {
+          dx: 'Bleeding Duodenal Ulcer — NSAID-Induced (Forrest Class Ia)',
+          sub: 'Acute Upper GI Hemorrhage with Hemodynamic Compromise',
+          clues: 'Bright red hematemesis, syncope, cool diaphoretic skin, HR 122, BP 85/55 (shock index >1), epigastric pain relieved by food, chronic NSAID use without gastroprotection, melena on PR — classic UGIB from peptic ulcer disease.',
+          tests: 'BUN:Creatinine ratio >30 is a powerful bedside clue for UGIB (digested blood is urea-rich). CBC confirms severity. Coagulation rules out coagulopathy. EGD is the gold standard — it diagnoses AND treats simultaneously. CT scan should never be done before EGD in an unstable patient.',
+          mgmt: 'ABC first. Two large-bore IVs, type and crossmatch. Target Hb >7 with transfusion. IV PPI bolus reduces gastric acid and stabilizes the clot. EGD within 24 hours for Forrest Ia/Ib ulcers — endoscopic hemostasis (clips + epinephrine) is curative in 95%.',
+          pitfalls: 'Sending an unstable patient to CT before EGD — this delays definitive hemostasis and increases mortality. Transfusing to Hb >10 in stable patients — liberal transfusion paradoxically worsens outcomes in GI bleed.',
+          other: 'Esophageal varices: liver disease, portal hypertension, massive bleed, spider nevi, caput medusae. Mallory-Weiss: forceful retching THEN hematemesis, usually minor, stops spontaneously. Perforation: boardlike abdomen, free air on CXR — not this case.',
+          testRationale: 'BUN elevation with normal creatinine = digested blood absorbed from GI tract = upper GI source. Lactate confirms shock severity. Serial Hb measurements guide transfusion. Troponin, D-Dimer, and LFTs are distractors.',
+          treatSeq: '1. IV access + bolus fluids → 2. Type & crossmatch → 3. IV PPI infusion → 4. Transfuse if Hb <7 → 5. Urgent EGD when hemodynamically stable → 6. Post-procedure oral PPI + H. pylori eradication → 7. Stop NSAIDs permanently.',
+          traps: 'Administering diuretics (Furosemide) to a hypotensive patient — catastrophically worsens shock. Performing colonoscopy when hematemesis clearly indicates upper GI source.',
+          learning: 'Shock Index = HR / Systolic BP. >1.0 indicates significant hemorrhage (here: 122/85 = 1.4). BUN:Cr >30 = upper GI bleed. IV PPI + EGD = the two life-saving steps. Stop NSAIDs permanently and eradicate H. pylori to prevent recurrence.'
+        },
         xp: 40
       },
 
+      // ─────────────────────────────────────────────────────────────
+      // 3. OBGYN — Placenta Previa
+      // ─────────────────────────────────────────────────────────────
       {
-        id: 'obgyn', name: 'OBGYN', color: '#ec4899', emoji: '🤰', waitDays: 98,
-        caseTitle: 'Vaginal bleeding and decreased fetal movement at 34 weeks',
-        caseDesc: 'A 27-year-old G2P1 at 34 weeks with sudden painless vaginal bleeding. Filter out irrelevant diagnostics.',
+        id: 'obgyn', name: 'OBGYN', color: '#ec4899', emoji: '🤰', waitDays: 33,
+        caseTitle: 'Painless vaginal bleeding at 34 weeks gestation',
+        caseDesc: 'A 27-year-old G2P1 at 34 weeks presents with sudden-onset painless bright red vaginal bleeding and decreased fetal movements. She had a prior cesarean section. Do not perform a vaginal examination — the ultrasound must be done first.',
         patient: { name: 'Anastasia', gender: 'Female', age: '27 Y', complaint: 'Vaginal bleeding and decreased fetal movement' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '36.9°C' }, { icon: '❤️', label: 'Heart Rate', val: '96 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '110/70 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '18/min' }, { icon: '💧', label: 'SpO2', val: '98%' }],
-        history: ['G2P1 at 34 weeks gestation.', 'Sudden onset painless, bright red vaginal bleeding.', 'Reduced fetal movements.', 'Previous delivery was a lower segment caesarean section (LSCS).'],
-        physExam: ['Uterus soft, non-tender, relaxed.', 'Fetal heart rate borderline at 118 bpm.', 'Pelvic Exam: Deferred.'],
-        testCats: [
-          { name: 'Obstetric Imaging', icon: '🩻', tests: [{ n: 'Transabdominal Ultrasound', c: true, r: 'Complete Placenta Previa' }, { n: 'Transvaginal Ultrasound (careful)', c: true, r: 'Confirms complete placenta previa' }, { n: 'MRI Pelvis', c: false, r: 'Too slow for an emergency setting.' }, { n: 'CT Abdomen', c: false, r: 'Radiation risk to fetus. Unnecessary.' }] },
-          { name: 'Bedside & Physical Exams', icon: '✋', tests: [{ n: 'Digital Vaginal Exam', c: false, r: 'CONTRAINDICATED! Triggered massive hemorrhage.' }, { n: 'Sterile Speculum Exam', c: false, r: 'Not priority over ultrasound.' }] },
-          { name: 'Fetal Monitoring', icon: '📈', tests: [{ n: 'Cardiotocography (CTG / NST)', c: true, r: 'Late decelerations (Fetal distress)' }, { n: 'Biophysical Profile', c: false, r: 'Takes too long in an emergency' }, { n: 'Fetal Scalp Electrode', c: false, r: 'Contraindicated in Placenta Previa' }] },
-          { name: 'Maternal Pathology', icon: '💉', tests: [{ n: 'Type and Screen / Crossmatch', c: true, r: 'O-negative, crossmatched for 2 units' }, { n: 'CBC', c: true, r: 'Hb 9.8 g/dL' }, { n: 'Coagulation Profile (PT/PTT)', c: true, r: 'Normal' }, { n: 'Kleihauer-Betke test', c: true, r: 'Positive for fetal-maternal hemorrhage' }] },
-          { name: 'Chemistry & Distractors', icon: '🧪', tests: [{ n: 'Liver Function Tests (LFTs)', c: false, r: 'Normal' }, { n: 'Serum Bile Acids', c: false, r: 'Normal. Irrelevant.' }, { n: 'Urinalysis and Culture', c: false, r: 'Normal.' }, { n: 'Serum Troponin I', c: false, r: 'Normal.' }] }
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.9°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '98 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '108/68 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '18/min' },
+          { icon: '💧', label: 'SpO2', val: '98% on room air' }
         ],
-        diagnoses: [{ t: 'Complete Placenta Previa with Fetal Distress', c: true }, { t: 'Placental Abruption', c: false }, { t: 'Vasa Previa', c: false }, { t: 'Pulmonary Embolism', c: false }, { t: 'Uterine Rupture', c: false }, { t: 'Preterm Labor', c: false }],
+        history: [
+          'Sudden onset of painless, bright red vaginal bleeding — approximately 3 pads soaked in the past 2 hours.',
+          'Decreased fetal movements since this morning.',
+          'G2P1 — previous delivery was a lower segment cesarean section (LSCS) for fetal distress.',
+          'Current pregnancy uncomplicated until today; 34 weeks gestation (preterm).',
+          'No abdominal pain, no uterine contractions, no trauma.',
+          'No prior episodes of bleeding in this pregnancy.',
+          'Non-smoker. No medications other than iron supplements and folic acid.'
+        ],
+        physExam: [
+          'General: Anxious but alert. Pallor noted.',
+          'Abdomen: Uterus appropriate for dates. Fundal height 33cm. Fetus in cephalic presentation.',
+          'Uterus: Soft, non-tender, non-contracted — NO uterine tenderness (distinguishes from abruption).',
+          'Vaginal examination: NOT PERFORMED — placenta previa must be excluded by ultrasound first.',
+          'Fetal heart: Variable decelerations on external CTG — concerning for fetal compromise.',
+          'No cervical motion tenderness on bimanual exam — deferred pending USS.'
+        ],
+        testCats: [
+          {
+            name: 'Maternal Stabilization (Immediate)', icon: '🚨', tests: [
+              { n: 'IV access + Group & Save + Crossmatch 4 units RBCs', c: true, r: 'Two large-bore IVs placed. O-negative blood available; matched blood ready in 20 minutes' },
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'Hb 10.2 g/dL — moderate anemia from acute blood loss; platelets 185,000 normal' },
+              { n: 'Coagulation Screen (PT, aPTT, Fibrinogen, D-Dimer)', c: true, r: 'INR 1.0, fibrinogen 3.8 g/L — no DIC; important baseline before possible emergency surgery' },
+              { n: 'Urine Dipstick and Urinalysis', c: false, r: 'Normal — no proteinuria; pre-eclampsia not supported without hypertension or proteinuria' }
+            ]
+          },
+          {
+            name: 'Fetal & Obstetric Assessment', icon: '👶', tests: [
+              { n: 'Cardiotocography (CTG / Fetal Heart Rate Monitoring)', c: true, r: 'Variable decelerations noted — non-reassuring fetal heart rate pattern; suggests umbilical cord or fetal compromise' },
+              { n: 'Obstetric Ultrasound (Transabdominal)', c: true, r: 'Anterior low-lying placenta covering the internal os — confirms placenta previa. Fetus viable at 34 weeks.' },
+              { n: 'Transvaginal Ultrasound (TVS) for placental edge', c: true, r: 'TVS is SAFE in placenta previa — placental edge 0cm from internal os (complete previa confirmed). More accurate than transabdominal.' },
+              { n: 'Biophysical Profile (BPP)', c: true, r: 'BPP Score 4/8 — reduced fetal breathing movements and tone; fetal compromise worsening' },
+              { n: 'Doppler Velocimetry (Umbilical artery)', c: false, r: 'Normal waveforms — placental function reasonable; not the primary concern here' },
+              { n: 'Kleihauer-Betke Test (Feto-maternal hemorrhage)', c: true, r: 'Positive — fetal red cells in maternal circulation confirmed; Rh-D immunoglobulin dose calculated' }
+            ]
+          },
+          {
+            name: 'Blood & Biochemistry', icon: '🧪', tests: [
+              { n: 'Serum Urea, Creatinine, Electrolytes', c: false, r: 'Normal renal function — no pre-renal compromise at this stage' },
+              { n: 'Liver Function Tests (LFTs)', c: false, r: 'Normal — no HELLP syndrome (no thrombocytopenia, no hemolysis)' },
+              { n: 'Uric Acid Level', c: false, r: 'Mildly elevated — non-specific; not diagnostic here' },
+              { n: 'HbA1c and Glucose Challenge', c: false, r: 'Normal — gestational diabetes screening is routine antenatal care; irrelevant in acute presentation' },
+              { n: 'Blood Culture', c: false, r: 'No fever, no sepsis — not indicated' },
+              { n: 'Rhesus (Rh D) Blood Group', c: true, r: 'Rh D Negative — requires anti-D immunoglobulin injection to prevent Rh sensitization from feto-maternal hemorrhage' }
+            ]
+          },
+          {
+            name: 'Imaging & Advanced', icon: '🩻', tests: [
+              { n: 'MRI Pelvis (Placenta accreta spectrum assessment)', c: true, r: 'No myometrial invasion noted — placenta accreta spectrum excluded. Prior LSCS scar increases accreta risk.' },
+              { n: 'CT Pelvis', c: false, r: 'Ionizing radiation to fetus — MRI preferred in obstetric imaging for soft tissue detail' },
+              { n: 'Vaginal Examination (Digital or Speculum)', c: false, r: 'ABSOLUTELY CONTRAINDICATED in suspected placenta previa — can rupture sinuses and cause catastrophic hemorrhage' },
+              { n: 'Cystoscopy', c: false, r: 'Completely irrelevant — no urological symptoms' }
+            ]
+          },
+          {
+            name: 'Infectious & Immunological', icon: '🦠', tests: [
+              { n: 'High Vaginal Swab (HVS) for culture', c: false, r: 'No signs of infection — premature labour not the current diagnosis' },
+              { n: 'TORCH Serology (Toxoplasma, Rubella, CMV, Herpes)', c: false, r: 'Not relevant in acute antepartum hemorrhage' },
+              { n: 'COVID-19 PCR Swab', c: false, r: 'Pre-operative routine screen — appropriate but not diagnostic of the obstetric problem' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Complete Placenta Previa with Fetal Distress (Non-reassuring CTG)', c: true },
+          { t: 'Placental Abruption (Abruptio Placentae)', c: false },
+          { t: 'Vasa Previa', c: false },
+          { t: 'Preterm Labour with Cervical Dilation', c: false },
+          { t: 'Uterine Rupture', c: false }
+        ],
         dxCount: 1,
         treatCats: [
-          { name: 'Delivery Methods', icon: '🚑', treats: [{ n: 'Emergency Caesarean Section', c: true }, { n: 'Induction of labor with Oxytocin', c: false }, { n: 'Vacuum-assisted vaginal delivery', c: false }, { n: 'Expectant management (Bed rest)', c: false }] },
-          { name: 'Medications', icon: '💊', treats: [{ n: 'IM Betamethasone (Corticosteroids)', c: true }, { n: 'Rho(D) Immune Globulin (Anti-D)', c: true }, { n: 'IV Magnesium Sulfate (Neuroprotection)', c: true }, { n: 'IV Heparin infusion', c: false }, { n: 'Tocolytics (Nifedipine)', c: false }] }
+          {
+            name: 'Emergency Delivery', icon: '🏥', treats: [
+              { n: 'Emergency Lower Segment Cesarean Section (Category 1) with NICU standby', c: true },
+              { n: 'Anti-D Immunoglobulin 1500 IU IM for Rh-negative mother', c: true },
+              { n: 'Attempt vaginal delivery with oxytocin augmentation', c: false },
+              { n: 'Tocolytics (Nifedipine) and await maturity', c: false }
+            ]
+          },
+          {
+            name: 'Supportive', icon: '💉', treats: [
+              { n: 'IV Betamethasone 12mg IM (2 doses, 24h apart) for fetal lung maturity at 34 weeks', c: true },
+              { n: 'Blood transfusion if Hb <8 g/dL perioperatively', c: true },
+              { n: 'Magnesium Sulfate for fetal neuroprotection at <34 weeks', c: false },
+              { n: 'Ergometrine for postpartum hemorrhage prevention', c: false }
+            ]
+          }
         ],
-        summary: { dx: 'Placenta Previa with Fetal Distress', sub: 'Painless Antepartum Hemorrhage', clues: 'Painless bright red bleeding, soft non-tender uterus, prior C-section.', tests: 'Ultrasound is gold standard. Do NOT do a digital exam. Irrelevant tests like LFTs or Bile Acids delay surgery.', mgmt: 'Emergent C-section is mandatory. Administer RhoGAM because mother is Rh-negative.', pitfalls: 'Performing a digital cervical exam on a woman with 3rd-trimester bleeding.', other: 'Abruption presents with painful, dark bleeding and a rigid uterus.', testRationale: 'Transabdominal USG safely locates placenta.', treatSeq: '1. Stabilize mother 2. USG to locate placenta 3. Emergency C-Section.', traps: 'Waiting for steroids to take effect while the fetus is actively dying.', learning: 'Never perform a digital vaginal examination in a pregnant patient with bleeding until an ultrasound confirms placenta location.' },
+        summary: {
+          dx: 'Complete Placenta Previa with Non-Reassuring Fetal Heart Rate — Emergency Cesarean Indicated',
+          sub: 'Antepartum Hemorrhage from Placenta Covering Internal Os',
+          clues: 'Painless bright red vaginal bleeding in 3rd trimester, previous LSCS (major risk factor), soft non-tender uterus (no abruption), fetal decelerations on CTG, USS confirming anterior low-lying placenta — textbook placenta previa presentation.',
+          tests: 'USS (transabdominal then transvaginal) is the diagnostic gold standard — safe even in previa. Vaginal examination is CONTRAINDICATED. CTG assesses fetal wellbeing. Coagulation screen before surgery. Kleihauer-Betke test for Rh-negative mothers.',
+          mgmt: 'Non-reassuring CTG with complete previa at 34 weeks = Category 1 emergency cesarean. NICU team on standby for preterm neonate. Anti-D for Rh-negative mothers. Steroids only if time permits (usually not in emergency delivery).',
+          pitfalls: 'Performing a vaginal examination before USS — this is the most dangerous error in placenta previa. Attempting vaginal delivery with confirmed complete previa — catastrophic hemorrhage risk.',
+          other: 'Placental Abruption: PAINFUL, tender uterus, woody hardness, concealed or revealed bleeding, fetal distress. Vasa Previa: fetal vessels over os — rupture causes fetal death very rapidly. Preterm labour: painful, regular contractions, cervical change.',
+          testRationale: 'Transvaginal USS is paradoxically SAFER than transabdominal for measuring placental edge distance — the transducer does not reach the os. MRI for placenta accreta screening in women with prior uterine surgery.',
+          treatSeq: '1. IV access + crossmatch → 2. CTG (fetal wellbeing) → 3. USS (confirm previa) → 4. Coagulation screen → 5. Decision: emergency or planned CS → 6. Category 1 CS if non-reassuring CTG → 7. Anti-D if Rh negative.',
+          traps: 'Delaying delivery for steroid administration when fetal heart rate is non-reassuring — fetal life takes priority. Giving tocolytics in the presence of fetal distress.',
+          learning: 'Placenta Previa: Painless + Soft uterus = Previa. Painful + Woody hard uterus = Abruption. NEVER do a vaginal examination before USS in 3rd trimester bleeding. Prior LSCS is the biggest risk factor for placenta previa AND accreta.'
+        },
         xp: 40
       },
 
+      // ─────────────────────────────────────────────────────────────
+      // 4. ORTHOPEDICS — SCFE
+      // ─────────────────────────────────────────────────────────────
       {
-        id: 'ortho', name: 'Orthopedics', color: '#f59e0b', emoji: '🦴', waitDays: 24,
-        caseTitle: 'Left hip pain and limp in an adolescent',
-        caseDesc: 'A 13-year-old male presents with hip pain radiating to the knee and a noticeable limp.',
-        patient: { name: 'Levent', gender: 'Male', age: '13 Y', complaint: 'Left hip pain and limp' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '37.0°C' }, { icon: '❤️', label: 'Heart Rate', val: '82 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '115/75 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '16/min' }, { icon: '💧', label: 'SpO2', val: '99%' }],
-        history: ['Progressive limp over 3 weeks.', 'Pain radiates to the left knee.', 'Patient is undergoing a rapid growth spurt. BMI is 32 (Obese).'],
-        physExam: ['Antalgic gait.', 'Obligatory external rotation with hip flexion.', 'Knee examination is completely normal.'],
-        testCats: [
-          { name: 'Radiology', icon: '🩻', tests: [{ n: 'Pelvic X-ray (AP and Frog-leg lateral)', c: true, r: '"Ice cream slipping off a cone" appearance' }, { n: 'Left Knee X-ray', c: false, r: 'Normal. Pain is referred from the hip.' }, { n: 'Left Femur X-ray', c: false, r: 'Normal' }, { n: 'MRI Left Hip', c: false, r: 'Shows slip, but X-ray is sufficient and faster' }, { n: 'CT Pelvis', c: false, r: 'Excessive radiation. Not needed.' }] },
-          { name: 'Pathology & Blood', icon: '🧪', tests: [{ n: 'Complete Blood Count (CBC)', c: true, r: 'Normal' }, { n: 'C-Reactive Protein (CRP) & ESR', c: true, r: 'Normal (rules out septic arthritis)' }, { n: 'Blood Cultures', c: false, r: 'No growth' }] },
-          { name: 'Immunology & Distractors', icon: '🧬', tests: [{ n: 'Rheumatoid Factor', c: false, r: 'Negative' }, { n: 'HLA-B27 Testing', c: false, r: 'Negative' }, { n: 'Anti-Nuclear Antibody (ANA)', c: false, r: 'Negative' }, { n: 'Lyme Disease PCR', c: false, r: 'Negative' }] },
-          { name: 'Joint Specific', icon: '💉', tests: [{ n: 'Arthrocentesis (Joint Aspiration)', c: false, r: 'Unnecessary, no signs of effusion or infection' }, { n: 'Ultrasound of Hip', c: false, r: 'No effusion' }] }
+        id: 'ortho', name: 'Orthopedics', color: '#8b5cf6', emoji: '🦴', waitDays: 55,
+        caseTitle: 'Hip pain and limp in an obese adolescent',
+        caseDesc: 'A 13-year-old obese boy presents with 3 weeks of left hip and referred knee pain, and a progressive antalgic limp. External rotation of the left hip is restricted. Get the right X-ray view — the AP alone will miss this diagnosis.',
+        patient: { name: 'Levent', gender: 'Male', age: '13 Y', complaint: 'Left hip pain and limp for 3 weeks' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.7°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '84 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '118/74 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '16/min' },
+          { icon: '💧', label: 'SpO2', val: '99%' }
         ],
-        diagnoses: [{ t: 'Slipped Capital Femoral Epiphysis (SCFE)', c: true }, { t: 'Legg-Calvé-Perthes Disease', c: false }, { t: 'Septic Arthritis', c: false }, { t: 'Juvenile Idiopathic Arthritis', c: false }, { t: 'Meniscal Tear', c: false }, { t: 'Osgood-Schlatter Disease', c: false }],
+        history: [
+          'Progressive left hip pain for 3 weeks — dull, aching, insidious onset.',
+          'Pain referred to the left knee — led to initial incorrect evaluation of the knee.',
+          'Antalgic limp that has worsened progressively over 3 weeks.',
+          'No trauma, no fall, no sports injury.',
+          'Obese adolescent — BMI 31 (95th percentile for age).',
+          'No fever, no redness, no systemic symptoms.',
+          'No history of steroid use, no sickle cell disease.'
+        ],
+        physExam: [
+          'Gait: Antalgic gait — reduced weight-bearing on left. Externally rotated left leg while walking (pathognomonic of SCFE).',
+          'Left Hip: Restricted internal rotation and abduction. External rotation increases with hip flexion (Drehmann sign positive).',
+          'Right Hip: Full painless range of movement — but must image bilaterally as 25% have bilateral involvement.',
+          'Knee: Normal — no intra-articular pathology; pain is referred from the hip.',
+          'Neurovascular: Intact distally — pedal pulses present, sensation normal.'
+        ],
+        testCats: [
+          {
+            name: 'First-Line Imaging (Do These First)', icon: '📷', tests: [
+              { n: 'AP Pelvis X-ray (both hips)', c: true, r: 'Widened physis left side, "ice cream falling off the cone" appearance — SCFE suggested but frog-leg view needed' },
+              { n: 'Frog-leg lateral X-ray of both hips', c: true, r: 'Posterior and inferior slippage of left femoral epiphysis clearly confirmed — Klein\'s line does not intersect epiphysis' },
+              { n: 'AP Knee X-ray', c: false, r: 'Normal knee — knee pain is referred hip pain; do not be misled by the symptom location' }
+            ]
+          },
+          {
+            name: 'Advanced Imaging', icon: '🩻', tests: [
+              { n: 'MRI Both Hips (without contrast)', c: true, r: 'Early avascular necrosis (AVN) changes on left femoral head — bone marrow edema signal. Guides surgical urgency.' },
+              { n: 'Bone Scan (Tc-99m scintigraphy)', c: false, r: 'Increased uptake left hip — shows hyperemia but cannot differentiate SCFE from infection; MRI is superior' },
+              { n: 'CT Hips', c: false, r: 'Higher radiation dose in adolescent; MRI preferred for soft tissue and AVN assessment' },
+              { n: 'Ultrasound Hip (Joint effusion)', c: false, r: 'Small effusion noted — non-specific; cannot confirm SCFE. X-ray is diagnostic.' }
+            ]
+          },
+          {
+            name: 'Blood Tests', icon: '🧪', tests: [
+              { n: 'Complete Blood Count (CBC)', c: false, r: 'Normal WBC 8,400 — no leukocytosis; makes septic arthritis unlikely' },
+              { n: 'ESR and CRP', c: false, r: 'ESR 12, CRP 4 — both normal; infection (septic arthritis, osteomyelitis) excluded' },
+              { n: 'Blood Culture', c: false, r: 'No fever, no signs of sepsis — not indicated' },
+              { n: 'Thyroid Function Tests (TSH, T4)', c: true, r: 'TSH elevated — hypothyroidism is a predisposing cause of SCFE (along with obesity and growth hormone excess); screen all SCFE patients' },
+              { n: 'IGF-1 (Growth Hormone)', c: true, r: 'Elevated for age — growth hormone excess weakens the physis; this is an endocrine risk factor for SCFE' },
+              { n: 'Fasting Blood Glucose and HbA1c', c: false, r: 'Normal — obesity without frank diabetes in this case; not relevant to SCFE management' },
+              { n: 'Uric Acid', c: false, r: 'Normal — gout not a diagnosis in a 13-year-old' },
+              { n: 'Sickle Cell Screen (Hb Electrophoresis)', c: false, r: 'Normal Hb electrophoresis — sickle cell not the cause; but important to exclude as it changes anesthetic management' }
+            ]
+          },
+          {
+            name: 'Microbiological (Infection Exclusion)', icon: '🦠', tests: [
+              { n: 'Joint Aspiration for Cell Count and Culture', c: false, r: 'Normal appearing fluid, WBC <2000 — septic arthritis excluded; aspiration not indicated when SCFE is confirmed on imaging' },
+              { n: 'Antistreptolysin O (ASO) titre', c: false, r: 'Negative — no rheumatic fever joint disease in this presentation' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Slipped Capital Femoral Epiphysis (SCFE) — Moderate, Stable', c: true },
+          { t: 'Septic Arthritis of the Hip', c: false },
+          { t: "Legg-Calvé-Perthes Disease (Avascular Necrosis — Idiopathic)", c: false },
+          { t: 'Transient Synovitis (Irritable Hip)', c: false },
+          { t: 'Osteosarcoma of the Proximal Femur', c: false }
+        ],
         dxCount: 1,
         treatCats: [
-          { name: 'Immediate Actions', icon: '🚫', treats: [{ n: 'Strict Non-Weight Bearing (Crutches/Wheelchair)', c: true }, { n: 'Physical Therapy & Stretching', c: false }, { n: 'Return to sports with NSAIDs', c: false }, { n: 'Cast immobilization', c: false }] },
-          { name: 'Definitive Treatment', icon: '🔪', treats: [{ n: 'Percutaneous pinning in situ (Screw fixation)', c: true }, { n: 'Prophylactic pinning of contralateral hip', c: true }, { n: 'Arthroscopic Knee Surgery', c: false }, { n: 'IV Ceftriaxone', c: false }] }
+          {
+            name: 'Surgical', icon: '🔩', treats: [
+              { n: 'Urgent in-situ cannulated screw fixation (single screw percutaneous) — within 24-48 hours', c: true },
+              { n: 'Prophylactic pinning of contralateral hip (if high risk: endocrinopathy, young age, bilateral symptoms)', c: true },
+              { n: 'Open reduction and osteotomy', c: false },
+              { n: 'Total hip replacement', c: false }
+            ]
+          },
+          {
+            name: 'Conservative', icon: '🛑', treats: [
+              { n: 'Strict non-weight-bearing on crutches until surgical fixation', c: true },
+              { n: 'Treat underlying endocrinopathy (hypothyroidism / GH excess)', c: true },
+              { n: 'NSAIDs and physiotherapy alone', c: false },
+              { n: 'Walking cast and weight bearing as tolerated', c: false }
+            ]
+          }
         ],
-        summary: { dx: 'Slipped Capital Femoral Epiphysis (SCFE)', sub: 'Adolescent hip emergency', clues: 'Obese adolescent boy, growth spurt, referred knee pain, obligatory external rotation.', tests: 'Frog-leg lateral X-ray detects the slip. Do not get distracted by the knee pain and order unnecessary knee X-rays or MRIs.', mgmt: 'Immediate non-weight bearing. Surgical pinning in situ is definitive.', pitfalls: 'Focusing solely on the knee because the patient complains of knee pain, completely missing the hip pathology.', other: 'Legg-Calve-Perthes is avascular necrosis in younger kids (4-8 years).', testRationale: 'The "ice cream falling off the cone" appearance on frog-leg X-ray is pathognomonic.', treatSeq: '1. Wheelchair/Crutches 2. Ortho consult 3. Surgical pinning.', traps: 'Allowing the patient to walk, worsening the slip.', learning: 'Always examine the hip in a child presenting with knee pain.' },
+        summary: {
+          dx: 'Slipped Capital Femoral Epiphysis (SCFE) — Moderate Stable Slip, Left Hip',
+          sub: 'Posterior-inferior displacement of the femoral epiphysis through the growth plate',
+          clues: 'Obese male adolescent (13 years), insidious left hip pain with knee referral, externally rotated gait, restricted internal rotation, Drehmann sign positive — this is the classic SCFE demographic and presentation.',
+          tests: 'AP pelvis shows widened physis but frog-leg lateral is the critical view — Klein\'s line fails to intersect the epiphysis confirming the slip. MRI for AVN assessment. Screen for endocrine causes (hypothyroidism, GH excess).',
+          mgmt: 'SCFE is an orthopaedic urgency. Non-weight-bearing immediately to prevent slip progression. In-situ pinning within 24-48 hours is definitive. Do not attempt to reduce the slip — worsens AVN risk.',
+          pitfalls: 'Treating the knee pain (referred pain) and missing the hip. Ordering only an AP X-ray — the frog-leg lateral is mandatory and diagnostic. Attempting closed reduction — increases AVN incidence dramatically.',
+          other: 'Legg-Calvé-Perthes: idiopathic AVN in younger children (4-8 years), gradual pain, small fragmented femoral head on X-ray. Septic arthritis: fever, elevated WBC and CRP, cannot move hip in any direction, systemically unwell. Transient synovitis: younger, mild, self-limiting, ultrasound shows effusion.',
+          testRationale: 'Klein\'s line is the key radiological measurement on frog-leg lateral: a line along the superior femoral neck should intersect the lateral epiphysis. Failure = SCFE. MRI detects early AVN and bone marrow edema before irreversible collapse.',
+          treatSeq: '1. Non-weight-bearing immediately → 2. Frog-leg X-ray → 3. MRI both hips → 4. Endocrine screen → 5. In-situ pinning within 24-48h → 6. Contralateral prophylactic pinning if high risk → 7. Physiotherapy → 8. Monitor for AVN.',
+          traps: 'Diagnosing knee pathology in a teenager without examining the hip — always examine the joint ABOVE the pain in children. Missing bilateral SCFE (25% incidence).',
+          learning: 'SCFE = Overweight Adolescent + Hip/Knee Pain + External rotation + Restricted IR. Frog-leg lateral X-ray is diagnostic. Klein\'s line fails. In-situ pinning urgently. Never try to reduce it. Screen both hips and screen for endocrinopathy.'
+        },
         xp: 40
       },
 
+      // ─────────────────────────────────────────────────────────────
+      // 5. DERMATOLOGY — Vitiligo
+      // ─────────────────────────────────────────────────────────────
       {
-        id: 'heme', name: 'Heme-Rheumatology', color: '#be123c', emoji: '🩸', waitDays: 48,
-        caseTitle: 'Persistent headaches and itching after hot showers',
-        caseDesc: 'A 54-year-old male complains of generalized severe pruritus after bathing, and headaches.',
-        patient: { name: 'Gregorios', gender: 'Male', age: '54 Y', complaint: 'Pruritus after hot showers and headaches' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '36.8°C' }, { icon: '❤️', label: 'Heart Rate', val: '85 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '155/95 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '16/min' }, { icon: '💧', label: 'SpO2', val: '97%' }],
-        history: ['Face always looks flushed. Blurry vision and tinnitus.', 'Intense, burning itch all over body 10 minutes after a warm shower.'],
-        physExam: ['Noticeable facial plethora (ruddy cyanosis).', 'Splenomegaly palpable 3cm below the left costal margin. No rashes.'],
-        testCats: [
-          { name: 'Hematology', icon: '💉', tests: [{ n: 'Complete Blood Count (CBC)', c: true, r: 'Hb 19.5, Hct 60%, WBC 14k, Plt 550k' }, { n: 'Serum Erythropoietin (EPO) level', c: true, r: 'Low (Rules out secondary polycythemia)' }, { n: 'Peripheral Blood Smear', c: true, r: 'Increased red cell mass' }, { n: 'Coagulation Profile', c: false, r: 'Normal' }, { n: 'Ferritin & Iron Panel', c: true, r: 'Low Ferritin (used up by RBC production)' }] },
-          { name: 'Genetics & Specialized', icon: '🧬', tests: [{ n: 'JAK2 V617F mutation assay', c: true, r: 'Positive' }, { n: 'BCR-ABL translocation (Philadelphia chromosome)', c: false, r: 'Negative' }, { n: 'Bone Marrow Biopsy', c: true, r: 'Hypercellularity (Panmyelosis)' }] },
-          { name: 'Cardiology & Pulmonary', icon: '❤️‍🩹', tests: [{ n: 'Arterial Blood Gas (ABG)', c: false, r: 'Normal PaO2. Waste of a painful test.' }, { n: '12-Lead ECG', c: false, r: 'Normal' }, { n: 'Chest X-Ray', c: false, r: 'Normal lungs' }] },
-          { name: 'Pathology & Diagnostics', icon: '🔬', tests: [{ n: 'Comprehensive Metabolic Panel', c: false, r: 'Normal' }, { n: 'Sweat Chloride Test', c: false, r: 'Normal. Irrelevant.' }, { n: 'Autoimmune Panel (ANA, RF)', c: false, r: 'Negative' }, { n: 'Urine Toxicology Screen', c: false, r: 'Negative' }] }
-        ],
-        diagnoses: [{ t: 'Polycythemia Vera (PV)', c: true }, { t: 'Secondary Polycythemia (Hypoxia-driven)', c: false }, { t: 'Essential Thrombocythemia', c: false }, { t: 'Chronic Myeloid Leukemia (CML)', c: false }, { t: 'Systemic Mastocytosis', c: false }, { t: 'Hemochromatosis', c: false }],
-        dxCount: 1,
-        treatCats: [
-          { name: 'Primary Therapy', icon: '🩸', treats: [{ n: 'Therapeutic Phlebotomy (Keep Hct < 45%)', c: true }, { n: 'Low-dose Aspirin (81mg)', c: true }, { n: 'Cytoreductive therapy (Hydroxyurea)', c: true }, { n: 'Bone Marrow Transplant', c: false }] },
-          { name: 'Contraindicated Therapies', icon: '🚫', treats: [{ n: 'Iron supplementation', c: false }, { n: 'Imatinib (Gleevec)', c: false }, { n: 'High-dose systemic antihistamines', c: false }, { n: 'Warfarin', c: false }, { n: 'Erythropoietin injections', c: false }] }
-        ],
-        summary: { dx: 'Polycythemia Vera', sub: 'Primary Myeloproliferative Neoplasm', clues: 'Aquagenic pruritus, facial plethora, splenomegaly, high Hb/Hct.', tests: 'Low EPO distinguishes it from secondary causes. JAK2 V617F mutation is highly diagnostic. Do not order ABGs randomly.', mgmt: 'Phlebotomy to physically remove blood. Aspirin to prevent blood clots. Hydroxyurea for high-risk patients.', pitfalls: 'Prescribing Iron. These patients are purposely kept iron-deficient to slow down RBC production. Giving iron dangerously spikes hematocrit.', other: 'Secondary polycythemia will have a HIGH EPO level. CML features a massive WBC count and BCR-ABL mutation.', testRationale: 'High Hct + Low EPO + Positive JAK2 = Polycythemia Vera.', treatSeq: '1. Phlebotomy 2. Aspirin 3. Hydroxyurea.', traps: 'Failing to recognize that the primary cause of death in these patients is thrombosis.', learning: 'Aquagenic pruritus is caused by basophils releasing histamine triggered by temperature changes.' },
-        xp: 40
-      },
-
-      {
-        id: 'derm', name: 'Dermatology', color: '#8b5cf6', emoji: '🔬', waitDays: 45,
-        caseTitle: 'Spreading pale patches on skin',
-        caseDesc: 'A 22-year-old female presents with progressive loss of skin color. Differentiate autoimmune from infectious causes.',
+        id: 'derm', name: 'Dermatology', color: '#f59e0b', emoji: '🧴', waitDays: 28,
+        caseTitle: 'Spreading pale patches on face, hands, and neck in a young woman',
+        caseDesc: 'A 22-year-old woman presents with an 8-month history of progressively enlarging depigmented patches on her face, hands, and neck. Family history of thyroid disease. The clinical picture and Wood\'s lamp will tell you everything — resist the urge to biopsy.',
         patient: { name: 'Yasuko', gender: 'Female', age: '22 Y', complaint: 'Spreading pale patches on skin' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '36.8°C' }, { icon: '❤️', label: 'Heart Rate', val: '75 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '110/70 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '14/min' }, { icon: '💧', label: 'SpO2', val: '100%' }],
-        history: ['Noticed white patches starting on hands 6 months ago, now appearing around mouth.', 'No itching, pain, or scaling.', 'History of Hashimoto thyroiditis (well-controlled).', 'Aunt has pernicious anemia.'],
-        physExam: ['Well-demarcated, completely depigmented (chalk-white) macules on hands and perioral region.', 'Skin texture is completely normal. No scales, no anesthesia.'],
-        testCats: [
-          { name: 'Dermatologic Diagnostics', icon: '🔦', tests: [{ n: 'Wood\'s lamp examination', c: true, r: 'Lesions glow bright, chalk-white (enhances depigmentation)' }, { n: 'KOH preparation (Skin scraping)', c: true, r: 'Negative for fungal hyphae/spores' }, { n: 'Skin biopsy', c: false, r: 'Unnecessary scar. Shows absence of melanocytes.' }, { n: 'Patch testing for allergies', c: false, r: 'Negative' }] },
-          { name: 'Systemic & Distractor Labs', icon: '🧪', tests: [{ n: 'TSH and Free T4', c: true, r: 'Normal (well-controlled on meds)' }, { n: 'Serum B12 and Folate', c: true, r: 'Normal (Screening for pernicious anemia)' }, { n: 'Rapid Plasma Reagin (RPR) for Syphilis', c: false, r: 'Negative' }, { n: 'HIV 1/2 Ag/Ab Combo', c: false, r: 'Negative' }, { n: 'Echocardiogram', c: false, r: 'Normal. Completely irrelevant.' }, { n: 'Liver Function Tests', c: false, r: 'Normal' }] }
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.6°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '74 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '112/72 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '16/min' },
+          { icon: '💧', label: 'SpO2', val: '99%' }
         ],
-        diagnoses: [{ t: 'Vitiligo', c: true }, { t: 'Tinea Versicolor', c: false }, { t: 'Pityriasis Alba', c: false }, { t: 'Leprosy (Hansen\'s disease)', c: false }, { t: 'Post-inflammatory hypopigmentation', c: false }],
+        history: [
+          'Progressively enlarging, asymptomatic depigmented patches on face, dorsum of hands, and neck over 8 months.',
+          'No itching, no burning, no pain.',
+          'Mother has Hashimoto\'s thyroiditis. Maternal aunt has Type 1 Diabetes.',
+          'No steroid use, no chemical exposure.',
+          'Patches are enlarging — worrying the patient cosmetically and psychologically.',
+          'No hair loss within the patches. No scaling.'
+        ],
+        physExam: [
+          'Skin: Sharply demarcated, chalk-white, completely depigmented macules on face (perioral, periocular), dorsal hands, and neck.',
+          'No scaling, no vesicles, no satellite lesions.',
+          'Hair within patches: Normal-coloured hair (not leucotrichia — a poor prognostic sign).',
+          'No skin thickening, no telangiectasia.',
+          'Thyroid: Non-tender, no goitre palpable.',
+          'No lymphadenopathy, no hepatosplenomegaly.'
+        ],
+        testCats: [
+          {
+            name: 'Bedside Dermatological Tests', icon: '💡', tests: [
+              { n: "Wood's Lamp Examination (365nm UV light)", c: true, r: 'Bright chalk-white fluorescence of all lesions — confirms COMPLETE depigmentation (melanocyte destruction). Pathognomonic for vitiligo.' },
+              { n: 'KOH Preparation (Skin scraping)', c: true, r: 'Negative — no fungal hyphae or pseudohyphae; definitively excludes Pityriasis versicolor (most common mimic)' },
+              { n: 'Dermoscopy', c: false, r: 'Shows perifollicular pigment retention at edges — helps assess repigmentation potential; not diagnostic' },
+              { n: 'Tzanck Smear', c: false, r: 'Normal — used for vesicular lesions (herpes, pemphigus); irrelevant here' }
+            ]
+          },
+          {
+            name: 'Autoimmune Screening (Essential)', icon: '🧬', tests: [
+              { n: 'Thyroid Function Tests (TSH, Free T4)', c: true, r: 'TSH elevated at 5.8 mIU/L — subclinical hypothyroidism; Hashimoto\'s thyroiditis is the most common vitiligo association' },
+              { n: 'Anti-Thyroid Peroxidase Antibody (Anti-TPO)', c: true, r: 'Strongly positive at 480 IU/mL — confirms autoimmune thyroiditis (Hashimoto\'s)' },
+              { n: 'Anti-Thyroglobulin Antibody', c: false, r: 'Weakly positive — additional confirmation of Hashimoto\'s, but Anti-TPO is sufficient' },
+              { n: 'Antinuclear Antibody (ANA)', c: true, r: 'Positive (1:160, speckled pattern) — autoimmune diathesis confirmed; systemic lupus less likely given clinical picture' },
+              { n: 'Fasting Blood Glucose and HbA1c', c: true, r: 'Normal — Type 1 Diabetes excluded (strong family history; screen annually)' },
+              { n: 'Complete Blood Count + Peripheral Smear', c: true, r: 'Normal CBC; no megaloblastic changes — Pernicious Anaemia (Vitamin B12 deficiency, anti-intrinsic factor antibody) screen recommended' },
+              { n: 'Vitamin B12 Level', c: true, r: 'Low normal at 210 pg/mL — borderline; pernicious anaemia screening warranted given autoimmune cluster' },
+              { n: 'Anti-intrinsic Factor Antibody', c: false, r: 'Negative — pernicious anaemia not confirmed; worth checking in future if B12 drops' },
+              { n: 'Cortisol Stimulation Test (Short Synacthen)', c: false, r: 'Normal — Addison\'s disease excluded; would present with hyperpigmentation, not depigmentation' },
+              { n: 'Rheumatoid Factor', c: false, r: 'Negative — no joint disease' }
+            ]
+          },
+          {
+            name: 'Histopathology & Advanced', icon: '🔬', tests: [
+              { n: 'Punch Skin Biopsy', c: false, r: 'Absence of melanocytes with normal keratinocytes — confirms vitiligo histologically; NOT NEEDED when clinical + Wood\'s lamp is diagnostic' },
+              { n: 'Electron Microscopy of Melanocytes', c: false, r: 'Research tool only — complete overkill for a routine clinical diagnosis' },
+              { n: 'Immunofluorescence of Skin Biopsy', c: false, r: 'Negative — useful for autoimmune blistering disorders; irrelevant here' }
+            ]
+          },
+          {
+            name: 'Infectious Disease Exclusion', icon: '🦠', tests: [
+              { n: 'Slit Skin Smear for Acid-Fast Bacilli (Leprosy)', c: false, r: 'Negative — leprosy causes HYPO-pigmented (not depigmented) ANAESTHETIC patches; sensation is normal in Yasuko\'s lesions' },
+              { n: 'VDRL / Syphilis Serology', c: false, r: 'Negative — secondary syphilis can cause hypopigmented macules; excluded here' },
+              { n: 'Skin Culture for Fungal Organisms', c: false, r: 'KOH preparation already excluded fungal cause — culture adds nothing' }
+            ]
+          },
+          {
+            name: 'Psychological & Quality of Life', icon: '🧠', tests: [
+              { n: 'DLQI (Dermatology Life Quality Index) Questionnaire', c: true, r: 'Score 14/30 — moderate to severe impact on daily life and psychological wellbeing; refer for psychosocial support' },
+              { n: 'Dermatology Anxiety/Depression Screening (PHQ-9)', c: false, r: 'Borderline scores — facial vitiligo carries significant psychosocial burden; address empathetically' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Non-Segmental Vitiligo (Generalised Type)', c: true },
+          { t: 'Pityriasis Versicolor (Tinea Versicolor)', c: false },
+          { t: 'Leprosy — Tuberculoid Type (Borderline)', c: false },
+          { t: 'Pityriasis Alba', c: false },
+          { t: 'Chemical Leukoderma (Occupational depigmentation)', c: false },
+          { t: 'Post-Inflammatory Hypopigmentation', c: false }
+        ],
         dxCount: 1,
         treatCats: [
-          { name: 'Topical Therapy', icon: '🧴', treats: [{ n: 'High-potency Topical Corticosteroids', c: true }, { n: 'Topical Calcineurin Inhibitors (Tacrolimus) for face', c: true }, { n: 'Topical Antifungals (Clotrimazole)', c: false }, { n: 'Hydroquinone cream (Bleaching agent)', c: false }] },
-          { name: 'Systemic/Physical Therapy', icon: '☀️', treats: [{ n: 'Narrowband UVB Phototherapy', c: true }, { n: 'Sunscreen and cosmetic camouflage', c: true }, { n: 'Oral Antibiotics (Dapsone)', c: false }, { n: 'Systemic Antiviral (Acyclovir)', c: false }] }
+          {
+            name: 'Topical Therapy', icon: '🧴', treats: [
+              { n: 'Topical Tacrolimus 0.1% ointment twice daily (face and body folds — avoids steroid atrophy)', c: true },
+              { n: 'Topical Mometasone furoate 0.1% cream (trunk and extremities, 5 days/week)', c: true },
+              { n: 'Topical Ruxolitinib cream 1.5% (JAK1/2 inhibitor — FDA approved 2022 for non-segmental vitiligo)', c: true },
+              { n: 'Topical antifungal cream (Clotrimazole)', c: false },
+              { n: 'Topical hydroquinone (depigmenting agent — paradoxically worsens vitiligo)', c: false }
+            ]
+          },
+          {
+            name: 'Phototherapy & Systemic', icon: '💡', treats: [
+              { n: 'Narrowband UVB Phototherapy (NB-UVB) 3x per week', c: true },
+              { n: 'Oral Mini-pulse Dexamethasone (for rapidly spreading disease)', c: false },
+              { n: 'Levothyroxine for concurrent subclinical hypothyroidism', c: true },
+              { n: 'Oral Methoxsalen + PUVA (older, more side effects than NB-UVB)', c: false }
+            ]
+          }
         ],
-        summary: { dx: 'Vitiligo', sub: 'Autoimmune melanocyte destruction', clues: 'Painless, non-scaling, totally depigmented patches, history of autoimmune disease.', tests: 'Wood\'s lamp confirms complete depigmentation. KOH prep rules out fungus. Avoid randomly testing for STDs without clinical suspicion.', mgmt: 'Topical steroids for body, topical tacrolimus for delicate areas (face) to avoid skin thinning. Narrowband UVB if spreading.', pitfalls: 'Prescribing antifungals because "all white spots are fungus." Using strong steroids on the face, causing permanent skin atrophy.', other: 'Tinea versicolor has a fine scale and is mildly itchy. Leprosy has anesthetic (numb) patches.', testRationale: 'Wood\'s lamp is a quick, non-invasive confirmation tool in clinic.', treatSeq: '1. Topicals + Sunscreen 2. NBUVB Phototherapy if spreading.', traps: 'Ignoring the psychosocial impact of facial depigmentation.', learning: 'Vitiligo frequently clusters with other autoimmune conditions like thyroid disease and pernicious anemia.' },
+        summary: {
+          dx: 'Non-Segmental Vitiligo with Concurrent Hashimoto Thyroiditis',
+          sub: 'T-cell mediated autoimmune destruction of melanocytes',
+          clues: "Sharply demarcated chalk-white DEPIGMENTED macules (not hypopigmented), asymptomatic, spreading pattern on sun-exposed areas, family history of autoimmune disease, Wood's lamp brilliant white fluorescence — complete diagnostic picture of vitiligo.",
+          tests: "Wood's lamp is the cornerstone — chalk-white in vitiligo vs. yellow-green in tinea versicolor. KOH scraping quickly excludes fungal mimic. Autoimmune screen is mandatory: TSH, Anti-TPO, ANA, FBS, B12.",
+          mgmt: 'Topical tacrolimus for face (avoids steroid atrophy). NB-UVB for widespread disease. Treat Hashimoto\'s with Levothyroxine if TSH >10 or symptomatic. Address psychosocial impact. Topical ruxolitinib (JAK inhibitor) is the newest FDA-approved option.',
+          pitfalls: 'Prescribing antifungal cream because "all white patches are fungal." Using strong steroids on the face causing permanent atrophy and telangiectasia. Missing associated autoimmune conditions that need treatment.',
+          other: "Tinea versicolor: fine scale, mildly itchy, KOH shows hyphae, Wood's lamp shows yellow-green. Leprosy: anaesthetic (numb) patches, thickened nerves, endemic area history. Pityriasis alba: hypopigmented (not depigmented), scaly, in children.",
+          testRationale: "Wood's lamp is non-invasive, instantaneous, and diagnostic in clinic — no need for biopsy. KOH scraping quickly excludes the most common alternative (tinea). Autoimmune panel screens for the frequently associated conditions that require separate treatment.",
+          treatSeq: "1. Confirm with Wood's lamp + KOH → 2. Topicals (steroid or tacrolimus) → 3. Add NB-UVB if spreading → 4. Screen and manage associated autoimmune conditions.",
+          traps: 'Ignoring the significant psychosocial and quality-of-life impact of visible facial depigmentation in a young woman — address with empathy and cosmetic camouflage options.',
+          learning: 'Vitiligo frequently clusters with other autoimmune conditions: Hashimoto thyroiditis, pernicious anaemia, Addison disease, type 1 diabetes. Screen for all. Chalk-white = depigmentation = vitiligo. Pale/off-white = hypopigmentation = many other causes.'
+        },
         xp: 40
       },
 
+      // ─────────────────────────────────────────────────────────────
+      // 6. ENT & OPHTHALMOLOGY — Hordeolum
+      // ─────────────────────────────────────────────────────────────
       {
         id: 'ent', name: 'ENT & Ophthalmology', color: '#14b8a6', emoji: '👁️', waitDays: 12,
-        caseTitle: 'Painful swelling on upper eyelid',
-        caseDesc: 'A 24-year-old female presents with an acute, tender lump on her eyelid. Avoid over-testing for a simple diagnosis.',
-        patient: { name: 'Elena', gender: 'Female', age: '24 Y', complaint: 'Painful swelling on upper eyelid' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '37.0°C' }, { icon: '❤️', label: 'Heart Rate', val: '80 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '120/80 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '16/min' }, { icon: '💧', label: 'SpO2', val: '99%' }],
-        history: ['Started rapidly 2 days ago. Exquisitely tender to touch.', 'No vision changes, no double vision, no pain with eye movement.', 'Wears heavy eye makeup daily.'],
-        physExam: ['Erythematous, swollen, very tender nodule pointing at the upper eyelid margin.', 'Conjunctiva is clear. Extraocular movements are intact and painless.', 'Visual acuity is 20/20 bilaterally. No proptosis.'],
-        testCats: [
-          { name: 'Clinical & Optical', icon: '👁️‍🗨️', tests: [{ n: 'Visual acuity & Extraocular movement testing', c: true, r: 'Normal (Rules out orbital cellulitis)' }, { n: 'Slit-lamp examination', c: true, r: 'Localized meibomian gland abscess at lid margin' }, { n: 'Fluorescein staining', c: false, r: 'No corneal abrasions' }] },
-          { name: 'Extreme Diagnostics (Traps)', icon: '🚫', tests: [{ n: 'CT Scan of Orbit', c: false, r: 'Unnecessary radiation and cost' }, { n: 'Bacterial swab culture', c: false, r: 'Unnecessary for uncomplicated cases' }, { n: 'MRI Brain', c: false, r: 'Completely irrelevant' }, { n: 'ESR and CRP', c: false, r: 'Normal. Waste of resources.' }, { n: 'Blood Cultures', c: false, r: 'Negative' }] }
+        caseTitle: 'Acutely painful red swelling on upper eyelid',
+        caseDesc: 'A 24-year-old female contact lens wearer presents with a 2-day history of a tender, red lump at her upper eyelid margin. Vision is fully intact. Avoid the trap of over-investigating a simple, clinical diagnosis.',
+        patient: { name: 'Elena', gender: 'Female', age: '24 Y', complaint: 'Painful red swelling on upper eyelid' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.0°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '80 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '120/80 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '16/min' },
+          { icon: '💧', label: 'SpO2', val: '99%' }
         ],
-        diagnoses: [{ t: 'External Hordeolum (Stye)', c: true }, { t: 'Chalazion', c: false }, { t: 'Orbital Cellulitis', c: false }, { t: 'Dacryocystitis', c: false }, { t: 'Blepharitis', c: false }],
+        history: [
+          'Rapid onset tender, red swelling on the upper eyelid over the past 2 days.',
+          'Exquisitely tender to touch. Throbbing sensation.',
+          'No vision changes, no diplopia (double vision), no pain with eye movement.',
+          'No photophobia, no eye discharge beyond mild crusting at lashes.',
+          'Wears contact lenses daily, heavy eye makeup, does not remove makeup before sleeping.',
+          'No prior episodes, no history of blepharitis.',
+          'No fever, no malaise, no rash.'
+        ],
+        physExam: [
+          'Eyelid: Erythematous, swollen, very tender, pointing nodule at the upper eyelid margin — pointing externally (external hordeolum).',
+          'Conjunctiva: Clear, no injection, no chemosis.',
+          'Extraocular movements: Fully intact and painless in all directions.',
+          'Visual acuity: 20/20 bilaterally — normal.',
+          'Pupils: Equal, round, reactive to light.',
+          'Proptosis: None — globe sits normally.',
+          'Periorbital: No surrounding cellulitis beyond the immediate eyelid margin.'
+        ],
+        testCats: [
+          {
+            name: 'Essential Clinical Ophthalmic Assessment', icon: '👁️‍🗨️', tests: [
+              { n: 'Visual acuity testing (Snellen chart)', c: true, r: '20/20 bilateral — vision fully preserved; orbital structures uninvolved; this single test largely rules out orbital cellulitis' },
+              { n: 'Extraocular movement (EOM) assessment in 9 directions', c: true, r: 'Full painless movement in all directions — confirms no orbital cellulitis (restricted painful EOM is the hallmark of orbital involvement)' },
+              { n: 'Slit-lamp biomicroscopy', c: true, r: 'Localised Zeis gland abscess at lid margin with pointing — confirms external hordeolum; no corneal involvement' },
+              { n: 'Pupillary reflex assessment (RAPD test)', c: false, r: 'Pupils equal and reactive — no optic nerve involvement; confirms orbital apex is uninvolved' },
+              { n: 'Fluorescein staining of cornea', c: false, r: 'No corneal abrasions or ulcers — the swelling has not affected the corneal surface' },
+              { n: 'Intraocular Pressure (IOP) measurement', c: false, r: 'Normal — acute angle closure glaucoma excluded (no severe eye pain, no halos, no nausea)' }
+            ]
+          },
+          {
+            name: 'Blood Tests (Largely Unnecessary)', icon: '🧪', tests: [
+              { n: 'Complete Blood Count (CBC)', c: false, r: 'WBC 9,200 — no significant leukocytosis; no systemic infection; wasted resource' },
+              { n: 'ESR and CRP', c: false, r: 'Normal — no indication in localized, afebrile eyelid abscess' },
+              { n: 'Blood Cultures', c: false, r: 'No fever, no sepsis criteria — bacteremia risk is negligible in isolated hordeolum' },
+              { n: 'HbA1c and Fasting Glucose', c: false, r: 'Normal — diabetes should be considered if recurrent or resistant styes; not applicable in first episode' },
+              { n: 'Immunoglobulin Levels (for immunodeficiency)', c: false, r: 'Normal — recurrent staphylococcal infections warrant immunology workup, but this is a first episode' }
+            ]
+          },
+          {
+            name: 'Imaging (Dangerous Over-Investigation)', icon: '🚫', tests: [
+              { n: 'CT Scan of Orbit with IV contrast', c: false, r: 'Unnecessary radiation exposure and cost for a clinical lid margin diagnosis — reserve for orbital cellulitis (proptosis + restricted EOM + fever)' },
+              { n: 'MRI Brain with gadolinium contrast', c: false, r: 'Completely irrelevant — cavernous sinus thrombosis has bilateral eye signs, high fever, meningism; none present here' },
+              { n: 'Ultrasound Orbit (B-scan)', c: false, r: 'Not indicated — lid lesion is clinically obvious; B-scan used for intraocular lesions' },
+              { n: 'X-ray Orbits', c: false, r: 'No bony pathology expected — soft tissue lid diagnosis does not require radiation' }
+            ]
+          },
+          {
+            name: 'Microbiology', icon: '🦠', tests: [
+              { n: 'Bacterial Wound Swab for Culture and Sensitivity', c: false, r: 'Unnecessary for uncomplicated, isolated hordeolum — Staph aureus is the predictable causative organism; swab adds nothing to management' },
+              { n: 'Conjunctival Swab for Culture', c: false, r: 'Conjunctiva is uninvolved — no discharge, no conjunctivitis; wasted resource' },
+              { n: 'Methicillin-resistant Staph aureus (MRSA) Swab', c: false, r: 'No indication in community first-episode hordeolum without risk factors for MRSA' }
+            ]
+          },
+          {
+            name: 'Systemic Infectious & Allergic', icon: '🌡️', tests: [
+              { n: 'Allergy Skin Prick Testing', c: false, r: 'Contact lens-related allergy would cause bilateral itch and chemosis — this is a localized bacterial lesion' },
+              { n: 'Herpes Simplex Virus (HSV) PCR — Lid Swab', c: false, r: 'No vesicular lesions, no dermatomal distribution — herpes zoster ophthalmicus is excluded clinically' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'External Hordeolum (Stye) — Acute Staphylococcal Zeis Gland Infection', c: true },
+          { t: 'Chalazion (Chronic meibomian gland granuloma)', c: false },
+          { t: 'Orbital Cellulitis', c: false },
+          { t: 'Dacryocystitis (Lacrimal sac infection)', c: false },
+          { t: 'Blepharitis (Chronic lid margin inflammation)', c: false }
+        ],
         dxCount: 1,
         treatCats: [
-          { name: 'Conservative Management', icon: '💧', treats: [{ n: 'Warm compresses (15 mins, QID)', c: true }, { n: 'Lid scrubs / hygiene (Baby shampoo)', c: true }, { n: 'Aggressive manual squeezing/popping', c: false }] },
-          { name: 'Medical & Surgical', icon: '💊', treats: [{ n: 'Topical Erythromycin ointment', c: true }, { n: 'Systemic IV Antibiotics (Vancomycin)', c: false }, { n: 'Emergency orbital decompression surgery', c: false }, { n: 'Incision & Drainage (Only if persistent >2 weeks)', c: true }] }
+          {
+            name: 'Conservative First-Line', icon: '💧', treats: [
+              { n: 'Warm compresses applied for 10-15 minutes, four times daily', c: true },
+              { n: 'Eyelid hygiene — lid scrubs with diluted baby shampoo', c: true },
+              { n: 'Aggressive manual squeezing or popping the stye', c: false }
+            ]
+          },
+          {
+            name: 'Medical and Procedural', icon: '💊', treats: [
+              { n: 'Topical erythromycin ophthalmic ointment (prevents conjunctivitis spread)', c: true },
+              { n: 'Incision and drainage (I&D) only if not resolving after 2 weeks', c: true },
+              { n: 'Systemic IV antibiotics (Vancomycin)', c: false },
+              { n: 'Emergency orbital decompression surgery', c: false }
+            ]
+          }
         ],
-        summary: { dx: 'Hordeolum (Stye)', sub: 'Acute focal staphylococcal infection', clues: 'Acute onset, very painful, localized to eyelid margin, normal vision and painless eye movements.', tests: 'Diagnosis is purely clinical. CT scans and blood work are extreme overreactions to a simple stye.', mgmt: 'Warm compresses promote drainage. Topical antibiotics can prevent secondary conjunctivitis.', pitfalls: 'Ordering a CT Orbit for a localized eyelid pimple. Squeezing the stye, which can rupture the capsule and spread infection.', other: 'Chalazion is a chronic, painless granuloma. Orbital cellulitis presents with proptosis, fever, and pain with eye movement.', testRationale: 'No labs or imaging needed for a classic stye.', treatSeq: '1. Warm compresses & Hygiene 2. Topical Abx 3. I&D if persistent.', traps: 'Missing true signs of orbital cellulitis, which is a blinding and life-threatening emergency.', learning: 'Hordeolum = Hurting (Acute infection). Chalazion = Calm (Chronic granuloma).' },
+        summary: {
+          dx: 'External Hordeolum (Acute Staphylococcal Stye) of the Upper Eyelid',
+          sub: 'Acute focal Staphylococcus aureus infection of eyelid gland',
+          clues: 'Acute onset, very painful, tender, pointing nodule at eyelid MARGIN, normal vision, fully painless extraocular movements — all these features confirm a simple, localized hordeolum.',
+          tests: 'Diagnosis is entirely clinical. Visual acuity and EOM testing confirm the vision is unaffected and rules out orbital cellulitis (the key dangerous alternative). Slit lamp confirms the anatomical location. CT scans and blood work are extreme overreactions.',
+          mgmt: 'Warm compresses promote localization and spontaneous drainage. Topical antibiotics prevent spread. If not resolved in 2 weeks, incision and drainage under local anaesthesia.',
+          pitfalls: 'Ordering a CT orbit for a localized lid pimple. Squeezing the stye forcefully, which can rupture the capsule and spread the infection into the orbit. Missing orbital cellulitis signs (proptosis, painful EOM, fever, reduced vision).',
+          other: 'Chalazion: CHRONIC (weeks-months), painless, firm, NOT at the lid margin. Orbital cellulitis: DANGEROUS — proptosis, painful EOM, fever, chemosis, reduced vision. Dacryocystitis: swelling at the medial canthus (lacrimal sac), not the lid margin.',
+          testRationale: 'No investigations needed for a classic, uncomplicated hordeolum. The only mandatory clinical checks are: vision (to confirm orbital structures uninvolved) and EOM (to rule out orbital cellulitis).',
+          treatSeq: '1. Warm compresses QID → 2. Lid hygiene → 3. Topical antibiotics if spreading → 4. I&D if >2 weeks with no resolution.',
+          traps: "Missing true orbital cellulitis, which is a vision-threatening and life-threatening emergency. The key differentiating features are proptosis, painful eye movements, fever, and reduced visual acuity — none of which Elena has.",
+          learning: 'Hordeolum = Hurting (Acute, painful, at lid margin). Chalazion = Calm (Chronic, painless, away from lid margin). Normal vision and painless EOM = orbital contents uninvolved = safe to manage conservatively.'
+        },
         xp: 40
       },
 
+      // ─────────────────────────────────────────────────────────────
+      // 7. NEURO-PSYCHIATRY — Parkinson's Disease
+      // ─────────────────────────────────────────────────────────────
       {
         id: 'neuro', name: 'Neuro-Psychiatry', color: '#6366f1', emoji: '🧠', waitDays: 66,
-        caseTitle: 'Difficulty walking and hand tremor',
-        caseDesc: 'A 67-year-old male reports a 1-year history of slow movements, shaking, and frequent falls.',
+        caseTitle: 'Progressive tremor, shuffling gait, and slowness for one year',
+        caseDesc: "A 67-year-old retired engineer presents with a 1-year history of resting right hand tremor, slowness of movement, and frequent near-falls. His wife reports he has a blank expression and has been sleeping very restlessly. Diagnose clinically and use investigations to rule out mimics — not to confirm what the examination already tells you.",
         patient: { name: 'Roland', gender: 'Male', age: '67 Y', complaint: 'Difficulty walking and hand tremor' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '36.6°C' }, { icon: '❤️', label: 'Heart Rate', val: '70 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '130/80 mmHg (Supine), 105/65 (Standing)' }, { icon: '🫁', label: 'Respiratory Rate', val: '14/min' }, { icon: '💧', label: 'SpO2', val: '98%' }],
-        history: ['Tremor in right hand, noticeably worse when resting on his lap. Tremor improves when reaching for objects.', 'Shuffles when walking and barely swings his right arm.', 'Decreased sense of smell (anosmia) for 3 years.', 'Acting out dreams at night (REM sleep behavior disorder).'],
-        physExam: ['4-6 Hz pill-rolling resting tremor in right hand.', 'Cogwheel rigidity noted in right wrist and elbow.', 'Masked facies (hypomimia). Shuffling gait with en bloc turning.'],
-        testCats: [
-          { name: 'Neurological Evaluation', icon: '🔨', tests: [{ n: 'Detailed clinical neurological exam', c: true, r: 'Classic triad: Resting tremor, rigidity, bradykinesia' }, { n: 'Response to Levodopa trial', c: true, r: 'Significant improvement in symptoms' }, { n: 'DaTscan (Ioflupane I-123)', c: false, r: 'Shows decreased dopamine uptake (Only needed if diagnosis is unclear)' }] },
-          { name: 'Imaging & Irrelevant Tests', icon: '🩻', tests: [{ n: 'MRI Brain (without contrast)', c: true, r: 'Normal for age (Rules out strokes, tumors, NPH)' }, { n: 'Lumbar Puncture (CSF Analysis)', c: false, r: 'Normal. Not indicated.' }, { n: 'EEG (Electroencephalogram)', c: false, r: 'Normal. Does not diagnose Parkinson\'s.' }, { n: 'Serum Ceruloplasmin', c: false, r: 'Normal (Patient too old for Wilson\'s disease)' }, { n: 'Heavy Metal Toxicology Screen', c: false, r: 'Negative' }] }
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.6°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '70 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '130/80 mmHg supine / 105/65 mmHg standing' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '14/min' },
+          { icon: '💧', label: 'SpO2', val: '98%' }
         ],
-        diagnoses: [{ t: 'Parkinson Disease', c: true }, { t: 'Essential Tremor', c: false }, { t: 'Normal Pressure Hydrocephalus (NPH)', c: false }, { t: 'Huntington Disease', c: false }, { t: 'Lewy Body Dementia', c: false }],
+        history: [
+          'Right hand resting tremor for 12 months — notably worse when the hand is at rest in his lap, improved when reaching for objects.',
+          'Progressive slowing of all movements (bradykinesia) — takes much longer to dress and eat.',
+          'Shuffling, short-stepped gait with minimal right arm swing. Near-falls when turning.',
+          'Decreased sense of smell (anosmia) for the past 3 years — predates the motor symptoms.',
+          'Acting out vivid dreams at night — shouting, kicking (REM sleep behaviour disorder — a prodromal Parkinson feature).',
+          'Wife notes he has a "blank stare" and rarely blinks.',
+          'Mild constipation and urinary frequency.',
+          'No dementia. No visual hallucinations currently. Cognition intact on questioning.',
+          'No family history of movement disorder. No exposure to antipsychotics or metoclopramide.'
+        ],
+        physExam: [
+          'General: Expressionless face (hypomimia / masked facies), reduced blink rate.',
+          'Speech: Soft monotone voice (hypophonia), no slurring.',
+          'Upper limbs: 4-6 Hz pill-rolling resting tremor, right > left. Disappears on intentional movement.',
+          'Tone: Cogwheel rigidity in right wrist and elbow. Mild rigidity left side.',
+          'Bradykinesia: Finger tapping test slow and decreasing amplitude bilaterally.',
+          'Gait: Shuffling, festinating gait with reduced right arm swing. En-bloc turning (needs multiple steps to turn).',
+          'Postural instability: Positive retropulsion test (pull test).',
+          'Orthostatic hypotension: BP drops 25/15 mmHg on standing — symptomatic dizziness.'
+        ],
+        testCats: [
+          {
+            name: 'Clinical Confirmation (Primary Tool)', icon: '🔨', tests: [
+              { n: 'Detailed clinical neurological examination (UPDRS assessment)', c: true, r: 'Classic TRAP triad: Tremor (resting, 4-6Hz), Rigidity (cogwheel), Bradykinesia — CLINICAL DIAGNOSIS CONFIRMED. This is the most important "test".' },
+              { n: 'Levodopa therapeutic trial (Carbidopa-Levodopa 25/100mg)', c: true, r: 'Significant improvement in tremor, rigidity, and gait within 4 weeks — confirms dopamine-responsive parkinsonism; >30% improvement = positive trial' },
+              { n: 'UPDRS (Unified Parkinson\'s Disease Rating Scale) scoring', c: true, r: 'Motor UPDRS 28/56 — moderate disease stage; establishes baseline for treatment monitoring' }
+            ]
+          },
+          {
+            name: 'Structural Neuroimaging', icon: '🩻', tests: [
+              { n: 'MRI Brain without gadolinium contrast', c: true, r: 'Normal for age — no strokes, no space-occupying lesions, no hydrocephalus, no midbrain atrophy (rules out PSP), no caudate atrophy (rules out HD)' },
+              { n: 'CT Head without contrast', c: false, r: 'Less sensitive than MRI for posterior fossa and midbrain lesions — inferior choice for Parkinson\'s mimic exclusion' },
+              { n: 'MRI Brain with gadolinium contrast', c: false, r: 'No blood-brain barrier disruption expected — contrast adds nothing; increases cost and scan time' },
+              { n: 'PET Scan Brain (FDG-PET)', c: false, r: 'Shows hypometabolism in posterior cortex — helpful in atypical parkinsonism (LBD, PSP) but not needed here given classical presentation' }
+            ]
+          },
+          {
+            name: 'Nuclear Medicine (When Diagnosis is Uncertain)', icon: '☢️', tests: [
+              { n: 'DaTscan (Dopamine Transporter SPECT Imaging)', c: false, r: 'Shows reduced presynaptic dopaminergic striatal uptake — confirms dopaminergic degeneration. Only use when clinical diagnosis is UNCERTAIN (not here).' },
+              { n: 'MIBG Cardiac Scintigraphy', c: false, r: 'Reduced cardiac uptake in PD (vs. preserved in Essential Tremor/MSA) — advanced research tool, not routine clinical use' }
+            ]
+          },
+          {
+            name: 'Blood Tests (Mimic Exclusion)', icon: '🧪', tests: [
+              { n: 'Serum Ceruloplasmin and 24h urine copper', c: false, r: 'Normal — Wilson\'s disease excluded; would be first consideration in parkinsonism <40 years; Roland is 67' },
+              { n: 'Thyroid Function Tests (TSH, Free T4)', c: true, r: 'Normal TSH — hypothyroidism excluded (causes bradykinesia and slow movements but not resting tremor or cogwheel rigidity)' },
+              { n: 'Vitamin B12 Level', c: true, r: 'Low-normal at 220 pg/mL — B12 deficiency can mimic peripheral neuropathy component; supplement and recheck' },
+              { n: 'Heavy Metal Screen (Manganese, Lead, Mercury)', c: false, r: 'Negative — no occupational exposure history; manganese causes parkinsonism in welders' },
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: false, r: 'Normal — no metabolic encephalopathy, no hepatic dysfunction (Wilson\'s), no electrolyte abnormalities' },
+              { n: 'Calcium and Magnesium', c: false, r: 'Normal — no hypoparathyroid-related basal ganglia calcification' },
+              { n: 'Hemoglobin A1c', c: false, r: 'Normal — no diabetes-related peripheral neuropathy explaining the gait' }
+            ]
+          },
+          {
+            name: 'Neurological Investigations', icon: '⚡', tests: [
+              { n: 'Lumbar Puncture with CSF analysis', c: false, r: 'Normal CSF — no indication in Parkinson\'s disease workup; only relevant if infectious or inflammatory encephalitis suspected' },
+              { n: 'EEG (Electroencephalogram)', c: false, r: 'Normal background rhythm — does not diagnose Parkinson\'s or guide management; epilepsy not suspected' },
+              { n: 'Nerve Conduction Studies (NCS / EMG)', c: false, r: 'Normal — peripheral neuropathy excluded; resting tremor and cogwheel rigidity are basal ganglia, not peripheral nerve' },
+              { n: 'Polysomnography (Sleep Study)', c: true, r: 'REM Sleep Behaviour Disorder confirmed — abnormal EMG activity during REM sleep; this is a prodromal PD marker and explains the night-time movements' },
+              { n: 'Mini-Mental State Examination (MMSE)', c: true, r: 'MMSE 28/30 — intact cognition; no dementia at this stage (Lewy Body Dementia has prominent early cognitive decline)' },
+              { n: 'Montreal Cognitive Assessment (MoCA)', c: true, r: 'MoCA 25/30 — mild visuospatial difficulties only; consistent with early PD cognitive changes, not dementia' }
+            ]
+          },
+          {
+            name: 'Autonomic & Cardiac', icon: '❤️', tests: [
+              { n: 'Orthostatic Blood Pressure Measurements (lying and standing)', c: true, r: '25/15 mmHg drop on standing — significant orthostatic hypotension; autonomic dysfunction is a non-motor PD feature; adjust Levodopa cautiously' },
+              { n: '12-Lead ECG', c: false, r: 'Normal sinus rhythm — cardiac cause of syncope or falls excluded' },
+              { n: 'Echocardiogram', c: false, r: 'Normal ejection fraction — not contributing to symptoms' },
+              { n: 'Tilt Table Test (Head-up tilt)', c: false, r: 'Not needed — orthostatic hypotension already confirmed by bedside measurements' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Idiopathic Parkinson Disease', c: true },
+          { t: 'Essential Tremor', c: false },
+          { t: 'Normal Pressure Hydrocephalus (NPH)', c: false },
+          { t: 'Huntington Disease', c: false },
+          { t: 'Lewy Body Dementia', c: false }
+        ],
         dxCount: 1,
         treatCats: [
-          { name: 'Pharmacotherapy', icon: '💊', treats: [{ n: 'Carbidopa-Levodopa', c: true }, { n: 'Dopamine Agonists (Pramipexole)', c: true }, { n: 'Propranolol', c: false }, { n: 'Haloperidol (Typical Antipsychotic)', c: false }, { n: 'Metoclopramide', c: false }] },
-          { name: 'Supportive Care', icon: '🏃', treats: [{ n: 'Physical therapy and gait training', c: true }, { n: 'Deep Brain Stimulation (DBS)', c: false }, { n: 'Strict bed rest', c: false }] }
+          {
+            name: 'Pharmacotherapy', icon: '💊', treats: [
+              { n: 'Carbidopa-Levodopa (Gold standard — most effective)', c: true },
+              { n: 'Dopamine Agonists — Pramipexole (for younger patients or adjunct)', c: true },
+              { n: 'Propranolol (for essential tremor — WRONG choice here)', c: false },
+              { n: 'Haloperidol (Typical antipsychotic — DANGEROUS, blocks dopamine)', c: false },
+              { n: 'Metoclopramide (Anti-emetic — DANGEROUS, blocks dopamine)', c: false }
+            ]
+          },
+          {
+            name: 'Supportive and Non-Pharmacological', icon: '🏃', treats: [
+              { n: 'Physiotherapy and gait training (falls prevention)', c: true },
+              { n: 'Occupational therapy for daily living adaptations', c: true },
+              { n: 'Deep Brain Stimulation (DBS) — for advanced, medication-refractory disease', c: false },
+              { n: 'Strict bed rest', c: false }
+            ]
+          }
         ],
-        summary: { dx: 'Parkinson Disease', sub: 'Degeneration of Substantia Nigra', clues: 'Asymmetric resting tremor, bradykinesia, cogwheel rigidity, shuffling gait, anosmia, REM sleep disorder.', tests: 'Diagnosis is clinical. MRI rules out secondary causes. LPs, EEGs, and Tox screens are a waste of time here.', mgmt: 'Carbidopa-Levodopa is the most effective drug. Physical therapy is crucial to prevent falls.', pitfalls: 'Prescribing typical antipsychotics (Haloperidol) or anti-emetics (Metoclopramide), which block dopamine and severely worsen Parkinsonian symptoms.', other: 'Essential tremor is bilateral, worse with action, and improves with alcohol. NPH has "magnetic" gait and urinary incontinence.', testRationale: 'Levodopa trial confirms diagnosis if symptoms melt away.', treatSeq: '1. Diagnosis via clinical exam 2. Start Levodopa 3. PT.', traps: 'Failing to check standing blood pressure (orthostatic hypotension is common in PD and worsened by Levodopa).', learning: 'Parkinson\'s features the classic TRAP: Tremor (resting), Rigidity (cogwheel), Akinesia/bradykinesia, and Postural instability.' },
+        summary: {
+          dx: "Idiopathic Parkinson Disease — Moderate Stage (Hoehn & Yahr 2)",
+          sub: 'Degeneration of Substantia Nigra Dopaminergic Neurons',
+          clues: 'Asymmetric resting tremor (right > left), cogwheel rigidity, bradykinesia, shuffling festinating gait, masked facies, hypophonia, anosmia preceding motor symptoms by years, REM sleep behaviour disorder — this is the full Parkinson prodrome and clinical picture.',
+          tests: 'Parkinson disease is a CLINICAL diagnosis based on the TRAP triad + asymmetry + levodopa responsiveness. MRI brain rules out secondary causes (vascular parkinsonism, NPH, tumours). LPs, EEGs, and tox screens are inappropriate and waste time.',
+          mgmt: 'Carbidopa-Levodopa is the most effective drug — replace what is missing (dopamine). Check standing BP for orthostatic hypotension before starting. Physiotherapy is essential to maintain mobility and prevent falls. Avoid all dopamine-blocking drugs.',
+          pitfalls: 'Prescribing Haloperidol (typical antipsychotic) or Metoclopramide (for nausea) — both block dopamine and severely worsen Parkinsonian symptoms. Failing to check standing BP before starting Levodopa (orthostatic hypotension is common).',
+          other: "Essential tremor: bilateral, ACTION tremor (worse with movement), improves with alcohol, no rigidity. NPH: 'Wet, Wacky, Wobbly' — urinary incontinence, dementia, magnetic gait (feet stuck to floor). Lewy Body Dementia: dementia presents first, then motor features + visual hallucinations.",
+          testRationale: 'Levodopa trial is the most clinically useful "test" — dramatic symptom improvement confirms dopamine-deficient parkinsonism. MRI excludes the 5% of cases that are secondary parkinsonism.',
+          treatSeq: '1. Clinical diagnosis (TRAP triad) → 2. MRI to exclude secondary causes → 3. Start Carbidopa-Levodopa → 4. Monitor response → 5. Add dopamine agonists if needed → 6. Physiotherapy throughout.',
+          traps: 'Failing to measure orthostatic BP — Levodopa worsens orthostatic hypotension, causing falls. Missing the non-motor features (anosmia, REM disorder, constipation) that are early diagnostic clues years before motor onset.',
+          learning: "Parkinson TRAP: Tremor (resting, 4-6Hz), Rigidity (cogwheel), Akinesia/Bradykinesia, Postural instability. Non-motor features (anosmia, REM sleep disorder) often precede motor features by years — recognise them early."
+        },
         xp: 40
       },
 
+      // ─────────────────────────────────────────────────────────────
+      // 8. CARDIOLOGY — Stable Angina
+      // ─────────────────────────────────────────────────────────────
       {
         id: 'cardio', name: 'Cardiology', color: '#e11d48', emoji: '❤️', waitDays: 92,
-        caseTitle: 'Persistent headache and chest discomfort',
-        caseDesc: 'A 48-year-old male complains of dull chest tightness when walking up stairs or walking fast.',
+        caseTitle: 'Exertional chest tightness radiating to the jaw in a smoker',
+        caseDesc: 'A 48-year-old male smoker with a strong family history presents with predictable chest tightness on exertion for 3 months. The pain stops with 5 minutes of rest. Rule out acute MI first, then characterise and treat the stable ischaemia appropriately.',
         patient: { name: 'Petar', gender: 'Male', age: '48 Y', complaint: 'Exertional chest discomfort' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '36.9°C' }, { icon: '❤️', label: 'Heart Rate', val: '90 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '160/100 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '18/min' }, { icon: '💧', label: 'SpO2', val: '98%' }],
-        history: ['Substernal chest tightness predictably occurring after 2 blocks of walking. Radiates to jaw.', 'Relieved completely by 5 minutes of rest.', 'Smoker (1 pack/day), strong family history of early heart attacks.'],
-        physExam: ['Normal S1/S2, no S3/S4, no murmurs.', 'No JVD, clear lungs. Peripheral pulses 2+ and symmetric.'],
-        testCats: [
-          { name: 'Cardiac Diagnostics', icon: '⚡', tests: [{ n: '12-Lead ECG (Resting)', c: true, r: 'Normal sinus rhythm, LVH criteria met, no ST changes' }, { n: 'High-sensitivity Troponin T (Serial)', c: true, r: 'Negative x2 (Rules out Acute MI)' }, { n: 'Exercise Treadmill Stress Test', c: true, r: '2mm horizontal ST-segment depression at high workload' }, { n: 'Coronary Angiography', c: false, r: 'Reserved for refractory symptoms or high-risk stress test' }] },
-          { name: 'Labs & Distractors', icon: '🚫', tests: [{ n: 'Fasting Lipid Panel & HbA1c', c: true, r: 'LDL 180, HbA1c 6.2%' }, { n: 'D-Dimer', c: false, r: 'Normal. Irrelevant for exertional, reproducible pain.' }, { n: 'CT Head', c: false, r: 'Normal. Ordered due to "headache" but ignores primary cardiac issue.' }, { n: 'Endoscopy (EGD)', c: false, r: 'Normal. Wastes time.' }, { n: 'Rheumatoid Factor', c: false, r: 'Negative.' }] }
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.9°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '90 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '160/100 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '18/min' },
+          { icon: '💧', label: 'SpO2', val: '98%' }
         ],
-        diagnoses: [{ t: 'Stable Angina (Ischemic Heart Disease)', c: true }, { t: 'Acute ST-Elevation MI (STEMI)', c: false }, { t: 'Non-STEMI (NSTEMI)', c: false }, { t: 'Prinzmetal Angina', c: false }, { t: 'GERD', c: false }],
+        history: [
+          'Substernal chest tightness predictably occurring after walking 2 city blocks or climbing 2 flights of stairs — present for 3 months.',
+          'Pain radiates to the left jaw and occasionally down the inner left arm.',
+          'Reliably and completely relieved by 5 minutes of rest.',
+          'One pack per day smoker for 25 years (25 pack-year history).',
+          'Father had a myocardial infarction at age 52. Older brother has coronary artery disease.',
+          'No rest pain, no pain waking him from sleep, no pain at minimal exertion.',
+          'No dyspnoea at rest. No palpitations, no syncope.',
+          'Currently on no medications. No prior cardiac investigations.'
+        ],
+        physExam: [
+          'General: Well-appearing, mildly overweight (BMI 28). No pallor, no diaphoresis at rest.',
+          'Cardiovascular: Regular rate and rhythm. Normal S1/S2. No S3 or S4 gallop. No murmurs or rubs. Peripheral pulses 2+ and symmetric bilaterally.',
+          'Jugular Venous Pressure: Not elevated — no evidence of right heart failure.',
+          'Chest: Clear lung fields bilaterally. No basal crepitations.',
+          'Abdomen: Soft, no organomegaly.',
+          'Peripheral: No peripheral oedema.'
+        ],
+        testCats: [
+          {
+            name: 'ACS Exclusion (Mandatory First Step)', icon: '🚨', tests: [
+              { n: 'Resting 12-Lead ECG', c: true, r: 'Normal sinus rhythm 90bpm; LVH voltage criteria met; no ST elevation, no ST depression, no T-wave inversions at rest — no current ischaemia' },
+              { n: 'High-sensitivity Troponin T (serial x2, 3h apart)', c: true, r: 'Both <14 ng/L (negative x2) — definitively rules out NSTEMI/acute MI with >99% sensitivity. ACS excluded.' },
+              { n: 'D-Dimer', c: false, r: 'Normal — PE excluded clinically; exertional reproducible pain with jaw radiation is not pleuritic; ordering this misses the primary cardiac diagnosis' }
+            ]
+          },
+          {
+            name: 'Cardiac Risk Stratification', icon: '📊', tests: [
+              { n: 'Exercise Treadmill Stress Test (Bruce Protocol)', c: true, r: '2mm horizontal ST-segment depression in leads V4-V6 at 7 METs — confirms significant exercise-induced myocardial ischaemia; high-risk stress test features' },
+              { n: 'Stress Echocardiography', c: true, r: 'Anterior wall hypokinesia at peak stress — identifies ischaemic territory; more specific than treadmill ECG alone' },
+              { n: 'Myocardial Perfusion SPECT Imaging (Nuclear Stress Test)', c: false, r: 'Reversible perfusion defect in LAD territory — definitive but expensive; exercise ECG sufficient here' },
+              { n: 'CT Coronary Calcium Score (CAC)', c: true, r: 'Coronary Calcium Score 320 (high) — confirms significant subclinical atherosclerosis; guides statin intensity' },
+              { n: 'CT Coronary Angiography (CTCA)', c: false, r: 'Would show significant LAD stenosis — appropriate if stress test inconclusive; but stress test already positive here' },
+              { n: 'Invasive Coronary Angiography', c: false, r: 'Reserved for refractory symptoms after maximal medical therapy or high-risk stress test features — not first-line in stable angina with typical presentation' }
+            ]
+          },
+          {
+            name: 'Risk Factor & Metabolic Panel', icon: '🧪', tests: [
+              { n: 'Fasting Lipid Panel (Total, LDL, HDL, Triglycerides)', c: true, r: 'LDL 182 mg/dL (severely elevated), HDL 34 (low), TG 280 — atherogenic lipid profile; high-intensity statin urgently required' },
+              { n: 'HbA1c and Fasting Plasma Glucose', c: true, r: 'HbA1c 6.3% (pre-diabetes range), FPG 112 — insulin resistance contributing to cardiovascular risk; lifestyle intervention and monitoring required' },
+              { n: 'Serum Creatinine and eGFR', c: true, r: 'eGFR 78 mL/min — mildly reduced CKD stage 2; important dose adjustment consideration before ACE inhibitor; monitor closely' },
+              { n: 'Complete Blood Count (CBC)', c: false, r: 'Normal — no anaemia (which worsens angina); no polycythaemia (thrombosis risk). Low yield but not unreasonable' },
+              { n: 'High-sensitivity CRP (hsCRP)', c: true, r: '3.8 mg/L (elevated) — increased vascular inflammation score; supports high-intensity statin therapy; guides primary prevention' },
+              { n: 'Homocysteine Level', c: false, r: 'Mildly elevated — independent cardiovascular risk factor but supplementing folic acid does not reduce CV events; not actionable' },
+              { n: 'Lipoprotein(a) [Lp(a)]', c: false, r: 'Elevated at 62 mg/dL — additional atherosclerotic risk beyond LDL; currently no approved pharmacotherapy specifically' },
+              { n: 'Thyroid Function Tests (TSH)', c: false, r: 'Normal — hypothyroidism can worsen angina by increasing LDL; excluded here' },
+              { n: 'Liver Function Tests', c: true, r: 'Baseline ALT 28 U/L — required before starting high-intensity statin (atorvastatin); monitor 3 months post-initiation' }
+            ]
+          },
+          {
+            name: 'Respiratory & Other Distractors', icon: '🚫', tests: [
+              { n: 'Chest X-Ray (CXR)', c: false, r: 'Mild cardiomegaly, clear lung fields — no pulmonary oedema, no pneumonia; not diagnostic of coronary artery disease' },
+              { n: 'Spirometry (Pulmonary Function Tests)', c: false, r: 'FEV1/FVC 0.74 — borderline due to 25-year smoking; COPD screening relevant but not causing the chest tightness' },
+              { n: 'CT Thorax (Chest)', c: false, r: 'No pulmonary mass, no PE — smoking-related malignancy screening is important separately; not relevant to exertional chest pain' },
+              { n: 'Upper GI Endoscopy', c: false, r: 'Normal stomach — misguided GERD workup; exertional pain relieved by rest does not fit oesophageal aetiology' },
+              { n: 'Rheumatoid Factor and ANA', c: false, r: 'Negative — no musculoskeletal or autoimmune aetiology for chest pain' }
+            ]
+          },
+          {
+            name: 'Echocardiography (Baseline)', icon: '🔊', tests: [
+              { n: 'Resting Transthoracic Echocardiogram (TTE)', c: true, r: 'LVEF 58% — preserved systolic function. Concentric LVH noted consistent with hypertension. Diastolic dysfunction Grade 1.' },
+              { n: 'Transesophageal Echocardiogram (TOE/TEE)', c: false, r: 'No indication — no valvular pathology suspected; significantly more invasive than transthoracic' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Stable Angina Pectoris (Chronic Coronary Artery Disease)', c: true },
+          { t: 'Acute ST-Elevation MI (STEMI)', c: false },
+          { t: 'Non-ST-Elevation MI (NSTEMI)', c: false },
+          { t: 'Prinzmetal (Vasospastic) Angina', c: false },
+          { t: 'Gastro-Oesophageal Reflux Disease (GERD)', c: false }
+        ],
         dxCount: 1,
         treatCats: [
-          { name: 'Anti-Anginal & Risk Therapy', icon: '💊', treats: [{ n: 'Sublingual Nitroglycerin (PRN)', c: true }, { n: 'Beta-blocker (Metoprolol)', c: true }, { n: 'Daily Aspirin (81mg)', c: true }, { n: 'High-intensity Statin (Atorvastatin)', c: true }] },
-          { name: 'Aggressive / Contraindicated', icon: '⚠️', treats: [{ n: 'Thrombolytics (tPA)', c: false }, { n: 'Immediate PCI / Stenting', c: false }, { n: 'Proton Pump Inhibitors', c: false }, { n: 'Sildenafil (Viagra)', c: false }] }
+          {
+            name: 'Anti-Anginal and Risk Reduction Therapy', icon: '💊', treats: [
+              { n: 'Sublingual Nitroglycerin 0.4mg (PRN — for acute attacks)', c: true },
+              { n: 'Beta-blocker — Metoprolol succinate 50mg daily (reduces demand)', c: true },
+              { n: 'Daily Aspirin 81mg (antiplatelet)', c: true },
+              { n: 'High-intensity Statin — Atorvastatin 40-80mg (LDL goal < 70)', c: true },
+              { n: 'ACE inhibitor for hypertension — Ramipril 5mg', c: true }
+            ]
+          },
+          {
+            name: 'Inappropriate or Dangerous Choices', icon: '⚠️', treats: [
+              { n: 'Thrombolytics (tPA) — for STEMI only', c: false },
+              { n: 'Immediate PCI/Stenting without failed medical therapy', c: false },
+              { n: 'Proton Pump Inhibitors (omeprazole) — for misdiagnosed GERD', c: false },
+              { n: 'Sildenafil (Viagra) — fatal hypotension with nitrates', c: false }
+            ]
+          }
         ],
-        summary: { dx: 'Stable Angina Pectoris', sub: 'Coronary supply-demand mismatch', clues: 'Predictable, exertional chest pain, relieved by rest, high CV risk factors.', tests: 'Resting ECG and Troponins rule out Acute Coronary Syndrome. Stress test provokes and visualizes ischemia. Ordering D-Dimers or CT Heads wastes money.', mgmt: 'Medical management first: Aspirin, Statin, Beta-blocker, and PRN Nitroglycerin.', pitfalls: 'Giving thrombolytics (tPA) or rushing to a stent for purely stable angina without trying medical therapy first.', other: 'NSTEMI/STEMI have positive troponins or rest pain. Prinzmetal occurs at rest (midnight vasospasms).', testRationale: 'Stress testing confirms the diagnosis safely.', treatSeq: '1. Rule out MI 2. Stress Test 3. Medical Therapy 4. Cath if meds fail.', traps: 'Prescribing Viagra while the patient has PRN nitroglycerin (causes fatal hypotension).', learning: 'The definition of Stable Angina: 1. Substernal pain, 2. Provoked by exertion, 3. Relieved by rest/nitroglycerin.' },
+        summary: {
+          dx: 'Stable Angina Pectoris — Chronic Stable Coronary Artery Disease',
+          sub: 'Coronary supply-demand mismatch on exertion',
+          clues: 'Substernal pressure, radiation to jaw and left arm, predictably triggered by exertion, completely relieved by rest within 5 minutes, in a 25 pack-year smoker with strong family history and hypertension — this is the textbook presentation of stable angina.',
+          tests: 'Two serial troponins rule out NSTEMI/ACS (most critical step). Resting ECG documents baseline. Exercise stress test provokes and quantifies ischaemia safely. Lipid panel and HbA1c identify modifiable risk factors. D-Dimer, CT Head, and endoscopy are complete distractors.',
+          mgmt: 'Medical therapy first: Aspirin + Statin + Beta-blocker + PRN nitrates + ACE inhibitor for hypertension. Lifestyle: stop smoking (most impactful single intervention), exercise, Mediterranean diet. Refer for coronary angiography only if symptoms persist despite maximal medical therapy.',
+          pitfalls: "Giving thrombolytics (tPA) or rushing to PCI for purely STABLE angina without trying medical therapy. Diagnosing GERD without checking troponins. Co-prescribing Sildenafil while the patient has PRN nitroglycerin — causes fatal refractory hypotension.",
+          other: 'STEMI/NSTEMI: positive troponins, ongoing rest pain, ST changes. Prinzmetal: occurs at rest (typically 2-4am), ST elevation that resolves, younger patients, normal coronaries. GERD: burning, related to meals, not exertion, relieved by antacids not rest.',
+          testRationale: 'Serial troponins definitively exclude ACS. Stress testing safely reproduces the ischaemia and quantifies its severity — the ST depression at high workload proves significant coronary artery disease.',
+          treatSeq: '1. Rule out ACS (serial troponins + ECG) → 2. Stress test → 3. Start Aspirin + Statin + Beta-blocker + Nitrate PRN → 4. Control hypertension → 5. Smoking cessation counselling → 6. Angiography if meds fail.',
+          traps: 'Co-prescribing nitroglycerin and PDE5 inhibitors (Sildenafil, Tadalafil) — this combination causes severe, fatal hypotension and is an absolute contraindication. Always ask about sexual function medications before prescribing nitrates.',
+          learning: "The Stable Angina triad: 1) Substernal pressure, 2) Triggered by exertion or emotional stress, 3) Relieved by rest or nitroglycerin within 5 minutes. All three required for the diagnosis. TRAP: Don't give Viagra with nitrates."
+        },
         xp: 40
       },
 
+      // ─────────────────────────────────────────────────────────────
+      // 9. PULMONOLOGY — Asthma
+      // ─────────────────────────────────────────────────────────────
       {
-        id: 'pulmo', name: 'Pulmonology', color: '#0284c7', emoji: '🫁', waitDays: 55,
-        caseTitle: 'Progressive shortness of breath and cough',
-        caseDesc: 'A 32-year-old female presents with episodic wheezing and nighttime coughing.',
-        patient: { name: 'Anastasia', gender: 'Female', age: '32 Y', complaint: 'Progressive shortness of breath and cough' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '37.0°C' }, { icon: '❤️', label: 'Heart Rate', val: '98 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '120/80 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '22/min' }, { icon: '💧', label: 'SpO2', val: '95%' }],
-        history: ['Symptoms triggered by cold air, exercise, and perfumes.', 'Wakes up coughing 2-3 nights per week.', 'History of childhood eczema. Never smoked.'],
-        physExam: ['Diffuse, bilateral polyphonic expiratory wheezing.', 'Prolonged expiratory phase.', 'No accessory muscle use, speaking in full sentences.'],
-        testCats: [
-          { name: 'Pulmonary Function', icon: '🌬️', tests: [{ n: 'Spirometry (Baseline)', c: true, r: 'FEV1/FVC ratio < 70% (Obstructive pattern)' }, { n: 'Spirometry (Post-Bronchodilator)', c: true, r: 'FEV1 increases by 15% and 250mL (Significant reversibility)' }, { n: 'Chest X-ray (PA & Lateral)', c: true, r: 'Mild hyperinflation' }, { n: 'Serum IgE and Eosinophils', c: true, r: 'Elevated' }] },
-          { name: 'Irrelevant Diagnostics', icon: '🚫', tests: [{ n: 'CT Chest with Contrast', c: false, r: 'Unnecessary radiation' }, { n: 'Arterial Blood Gas (ABG)', c: false, r: 'Not indicated for stable outpatient' }, { n: 'Sweat Chloride Test', c: false, r: 'Normal. Irrelevant for this age/presentation.' }, { n: 'D-Dimer', c: false, r: 'Normal' }, { n: 'Echocardiogram', c: false, r: 'Normal EF' }] }
+        id: 'pulm', name: 'Pulmonology', color: '#0ea5e9', emoji: '🫁', waitDays: 45,
+        caseTitle: 'Nocturnal cough, wheeze, and morning chest tightness in a young woman',
+        caseDesc: 'A 28-year-old nurse with a personal and family history of eczema presents with 5 months of episodic wheeze, nocturnal cough, and chest tightness worse in the early mornings and around cats. Confirm airway reversibility and prescribe the right controller — not just a rescue inhaler.',
+        patient: { name: 'Anastasia K.', gender: 'Female', age: '28 Y', complaint: 'Wheeze, cough, and chest tightness' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.0°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '88 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '118/76 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '20/min' },
+          { icon: '💧', label: 'SpO2', val: '97% on room air' }
         ],
-        diagnoses: [{ t: 'Asthma (Mild Persistent)', c: true }, { t: 'Chronic Obstructive Pulmonary Disease (COPD)', c: false }, { t: 'Vocal Cord Dysfunction', c: false }, { t: 'Heart Failure', c: false }, { t: 'Pulmonary Embolism', c: false }],
+        history: [
+          'Episodic wheeze and chest tightness — worse in early mornings and at night, waking her 3 times per week.',
+          'Nocturnal dry cough — often the only symptom at night.',
+          'Symptoms markedly worse around cats, dusty environments, and during pollen season.',
+          'Uses Salbutamol (albuterol) MDI multiple times weekly — 2-3 puffs before work.',
+          'History of childhood eczema and hay fever — atopic triad.',
+          'Mother has asthma. Father has hay fever.',
+          'No smoker. Works as a nurse — exposure to cleaning agents.',
+          'No fever, no purulent sputum, no weight loss, no hemoptysis.'
+        ],
+        physExam: [
+          'Chest: Bilateral expiratory wheeze on auscultation — worse on forced expiration.',
+          'No use of accessory muscles at rest. No tracheal tug.',
+          'SpO2 97% — mild baseline hypoxemia.',
+          'Skin: Flexural eczema on bilateral antecubital fossae — confirms atopic background.',
+          'No clubbing, no lymphadenopathy.',
+          'PEFR (Peak Expiratory Flow Rate): 310 L/min (predicted: 420 L/min — 74% predicted).'
+        ],
+        testCats: [
+          {
+            name: 'Pulmonary Function Tests (Core Diagnostics)', icon: '🌬️', tests: [
+              { n: 'Spirometry with Pre and Post-Bronchodilator Testing', c: true, r: 'Pre: FEV1 68%, FEV1/FVC 0.68 (obstructive). Post-salbutamol: FEV1 improves to 84%, absolute increase 240mL (>200mL) = >12% improvement — DIAGNOSTIC of reversible airflow obstruction (asthma)' },
+              { n: 'Peak Expiratory Flow Rate (PEFR) Diary — 2 weeks', c: true, r: 'Morning-evening diurnal variation >20% on multiple days — pathognomonic for asthma; occupational pattern noted' },
+              { n: 'Methacholine Bronchial Provocation Challenge Test', c: false, r: 'PC20 <4 mg/mL — confirms bronchial hyperresponsiveness; only needed if spirometry inconclusive; unnecessary here as bronchodilator reversibility already diagnostic' },
+              { n: 'Diffusion Capacity (DLCO)', c: false, r: 'Normal — reduced DLCO would suggest emphysema or ILD; not expected in asthma' },
+              { n: 'Lung Volumes (Plethysmography)', c: false, r: 'Mild hyperinflation — RV/TLC ratio borderline elevated; not needed for diagnosis' }
+            ]
+          },
+          {
+            name: 'Allergy & Eosinophil Assessment', icon: '🌿', tests: [
+              { n: 'Full Blood Count with Differential (Eosinophil count)', c: true, r: 'Peripheral eosinophilia 0.8 × 10⁹/L (elevated) — type 2 inflammatory phenotype; guides biologic therapy eligibility' },
+              { n: 'Total Serum IgE Level', c: true, r: 'Total IgE 380 IU/mL (elevated) — confirms atopic / allergic phenotype; relevant if Omalizumab (anti-IgE biologic) is being considered' },
+              { n: 'Specific Allergen IgE Panel (CAT, HDMI, Pollen, Moulds)', c: true, r: 'Cat dander IgE strongly positive (Class 4), house dust mite IgE moderately positive — allergen avoidance can significantly reduce trigger burden' },
+              { n: 'Skin Prick Testing (SPT)', c: false, r: 'Cat dander ++, HDM ++ — confirms atopic sensitization; same information as specific IgE; redundant if blood tests done' },
+              { n: 'Fractional Exhaled Nitric Oxide (FeNO)', c: true, r: 'FeNO 48 ppb (elevated >40 = significant eosinophilic airway inflammation) — confirms type 2 inflammation and guides ICS response prediction; FeNO >50 = high corticosteroid responder' },
+              { n: 'Serum Periostin Level', c: false, r: 'Elevated — research marker for type 2 inflammation; not yet in routine clinical use' }
+            ]
+          },
+          {
+            name: 'Imaging', icon: '🩻', tests: [
+              { n: 'Chest X-Ray (PA view)', c: false, r: 'Normal or mild hyperinflation — no consolidation, no pleural effusion, no pneumothorax; CXR cannot diagnose asthma but excludes mimics' },
+              { n: 'High-Resolution CT Chest (HRCT)', c: false, r: 'No bronchiectasis, no air trapping at this stage — appropriate only if diagnosis is in doubt or atypical features; not needed here' },
+              { n: 'CT Sinuses', c: false, r: 'Bilateral sinusitis — incidental; treat separately if symptomatic (NSAID-exacerbated respiratory disease ruled out here)' }
+            ]
+          },
+          {
+            name: 'Infection & Other Exclusions', icon: '🦠', tests: [
+              { n: 'Sputum Culture and Sensitivity', c: false, r: 'No growth (mucoid sputum only) — no bacterial infection; not indicated in stable asthma' },
+              { n: 'Sputum Induced Eosinophil Count', c: false, r: 'Elevated sputum eosinophils — confirms eosinophilic airway inflammation; used to titrate ICS in specialist practice' },
+              { n: 'Aspergillus Precipitins and IgE (Allergic Bronchopulmonary Aspergillosis)', c: false, r: 'Negative — ABPA excluded; would cause fleeting infiltrates, markedly elevated IgE, bronchiectasis' },
+              { n: 'Alpha-1 Antitrypsin Level', c: false, r: 'Normal — A1AT deficiency excluded; causes early-onset emphysema, not asthma in a 28-year-old' },
+              { n: 'Cystic Fibrosis Sweat Chloride Test', c: false, r: 'Normal — CF excluded; presents in childhood with recurrent pulmonary infections, pancreatic insufficiency, failure to thrive' }
+            ]
+          },
+          {
+            name: 'Cardiac Exclusion', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Normal sinus rhythm — no cardiac arrhythmia explaining the dyspnoea; cor pulmonale not expected in young, moderate asthma' },
+              { n: 'Echocardiogram', c: false, r: 'Normal — cardiac cause of wheeze (cardiac asthma) excluded; no left ventricular dysfunction' },
+              { n: 'BNP/NT-proBNP', c: false, r: 'Normal — heart failure excluded; useful when cardiac asthma is a differential in older patients' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Moderate Persistent Allergic Asthma (Eosinophilic Phenotype)', c: true },
+          { t: 'Chronic Obstructive Pulmonary Disease (COPD)', c: false },
+          { t: 'Vocal Cord Dysfunction (Functional Laryngeal Obstruction)', c: false },
+          { t: 'Cardiac Asthma (Left Ventricular Failure)', c: false },
+          { t: 'Allergic Bronchopulmonary Aspergillosis (ABPA)', c: false }
+        ],
         dxCount: 1,
         treatCats: [
-          { name: 'Inhalers & Meds', icon: '💨', treats: [{ n: 'Short-Acting Beta Agonist (SABA) - Albuterol PRN', c: true }, { n: 'Low-dose Inhaled Corticosteroid (ICS) daily', c: true }, { n: 'Long-Acting Beta Agonist (LABA) monotherapy', c: false }, { n: 'Oral Antibiotics (Azithromycin)', c: false }, { n: 'Furosemide (Lasix)', c: false }, { n: 'Leukotriene Inhibitor (Montelukast)', c: true }] }
+          {
+            name: 'GINA Step 3 Treatment', icon: '💊', treats: [
+              { n: 'Low-to-medium dose Inhaled Corticosteroid (ICS) — Budesonide 400mcg/day (controller)', c: true },
+              { n: 'Long-acting Beta-2 Agonist (LABA) — Formoterol added to ICS (ICS/LABA combo inhaler)', c: true },
+              { n: 'SABA PRN — Salbutamol MDI for acute relief (continue)', c: true },
+              { n: 'Allergen avoidance — cat removal / HEPA filter / mattress covers', c: true },
+              { n: 'SABA alone without ICS controller (Step 1 only — inadequate here)', c: false },
+              { n: 'Non-selective beta-blocker (Propranolol) — contraindicated in asthma', c: false },
+              { n: 'Systemic oral steroids long-term', c: false }
+            ]
+          }
         ],
-        summary: { dx: 'Asthma (Mild Persistent)', sub: 'Reversible inflammatory airway obstruction', clues: 'Episodic wheeze, history of atopy, nocturnal awakenings, cold air triggers.', tests: 'Spirometry showing an obstructive pattern that completely reverses with Albuterol confirms the diagnosis. Irrelevant tests like ABGs or CTs are wasteful.', mgmt: 'Because she has nighttime awakenings >2x/month, she needs daily controller medication (Low-dose ICS) plus a rescue inhaler (SABA).', pitfalls: 'Prescribing a LABA without an ICS (carries a black box warning for asthma death). Prescribing antibiotics for an asthma exacerbation.', other: 'COPD is mostly irreversible and occurs in older smokers.', testRationale: 'PFTs prove the obstruction is reversible.', treatSeq: '1. SABA PRN 2. Add ICS 3. Add LABA if uncontrolled.', traps: 'Using non-selective beta-blockers (like Propranolol) for other conditions in an asthmatic patient.', learning: 'The classic asthma triad: Airway inflammation, Bronchial hyperresponsiveness, and Reversible airflow obstruction.' },
+        summary: {
+          dx: 'Moderate Persistent Allergic Asthma — Eosinophilic Type 2 Inflammatory Phenotype',
+          sub: 'IgE-mediated airway hyperresponsiveness with reversible obstruction',
+          clues: 'Young atopic female (eczema + hay fever family history), episodic wheeze worse at night and in mornings, cat and dust mite triggers, PEFR 74% predicted, FEV1 reversibility >12% post-salbutamol, elevated FeNO and peripheral eosinophilia.',
+          tests: 'Spirometry with bronchodilator reversibility is the gold-standard diagnostic test — FEV1 increase >200mL AND >12% = asthma. PEFR diary shows diurnal variation. FeNO and eosinophils characterise the inflammatory phenotype for biologic eligibility.',
+          mgmt: 'Step up from SABA-only to ICS + LABA (GINA Step 3). Allergen avoidance is critical — cat removal reduces exacerbation rate by 40%. FeNO >50 predicts excellent ICS response. Omalizumab (anti-IgE) for severe allergic asthma if Step 4 fails.',
+          pitfalls: 'Prescribing SABA only (salbutamol monotherapy) without a controller inhaler — accelerates airway remodeling. Prescribing beta-blockers for any comorbidity — even cardioselective ones can precipitate fatal bronchospasm.',
+          other: 'COPD: >40 years, smoker, irreversible obstruction, FEV1 reversibility <12%. VCD: inspiratory stridor, normal spirometry, supraglottic obstruction on laryngoscopy. Cardiac asthma: bilateral crepitations, elevated BNP, LV dysfunction on echo.',
+          testRationale: 'FEV1 reversibility >12% and >200mL after bronchodilator is DIAGNOSTIC per GINA/ATS guidelines. FeNO identifies eosinophilic inflammation — guides ICS dosing and biologic selection. Total IgE and specific allergen IgE quantify atopic sensitization.',
+          treatSeq: '1. SABA PRN (rescue) → 2. Add low-dose ICS (controller) → 3. Add LABA if Step 2 insufficient (ONLY with ICS, never alone) → 4. Consider Montelukast for exercise-induced component → 5. Biologic if severe eosinophilic disease.',
+          traps: 'Prescribing a beta-blocker (Propranolol) for hypertension in an asthmatic patient — causes potentially life-threatening bronchospasm. Always use cardioselective beta-blockers (Atenolol, Metoprolol) if absolutely needed in asthma.',
+          learning: 'Asthma triad: Airway inflammation + Bronchial hyperresponsiveness + Reversible airflow obstruction. Nocturnal cough and early morning wheeze are classic. FEV1 reversibility >12% and >200mL after bronchodilator = DIAGNOSTIC.'
+        },
         xp: 40
       },
 
+      // ─────────────────────────────────────────────────────────────
+      // 10. GASTROENTEROLOGY — Acute Pancreatitis
+      // ─────────────────────────────────────────────────────────────
       {
-        id: 'gastro', name: 'Gastroenterology', color: '#d97706', emoji: '胃', waitDays: 80,
-        caseTitle: 'Severe upper abdominal pain and vomiting',
-        caseDesc: 'A 27-year-old male presents with sharp epigastric pain radiating to his back.',
+        id: 'gastro', name: 'Gastroenterology', color: '#d97706', emoji: '🍽️', waitDays: 80,
+        caseTitle: 'Severe epigastric pain radiating to the back after alcohol binge',
+        caseDesc: "A 27-year-old male presents with severe, constant epigastric pain radiating straight through to his back following a weekend alcohol binge. He is tachycardic and hypotensive. Don't reach for the CT scanner on day 1 — two criteria are already met for diagnosis.",
         patient: { name: 'Nikolay', gender: 'Male', age: '27 Y', complaint: 'Severe upper abdominal pain and vomiting' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '38.2°C' }, { icon: '❤️', label: 'Heart Rate', val: '115 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '100/65 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '20/min' }, { icon: '💧', label: 'SpO2', val: '97%' }],
-        history: ['Continuous, severe epigastric pain started 12 hours ago. Radiates straight through to the back.', 'Multiple episodes of vomiting.', 'Binge drinking alcohol heavily over the weekend. No history of gallstones.'],
-        physExam: ['Significant epigastric tenderness.', 'Decreased bowel sounds. Leaning forward relieves pain slightly.', 'No periumbilical bruising (Cullen sign).'],
-        testCats: [
-          { name: 'Appropriate Labs & Imaging', icon: '🧪', tests: [{ n: 'Serum Lipase & Amylase', c: true, r: 'Lipase elevated 5x upper limit' }, { n: 'Comprehensive Metabolic Panel', c: true, r: 'BUN 25, Calcium 7.8 (Hypocalcemia)' }, { n: 'Lipid Panel', c: true, r: 'Triglycerides 250' }, { n: 'Right Upper Quadrant (RUQ) Ultrasound', c: true, r: 'Gallbladder normal, pancreas edematous' }] },
-          { name: 'Inefficient / Dangerous Tests', icon: '🚫', tests: [{ n: 'CT Abdomen with IV Contrast', c: false, r: 'Not needed on day 1 if Lipase is >3x normal.' }, { n: 'ERCP', c: false, r: 'Contraindicated unless ascending cholangitis present.' }, { n: 'HIDA Scan', c: false, r: 'Irrelevant. Gallbladder is fine.' }, { n: 'Urine Toxicology Screen', c: false, r: 'Negative. Distraction.' }, { n: 'Troponin', c: false, r: 'Normal' }] }
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '38.2°C (febrile)' },
+          { icon: '❤️', label: 'Heart Rate', val: '115 bpm (tachycardic)' },
+          { icon: '📈', label: 'Blood Pressure', val: '100/65 mmHg (borderline hypotensive)' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '20/min' },
+          { icon: '💧', label: 'SpO2', val: '97% on room air' }
         ],
-        diagnoses: [{ t: 'Acute Pancreatitis (Alcohol-induced)', c: true }, { t: 'Acute Cholecystitis', c: false }, { t: 'Perforated Peptic Ulcer', c: false }, { t: 'Mesenteric Ischemia', c: false }, { t: 'Biliary Colic', c: false }],
+        history: [
+          'Severe, constant, boring epigastric pain starting 12 hours ago — radiates straight through to the centre of the back.',
+          'Leaning forward or curling into fetal position mildly relieves pain (characteristic of retroperitoneal inflammation).',
+          'Multiple episodes of forceful vomiting — not blood-stained. No haematemesis.',
+          'Heavy binge alcohol consumption over the weekend — approximately 15 standard drinks over 2 days.',
+          'No prior gallstones, no previous pancreatitis episodes.',
+          'No recent ERCP, no medications known to cause pancreatitis (no thiazides, azathioprine, steroids).',
+          'No fever before this episode. No diarrhoea.',
+          'LMP 3 months ago — not pregnant (male patient).'
+        ],
+        physExam: [
+          'General: Writhing in pain, cannot find a comfortable position. Diaphoretic.',
+          'Temperature: 38.2°C.',
+          'Abdomen: Moderate-to-severe epigastric and periumbilical tenderness. Voluntary guarding in epigastrium. Bowel sounds decreased.',
+          'No rebound tenderness (rules out perforation at this stage).',
+          'No periumbilical ecchymosis (Cullen sign — present in haemorrhagic pancreatitis).',
+          'No flank ecchymosis (Grey Turner sign — haemorrhagic pancreatitis).',
+          'No jaundice, no scleral icterus (gallstone obstruction less likely).',
+          'Liver and spleen: Not enlarged.'
+        ],
+        testCats: [
+          {
+            name: 'Diagnostic Labs (Confirm Pancreatitis)', icon: '🧪', tests: [
+              { n: 'Serum Lipase AND Serum Amylase', c: true, r: 'Lipase 2240 U/L (>5× ULN) and Amylase 1850 U/L (>3× ULN) — both >3× upper limit of normal = fulfills Atlanta criteria. Diagnosis confirmed with labs alone.' },
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'BUN 28 mg/dL (elevated — Ranson criterion, predicts severity), Calcium 7.6 mg/dL (hypocalcaemia — saponification), Creatinine 1.1, LDH 380 U/L (elevated)' },
+              { n: 'Fasting Triglyceride Level', c: true, r: 'Triglycerides 295 mg/dL — secondary cause; TG >1000 can CAUSE pancreatitis; lipid-lowering therapy warranted' },
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'WBC 15,400 (leukocytosis), Hematocrit 48% (haemoconcentration — Ranson criterion predicts severity), Platelets 220,000' },
+              { n: 'Serum Lactate', c: true, r: '3.1 mmol/L — elevated; indicates impaired tissue perfusion from SIRS and hypovolemia; guides aggressiveness of resuscitation' }
+            ]
+          },
+          {
+            name: 'Liver & Biliary Aetiology Tests', icon: '🟡', tests: [
+              { n: 'Liver Function Tests (ALT, AST, Bilirubin, ALP, GGT)', c: true, r: 'ALT mildly elevated at 3× ULN — mild alcoholic hepatitis component; no cholestatic pattern; gallstone aetiology less likely but not excluded' },
+              { n: 'Right Upper Quadrant (RUQ) Ultrasound', c: true, r: 'No gallstones, common bile duct normal. Pancreas appears oedematous and hypoechoic — consistent with pancreatitis. Gallstone aetiology excluded.' },
+              { n: 'Hepatitis B Surface Antigen (HBsAg)', c: false, r: 'Negative — hepatitis B rarely causes pancreatitis; not a priority diagnosis here' },
+              { n: 'Autoimmune Pancreatitis Antibodies (IgG4)', c: false, r: 'Normal IgG4 — autoimmune pancreatitis excluded; would be older patient, obstructive jaundice, sausage-shaped pancreas on imaging' }
+            ]
+          },
+          {
+            name: 'Severity Scoring Tools', icon: '📊', tests: [
+              { n: 'Bedside Ranson Criteria Score on admission + 48 hours', c: true, r: 'Ranson Score 3/11 at admission — moderate severity; predicts 15% morbidity rate; monitor for complications' },
+              { n: 'BISAP Score (Bedside Index for Severity in AP)', c: true, r: 'BISAP Score 2 — elevated mortality risk; guides ICU vs. ward admission decision' },
+              { n: 'APACHE II Score', c: false, r: 'Score 10 — moderate severity; more complex to calculate; BISAP and Ranson adequate for pancreatitis staging' },
+              { n: 'C-Reactive Protein (CRP) at 48 hours', c: true, r: 'CRP >150 mg/L at 48h = necrotising pancreatitis marker; serial CRP is the best single predictor of severity after 48 hours' }
+            ]
+          },
+          {
+            name: 'Imaging (Timing is Critical)', icon: '🩻', tests: [
+              { n: 'CT Abdomen with IV contrast (CECT) on admission Day 1', c: false, r: 'NOT indicated on Day 1 when diagnosis is already confirmed by labs + typical pain. CT reserved for complications after 48-72 hours of no improvement.' },
+              { n: 'CT Abdomen with IV contrast at 72-96 hours if deteriorating', c: true, r: 'Peripancreatic fat stranding, no pancreatic necrosis — Modified CT Severity Index (MCTSI) 4 = moderate severity; guides need for step-up drainage' },
+              { n: 'MRI Pancreas (MRCP) without gadolinium', c: false, r: 'Best for ductal anatomy and occult gallstones — appropriate if gallstone aetiology suspected despite negative USS; not priority here with confirmed alcohol cause' },
+              { n: 'ERCP (Endoscopic Retrograde Cholangiopancreatography)', c: false, r: 'CONTRAINDICATED in alcohol-induced pancreatitis WITHOUT biliary obstruction — would worsen inflammation and pancreatic ductal injury' },
+              { n: 'Abdominal X-Ray (Plain film)', c: false, r: '"Sentinel loop" sign (localised ileus) may be seen — non-specific; does not diagnose or stage pancreatitis; not useful' }
+            ]
+          },
+          {
+            name: 'Irrelevant Distractors', icon: '🚫', tests: [
+              { n: 'Urine Toxicology Screen', c: false, r: 'Positive alcohol metabolites only — patient disclosed alcohol use; tox screen adds nothing' },
+              { n: 'High-sensitivity Troponin', c: false, r: 'Normal — epigastric pain with typical pancreatitis features; not a cardiac event' },
+              { n: 'Chest X-Ray', c: false, r: 'Possible left pleural effusion (sympathetic) — non-specific; does not change pancreatitis management' },
+              { n: 'Urine Amylase', c: false, r: 'Elevated — mirrors serum; urinary amylase adds no diagnostic information over serum lipase' },
+              { n: 'HIDA Scan (Hepatobiliary)', c: false, r: 'Irrelevant — gallbladder is normal on USS; HIDA used for acute cholecystitis when USS equivocal' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Acute Pancreatitis — Alcohol-Induced (Moderate Severity)', c: true },
+          { t: 'Acute Cholecystitis', c: false },
+          { t: 'Perforated Peptic Ulcer', c: false },
+          { t: 'Mesenteric Ischaemia', c: false },
+          { t: 'Biliary Colic', c: false }
+        ],
         dxCount: 1,
         treatCats: [
-          { name: 'Management', icon: '💧', treats: [{ n: 'Aggressive IV Fluid Resuscitation (Lactated Ringers)', c: true }, { n: 'NPO initially, then early enteral feeding', c: true }, { n: 'IV Opioid Analgesia', c: true }, { n: 'Prophylactic IV Antibiotics (Imipenem)', c: false }, { n: 'Emergency Laparoscopic Cholecystectomy', c: false }, { n: 'Vasopressors', c: false }] }
+          {
+            name: 'Supportive Management (The Essentials)', icon: '💧', treats: [
+              { n: 'Aggressive IV fluid resuscitation — Lactated Ringers 250-500mL/hr for first 12-24 hours', c: true },
+              { n: 'Strict NPO initially — advance to early enteral (oral or NG) feeding as soon as tolerated (within 24-48h)', c: true },
+              { n: 'IV Opioid analgesia — Morphine or Hydromorphone for pain', c: true },
+              { n: 'Prophylactic IV Antibiotics (Imipenem, Meropenem)', c: false },
+              { n: 'Emergency Laparoscopic Cholecystectomy immediately', c: false },
+              { n: 'Vasopressors (Norepinephrine) first-line', c: false }
+            ]
+          }
         ],
-        summary: { dx: 'Acute Pancreatitis', sub: 'Autodigestion of the pancreas', clues: 'Epigastric pain radiating to back, severe vomiting, alcohol binge, Lipase > 3x normal.', tests: 'Requires 2 out of 3 for diagnosis: Typical pain, Lipase >3x, Imaging findings. Since pain and lipase fit, CT scan is NOT required on admission.', mgmt: 'Aggressive IV fluid hydration is the most critical step to prevent necrosis. Pain control is essential.', pitfalls: 'Giving prophylactic antibiotics. They do not prevent infected necrosis and are contraindicated in sterile pancreatitis.', other: 'Cholecystitis pain refers to the right shoulder and has a positive Murphy sign.', testRationale: 'Lipase is more sensitive and specific than amylase.', treatSeq: '1. Aggressive LR Fluids 2. Pain meds 3. Determine cause 4. Feed early.', traps: 'Under-resuscitating with fluids in the first 24 hours, leading to organ failure.', learning: 'Top causes of acute pancreatitis: Gallstones and Alcohol (I GET SMASHED).' },
+        summary: {
+          dx: 'Acute Pancreatitis — Alcohol-Induced, Moderately Severe (Revised Atlanta Classification)',
+          sub: 'Pancreatic autodigestion by activated enzymes',
+          clues: 'Severe boring epigastric pain radiating to the back, relieved by leaning forward, following alcohol binge, tachycardia, hypotension, Lipase >5x normal, RUQ ultrasound confirming oedematous pancreas — all three Atlanta criteria met.',
+          tests: 'Diagnosis requires 2 of 3 criteria: typical pain + Lipase/Amylase >3x normal + imaging findings. When pain and lipase criteria are both met, CT is NOT required on day 1. CT contrast is done after 48-72 hours ONLY to assess for pancreatic necrosis if no improvement.',
+          mgmt: 'Aggressive IV fluid resuscitation with Lactated Ringers is the single most important intervention — prevents necrosis by maintaining pancreatic microcirculation. Early enteral feeding (within 24-48 hours) is superior to prolonged NPO. IV opioids for pain control.',
+          pitfalls: 'Giving prophylactic antibiotics — multiple trials show they do NOT prevent infected necrosis and increase Clostridium difficile risk. They are only indicated if infected necrosis is confirmed. Under-resuscitating with fluids in the first 24 hours leads to pancreatic necrosis and multi-organ failure.',
+          other: 'Acute cholecystitis: constant RUQ pain, positive Murphy sign, fever, stones on ultrasound. Perforated PUD: sudden onset, rigid boardlike abdomen, free air on CXR. Mesenteric ischaemia: severe pain out of proportion to exam, elderly/atrial fibrillation, high lactate.',
+          testRationale: 'Lipase is more sensitive AND more specific than amylase for acute pancreatitis. Calcium <8 mg/dL is a Ranson criteria severity marker. Triglycerides >1000 mg/dL can themselves cause pancreatitis. RUQ ultrasound checks for gallstones as an alternative aetiology.',
+          treatSeq: '1. IV Lactated Ringers aggressive resuscitation → 2. IV opioid analgesia → 3. NPO initially → 4. Serial reassessment (HR, UO, HCT) → 5. Early enteral feeds when tolerated → 6. CT only if no improvement at 48-72h.',
+          traps: 'Under-resuscitating with IV fluids in the first 24 hours — this is the single most common cause of progression from mild to severe pancreatitis. Target urine output 0.5mL/kg/hr and HR normalisation.',
+          learning: 'Atlanta 2012 criteria: 2 of 3 required — (1) typical pain, (2) Lipase or Amylase >3x normal, (3) imaging confirmation. Alcohol and Gallstones = top two causes (I GET SMASHED mnemonic). CT scan is NOT needed on day 1 if two criteria already met.'
+        },
         xp: 40
       },
 
+      // ─────────────────────────────────────────────────────────────
+      // 11. PEDIATRICS — Simple Febrile Seizure
+      // ─────────────────────────────────────────────────────────────
       {
         id: 'peds', name: 'Pediatrics', color: '#10b981', emoji: '👶', waitDays: 21,
-        caseTitle: 'Seizure and fever in a toddler',
-        caseDesc: 'A 2-year-old male is brought to the ED after a 2-minute generalized shaking episode. Avoid traumatizing the child with over-testing.',
+        caseTitle: 'Generalized shaking episode and high fever in a toddler',
+        caseDesc: "A 2-year-old boy is rushed to the ED after a 2-minute generalized shaking episode. He is now alert and crying. Temperature is 39.5°C. Resist the urge to over-investigate — the most powerful test here is a thorough physical examination. Invasive tests in a well-appearing, fully immunized child cause harm without benefit.",
         patient: { name: 'Milan', gender: 'Male', age: '2 Y', complaint: 'Seizure and high fever' },
-        vitals: [{ icon: '🌡️', label: 'Temperature', val: '39.5°C' }, { icon: '❤️', label: 'Heart Rate', val: '130 bpm' }, { icon: '📈', label: 'Blood Pressure', val: '90/60 mmHg' }, { icon: '🫁', label: 'Respiratory Rate', val: '30/min' }, { icon: '💧', label: 'SpO2', val: '99%' }],
-        history: ['Suddenly went stiff and shook all four limbs for about 2 minutes.', 'Seizure stopped completely on its own.', 'Child has a runny nose. No history of prior seizures.'],
-        physExam: ['Post-ictal state, easily arousable.', 'Neck: Supple, no nuchal rigidity.', 'Right tympanic membrane is bulging and erythematous (Otitis Media).'],
-        testCats: [
-          { name: 'Clinical Evaluation', icon: '🩺', tests: [{ n: 'Thorough clinical physical exam to find fever source', c: true, r: 'Right acute otitis media identified' }] },
-          { name: 'Overly Aggressive Tests', icon: '🚫', tests: [{ n: 'Lumbar Puncture (CSF analysis)', c: false, r: 'Not indicated. Traumatizes the well-appearing child.' }, { n: 'EEG (Electroencephalogram)', c: false, r: 'Not indicated for a simple febrile seizure' }, { n: 'CT Scan of the Brain', c: false, r: 'Unnecessary radiation' }, { n: 'Complete Blood Count & Blood Culture', c: false, r: 'Not indicated if source is obvious' }, { n: 'Serum Electrolytes', c: false, r: 'Normal' }] }
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '39.5°C (103.1°F) — HIGH FEVER' },
+          { icon: '❤️', label: 'Heart Rate', val: '130 bpm (expected with fever)' },
+          { icon: '📈', label: 'Blood Pressure', val: '90/60 mmHg (normal for age)' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '30/min (normal for age with fever)' },
+          { icon: '💧', label: 'SpO2', val: '99% on room air' }
         ],
-        diagnoses: [{ t: 'Simple Febrile Seizure', c: true }, { t: 'Complex Febrile Seizure', c: false }, { t: 'Bacterial Meningitis', c: false }, { t: 'Epilepsy', c: false }, { t: 'Encephalitis', c: false }],
+        history: [
+          'Playing normally when he suddenly went stiff, then had rhythmic jerking of all four limbs lasting approximately 2 minutes.',
+          'Seizure stopped completely on its own — no medications given.',
+          'Brief post-ictal drowsiness for 5 minutes — now back to baseline (crying, recognising parents).',
+          'Runny nose and mild cough for 2 days prior to this episode.',
+          'No prior seizures. No family history of epilepsy.',
+          'Fully vaccinated on schedule (MMR, DTaP, PCV, Hib — all up to date).',
+          'No meningism symptoms — no neck stiffness, no photophobia, no non-blanching rash.',
+          'No recent travel, no sick contacts with serious illness.'
+        ],
+        physExam: [
+          'General: Alert, crying, consolable, recognising parents — back to his neurological baseline.',
+          'Fontanelle: Closed (normal for age — 2 years). No bulging.',
+          'Neck: Supple, full range of movement, no nuchal rigidity (meningitis excluded clinically).',
+          'Skin: No petechiae, no purpura, no non-blanching rash (meningococcaemia excluded).',
+          'ENT: Right tympanic membrane bulging and erythematous with loss of light reflex — Acute Otitis Media identified as the fever source.',
+          'Neurological: Cranial nerves intact, tone normal, deep tendon reflexes symmetric — no focal deficits.',
+          'No Kernig or Brudzinski signs.'
+        ],
+        testCats: [
+          {
+            name: 'The Most Important "Test"', icon: '🩺', tests: [
+              { n: 'Thorough head-to-toe physical examination to identify fever source', c: true, r: 'Acute Otitis Media (AOM) in right ear identified — this is the fever source and seizure trigger. This clinical examination is more valuable than any blood test or imaging.' }
+            ]
+          },
+          {
+            name: 'Blood Tests', icon: '🧪', tests: [
+              { n: 'Complete Blood Count (CBC) with differential', c: false, r: 'WBC 14,200 — mild leukocytosis expected with any viral or bacterial infection causing fever. Not indicated when infection source is clinically obvious (AOM). AAP guidelines: not routinely recommended.' },
+              { n: 'Serum Electrolytes (Na⁺, K⁺, Cl⁻, HCO₃⁻)', c: false, r: 'Normal — electrolyte-related seizures occur in neonates with severe dehydration or hyponatraemia; 2-year-old with AOM does not have metabolic seizure aetiology' },
+              { n: 'Random Blood Glucose', c: false, r: 'Normal 98 mg/dL — hypoglycaemic seizures are brief, rapidly responsive to glucose, different clinical context; excluded clinically' },
+              { n: 'Blood Culture', c: false, r: 'Not indicated — no signs of bacteraemia (no petechiae, no toxic appearance, obvious source); drawing blood cultures in a well-appearing child who is back to baseline is unnecessarily invasive' },
+              { n: 'Serum Calcium and Magnesium', c: false, r: 'Normal — hypocalcaemic seizures have a different clinical picture (neonates, hypoparathyroidism, rickets); not relevant here' },
+              { n: 'Serum Phosphate and Albumin', c: false, r: 'Normal — metabolic bone disease not suspected; overcautious ordering' },
+              { n: 'Urine Dipstick and Urinalysis', c: false, r: 'Normal — UTI can cause febrile seizures; should be checked if no other obvious fever source found; AOM already identified here' }
+            ]
+          },
+          {
+            name: 'Neuroimaging', icon: '🩻', tests: [
+              { n: 'CT Brain (Head) without contrast', c: false, r: 'Normal — NOT INDICATED; unnecessary ionising radiation in a 2-year-old with clear post-ictal return to baseline, no focal neurological deficit, no signs of raised ICP; AAP explicitly recommends AGAINST routine neuroimaging in simple febrile seizure' },
+              { n: 'MRI Brain with and without gadolinium', c: false, r: 'Not indicated — same reasons as CT; additionally requires sedation in toddlers; not justified when no focal neurology or clinical concern for structural pathology' },
+              { n: 'Skull X-Ray', c: false, r: 'Completely irrelevant — no trauma, no structural lesion suspected' }
+            ]
+          },
+          {
+            name: 'Cerebrospinal Fluid Analysis', icon: '💉', tests: [
+              { n: 'Lumbar Puncture (LP) for CSF analysis', c: false, r: 'NOT INDICATED. AAP (2011 guidelines) do not recommend LP in a well-appearing, fully immunised child aged >6 months with first simple febrile seizure and supple neck. LP is traumatic, requires sedation, and carries bleeding risk. Milan is back to baseline with no meningism.' },
+              { n: 'CSF Opening Pressure', c: false, r: 'Would be normal — ICP not elevated; no papilloedema, no bradycardia/hypertension, no posturing. LP should never have been ordered.' }
+            ]
+          },
+          {
+            name: 'Neurophysiology', icon: '⚡', tests: [
+              { n: 'EEG (Electroencephalogram)', c: false, r: 'NOT INDICATED after first simple febrile seizure — AAP and ILAE guidelines both state EEG does not predict seizure recurrence, does not change management, and should not be routinely performed' },
+              { n: 'Prolonged Video EEG Monitoring', c: false, r: 'Completely disproportionate for a first, brief febrile seizure; reserved for suspected epilepsy syndromes with recurrent afebrile seizures' }
+            ]
+          },
+          {
+            name: 'Microbiology & Virology', icon: '🦠', tests: [
+              { n: 'Nasopharyngeal PCR Respiratory Viral Panel', c: false, r: 'RSV positive — likely cause of URTI and fever trigger; does not change immediate management of febrile seizure; not routinely recommended' },
+              { n: 'Urine Culture', c: false, r: 'No growth — UTI excluded; only indicated if no other fever source found; AOM already identified' },
+              { n: 'Throat Swab for Streptococcus pyogenes', c: false, r: 'Negative — no tonsillar exudate, no strep features; low clinical priority' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Simple Febrile Seizure (Benign Childhood Convulsion)', c: true },
+          { t: 'Complex Febrile Seizure', c: false },
+          { t: 'Bacterial Meningitis', c: false },
+          { t: 'Epilepsy (First unprovoked seizure)', c: false },
+          { t: 'Viral Encephalitis', c: false }
+        ],
         dxCount: 1,
         treatCats: [
-          { name: 'Management', icon: '🧸', treats: [{ n: 'Reassurance and parent education', c: true }, { n: 'Antipyretics (Acetaminophen/Ibuprofen)', c: true }, { n: 'Oral Amoxicillin (for the ear infection)', c: true }, { n: 'IV Lorazepam/Diazepam', c: false }, { n: 'Start daily preventative Anti-Epileptic Drugs (AEDs)', c: false }, { n: 'Cooling ice baths', c: false }] }
+          {
+            name: 'Appropriate Management', icon: '🧸', treats: [
+              { n: 'Detailed parental education and reassurance (benign, self-limited condition)', c: true },
+              { n: 'Oral Amoxicillin for Acute Otitis Media (the underlying infection)', c: true },
+              { n: 'Antipyretics — Paracetamol 15mg/kg OR Ibuprofen 10mg/kg for fever and comfort', c: true }
+            ]
+          },
+          {
+            name: 'Inappropriate and Harmful Choices', icon: '🚫', treats: [
+              { n: 'IV Lorazepam or Diazepam (for a seizure that has already stopped)', c: false },
+              { n: 'Daily preventative Anti-Epileptic Drugs (AEDs — Phenobarbital)', c: false },
+              { n: 'Ice baths or cold water immersion', c: false }
+            ]
+          }
         ],
-        summary: { dx: 'Simple Febrile Seizure', sub: 'Benign childhood convulsion', clues: 'Age 6mo-5yrs, generalized seizure < 15 minutes, normal neuro exam post-ictal.', tests: 'The most important "test" is a good physical exam. Invasive tests like LPs, blood work, or EEGs are explicitly NOT recommended and lose you points.', mgmt: 'Treat the underlying infection (Amoxicillin). Give fever meds for comfort. Reassure the parents.', pitfalls: 'Ordering a lumbar puncture or CT scan on a well-appearing, fully immunized 2-year-old with a clear source of infection.', other: 'Meningitis causes a toxic appearance, neck stiffness, and non-blanching rashes.', testRationale: 'Simple febrile seizures are clinical diagnoses. Testing causes unnecessary pain.', treatSeq: '1. Ensure seizure has stopped 2. Find fever source 3. Reassure parents.', traps: 'Prescribing daily anti-seizure meds (Phenobarbital) to prevent future febrile seizures (side effects outweigh benefits).', learning: 'Fever-reducing medicines do NOT prevent febrile seizures, they just make the child feel better.' },
+        summary: {
+          dx: 'Simple Febrile Seizure Secondary to Acute Otitis Media',
+          sub: 'Benign, self-limited provoked childhood convulsion',
+          clues: 'Age 6 months to 5 years, generalized tonic-clonic seizure lasting <15 minutes, single episode in 24 hours, rapid return to neurological baseline, high fever with identifiable source (otitis media), supple neck, no rash, fully vaccinated — all criteria for SIMPLE febrile seizure.',
+          tests: 'The most important investigation is a thorough physical examination to identify the fever source — everything else follows from that. AAP guidelines explicitly state that LP, EEG, blood work, and CT scans are NOT indicated in a well-appearing, fully immunised child with a first simple febrile seizure.',
+          mgmt: 'Treat the underlying infection causing the fever (Amoxicillin for AOM). Give antipyretics for comfort (they do NOT prevent recurrence). Educate the parents thoroughly — recurrence risk is 30-35%, but simple febrile seizures do NOT cause brain damage or epilepsy.',
+          pitfalls: 'Ordering a lumbar puncture on a well-appearing, fully immunised 2-year-old with a clear infection source and no meningism signs — this is painful, traumatic, and explicitly NOT recommended by guidelines. Starting daily anti-epileptic drugs — the risk-benefit clearly favours not treating.',
+          other: 'Complex febrile seizure: focal, >15 minutes, or >1 seizure in 24 hours — does require more workup. Bacterial meningitis: toxic appearance, petechial rash, neck stiffness, bulging fontanelle — not present here. Epilepsy: afebrile, recurrent seizures.',
+          testRationale: 'Simple febrile seizures are a clinical diagnosis requiring no investigations beyond finding the fever source. The diagnostic criteria are based on age, seizure duration, generalised semiology, and post-ictal normalisation — all clinical observations.',
+          treatSeq: '1. Confirm seizure has stopped → 2. Thorough exam to find fever source → 3. Treat the identified infection → 4. Antipyretics for comfort → 5. Reassure and educate parents → 6. No AEDs, no EEG, no CT, no LP.',
+          traps: 'Prescribing phenobarbital (phenobarbitone) daily to prevent febrile seizures — the side effects (hyperactivity, cognitive effects, sedation) far outweigh the benefits, and febrile seizures do not cause epilepsy.',
+          learning: 'Simple febrile seizure definition: (1) Age 6mo-5yr, (2) Generalized, (3) <15 minutes, (4) Single episode in 24hr, (5) Returns to normal. Fever-reducing medicines do NOT prevent febrile seizures. The exam is more valuable than any investigation.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 12. HEME-RHEUMATOLOGY — Polycythemia Vera
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'heme', name: 'Heme-Rheumatology', color: '#be123c', emoji: '🩸', waitDays: 48,
+        caseTitle: 'Intense itching after hot showers and persistent headaches',
+        caseDesc: 'A 54-year-old male presents with a ruddy complexion, intense burning itch triggered by hot showers (aquagenic pruritus), persistent headaches, and splenomegaly. His Hb is critically elevated. Identify the primary myeloproliferative process and avoid confusing it with secondary causes.',
+        patient: { name: 'Gregorios', gender: 'Male', age: '54 Y', complaint: 'Itching after hot showers and headaches' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '36.8°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '85 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '155/95 mmHg (hypertensive)' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '16/min' },
+          { icon: '💧', label: 'SpO2', val: '97% on room air' }
+        ],
+        history: [
+          'Intense, burning, intolerable itch all over the body occurring within 10-15 minutes of hot shower exposure — no rash, no urticaria.',
+          'Persistent throbbing headaches and episodes of dizziness and tinnitus.',
+          'Face always appears flushed/ruddy even without sun exposure or alcohol.',
+          'Blurred vision occasionally.',
+          'Generalised fatigue and unintentional weight loss of 4 kg in 6 months.',
+          'Mild early satiety — large spleen compressing the stomach.',
+          'No haemoptysis. No chronic lung disease. No altitude residence. No history of smoking.',
+          'History of a deep vein thrombosis (DVT) in the right leg 2 years ago — treated with warfarin for 6 months.',
+          'No family history of blood disorders.'
+        ],
+        physExam: [
+          'General: Plethoric (ruddy, dusky red) facial complexion and conjunctival injection.',
+          'Cardiovascular: BP 155/95, regular rhythm.',
+          'Abdomen: Splenomegaly — spleen palpable 4 cm below the left costal margin (confirmed massive enlargement).',
+          'Liver: Mildly enlarged, non-tender (hepatomegaly).',
+          'Skin: No rash, no urticaria, no visible lesions. Excoriations from scratching on forearms.',
+          'No lymphadenopathy.',
+          'No jaundice, no clubbing.'
+        ],
+        testCats: [
+          {
+            name: 'Haematology Core Diagnostics', icon: '💉', tests: [
+              { n: 'Full Blood Count (FBC) with differential', c: true, r: 'Hb 19.5 g/dL (critically elevated), Haematocrit 62%, WBC 14,000 (mild leukocytosis), Platelets 550,000 — trilineage hyperproduction is the hallmark of PV' },
+              { n: 'Peripheral Blood Film (Morphology)', c: true, r: 'Increased red cell mass, occasional giant platelets, no schistocytes (not haemolytic). Plethoric erythrocytes on film.' },
+              { n: 'Serum Erythropoietin (EPO) level', c: true, r: 'EPO 2 mIU/mL — SUBNORMAL (CRITICAL PIVOT TEST). Autonomous RBC production suppresses EPO. Distinguishes primary PV from secondary polycythaemia.' },
+              { n: 'Iron Studies (Ferritin, TIBC, Serum Iron)', c: true, r: 'Ferritin 4 ng/mL (very low) — iron depleted by excessive erythropoiesis; iron deficiency is masking an even higher Hb; Hb would be higher with replete iron stores.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Mild reticulocytosis — RBC production is accelerated; non-specific finding; not diagnostic by itself' },
+              { n: 'Coagulation Profile (PT, aPTT, Fibrinogen, D-Dimer)', c: false, r: 'Normal at this stage — no DIC. However, thrombosis risk is very high; prior DVT history confirms thrombotic tendency.' }
+            ]
+          },
+          {
+            name: 'Molecular Genetics (Diagnostic Confirmation)', icon: '🧬', tests: [
+              { n: 'JAK2 V617F Mutation PCR Assay', c: true, r: 'POSITIVE — present in >95% of PV. JAK2 mutation causes constitutive JAK-STAT signalling → autonomous erythropoiesis independent of EPO. Confirms myeloproliferative neoplasm.' },
+              { n: 'JAK2 Exon 12 Mutation (if V617F negative)', c: false, r: 'Negative — exon 12 mutations present in ~3% of JAK2 V617F-negative PV; only relevant if V617F is negative' },
+              { n: 'BCR-ABL Translocation (Philadelphia Chromosome) — RT-PCR or FISH', c: false, r: 'NEGATIVE — would indicate CML not PV. CML has predominantly leukocytosis, not erythrocytosis.' },
+              { n: 'CALR Mutation (Calreticulin)', c: false, r: 'Negative — CALR mutation is found in Essential Thrombocythaemia and Myelofibrosis, not typically PV' },
+              { n: 'MPL Mutation (Thrombopoietin receptor)', c: false, r: 'Negative — MPL mutations occur in ET and PMF, not PV; ordered if JAK2 negative' }
+            ]
+          },
+          {
+            name: 'Bone Marrow Assessment', icon: '🔬', tests: [
+              { n: 'Bone Marrow Biopsy (Trephine + Aspirate)', c: true, r: 'Hypercellular marrow with panmyelosis (trilineage hyperplasia), megakaryocyte clustering, loss of fat spaces — confirms PV per WHO 2022 diagnostic criteria. Required for formal diagnosis if EPO/JAK2 borderline.' },
+              { n: 'Flow Cytometry of Bone Marrow', c: false, r: 'No abnormal clone identified — used to characterise blast percentage in suspected transformation to AML; not primary diagnostic tool for PV' }
+            ]
+          },
+          {
+            name: 'Secondary Polycythaemia Exclusion', icon: '❤️‍🩹', tests: [
+              { n: 'Arterial Blood Gas (ABG) on room air', c: false, r: 'PaO2 98 mmHg, SaO2 98% — normal oxygenation; hypoxia-driven secondary polycythaemia excluded (COPD, OSA, high altitude would show PaO2 <75)' },
+              { n: 'Chest X-Ray (CXR)', c: false, r: 'Normal lung fields — no COPD, no pulmonary hypertension, no pulmonary vascular disease' },
+              { n: 'Polysomnography (Sleep Study for OSA)', c: false, r: 'No sleep apnoea identified — OSA causing secondary polycythaemia excluded' },
+              { n: '12-Lead ECG', c: false, r: 'No right heart strain, no cor pulmonale pattern — no cardiopulmonary cause of elevated EPO' },
+              { n: 'Renal Ultrasound (for EPO-secreting tumour)', c: false, r: 'Normal kidneys bilaterally — renal cell carcinoma excluded (rare cause of secondary polycythaemia via ectopic EPO production)' },
+              { n: 'CT Chest/Abdomen/Pelvis (Tumour screen)', c: false, r: 'No occult malignancy found — paraneoplastic EPO syndrome excluded; not indicated in the presence of positive JAK2 and low EPO' }
+            ]
+          },
+          {
+            name: 'Biochemistry & Metabolic', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: false, r: 'Uric Acid 8.2 mg/dL (elevated — hyperuricaemia from increased cell turnover); otherwise normal creatinine and LFTs' },
+              { n: 'Vitamin B12 Level', c: false, r: 'Elevated B12 — myeloproliferative disorders release B12-binding proteins from granulocytes; non-specific marker of myeloproliferation' },
+              { n: 'Serum Uric Acid', c: false, r: 'Elevated — reflects increased nucleoprotein turnover from high cell proliferation; gout risk increased; manage with allopurinol' },
+              { n: 'LDH (Lactate Dehydrogenase)', c: false, r: 'Mildly elevated — non-specific marker of cell turnover; elevated in many haematological malignancies' },
+              { n: 'Sweat Chloride Test (Pilocarpine iontophoresis)', c: false, r: 'Normal — completely irrelevant; this is a cystic fibrosis diagnostic test; has no role in polycythaemia workup' },
+              { n: 'Autoimmune Panel (ANA, RF, anti-dsDNA)', c: false, r: 'All negative — PV is a clonal marrow disease, not an autoimmune condition; pruritus is from basophil histamine release, not allergy or autoimmunity' },
+              { n: 'Urine Toxicology Screen', c: false, r: 'Negative — no stimulants or EPO injections detected; patient denied doping' }
+            ]
+          },
+          {
+            name: 'Thrombosis Risk Assessment', icon: '🩺', tests: [
+              { n: 'Thrombophilia Screen (Factor V Leiden, Prothrombin mutation, Protein C/S, Antithrombin)', c: false, r: 'No inherited thrombophilia — prior DVT was due to hyperviscosity from polycythaemia, not an additional inherited coagulation defect' },
+              { n: 'Antiphospholipid Antibody Syndrome Panel (aPL, anti-β2GPI, Lupus anticoagulant)', c: false, r: 'Negative — APS excluded; DVT in PV is caused by erythrocytosis + thrombocytosis, not antiphospholipid antibodies' },
+              { n: 'Doppler Ultrasound of Legs (DVT assessment)', c: true, r: 'No current DVT — prior DVT resolved; baseline assessment important as thrombosis is the primary cause of death in PV' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Polycythemia Vera (JAK2 V617F-positive Myeloproliferative Neoplasm)', c: true },
+          { t: 'Secondary Polycythaemia (Hypoxia-driven, e.g. COPD, sleep apnoea)', c: false },
+          { t: 'Essential Thrombocythaemia', c: false },
+          { t: 'Chronic Myeloid Leukaemia (CML)', c: false },
+          { t: 'Systemic Mastocytosis', c: false },
+          { t: 'Haemochromatosis', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Primary Cytoreductive Therapy', icon: '🩸', treats: [
+              { n: 'Therapeutic Phlebotomy (venesection) — target Haematocrit < 45% in males', c: true },
+              { n: 'Low-dose Aspirin 81mg daily (thrombosis prevention)', c: true },
+              { n: 'Cytoreductive therapy — Hydroxyurea (for high-risk patients > 60 years or prior thrombosis)', c: true },
+              { n: 'Allogeneic Bone Marrow Transplant', c: false }
+            ]
+          },
+          {
+            name: 'Contraindicated and Harmful Therapies', icon: '🚫', treats: [
+              { n: 'Iron supplementation', c: false },
+              { n: 'Imatinib (Gleevec) — for CML/BCR-ABL, not PV', c: false },
+              { n: 'High-dose systemic antihistamines (for the pruritus)', c: false },
+              { n: 'Warfarin monotherapy without Aspirin', c: false },
+              { n: 'Erythropoietin injections', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Polycythemia Vera — JAK2 V617F-Positive Primary Myeloproliferative Neoplasm',
+          sub: 'Autonomous Trilineage Bone Marrow Hyperproduction',
+          clues: 'Aquagenic pruritus (pathognomonic — caused by basophil histamine release), facial plethora, splenomegaly, prior unexplained DVT, Hb 19.5 with low EPO and positive JAK2 V617F — this is the complete diagnostic picture of Polycythemia Vera.',
+          tests: 'Key triad: High Hb/Hct + LOW EPO (suppressed by autonomous production) + Positive JAK2 V617F mutation = Polycythemia Vera. Low EPO is the pivotal test that separates primary (PV — low EPO) from secondary polycythaemia (high EPO). ABG, CXR, and tox screens are irrelevant distractors.',
+          mgmt: 'Phlebotomy (venesection) physically removes excess red cells — target Hct < 45% in males. Aspirin prevents thrombosis (stroke, DVT, PE — the main cause of death). Hydroxyurea cytoreduces the marrow in high-risk patients (age > 60 or prior thrombosis). JAK2 inhibitor (Ruxolitinib) for resistant disease.',
+          pitfalls: 'Prescribing iron supplements — these patients are intentionally kept iron-deficient to slow RBC production. Giving iron dramatically spikes the Hct and risks catastrophic thrombosis. Prescribing antihistamines alone for aquagenic pruritus without treating the underlying polycythaemia.',
+          other: 'Secondary polycythaemia (COPD, OSA, high altitude): HIGH EPO, no splenomegaly, no JAK2 mutation. CML: massively elevated WBC, BCR-ABL positive, minimal RBC excess. Essential thrombocythaemia: platelets dominant, Hb normal, JAK2 positive in only 50%.',
+          testRationale: 'EPO level is the PIVOT TEST: Low EPO = bone marrow producing independently (primary = PV). High EPO = bone marrow responding to a signal (secondary = COPD, tumour, hypoxia). JAK2 V617F then confirms the myeloproliferative clone.',
+          treatSeq: '1. Phlebotomy immediately (Hct to <45%) → 2. Start Aspirin 81mg → 3. Risk stratify (age + prior thrombosis) → 4. Add Hydroxyurea if high-risk → 5. Haematology follow-up regularly.',
+          traps: 'Iron supplementation is absolutely contraindicated — it removes the "natural brake" on RBC production (iron deficiency) and causes massive, dangerous erythrocytosis. The primary cause of death in PV is thrombosis, not transformation to leukaemia.',
+          learning: 'Aquagenic pruritus = Polycythemia Vera (basophils release histamine triggered by water temperature change). The triad: High Hb/Hct + Low EPO + Positive JAK2 V617F. Phlebotomy + Aspirin = cornerstone treatment. Iron = absolutely contraindicated.'
+        },
         xp: 40
       }
+
     ];
+    // ═══════════════════════════════════════════════════════════════
+    // END OF SPECS — paste this entire block to replace your current
+    // const SPECS = [ ... ]; in your atrium.html file
+    // ═══════════════════════════════════════════════════════════════
 
     const FLASHCARDS = [
       { q: "What is the classic triad of Parkinson's Disease?", a: "Tremor (resting), Rigidity (cogwheel), Bradykinesia" },
