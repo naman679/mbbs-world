@@ -3366,6 +3366,20 @@
       const nb = document.getElementById('n-' + id) || document.getElementById('n-s-' + id);
       if (nb) nb.classList.add('active');
       if (id === 'home' || id === 's-home') document.getElementById('n-home').classList.add('active');
+
+      // --- NEW LOGIC: Hide/Show Bottom Navigation Bar ---
+      const bottomNav = document.querySelector('.nav');
+      const mainScreens = ['home', 's-home', 's-learning', 's-leagues', 's-me'];
+
+      if (bottomNav) {
+        if (mainScreens.includes(id)) {
+          bottomNav.style.display = 'flex'; // Show on main menu tabs
+        } else {
+          bottomNav.style.display = 'none'; // Hide inside clinical cases
+        }
+      }
+      // --------------------------------------------------
+
       if (id === 's-leagues') renderLeague();
       if (id === 's-learning') loadFC();
       if (id === 's-me') renderMe();
