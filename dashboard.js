@@ -802,53 +802,61 @@ function launchGuidedTour() {
 
     const driverObj = driver({
         showProgress: true,
+        animate: true, // Smooth transitions
+        allowClose: true,
+        overlayColor: 'rgba(0, 0, 0, 0.75)', // Dimmer background for better focus
         steps: [
             {
                 popover: {
                     title: 'Welcome to MBBS World! 🩺',
-                    description: 'Let us show you how to navigate your medical resources efficiently.'
+                    description: 'Your all-in-one clinical companion. Let’s take a quick look at your new tools.',
+                    side: "center",
+                    align: 'start'
                 }
             },
             {
                 element: '.nav-brand',
                 popover: {
-                    title: 'Your Home Base',
-                    description: 'Click here anytime to return to the main dashboard.'
+                    title: 'Home Base',
+                    description: 'One tap to return to your main dashboard from anywhere.',
+                    side: "bottom",
+                    align: 'start'
                 }
             },
             {
-                element: '.search-toggle-btn',
+                element: '#nav-atrium', // New Feature Step
                 popover: {
-                    title: 'Quick Search',
-                    description: 'Looking for a specific topic like "Anatomy" or "PSM"? Find it instantly here.'
-                }
-            },
-            {
-                element: '#mainNav',
-                popover: {
-                    title: 'Study Categories',
-                    description: 'Switch between Video lectures, PDF Notes, and high-yield Question Banks.'
-                }
-            },
-            {
-                element: '#btn-live-quiz',
-                popover: {
-                    title: 'Live Multiplayer Quiz 🎮',
-                    description: 'Challenge your MPMSU batchmates in real-time! (App Exclusive)'
+                    title: 'The Atrium 🏛️',
+                    description: 'Step into the ward! Practice real clinical cases, earn XP, and climb the leaderboard.',
+                    side: "bottom",
+                    align: 'start'
                 }
             },
             {
                 element: '#btn-daily-case',
                 popover: {
-                    title: 'The Daily Case AI 🩺',
-                    description: 'Practice clinical diagnosis with our AI patient simulator. Perfect for your OPD postings!'
+                    title: 'AI Clinical Tutor 🤖',
+                    description: 'Practice history taking and diagnosis with our realistic AI patient simulator.',
+                    side: "top",
+                    align: 'center'
+                }
+            },
+            {
+                element: '#mainNav',
+                popover: {
+                    title: 'Resource Library',
+                    description: 'Quickly switch between HD Video lectures, PDF Notes, and high-yield Question Banks.',
+                    side: "bottom",
+                    align: 'center'
                 }
             },
             {
                 element: '#userProfileBtn',
                 popover: {
-                    title: 'Track Your Progress',
-                    description: 'See how many hours you have studied and check your quiz accuracy here.'
+                    title: 'Your Progress',
+                    description: 'Track your study hours and monitor your clinical performance here.',
+                    side: "bottom",
+                    align: 'end'
                 }
             }
         ]

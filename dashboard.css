@@ -47,34 +47,6 @@
             -webkit-touch-callout: none;
         }
 
-        /* --- PRIVACY CURTAIN (ANTI-SCREEN RECORD) --- */
-        #security-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000000;
-            z-index: 999999;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #ffffff;
-        }
-
-        #security-overlay i {
-            font-size: 5rem;
-            color: #ff3b30;
-            margin-bottom: 25px;
-        }
-
-        #security-overlay h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
 
         /* --- DYNAMIC WATERMARK (THEFT DETERRENT) --- */
         #watermark-container {
@@ -145,7 +117,7 @@
         }
 
         .navbar {
-            background: #fff;
+            background: var(--nav-bg);
             backdrop-filter: blur(12px);
             display: flex;
             flex-direction: column;
@@ -182,6 +154,54 @@
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+
+        /* --- DOWNLOAD APP BUTTON --- */
+        .download-app-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white !important;
+            padding: 8px 16px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 119, 182, 0.2);
+            white-space: nowrap;
+            border: none;
+        }
+
+        .download-app-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 119, 182, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .download-app-btn i {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .download-app-btn span {
+                display: none;
+            }
+
+            .download-app-btn {
+                padding: 0;
+                width: 40px;
+                height: 40px;
+                justify-content: center;
+                border-radius: 50%;
+                gap: 0;
+            }
+
+            .download-app-btn i {
+                font-size: 1.1rem;
+            }
         }
 
         .search-toggle-btn {
@@ -277,7 +297,7 @@
         .search-container {
             width: 100%;
             padding: 0.8rem 1.5rem;
-            background: #fff;
+            background: var(--nav-bg);
             display: none;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
@@ -304,7 +324,7 @@
             padding: 0.8rem 2.8rem 0.8rem 2.8rem;
             border-radius: 12px;
             border: 1px solid rgba(0, 0, 0, 0.1);
-            background: #f8fafc;
+            background: var(--card-bg);
             font-size: 0.95rem;
             outline: none;
         }
@@ -361,7 +381,7 @@
         .back-btn {
             position: relative;
             z-index: 1100;
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--card-bg);
             border: 1px solid rgba(0, 0, 0, 0.05);
             color: var(--text-main);
             padding: 0.6rem 1.2rem;
@@ -379,7 +399,7 @@
 
         .back-btn:hover {
             transform: translateX(-5px);
-            background: white;
+            background: var(--card-bg);
             border-color: var(--primary);
             color: var(--primary);
         }
@@ -468,7 +488,7 @@
         }
 
         .subject-tab {
-            background: white;
+            background: var(--card-bg);
             padding: 1rem 1.5rem;
             border-radius: 12px;
             border: 1px solid rgba(0, 0, 0, 0.05);
@@ -564,7 +584,7 @@
         }
 
         .chapter-card {
-            background: white;
+            background: var(--card-bg);
             padding: 1.2rem;
             border-radius: 15px;
             cursor: pointer;
@@ -618,6 +638,7 @@
             /* Lowered z-index */
             background: transparent;
         }
+
 
         .timeline-container {
             width: 100%;
@@ -1268,7 +1289,8 @@
         }
 
         .subject-item {
-            background: white;
+            background: var(--card-bg);
+            color: var(--text-main);
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
@@ -1374,7 +1396,7 @@
 
         /* --- FOOTER STYLES --- */
         .portal-footer {
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--nav-bg);
             backdrop-filter: blur(10px);
             padding: 3rem 1rem;
             margin-top: 3rem;
@@ -1473,4 +1495,369 @@
             to {
                 stroke-dashoffset: 0;
             }
+        }
+
+        /* --- USER PROFILE BUTTON & MODAL --- */
+        #userProfileBtn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(var(--primary-rgb, 0, 119, 182), 0.1);
+            border: 1px solid rgba(0, 119, 182, 0.2);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            margin-left: 5px;
+        }
+
+        #userProfileBtn:hover {
+            background: rgba(var(--primary-rgb, 0, 119, 182), 0.2);
+            transform: translateY(-1px);
+        }
+
+        #userProfileBtn i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        #userName {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        #profileModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        #profileModal.visible {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+
+        @media (max-width: 600px) {
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+            #userProfileBtn {
+                padding: 6px;
+                gap: 0;
+                margin-left: 2px;
+            }
+
+            #userName {
+                display: none !important;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+            #userProfileBtn {
+                padding: 6px 12px !important;
+            }
+
+            #userName {
+                display: block !important;
+                font-size: 0.8rem;
+            }
+        }
+
+
+
+        /* ── DARK MODE OVERRIDES ─────────────────────────────────────────── */
+        [data-theme="dark"] .navbar {
+            background: rgba(15, 23, 42, 0.97);
+            border-bottom-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="dark"] .search-container {
+            background: rgba(15, 23, 42, 0.97);
+            border-bottom-color: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="dark"] .search-container input {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+        }
+
+        [data-theme="dark"] .search-container input::placeholder {
+            color: var(--text-light);
+        }
+
+        /* Subject items — text was invisible in dark mode */
+        [data-theme="dark"] .subject-item {
+            background: rgba(30, 41, 59, 0.9);
+            color: #e2e8f0 !important;
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] .subject-item:hover,
+        [data-theme="dark"] .subject-item.active {
+            background: var(--primary);
+            color: white !important;
+            border-color: transparent;
+        }
+
+        /* Subject tabs — text was invisible in dark mode */
+        [data-theme="dark"] .subject-tab {
+            background: rgba(30, 41, 59, 0.9);
+            color: #e2e8f0 !important;
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        [data-theme="dark"] .subject-tab.active {
+            background: var(--primary);
+            color: white !important;
+        }
+
+        /* Chapter cards — text was invisible in dark mode */
+        [data-theme="dark"] .chapter-card {
+            background: rgba(30, 41, 59, 0.9);
+            color: #e2e8f0;
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        [data-theme="dark"] .chapter-card h3,
+        [data-theme="dark"] .chapter-card p,
+        [data-theme="dark"] .chapter-card span {
+            color: #e2e8f0;
+        }
+
+        /* Cards */
+        [data-theme="dark"] .card {
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        [data-theme="dark"] .card h3,
+        [data-theme="dark"] .card p {
+            color: var(--text-main);
+        }
+
+        /* Portal cards on home screen */
+        [data-theme="dark"] .portal-card {
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        [data-theme="dark"] .portal-card h3 {
+            color: #e2e8f0;
+        }
+
+        [data-theme="dark"] .portal-card p {
+            color: var(--text-light);
+        }
+
+        /* Back button */
+        [data-theme="dark"] .back-btn {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+        }
+
+        /* Footer */
+        [data-theme="dark"] .portal-footer {
+            background: rgba(15, 23, 42, 0.97);
+            border-top-color: rgba(255, 255, 255, 0.06);
+        }
+
+        [data-theme="dark"] .footer-links a {
+            color: #94a3b8;
+        }
+
+        [data-theme="dark"] .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        [data-theme="dark"] .footer-copy {
+            color: #64748b;
+        }
+
+        /* Nav links */
+        [data-theme="dark"] .nav-link {
+            color: #94a3b8;
+        }
+
+        [data-theme="dark"] .nav-link.active {
+            color: var(--primary);
+        }
+
+        [data-theme="dark"] .main-nav {
+            border-top-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Search & theme toggle buttons */
+        [data-theme="dark"] .search-toggle-btn {
+            background: rgba(255, 255, 255, 0.06);
+            color: #e2e8f0;
+        }
+
+        [data-theme="dark"] .search-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* User profile button */
+        [data-theme="dark"] #userProfileBtn {
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="dark"] #userName {
+            color: #e2e8f0;
+        }
+
+        /* Welcome modal */
+        [data-theme="dark"] .welcome-modal-container {
+            background: rgba(15, 23, 42, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+        }
+
+        /* PDF/file modal */
+        [data-theme="dark"] .modal-content {
+            background: #0f172a;
+        }
+
+        /* Watermark visible in dark mode */
+        [data-theme="dark"] .watermark-item {
+            color: #ffffff;
+            opacity: 0.05;
+        }
+
+        /* Section titles */
+        [data-theme="dark"] .section-title {
+            color: #e2e8f0;
+        }
+
+        /* General text fixes */
+        [data-theme="dark"] h1,
+        [data-theme="dark"] h2,
+        [data-theme="dark"] h3,
+        [data-theme="dark"] h4 {
+            color: #e2e8f0;
+        }
+
+        [data-theme="dark"] p {
+            color: #94a3b8;
+        }
+
+        /* ── END DARK MODE OVERRIDES ─────────────────────────────────────── */
+        /* ==========================================
+   ✨ IMPROVED GUIDED TOUR UI (DRIVER.JS) ✨
+   ========================================== */
+
+        /* Darken the backdrop and add a subtle blur for better focus */
+        .driver-overlay {
+            backdrop-filter: blur(2px) !important;
+            background-color: rgba(0, 0, 0, 0.75) !important;
+        }
+
+        /* Main Popover Container */
+        .driver-popover {
+            background-color: var(--card-bg) !important;
+            color: var(--text-main) !important;
+            border-radius: 16px !important;
+            padding: 24px !important;
+            border: 2px solid var(--primary) !important;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1) !important;
+            max-width: 350px !important;
+        }
+
+        /* Popover Title */
+        .driver-popover-title {
+            font-family: 'Inter', sans-serif !important;
+            font-size: 1.25rem !important;
+            font-weight: 800 !important;
+            color: var(--primary) !important;
+            margin-bottom: 8px !important;
+        }
+
+        /* Popover Description */
+        .driver-popover-description {
+            font-family: 'Inter', sans-serif !important;
+            font-size: 0.95rem !important;
+            line-height: 1.6 !important;
+            color: var(--text-light) !important;
+        }
+
+        /* Close Button */
+        .driver-popover-close-btn {
+            color: var(--text-light) !important;
+        }
+
+        .driver-popover-close-btn:hover {
+            color: #ef4444 !important;
+        }
+
+        /* Navigation Buttons (Next/Prev) */
+        .driver-popover-footer button {
+            background-color: var(--primary) !important;
+            color: white !important;
+            text-shadow: none !important;
+            border: none !important;
+            border-radius: 8px !important;
+            padding: 8px 16px !important;
+            font-weight: 600 !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .driver-popover-footer .driver-popover-next-btn {
+            background-color: var(--primary) !important;
+        }
+
+        .driver-popover-footer .driver-popover-prev-btn {
+            background-color: transparent !important;
+            color: var(--text-light) !important;
+            border: 1px solid var(--border) !important;
+        }
+
+        .driver-popover-footer button:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        /* Progress Text (e.g., 1 of 5) */
+        .driver-popover-progress-text {
+            color: var(--text-light) !important;
+            font-size: 0.85rem !important;
+            font-weight: 500 !important;
+        }
+
+        /* Arrows pointing to the highlighted element */
+        .driver-popover-arrow {
+            border-color: var(--primary) !important;
+        }
+
+        .driver-popover-arrow-side-top {
+            border-top-color: var(--primary) !important;
+        }
+
+        .driver-popover-arrow-side-bottom {
+            border-bottom-color: var(--primary) !important;
+        }
+
+        .driver-popover-arrow-side-left {
+            border-left-color: var(--primary) !important;
+        }
+
+        .driver-popover-arrow-side-right {
+            border-right-color: var(--primary) !important;
         }
