@@ -563,9 +563,9 @@ function createPlayer(uid, vid) {
     const cleanVidId = getYoutubeVideoId(vid);
     players[uid] = new YT.Player(uid, {
         height: '100%', width: '100%', videoId: cleanVidId,
-        playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
+        playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'autoplay': 1, 'origin': window.location.origin },
         events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
-    });
+    }); onReady
     players[uid].videoId = cleanVidId; // Store for cross-origin safe access
 }
 
@@ -573,6 +573,9 @@ function onReady(e, uid) {
     const dur = e.target.getDuration();
     document.getElementById(`seek-${uid}`).max = dur;
     updateClock(uid, 0, dur);
+
+    // 👇 ADD THIS LINE HERE to stop the autoplay immediately
+    e.target.pauseVideo();
 
     // RESUME LOGIC
     const vidData = e.target.getVideoData();

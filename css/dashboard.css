@@ -1861,3 +1861,7 @@
         .driver-popover-arrow-side-right {
             border-right-color: var(--primary) !important;
         }
+        /* Fix squished controls specifically inside the Android App */
+.in-app-view .custom-controls {
+    bottom: 20px; 
+}

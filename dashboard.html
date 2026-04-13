@@ -182,6 +182,7 @@
             (function () {
                 const isInsideApp = navigator.userAgent.includes("MBBSWorldApp") || !!window.injectedAppId;
                 if (isInsideApp) {
+                    document.body.classList.add('in-app-view');
                     document.getElementById('btn-live-quiz').style.display = 'flex';
                     document.getElementById('btn-daily-case').style.display = 'flex';
                 }
