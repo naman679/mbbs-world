@@ -519,12 +519,15 @@ function renderItems() {
 function renderVideoCard(container, video, index) {
     const card = document.createElement('div'); card.className = 'card';
     let vid = video.link;
+    const cleanVidId = getYoutubeVideoId(vid);
     const uid = `yt-${index}`;
 
     card.innerHTML = `
         <div class="video-wrapper">
-            <div id="${uid}"></div>
-            <div class="glass-shield"></div>
+            <div id="thumb-${uid}" style="position: absolute; top:0; left:0; width:100%; height:100%; background-image: url('https://img.youtube.com/vi/${cleanVidId}/hqdefault.jpg'); background-size: cover; background-position: center; z-index: 2; transition: opacity 0.4s ease;"></div>
+            
+            <div id="${uid}" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1;"></div>
+            <div class="glass-shield" style="z-index: 3;"></div>
         </div>
         <div class="custom-controls" style="z-index: 99;">
             <div class="timeline-container">
@@ -563,7 +566,7 @@ function createPlayer(uid, vid) {
     const cleanVidId = getYoutubeVideoId(vid);
     players[uid] = new YT.Player(uid, {
         height: '100%', width: '100%', videoId: cleanVidId,
-        playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'autoplay': 1, 'origin': window.location.origin },
+        playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
         events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
     }); onReady
     players[uid].videoId = cleanVidId; // Store for cross-origin safe access
@@ -574,8 +577,7 @@ function onReady(e, uid) {
     document.getElementById(`seek-${uid}`).max = dur;
     updateClock(uid, 0, dur);
 
-    // 👇 ADD THIS LINE HERE to stop the autoplay immediately
-    e.target.pauseVideo();
+
 
     // RESUME LOGIC
     const vidData = e.target.getVideoData();
@@ -600,6 +602,13 @@ function onStateChange(e, uid) {
         updateOrientation();
         updatePlayPauseIcon(uid, true);
 
+        // Fade out the custom thumbnail seamlessly
+        const thumbEl = document.getElementById(`thumb-${uid}`);
+        if (thumbEl) {
+            thumbEl.style.opacity = '0';
+            setTimeout(() => { if (thumbEl) thumbEl.style.pointerEvents = 'none'; }, 400);
+        }
+
         if (players[uid].timer) clearInterval(players[uid].timer);
         players[uid].timer = setInterval(() => {
             const t = e.target.getCurrentTime();
@@ -607,6 +616,8 @@ function onStateChange(e, uid) {
             const seekEl = document.getElementById(`seek-${uid}`);
             if (seekEl) seekEl.value = t;
             updateClock(uid, t, d);
+
+            // Your original resume and completion logic remains unchanged here
             const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
             localStorage.setItem('resume_' + currentUser + '_' + videoId, t);
             if (d > 0 && t > (d * 0.9)) localStorage.setItem('completed_' + currentUser + '_' + videoId, 'true');
