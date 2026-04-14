@@ -566,18 +566,23 @@ function createPlayer(uid, vid) {
     const cleanVidId = getYoutubeVideoId(vid);
     players[uid] = new YT.Player(uid, {
         height: '100%', width: '100%', videoId: cleanVidId,
-        playerVars: { 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'playsinline': 1, 'origin': window.location.origin },
+        playerVars: {
+            'controls': 0,
+            'disablekb': 1,
+            'modestbranding': 1,
+            'rel': 0,
+            'playsinline': 1,
+            'origin': window.location.origin
+        },
         events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
-    }); onReady
-    players[uid].videoId = cleanVidId; // Store for cross-origin safe access
+    });
+    players[uid].videoId = cleanVidId;
 }
 
 function onReady(e, uid) {
     const dur = e.target.getDuration();
     document.getElementById(`seek-${uid}`).max = dur;
     updateClock(uid, 0, dur);
-
-
 
     // RESUME LOGIC
     const vidData = e.target.getVideoData();
@@ -591,6 +596,9 @@ function onReady(e, uid) {
     // APPLY PREFERRED SPEED
     const preferredSpeed = localStorage.getItem('preferred_speed') || 1;
     changeSpeed(parseFloat(preferredSpeed), uid);
+
+    // AUTOMATICALLY START PLAYBACK
+    e.target.playVideo();
 }
 
 function onStateChange(e, uid) {
@@ -602,7 +610,7 @@ function onStateChange(e, uid) {
         updateOrientation();
         updatePlayPauseIcon(uid, true);
 
-        // Fade out the custom thumbnail seamlessly
+        // FADE OUT THE CUSTOM THUMBNAIL SEAMLESSLY
         const thumbEl = document.getElementById(`thumb-${uid}`);
         if (thumbEl) {
             thumbEl.style.opacity = '0';
@@ -616,8 +624,6 @@ function onStateChange(e, uid) {
             const seekEl = document.getElementById(`seek-${uid}`);
             if (seekEl) seekEl.value = t;
             updateClock(uid, t, d);
-
-            // Your original resume and completion logic remains unchanged here
             const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
             localStorage.setItem('resume_' + currentUser + '_' + videoId, t);
             if (d > 0 && t > (d * 0.9)) localStorage.setItem('completed_' + currentUser + '_' + videoId, 'true');
