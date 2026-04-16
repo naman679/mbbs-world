@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>MBBS World - OPD Simulator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/daily-case.css"> 
+    <link rel="stylesheet" href="css/daily-case.css">
 </head>
+
 <body>
-    <div id="app-only-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#1e293b; color:white; z-index:999999; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:30px; box-sizing:border-box;">
+    <div id="app-only-overlay"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#1e293b; color:white; z-index:999999; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:30px; box-sizing:border-box;">
         <i class="fas fa-mobile-alt" style="font-size: 5rem; color: #0ea5e9; margin-bottom: 20px;"></i>
         <h1 style="font-size:2rem; margin-bottom:15px;">App Exclusive Feature</h1>
         <p style="font-size:1.1rem; line-height:1.6; opacity:0.9; max-width:400px;">
-            The Daily Case AI Tutor is optimized for clinical practice on our mobile app. Please download or open the app to continue.
+            The Daily Case AI Tutor is optimized for clinical practice on our mobile app. Please download or open the
+            app to continue.
         </p>
-        <a href="https://drive.google.com/uc?export=download&id=1js3B6E_ZAhR6sgAejMgkeulqweRzq9xX" style="margin-top:25px; background:#0ea5e9; color:white; padding:15px 30px; border-radius:12px; text-decoration:none; font-weight:bold; font-size:1.1rem; box-shadow:0 4px 15px rgba(14,165,233,0.3);">
+        <a href="https://drive.google.com/uc?export=download&id=1js3B6E_ZAhR6sgAejMgkeulqweRzq9xX"
+            style="margin-top:25px; background:#0ea5e9; color:white; padding:15px 30px; border-radius:12px; text-decoration:none; font-weight:bold; font-size:1.1rem; box-shadow:0 4px 15px rgba(14,165,233,0.3);">
             <i class="fas fa-download"></i> Download App
         </a>
-        <button onclick="window.location.href='dashboard.html'" style="margin-top:20px; background:transparent; color:#94a3b8; border:none; text-decoration:underline; cursor:pointer;">
+        <button onclick="window.location.href='dashboard.html'"
+            style="margin-top:20px; background:transparent; color:#94a3b8; border:none; text-decoration:underline; cursor:pointer;">
             Return to Dashboard
         </button>
     </div>
 
     <script>
-        (function() {
+        (function () {
             const isInsideApp = navigator.userAgent.includes("MBBSWorldApp") || !!window.injectedAppId;
             if (!isInsideApp) {
                 document.getElementById('app-only-overlay').style.display = 'flex';
@@ -47,7 +55,8 @@
             <button class="tab-btn active" data-phase="history" onclick="switchPhase('history')">Patient</button>
             <button class="tab-btn" data-phase="examination" onclick="switchPhase('examination')">Exam</button>
             <button class="tab-btn emergency" data-phase="emergency" onclick="switchPhase('emergency')">Vitals</button>
-            <button class="tab-btn" data-phase="investigation" onclick="switchPhase('investigation')">Investigations</button>
+            <button class="tab-btn" data-phase="investigation"
+                onclick="switchPhase('investigation')">Investigations</button>
             <button class="tab-btn" data-phase="management" onclick="switchPhase('management')">Prescribe</button>
             <button class="tab-btn" data-phase="diagnosis" onclick="switchPhase('diagnosis')">Handoff</button>
         </nav>
@@ -57,7 +66,9 @@
                 <div class="message ai">
                     <div class="ai-header"><i class="fas fa-clipboard-list"></i> System</div>
                     <div class="ai-content">
-                        OPD Simulation initialized. A new patient just walked into your cabin. Type your questions, exams, or orders below. <br><br><em>(Hint: Type "change the case" at any time to call the next patient).</em>
+                        OPD Simulation initialized. A new patient just walked into your cabin. Type your questions,
+                        exams, or orders below. <br><br><em>(Hint: Type "change the case" at any time to call the next
+                            patient).</em>
                     </div>
                 </div>
             </div>
@@ -66,10 +77,12 @@
         <div class="quick-chips-container" id="quickChips"></div>
 
         <footer class="input-area">
-            <input type="text" id="chatInput" class="chat-input" placeholder="Ask the patient a question..." autocomplete="off">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Ask the patient a question..."
+                autocomplete="off">
             <button id="sendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
         </footer>
     </div>
-    <script src="js/daily-case.js"></script> 
+    <script src="js/daily-case.js"></script>
 </body>
+
 </html>
