@@ -421,22 +421,56 @@ function setSubject(subjectName) {
 
 function renderHome() {
     document.getElementById('contentArea').innerHTML = `
-        <div class="welcome-section">
-            <h1>Welcome, <span id="welcomeNameHome">${window.userSessionName || 'Student'}</span></h1>
-            <p>What would you like to study today?</p>
-            <div class="portal-grid">
-                <div class="portal-card" onclick="filterCategory('videos')"><i class="fas fa-stethoscope"></i><h3>Videos</h3></div>
-                <div class="portal-card" onclick="filterCategory('notes')"><i class="fas fa-clipboard-list"></i><h3>Notes</h3></div>
-                <div class="portal-card" onclick="filterCategory('quizzes')"><i class="fas fa-microscope"></i><h3>Quizzes</h3></div>
-                <div class="portal-card" onclick="filterCategory('qbank')"><i class="fas fa-dna"></i><h3>Q-Bank</h3></div>
-                
-                <div class="portal-card" onclick="window.location.href='atrium.html'" style="border: 2px solid #0ea5e9;">
+        <div class="hero-quantum" style="min-height: auto; padding: 4rem 1rem 2rem; text-align: center; width: 100%;">
+            <h1 style="font-size: 2.5rem; margin-bottom: 1rem; text-transform: none; letter-spacing: normal;">
+                Welcome, <span style="color: var(--primary); text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);">${window.userSessionName || 'Student'}</span>
+            </h1>
+            <p style="color: var(--text-light); font-size: 1.1rem; margin-bottom: 3rem; font-family: var(--font-mono);">
+                What would you like to study today?
+            </p>
+            
+            <div class="portal-grid" style="width: 100%; max-width: 1200px; margin: 0 auto;">
+                <div class="portal-card" data-index="01" onclick="filterCategory('videos')">
+                    <i class="fas fa-stethoscope"></i>
+                    <h3>Videos</h3>
+                </div>
+                <div class="portal-card" data-index="02" onclick="filterCategory('notes')">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h3>Notes</h3>
+                </div>
+                <div class="portal-card" data-index="03" onclick="filterCategory('quizzes')">
+                    <i class="fas fa-microscope"></i>
+                    <h3>Quizzes</h3>
+                </div>
+                <div class="portal-card" data-index="04" onclick="filterCategory('qbank')">
+                    <i class="fas fa-dna"></i>
+                    <h3>Q-Bank</h3>
+                </div>
+                <div class="portal-card" data-index="05" onclick="window.location.href='atrium.html'" style="border-color: rgba(14, 165, 233, 0.4);">
                     <i class="fas fa-hospital-user" style="color: #0ea5e9;"></i>
                     <h3 style="color: #0ea5e9;">Atrium</h3>
                 </div>
             </div>
         </div>
     `;
+}
+
+// Add this function to handle the requested scroll teleport animation
+function setupGlitchScroll() {
+    window.addEventListener('scroll', () => {
+        const icons = document.querySelectorAll('.float-icon');
+        const scrollPosition = window.scrollY;
+
+        icons.forEach(icon => {
+            // Trigger glitch out when user scrolls past 150px
+            if (scrollPosition > 150 && !icon.classList.contains('glitch-teleport')) {
+                icon.classList.add('glitch-teleport');
+            } else if (scrollPosition <= 150) {
+                // Remove class to "teleport back in" if they scroll back up
+                icon.classList.remove('glitch-teleport');
+            }
+        });
+    });
 }
 
 function renderContent() {
