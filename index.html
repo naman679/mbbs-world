@@ -1,169 +1,332 @@
 <!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBBS Portal - Student Login</title>
-    <meta name="description"
-        content="Secure login portal for MBBS World students. Access premium medical video lectures, notes, and question banks.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="css/network-status.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4359263469597920"
-        crossorigin="anonymous"></script>
-</head>
-
-<body oncontextmenu="return false;">
-
-
-    <div class="login-container">
-        <div class="logo-container">
-            <div class="logo-icon">
-                <i class="fas fa-user-md"></i>
-            </div>
-            <h2>MBBS World</h2>
-            <p>Student Portal Login</p>
-        </div>
-
-        <div class="login-form">
-            <label for="student-name"
-                style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);">Full Name</label>
-            <input type="text" id="student-name" class="login-input" placeholder="Enter your full name"
-                autocomplete="name" aria-label="Enter your full name">
-            <button id="login-submit-btn" class="login-btn">
-                <i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i>
-                Access Portal
-            </button>
-        </div>
-
-        <div id="error-message" style="color: #ff4d4d; margin-top: 15px; font-size: 0.9rem; text-align: center;"></div>
-
-        <div class="footer-text">
-            Secure Access &bull; Verified Students Only
-        </div>
-    </div>
-
-
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
-            authDomain: "samvad-bafaa.firebaseapp.com",
-            projectId: "samvad-bafaa",
-            storageBucket: "samvad-bafaa.appspot.com",
-            messagingSenderId: "131803431466",
-            appId: "1:131803431466:web:b7b107308ea7197f013953",
-            measurementId: "G-M90SYY2MP9"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        // 1. AUTO-LOGIN CHECK
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedUser = localStorage.getItem('mbbs_saved_user');
-            const savedId = localStorage.getItem('mbbs_device_id');
-            if (savedUser && savedId) {
-                sessionStorage.setItem('mbbs_user', savedUser); // Sync memory
-                window.location.replace("dashboard.html");
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MBBS WORLD | Quantum Medical Intelligence</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&amp;family=JetBrains+Mono:wght@400;700&amp;family=Rajdhani:wght@500;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ffb4ab",
+                    "on-primary-fixed-variant": "#004f54",
+                    "background": "#131317",
+                    "inverse-surface": "#e5e1e7",
+                    "surface-bright": "#39393d",
+                    "on-primary": "#00363a",
+                    "tertiary-container": "#fed639",
+                    "on-tertiary-container": "#715d00",
+                    "on-secondary-fixed": "#410002",
+                    "tertiary-fixed": "#ffe179",
+                    "on-surface-variant": "#b9cacb",
+                    "primary-fixed-dim": "#00dbe9",
+                    "primary": "#dbfcff",
+                    "on-error": "#690005",
+                    "on-tertiary": "#3b2f00",
+                    "surface-tint": "#00dbe9",
+                    "tertiary-fixed-dim": "#eac324",
+                    "outline-variant": "#3b494b",
+                    "secondary-container": "#dc0015",
+                    "secondary-fixed-dim": "#ffb4ab",
+                    "inverse-primary": "#006970",
+                    "on-secondary-container": "#ffece9",
+                    "surface-container-low": "#1b1b1f",
+                    "surface-container-highest": "#353438",
+                    "primary-fixed": "#7df4ff",
+                    "on-background": "#e5e1e7",
+                    "surface-variant": "#353438",
+                    "on-tertiary-fixed": "#231b00",
+                    "on-secondary": "#690005",
+                    "secondary": "#ffb4ab",
+                    "on-primary-fixed": "#002022",
+                    "surface-container": "#201f23",
+                    "surface": "#131317",
+                    "error-container": "#93000a",
+                    "inverse-on-surface": "#313034",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#93000a",
+                    "surface-dim": "#131317",
+                    "surface-container-lowest": "#0e0e11",
+                    "secondary-fixed": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#554500",
+                    "on-surface": "#e5e1e7",
+                    "on-primary-container": "#006970",
+                    "outline": "#849495",
+                    "primary-container": "#00f0ff",
+                    "surface-container-high": "#2a292e",
+                    "tertiary": "#fff5de"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Rajdhani"],
+                    "body": ["Inter"],
+                    "label": ["JetBrains Mono"]
             }
-        });
-
-        const loginBtn = document.getElementById('login-submit-btn');
-        const nameInput = document.getElementById('student-name');
-        const errorDiv = document.getElementById('error-message');
-
-        loginBtn.addEventListener('click', async () => {
-            // Sanitize name so Firebase doesn't crash on special characters
-            const rawName = nameInput.value.trim().toLowerCase();
-            const userName = rawName.replace(/[.#$\[\]]/g, '_');
-
-            if (!userName) {
-                errorDiv.style.display = 'block';
-                errorDiv.innerText = "Please enter your name.";
-                return;
-            }
-
-            errorDiv.style.display = 'none';
-            loginBtn.disabled = true;
-            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying...';
-
-            let currentDeviceId;
-            let slotName = 'web_id';
-
-            // Use the same User-Agent check as your dashboard
-            const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
-
-            if (isInsideApp) {
-                slotName = 'app_id';
-                currentDeviceId = localStorage.getItem('mbbs_device_id');
-                // If there's no ID, or if an old web_id got stuck, generate a fresh app_id
-                if (!currentDeviceId || currentDeviceId.startsWith('web_')) {
-                    currentDeviceId = 'app_' + Math.random().toString(36).substr(2, 9);
-                    localStorage.setItem('mbbs_device_id', currentDeviceId);
-                }
-            } else {
-                slotName = 'web_id';
-                currentDeviceId = localStorage.getItem('mbbs_device_id');
-                // If there's no ID, or if an old app_id got stuck, generate a fresh web_id
-                if (!currentDeviceId || currentDeviceId.startsWith('app_')) {
-                    currentDeviceId = 'web_' + Math.random().toString(36).substr(2, 9);
-                    localStorage.setItem('mbbs_device_id', currentDeviceId);
-                }
-            }
-            const userRef = ref(database, 'users/' + userName);
-
-            try {
-                const snapshot = await get(userRef);
-                if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    const savedSlotId = userData[slotName];
-
-                    if (!savedSlotId || savedSlotId === currentDeviceId) {
-                        await update(userRef, { [slotName]: currentDeviceId });
-                        finalizeLogin(userName);
-                    } else {
-                        errorDiv.style.display = 'block';
-                        errorDiv.innerText = "Access Denied! Account linked to another device.";
-                        loginBtn.disabled = false;
-                        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
-                    }
-                } else {
-                    await set(userRef, {
-                        name: userName,
-                        [slotName]: currentDeviceId,
-                        created_at: new Date().toISOString()
-                    });
-                    finalizeLogin(userName);
-                }
-            } catch (error) {
-                console.error(error);
-                errorDiv.style.display = 'block';
-                errorDiv.innerText = "Database Error. Check your internet.";
-                loginBtn.disabled = false;
-                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
-            }
-        });
-
-        function finalizeLogin(name) {
-            localStorage.setItem('mbbs_saved_user', name);
-            sessionStorage.setItem('mbbs_user', name); // Crucial for stopping the loop
-            // ---> PASTE THIS HERE <---
-            if (window.AndroidApp) {
-                window.AndroidApp.loginUser(name);
-            }
-            // -------------------------
-            setTimeout(() => {
-                window.location.replace("dashboard.html");
-            }, 150);
-        }
+          },
+        },
+      }
     </script>
-    <script src="js/network-status.js"></script>
-</body>
-
-</html>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-sm { box-shadow: 0 0 15px -3px rgba(0, 240, 255, 0.4); }
+        .glass-panel {
+            background: rgba(53, 52, 56, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        .plasma-bg {
+            background: linear-gradient(135deg, #00f0ff 0%, #00dbe9 100%);
+        }
+        .asymmetric-bleed {
+            margin-right: -10vw;
+        }
+        body {
+            background-color: #030305;
+            color: #e5e1e7;
+            overflow-x: hidden;
+        }
+        .headline-glow {
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-50 w-full bg-transparent backdrop-blur-xl dark:bg-[#131317]/60">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-screen-2xl mx-auto">
+<div class="font-['Rajdhani'] text-2xl font-bold tracking-widest text-[#00F0FF] uppercase">
+                MBBS WORLD
+            </div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-[#00F0FF] border-b-2 border-[#00F0FF] pb-1 font-label text-xs uppercase tracking-widest" href="#">Academy</a>
+<a class="text-slate-400 hover:text-[#00F0FF] transition-colors font-label text-xs uppercase tracking-widest hover:glow-sm transition-all duration-300" href="#">Arena</a>
+<a class="text-slate-400 hover:text-[#00F0FF] transition-colors font-label text-xs uppercase tracking-widest hover:glow-sm transition-all duration-300" href="#">Pulse</a>
+<a class="text-slate-400 hover:text-[#00F0FF] transition-colors font-label text-xs uppercase tracking-widest hover:glow-sm transition-all duration-300" href="#">Vault</a>
+</nav>
+<div class="flex items-center gap-6">
+<div class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary-container transition-colors">search</div>
+<a class="bg-primary-container text-on-primary px-6 py-2 font-label text-xs font-bold uppercase tracking-widest scale-95 duration-200 ease-in-out hover:glow-sm" href="login.html">
+                    Enter Portal
+                </a>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-20" data-alt="abstract high-tech medical operating theater background with neon blue surgery lights and floating digital interfaces in a dark moody atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_KIPHTFC7Br9RD1cfqmXnTunY0nGNMNYLMpZg6_KdIUA6iEbbVErIOrHczA1hbT1VHiY8AX7oEYfLvVAbdgy8iNVeLBCOJzrQRB-ic4KApQyyL3hbUPYLqXI7F37uT8up0inCKkN6ERbghlvX4BrZOpLcaDpMvZPTbnXyE5uwzUbd8qjxFU05A_jk1PI58WFeN2FYl2xKkdHtNNeTJLRo7zXW20O6s3luu3KQi2nimdG5QTMEtf8Wy1PkUAzUFRF6RvN7ZXnORpyA"/>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#030305]/80 to-[#030305]"></div>
+</div>
+<div class="relative z-10 container mx-auto px-6 text-center">
+<div class="inline-flex items-center gap-2 mb-6 px-4 py-1 rounded-full border border-outline-variant/30 bg-surface-container-low/50 backdrop-blur-md">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label text-[10px] tracking-[0.2em] text-primary uppercase">Quantum Engine Online</span>
+</div>
+<h1 class="font-headline text-6xl md:text-8xl font-bold tracking-tighter text-white mb-8 headline-glow">
+                REWIRE YOUR<br/>
+<span class="text-primary-container">MEDICAL INTELLECT</span>
+</h1>
+<p class="max-w-2xl mx-auto text-on-surface-variant text-lg mb-12 font-light leading-relaxed">
+                The next evolution in clinical mastery. Experience high-fidelity medical education through the lens of a futuristic surgical HUD. No clutter. Just precision.
+            </p>
+<div class="flex flex-col md:flex-row items-center justify-center gap-6">
+<a class="plasma-bg text-on-primary px-10 py-4 font-label text-sm font-bold uppercase tracking-[0.15em] hover:scale-105 transition-transform duration-300 glow-sm" href="login.html">
+                    Enter Portal
+                </a>
+<a class="text-primary border-b-2 border-transparent hover:border-primary-container px-6 py-4 font-label text-sm uppercase tracking-[0.15em] transition-all" href="#hub">
+                    System Overview
+                </a>
+</div>
+</div>
+</section>
+<!-- Why MBBS World? -->
+<section class="py-24 bg-surface-container-lowest">
+<div class="container mx-auto px-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="group p-8 border-l-2 border-outline-variant hover:border-primary-container transition-all bg-surface-container-low">
+<span class="material-symbols-outlined text-primary-container mb-6 text-4xl" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<h3 class="font-headline text-2xl text-white mb-4 uppercase tracking-tight">High-Yield Content</h3>
+<p class="text-on-surface-variant font-light leading-relaxed">Surgically extracted concepts optimized for cognitive retention and rapid board preparation.</p>
+</div>
+<div class="group p-8 border-l-2 border-outline-variant hover:border-primary-container transition-all bg-surface-container-low">
+<span class="material-symbols-outlined text-primary-container mb-6 text-4xl" style="font-variation-settings: 'FILL' 1;">visibility_off</span>
+<h3 class="font-headline text-2xl text-white mb-4 uppercase tracking-tight">Ad-Free Learning</h3>
+<p class="text-on-surface-variant font-light leading-relaxed">Zero distractions. Zero lag. A pure medical environment focused solely on your diagnostic journey.</p>
+</div>
+<div class="group p-8 border-l-2 border-outline-variant hover:border-primary-container transition-all bg-surface-container-low">
+<span class="material-symbols-outlined text-primary-container mb-6 text-4xl" style="font-variation-settings: 'FILL' 1;">sync</span>
+<h3 class="font-headline text-2xl text-white mb-4 uppercase tracking-tight">Real-Time Sync</h3>
+<p class="text-on-surface-variant font-light leading-relaxed">Neural-pathway synchronization across all your terminal devices. Study anywhere, anytime.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- The Study Hub -->
+<section class="py-24" id="hub">
+<div class="container mx-auto px-6">
+<div class="mb-16 flex items-end justify-between">
+<div>
+<h2 class="font-headline text-4xl text-white uppercase tracking-tighter mb-2">The Study Hub</h2>
+<div class="h-1 w-24 bg-primary-container"></div>
+</div>
+<span class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase">Core Modules v2.4</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<a class="glass-panel p-8 group hover:bg-surface-container-high transition-all border border-outline-variant/10" href="dashboard.html?view=videos">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container mb-6 group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary-container group-hover:text-on-primary" data-icon="play_arrow">play_arrow</span>
+</div>
+<h4 class="font-headline text-xl text-white mb-2 uppercase">Watch Videos</h4>
+<p class="text-xs text-on-surface-variant font-label mb-6">4K CINEMATIC LECTURES</p>
+<div class="flex justify-between items-center text-primary-container">
+<span class="text-[10px] font-label uppercase">Access Module</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</a>
+<!-- Card 2 -->
+<a class="glass-panel p-8 group hover:bg-surface-container-high transition-all border border-outline-variant/10" href="dashboard.html?view=notes">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container mb-6 group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary-container group-hover:text-on-primary" data-icon="content_paste">content_paste</span>
+</div>
+<h4 class="font-headline text-xl text-white mb-2 uppercase">Read Notes</h4>
+<p class="text-xs text-on-surface-variant font-label mb-6">HIGH-YIELD SCHEMATICS</p>
+<div class="flex justify-between items-center text-primary-container">
+<span class="text-[10px] font-label uppercase">Access Module</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</a>
+<!-- Card 3 -->
+<a class="glass-panel p-8 group hover:bg-surface-container-high transition-all border border-outline-variant/10" href="dashboard.html?view=quizzes">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container mb-6 group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary-container group-hover:text-on-primary" data-icon="biotech">biotech</span>
+</div>
+<h4 class="font-headline text-xl text-white mb-2 uppercase">Take Quizzes</h4>
+<p class="text-xs text-on-surface-variant font-label mb-6">RAPID RECALL DIAGNOSTICS</p>
+<div class="flex justify-between items-center text-primary-container">
+<span class="text-[10px] font-label uppercase">Access Module</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</a>
+<!-- Card 4 -->
+<a class="glass-panel p-8 group hover:bg-surface-container-high transition-all border border-outline-variant/10" href="dashboard.html?view=qbank">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container mb-6 group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary-container group-hover:text-on-primary" data-icon="dna">genetics</span>
+</div>
+<h4 class="font-headline text-xl text-white mb-2 uppercase">Q-Bank</h4>
+<p class="text-xs text-on-surface-variant font-label mb-6">5000+ CLINICAL SCENARIOS</p>
+<div class="flex justify-between items-center text-primary-container">
+<span class="text-[10px] font-label uppercase">Access Module</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</a>
+</div>
+</div>
+</section>
+<!-- The Clinical Arena -->
+<section class="py-24 bg-[#0e0e11] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none">
+<img class="w-full h-full object-cover grayscale" data-alt="abstract close-up of DNA spiral structures and medical data visualization in high contrast monochrome blue and black" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5wYF8i38_QXTFAYVe1ZkiaH2b_kScQUjsK4M9Lk1hr7SCAn0ADgIfHrgA5bKAfImVgRMs-aHOOge1VbjOL41WrPG5GPBxih26zfU3dJG4UtAYu0KSDZUWKxj2UaAzpKpc9Vt0P55qQC9H3lX36xM6I-jUngV4m8AP8ngqfCHJiRfKSsWJCxR5NfLRaOqfah_QHJjyHW2jcl0ZeZEc55dj4awy6SPz60UacQCBbxXrZIY0d_JiId6L6hmBNV30iey-KyhiflIOiCGO"/>
+</div>
+<div class="container mx-auto px-6 relative z-10">
+<h2 class="font-headline text-4xl text-white uppercase tracking-tighter mb-12">The Clinical Arena</h2>
+<div class="grid grid-cols-1 gap-12">
+<!-- Atrium -->
+<div class="relative group bg-surface-container-low overflow-hidden min-h-[400px] flex flex-col md:flex-row">
+<div class="w-full md:w-1/2 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="wide shot of a futuristic sterile hospital corridor with clean lines, white lights, and a digital glow reflecting on polished floors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAodkYw2TCZLqyhoLl-2ggf7hMzKDslvK8NcMwaXh62gy-HMuzVzvoBYoBirIPJ0Wawtx9VR-UpfplzQuywcQUWXSjQrYcgFQfrLIyBdQ5xQsT7I-jd3Mx8Mm971biHm1DY_RCK2UWOpveYWygVb_3oAKzt1fjYVoWm6sd0rr2uuuiv2Ul3WWpGleqNkb9oClpY6nwHm8hqqhCS3DepdmIL0kIS2IYbCTfL6JZAnmqcuRf6hx5Uz7HyjgRPLNTxksvMA7B5c7HihBf"/>
+</div>
+<div class="w-full md:w-1/2 p-12 flex flex-col justify-center">
+<div class="flex items-center gap-4 mb-6">
+<span class="material-symbols-outlined text-primary-container text-3xl" style="font-variation-settings: 'FILL' 1;">star_half</span>
+<h3 class="font-headline text-3xl text-white tracking-tight uppercase">The Atrium</h3>
+</div>
+<p class="text-on-surface-variant text-lg mb-8 font-light">
+                            Step into the ward! Practice real clinical cases, earn XP, and climb the global leaderboards. A full 3D clinical simulation environment.
+                        </p>
+<a class="self-start px-8 py-3 bg-transparent border border-primary-container text-primary-container font-label text-xs uppercase tracking-widest hover:bg-primary-container hover:text-on-primary transition-all" href="atrium.html">
+                            Initiate Simulation
+                        </a>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- AI Tutor -->
+<div class="glass-panel p-10 border-l-4 border-secondary-container relative overflow-hidden">
+<div class="absolute top-4 right-4 animate-pulse">
+<span class="px-2 py-1 bg-secondary-container text-white text-[8px] font-label uppercase">Live Core</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-5xl mb-6">smart_toy</span>
+<h3 class="font-headline text-2xl text-white mb-4 uppercase">Daily Case AI Tutor</h3>
+<p class="text-on-surface-variant font-light mb-8">
+                            Practice history taking and diagnostic reasoning with our advanced LLM trained on real clinical pathways.
+                        </p>
+<a class="font-label text-xs text-secondary-fixed tracking-widest uppercase hover:underline decoration-2 underline-offset-8 transition-all" href="daily-case.html">
+                            Consult AI
+                        </a>
+</div>
+<!-- Multiplayer -->
+<div class="glass-panel p-10 border-l-4 border-primary-container">
+<span class="material-symbols-outlined text-primary-container text-5xl mb-6">groups_3</span>
+<h3 class="font-headline text-2xl text-white mb-4 uppercase">Live Multiplayer Quiz</h3>
+<p class="text-on-surface-variant font-light mb-8">
+                            Host rooms, challenge batchmates, and survive the "Sudden Death" rounds. Real-time competitive learning.
+                        </p>
+<a class="font-label text-xs text-primary-container tracking-widest uppercase hover:underline decoration-2 underline-offset-8 transition-all" href="live-game.html">
+                            Join Lobby
+                        </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Alert Banner (Signature Component) -->
+<section class="bg-secondary-container py-4">
+<div class="container mx-auto px-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-white animate-pulse">warning</span>
+<p class="font-label text-[10px] text-white tracking-[0.2em] uppercase font-bold">New Clinical Protocol Released: Cardiovascular Critical Care v.9.0</p>
+</div>
+<a class="text-white border-b border-white font-label text-[10px] tracking-widest uppercase" href="#">View Update</a>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-[#0e0e11] py-12">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 w-full gap-6">
+<div class="flex flex-col items-center md:items-start gap-2">
+<div class="text-[#00F0FF] font-bold font-headline text-xl tracking-widest">MBBS WORLD</div>
+<p class="text-slate-500 font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest">© 2024 QUANTUM MEDICAL SYSTEMS. ALL RIGHTS RESERVED.</p>
+</div>
+<div class="flex gap-10">
+<a class="text-slate-500 hover:text-[#00F0FF] transition-colors font-['JetBrains_Mono'] text-xs uppercase tracking-widest opacity-80 hover:opacity-100" href="#">Protocol</a>
+<a class="text-slate-500 hover:text-[#00F0FF] transition-colors font-['JetBrains_Mono'] text-xs uppercase tracking-widest opacity-80 hover:opacity-100" href="#">Privacy</a>
+<a class="text-slate-500 hover:text-[#00F0FF] transition-colors font-['JetBrains_Mono'] text-xs uppercase tracking-widest opacity-80 hover:opacity-100" href="#">Terminal</a>
+<a class="text-slate-500 hover:text-[#00F0FF] transition-colors font-['JetBrains_Mono'] text-xs uppercase tracking-widest opacity-80 hover:opacity-100" href="#">Support</a>
+</div>
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center cursor-pointer hover:bg-primary-container hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-sm">terminal</span>
+</div>
+<div class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center cursor-pointer hover:bg-primary-container hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-sm">hub</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
