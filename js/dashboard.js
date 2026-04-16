@@ -7,7 +7,7 @@
         if (localUser && localUser !== 'undefined' && localUser !== 'null') {
             sessionStorage.setItem('mbbs_user', localUser);
         } else {
-            window.location.replace('index.html');
+            window.location.replace('login.html');
         }
     }
 })();
@@ -59,7 +59,20 @@ async function fetchSheetData() {
             else if (typeKey === 'keypoints' || typeKey === 'keypoint') mbbsData[subKey].keyPoints.push({ ...item, content: linkRaw });
         });
 
-        showMainMenu();
+        // Check the URL to see if a specific view was requested from the landing page
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestedView = urlParams.get('view');
+
+        // If a valid view was requested, load it directly
+        if (requestedView && ['videos', 'notes', 'quizzes', 'qbank'].includes(requestedView)) {
+            filterCategory(requestedView);
+
+            // Clean up the URL so if the user refreshes, it doesn't get stuck here
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else {
+            // Otherwise, show the normal home dashboard
+            showMainMenu();
+        }
 
     } catch (e) {
         document.getElementById('contentArea').innerHTML = `
