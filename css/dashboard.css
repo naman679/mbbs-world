@@ -1212,7 +1212,6 @@ h4,
     background: linear-gradient(to bottom, rgba(3, 3, 5, 0.9), transparent);
     z-index: 10000;
     display: none;
-    /* This is the magic line that hides it */
     align-items: center;
     padding: 0 1.5rem;
     justify-content: space-between;
@@ -1294,21 +1293,26 @@ h4,
         margin-bottom: 2rem !important;
     }
 
-    /* 7. Force the cards into a neat, single column */
+    /* 7. Force the cards into a 2-column grid for mobile */
     .portal-grid {
-        grid-template-columns: 1fr !important;
-        gap: 1.5rem;
+        grid-template-columns: 1fr 1fr !important;
+        /* Forces 2 columns */
+        gap: 1rem;
         padding: 0 10px;
     }
 
-    /* 8. Shrink the card padding slightly so they fit better */
+    /* 8. Shrink padding and icons slightly so 2 columns fit perfectly on phone screens */
     .portal-card {
-        padding: 1.5rem;
+        padding: 1rem;
     }
 
     .portal-card i {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .portal-card h3 {
+        font-size: 1.1rem;
     }
 }
 
