@@ -1841,15 +1841,19 @@
       { id: 'gm', name: 'General Medicine', color: '#f97316', emoji: '🩺' },
       { id: 'surg', name: 'Acute Care & Surgery', color: '#ef4444', emoji: '🚑' },
       { id: 'obgyn', name: 'OBGYN', color: '#ec4899', emoji: '🤰' },
+      { id: 'peds', name: 'Pediatrics', color: '#10b981', emoji: '👶' },
       { id: 'ortho', name: 'Orthopedics', color: '#f59e0b', emoji: '🦴' },
       { id: 'derm', name: 'Dermatology', color: '#8b5cf6', emoji: '🔬' },
-      { id: 'ent', name: 'ENT & Ophthalmology', color: '#14b8a6', emoji: '👁️' },
-      { id: 'neuro', name: 'Neuro-Psychiatry', color: '#6366f1', emoji: '🧠' },
+      { id: 'psych', name: 'Psychiatry', color: '#8b5cf6', emoji: '🛋️' },
+      { id: 'ent', name: 'ENT', color: '#14b8a6', emoji: '👂' },
+      { id: 'ophtho', name: 'Ophthalmology', color: '#0ea5e9', emoji: '👁️' },
+      { id: 'neuro', name: 'Neurology', color: '#3b82f6', emoji: '🧠' },
       { id: 'cardio', name: 'Cardiology', color: '#e11d48', emoji: '❤️' },
       { id: 'pulmo', name: 'Pulmonology', color: '#0284c7', emoji: '🫁' },
       { id: 'gastro', name: 'Gastroenterology', color: '#d97706', emoji: '胃' },
-      { id: 'peds', name: 'Pediatrics', color: '#10b981', emoji: '👶' },
       { id: 'heme', name: 'Heme-Rheumatology', color: '#be123c', emoji: '🩸' }
+
+
     ];
     let currentCatId = null;
     // ═══════════════════════════════════════════════════════════════
@@ -2485,10 +2489,10 @@
       },
 
       // ─────────────────────────────────────────────────────────────
-      // 6. ENT & OPHTHALMOLOGY — Hordeolum
+      // 6. Ophthalmology  — Hordeolum
       // ─────────────────────────────────────────────────────────────
       {
-        id: 'ent', name: 'ENT & Ophthalmology', color: '#14b8a6', emoji: '👁️', waitDays: 12,
+        id: 'ophtho', name: 'Ophthalmology', color: '#14b8a6', emoji: '👁️', waitDays: 12,
         caseTitle: 'Acutely painful red swelling on upper eyelid',
         caseDesc: 'A 24-year-old female contact lens wearer presents with a 2-day history of a tender, red lump at her upper eyelid margin. Vision is fully intact. Avoid the trap of over-investigating a simple, clinical diagnosis.',
         patient: { name: 'Elena', gender: 'Female', age: '24 Y', complaint: 'Painful red swelling on upper eyelid' },
@@ -2601,10 +2605,10 @@
       },
 
       // ─────────────────────────────────────────────────────────────
-      // 7. NEURO-PSYCHIATRY — Parkinson's Disease
+      // 7. Neurology — Parkinson's Disease
       // ─────────────────────────────────────────────────────────────
       {
-        id: 'neuro', name: 'Neuro-Psychiatry', color: '#6366f1', emoji: '🧠', waitDays: 66,
+        id: 'neuro', name: 'Neurology', color: '#6366f1', emoji: '🧠', waitDays: 66,
         caseTitle: 'Progressive tremor, shuffling gait, and slowness for one year',
         caseDesc: "A 67-year-old retired engineer presents with a 1-year history of resting right hand tremor, slowness of movement, and frequent near-falls. His wife reports he has a blank expression and has been sleeping very restlessly. Diagnose clinically and use investigations to rule out mimics — not to confirm what the examination already tells you.",
         patient: { name: 'Roland', gender: 'Male', age: '67 Y', complaint: 'Difficulty walking and hand tremor' },
@@ -23829,6 +23833,1723 @@
           treatSeq: '1. CPR (Left Uterine Displacement) → 2. Intubate → 3. STAT Perimortem C-Section (Minute 4) → 4. Massive Transfusion Protocol (DIC) → 5. A-OK Protocol / ECMO.',
           traps: 'Assuming an asthma attack or simple fainting. Pregnant women do not suddenly gasp and code from asthma without a prolonged history of wheezing.',
           learning: 'Gasping + Shock + DIC during labor = Amniotic Fluid Embolism. Intubate, CPR, Perimortem C-Section at 4 minutes. Treat DIC aggressively with blood products. High mortality.'
+        },
+        xp: 40
+      },
+      // ─────────────────────────────────────────────────────────────
+      // 92. NEUROLOGY — Level 1: Acute Ischemic Stroke (Left MCA)
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'neuro1', name: 'Neurology: Level 1', color: '#3b82f6', emoji: '🧠', waitDays: 1,
+        caseTitle: 'Sudden right-sided weakness and inability to speak',
+        caseDesc: 'A 68-year-old male presents with sudden right-sided hemiparesis and expressive aphasia. Beat the clock: establish the "last known well" time, rush to a non-contrast CT, and determine if he is a candidate for systemic thrombolysis (tPA).',
+        patient: { name: 'Arthur', gender: 'Male', age: '68 Y', weight: '85 kg', complaint: 'Right side weak and cannot talk' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.0°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '115 bpm (Irregular)' },
+          { icon: '📈', label: 'Blood Pressure', val: '165/95 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '16/min' },
+          { icon: '💧', label: 'SpO2', val: '97% on room air' }
+        ],
+        history: [
+          '1. Patient was eating breakfast when his wife noticed his face droop on the right side.',
+          '2. "Last Known Well" (LKW) was exactly 90 minutes ago.',
+          '3. He suddenly lost the ability to move his right arm and right leg.',
+          '4. He appears to understand his wife but can only produce frustrated grunts (Expressive Aphasia).',
+          '5. History of Atrial Fibrillation (Not compliant with his Apixaban/blood thinner).',
+          '6. History of Hypertension and Type 2 Diabetes.',
+          '7. Denies any recent head trauma, falls, or major surgeries in the last 3 months.',
+          '8. Denies any history of gastrointestinal bleeding or intracranial hemorrhage.',
+          '9. Blood glucose checked by EMS in the field was 140 mg/dL.',
+          '10. No history of seizures.'
+        ],
+        physExam: [
+          '1. General: Awake, alert, visibly frustrated by his inability to communicate.',
+          '2. Vitals: Hypertensive, irregularly irregular heart rhythm.',
+          '3. Neurological (Cranial Nerves): Flattening of the right nasolabial fold. Right lower facial droop. Can raise both eyebrows (Spares the upper face = central lesion).',
+          '4. Neurological (Motor): 0/5 strength in the right upper extremity. 1/5 strength in the right lower extremity. 5/5 on the left.',
+          '5. Neurological (Sensory): Decreased sensation to pinprick on the right side of the face, arm, and leg.',
+          '6. Neurological (Speech): Broca\'s (expressive) aphasia. Follows simple commands but cannot repeat phrases or name objects.',
+          '7. Neurological (Reflexes): Hyperreflexia (3+) on the right side with a positive Babinski sign.',
+          '8. Cardiovascular: Irregularly irregular rhythm (Atrial Fibrillation). No murmurs.',
+          '9. Lungs: Clear to auscultation.',
+          '10. NIH Stroke Scale (NIHSS): Score is 16 (Moderate to Severe stroke).'
+        ],
+        testCats: [
+          {
+            name: 'Advanced Cross-Sectional Imaging (STAT)', icon: '📷', tests: [
+              { n: 'CT Head WITHOUT Contrast', c: true, r: 'No acute intracranial hemorrhage. Loss of the insular ribbon and obscuration of the lentiform nucleus on the left. (Clears the path for tPA).' },
+              { n: 'CT Perfusion Scan', c: true, r: 'Shows a small core infarct with a large ischemic penumbra in the Left MCA territory (Salvageable brain tissue).' },
+              { n: 'CT Angiography (CTA) Head/Neck', c: true, r: 'Occlusion of the proximal Left Middle Cerebral Artery (M1 segment).' },
+              { n: 'MRI Brain without contrast', c: false, r: 'Trap! Too slow for the acute tPA window. CT is standard of care to rule out bleed.' },
+              { n: 'CT Head WITH Contrast', c: false, r: 'Trap! Contrast looks white on CT, exactly like blood. You will not be able to rule out a hemorrhage.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Clinical Scores', icon: '🩺', tests: [
+              { n: 'Point-of-Care Capillary Glucose', c: true, r: '142 mg/dL. (Crucial: Hypoglycemia can perfectly mimic an acute stroke).' },
+              { n: 'NIH Stroke Scale (NIHSS) Assessment', c: true, r: 'Score = 16.' },
+              { n: 'Continuous ECG Telemetry', c: true, r: 'Confirms Atrial Fibrillation.' },
+              { n: 'Pulse Oximetry', c: true, r: '97%.' },
+              { n: 'Orthostatic Vitals', c: false, r: 'Not indicated. Patient cannot stand.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies (Before tPA)', icon: '⏱️', tests: [
+              { n: 'Coagulation Panel (PT/INR, aPTT)', c: true, r: 'INR 1.1, aPTT 30s. (Normal. Crucial to ensure he is not supratherapeutic on an unmentioned blood thinner before giving tPA).' },
+              { n: 'Fibrinogen', c: false, r: 'Normal.' },
+              { n: 'D-Dimer', c: false, r: 'Not indicated for stroke.' },
+              { n: 'Thrombin Time', c: false, r: 'Not indicated.' },
+              { n: 'TEG', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'Platelets 250k (Normal. Must be > 100k for tPA). Hb 14.0.' },
+              { n: 'Type and Screen', c: true, r: 'O Positive.' },
+              { n: 'Peripheral Smear', c: false, r: 'Not indicated.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Not indicated.' },
+              { n: 'ESR', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Metabolic', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Normal electrolytes and renal function.' },
+              { n: 'Serum Lactate', c: false, r: 'Normal.' },
+              { n: 'Hemoglobin A1c', c: true, r: '8.5% (Poorly controlled diabetes).' },
+              { n: 'Serum Lipase', c: false, r: 'Normal.' },
+              { n: 'Ammonia', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: true, r: 'Atrial fibrillation with a ventricular rate of 115 bpm. No acute ST elevations.' },
+              { n: 'Transthoracic Echocardiogram (TTE)', c: true, r: 'Pending. (To look for the source of the clot - left atrial appendage thrombus).' },
+              { n: 'High-Sensitivity Troponin', c: true, r: 'Normal. (Check for concurrent MI).' },
+              { n: 'BNP', c: false, r: 'Normal.' },
+              { n: 'Stress Test', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Invasive Diagnostics', icon: '🔍', tests: [
+              { n: 'Lumbar Puncture', c: false, r: 'Contraindicated. Will cause a massive hematoma if tPA is given.' },
+              { n: 'Diagnostic Cerebral Angiogram (Fluoroscopy)', c: false, r: 'Used for intervention, CTA is better for initial diagnosis.' },
+              { n: 'Endoscopy', c: false, r: 'Contraindicated.' },
+              { n: 'Bone Marrow Biopsy', c: false, r: 'Irrelevant.' },
+              { n: 'Arthrocentesis', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Radiography', icon: '🩻', tests: [
+              { n: 'Chest X-Ray', c: true, r: 'Clear. (Ensure no aortic dissection widening the mediastinum, which mimics stroke and is a contraindication to tPA).' },
+              { n: 'C-Spine X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Abdominal X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Pelvic X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Bone Scan', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Blood Cultures', c: false, r: 'Not indicated. Afebrile.' },
+              { n: 'Urine Culture', c: false, r: 'Not indicated.' },
+              { n: 'CSF Culture', c: false, r: 'Not indicated.' },
+              { n: 'Sputum Culture', c: false, r: 'Not indicated.' },
+              { n: 'Wound Swab', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Toxicology', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: true, r: 'Negative. (Cocaine can cause stroke in young patients, less likely here but part of protocol).' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Acetaminophen', c: false, r: 'Normal.' },
+              { n: 'Salicylate', c: false, r: 'Normal.' },
+              { n: 'Heavy Metals', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH', c: false, r: 'Normal.' },
+              { n: 'Cortisol', c: false, r: 'Normal.' },
+              { n: 'Growth Hormone', c: false, r: 'Normal.' },
+              { n: 'Prolactin', c: false, r: 'Normal.' },
+              { n: 'PTH', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Blood Gas', icon: '💉', tests: [
+              { n: 'Arterial Blood Gas', c: false, r: 'Trap. Do not stick an artery if you are about to give a massive systemic thrombolytic (tPA).' },
+              { n: 'Venous Blood Gas', c: false, r: 'Normal.' },
+              { n: 'Lactate (POC)', c: false, r: 'Normal.' },
+              { n: 'Carboxyhemoglobin', c: false, r: 'Normal.' },
+              { n: 'Methemoglobin', c: false, r: 'Normal.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Acute Ischemic Stroke (Left MCA Territory)', c: true },
+          { t: 'Hemorrhagic Stroke (Intracerebral Hemorrhage)', c: false },
+          { t: 'Transient Ischemic Attack (TIA)', c: false },
+          { t: 'Hypoglycemia (Stroke Mimic)', c: false },
+          { t: 'Todd\'s Paralysis (Post-ictal)', c: false },
+          { t: 'Subdural Hematoma', c: false },
+          { t: 'Brain Tumor (Glioblastoma)', c: false },
+          { t: 'Multiple Sclerosis Flare', c: false },
+          { t: 'Bell\'s Palsy', c: false },
+          { t: 'Guillain-Barré Syndrome', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Reperfusion Therapy (Time is Brain)', icon: '⚡', treats: [
+              { n: 'IV Alteplase (tPA) or Tenecteplase (TNK)', c: true },
+              { n: 'Consult Interventional Neurology for Mechanical Thrombectomy', c: true },
+              { n: 'Withhold tPA due to patient age', c: false },
+              { n: 'Withhold tPA due to Atrial Fibrillation history', c: false },
+              { n: 'Give Oral Aspirin IMMEDIATELY before CT scan', c: false }
+            ]
+          },
+          {
+            name: 'Blood Pressure Management (Trap Zone)', icon: '💊', treats: [
+              { n: 'Permissive Hypertension (Allow BP up to 185/110 prior to tPA)', c: true },
+              { n: 'Aggressively lower BP to 120/80 with IV Labetalol', c: false },
+              { n: 'Give IV Nitroglycerin to tank BP', c: false },
+              { n: 'Start Oral Lisinopril', c: false },
+              { n: 'Give IV Esmolol', c: false }
+            ]
+          },
+          {
+            name: 'Antithrombotic Therapy', icon: '🩸', treats: [
+              { n: 'HOLD all Aspirin, Clopidogrel, and Heparin for 24 hours POST-tPA', c: true },
+              { n: 'Give Aspirin 325mg STAT alongside tPA', c: false },
+              { n: 'Start IV Heparin Drip immediately', c: false },
+              { n: 'Start Oral Apixaban immediately', c: false },
+              { n: 'Give Clopidogrel 600mg load', c: false }
+            ]
+          },
+          {
+            name: 'Airway & Oxygenation Support', icon: '🫁', treats: [
+              { n: 'Keep NPO (Nothing By Mouth) until Swallow Eval is passed', c: true },
+              { n: 'Room air observation (SpO2 > 94%)', c: true },
+              { n: 'Immediate Intubation (Not needed, GCS is good)', c: false },
+              { n: 'BiPAP', c: false },
+              { n: 'Give clear liquids to drink', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids', icon: '💧', treats: [
+              { n: 'IV Normal Saline (0.9% NaCl) at maintenance', c: true },
+              { n: 'IV Dextrose 5% in Water (D5W - Hypotonic, worsens brain edema)', c: false },
+              { n: 'Aggressive 3L fluid bolus', c: false },
+              { n: 'Strict Fluid Restriction', c: false },
+              { n: 'Hypertonic Saline (3%)', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Sedation', icon: '🌡️', treats: [
+              { n: 'Avoid all sedation to preserve neuro exam', c: true },
+              { n: 'IV Morphine', c: false },
+              { n: 'IV Lorazepam (Ativan)', c: false },
+              { n: 'Ketamine', c: false },
+              { n: 'Propofol', c: false }
+            ]
+          },
+          {
+            name: 'Surgical Interventions', icon: '🔪', treats: [
+              { n: 'No open surgical intervention indicated', c: true },
+              { n: 'Emergency Decompressive Craniectomy', c: false },
+              { n: 'Carotid Endarterectomy STAT', c: false },
+              { n: 'Burr Hole placement', c: false },
+              { n: 'VP Shunt', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular Medications', icon: '❤️', treats: [
+              { n: 'Start Diltiazem drip only if BP > 185/110', c: true },
+              { n: 'Amiodarone (for Atrial Fibrillation)', c: false },
+              { n: 'Atropine', c: false },
+              { n: 'Digoxin', c: false },
+              { n: 'Vasopressors', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic & Electrolyte', icon: '🧪', treats: [
+              { n: 'Keep Blood Glucose between 140-180 mg/dL (Treat with Insulin PRN)', c: true },
+              { n: 'Aggressively drop glucose to 80 mg/dL', c: false },
+              { n: 'Give IV Dextrose 50%', c: false },
+              { n: 'Sodium Bicarbonate', c: false },
+              { n: 'IV Potassium', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'No antibiotics indicated', c: true },
+              { n: 'IV Ceftriaxone', c: false },
+              { n: 'IV Vancomycin', c: false },
+              { n: 'Oral Amoxicillin', c: false },
+              { n: 'Acyclovir', c: false }
+            ]
+          },
+          {
+            name: 'Reversal Agents', icon: '🚫', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Andexanet alfa (Only if he actually took his Apixaban today, but he didn\'t)', c: false },
+              { n: 'Vitamin K', c: false },
+              { n: 'Protamine', c: false },
+              { n: 'Idarucizumab', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit to Neuro ICU', c: true },
+              { n: 'Discharge home with physical therapy', c: false },
+              { n: 'Transfer to Psychiatry', c: false },
+              { n: 'Admit to general medical floor', c: false },
+              { n: 'Schedule outpatient MRI in 2 weeks', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Acute Ischemic Stroke (Left MCA)',
+          sub: 'Thromboembolic occlusion of the Left Middle Cerebral Artery, usually originating from the left atrial appendage in untreated Atrial Fibrillation.',
+          clues: 'Sudden onset right-sided weakness involving the face, arm, and leg, combined with Expressive (Broca\'s) Aphasia perfectly localizes the lesion to the Left MCA territory. The fact that he can raise his eyebrows means it is a central brain lesion, NOT a peripheral Bell\'s Palsy.',
+          tests: 'A Non-Contrast CT Head is the absolute first step to rule out a hemorrhage. Once a bleed is ruled out, the patient becomes a candidate for tPA. Check a POC Glucose to rule out hypoglycemia. A CTA of the Head/Neck will locate the exact clot for the neuro-interventionalist to retrieve.',
+          mgmt: 'Time is Brain. The patient is well within the 3-to-4.5 hour window for IV tPA (Alteplase/Tenecteplase). Because he has a Large Vessel Occlusion (LVO) in the M1 segment, he must also be rushed to the Cath Lab for a Mechanical Thrombectomy. Keep him NPO to prevent aspiration pneumonia.',
+          pitfalls: '1. Giving Aspirin or Heparin before the CT scan. If he has a hemorrhagic stroke, you will kill him. 2. Dropping the blood pressure too much. The brain relies on a high BP to push blood through collateral vessels around the clot (Permissive Hypertension). 3. Giving Aspirin *with* tPA (Wait 24 hours to avoid turning the ischemic stroke into a bloody mess).',
+          other: 'Hemorrhagic stroke is ruled out by the clear CT. Bell\'s Palsy involves the entire half of the face (including the forehead) and lacks arm/leg weakness. TIA resolves within 24 hours (usually <1 hour).',
+          testRationale: 'The CT Perfusion scan identifies the "Ischemic Penumbra"—tissue that is starving for oxygen but not yet dead. This proves there is still brain left to save via thrombectomy.',
+          treatSeq: '1. POC Glucose + NIHSS → 2. Non-Contrast CT Head → 3. IV tPA (if BP < 185/110 and no bleed) → 4. CTA Head/Neck → 5. Mechanical Thrombectomy.',
+          traps: 'Waiting for an MRI. MRI is vastly superior for *seeing* an ischemic stroke, but it takes 45 minutes. A CT takes 60 seconds and tells you what you need to know: Is there blood? No? Push tPA.',
+          learning: 'Right Weakness + Aphasia = Left MCA Stroke. Get a Non-Contrast CT. If no blood and < 4.5 hours, push tPA. Keep BP high (permissive hypertension) to perfuse the brain. Do NOT give Aspirin for 24 hours after tPA.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 93. NEUROLOGY — Level 1: Subarachnoid Hemorrhage (SAH)
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'neuro2', name: 'Neurology: Level 1', color: '#dc2626', emoji: '💥', waitDays: 1,
+        caseTitle: 'The worst headache of my life during a workout',
+        caseDesc: 'A 45-year-old female experiences a sudden "thunderclap" headache while weightlifting. Recognize the ruptured aneurysm, navigate the CT/Lumbar Puncture diagnostic sequence, and initiate Nimodipine to prevent lethal vasospasm.',
+        patient: { name: 'Eleanor', gender: 'Female', age: '45 Y', weight: '68 kg', complaint: 'My head suddenly exploded with pain' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.2°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '105 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '180/105 mmHg (Hypertensive)' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '18/min' },
+          { icon: '💧', label: 'SpO2', val: '99% on room air' }
+        ],
+        history: [
+          '1. Patient was doing heavy squats at the gym when she was struck by a sudden, explosive headache.',
+          '2. She describes it as the "worst headache of my entire life" (Thunderclap headache).',
+          '3. Associated with immediate nausea, vomiting, and photophobia (sensitivity to light).',
+          '4. She briefly lost consciousness for about 30 seconds but is now awake.',
+          '5. Complains of a stiff, painful neck.',
+          '6. Smokes 1 pack of cigarettes per day (Major risk factor for aneurysm).',
+          '7. Has a history of Polycystic Kidney Disease (Associated with berry aneurysms).',
+          '8. Denies any fever, rash, or recent sick contacts.',
+          '9. Has a history of mild tension headaches, but states "this is completely different."',
+          '10. Denies any head trauma or falls.'
+        ],
+        physExam: [
+          '1. General: Holding her head, eyes closed, visibly agonizing pain. Photophobic.',
+          '2. Vitals: Hypertensive and tachycardic (Pain and sympathetic surge).',
+          '3. Neurological: GCS 15. Alert and oriented x3, but easily agitated by the pain.',
+          '4. Neurological (Cranial Nerves): Pupils are equal, round, and reactive to light. (Rule out CN III palsy which can happen with PCoA aneurysms).',
+          '5. Neurological (Motor/Sensory): 5/5 strength throughout. No focal sensory deficits. No pronator drift.',
+          '6. Neck: Positive nuchal rigidity. Positive Brudzinski\'s sign (neck flexion causes hip/knee flexion).',
+          '7. Fundoscopy: Subhyaloid retinal hemorrhages are visible (Terson syndrome).',
+          '8. Cardiovascular: Tachycardic, no murmurs.',
+          '9. Lungs: Clear.',
+          '10. Skin: No purpuric or petechial rash (Rules out meningococcemia).'
+        ],
+        testCats: [
+          {
+            name: 'Advanced Cross-Sectional Imaging (Crucial)', icon: '📷', tests: [
+              { n: 'CT Head WITHOUT Contrast', c: true, r: 'Hyperdense (white) blood filling the basal cisterns, sylvian fissure, and subarachnoid space. Classic "Star of Death" appearance. Diagnostic for SAH.' },
+              { n: 'CT Angiography (CTA) Head', c: true, r: 'Reveals a 7mm ruptured saccular (berry) aneurysm at the junction of the Anterior Communicating Artery (ACoA).' },
+              { n: 'MRI Brain', c: false, r: 'Too slow and less sensitive than CT for acute subarachnoid blood in the first 24 hours.' },
+              { n: 'CT Head WITH Contrast', c: false, r: 'Trap. Contrast looks white, just like blood. It masks the hemorrhage.' },
+              { n: 'CT Cervical Spine', c: false, r: 'No trauma history.' }
+            ]
+          },
+          {
+            name: 'Invasive Diagnostics (The Backup)', icon: '🔍', tests: [
+              { n: 'Lumbar Puncture (CSF Analysis)', c: true, r: 'Not needed here because the CT was positive. IF the CT is negative but suspicion is high, an LP is MANDATORY to look for Xanthochromia (yellow breakdown of blood).' },
+              { n: 'Diagnostic Digital Subtraction Angiography (DSA)', c: true, r: 'Gold standard. Performed by Neuro-IR to map the vessels and coil the aneurysm.' },
+              { n: 'Endoscopy', c: false, r: 'Irrelevant.' },
+              { n: 'Bone Marrow Biopsy', c: false, r: 'Irrelevant.' },
+              { n: 'Arthrocentesis', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Clinical Scores', icon: '🩺', tests: [
+              { n: 'Point-of-Care Glucose', c: true, r: '115 mg/dL.' },
+              { n: 'Hunt and Hess Score', c: true, r: 'Score = 2 (Moderate to severe headache, nuchal rigidity, no neurologic deficit).' },
+              { n: 'Pulse Oximetry', c: true, r: '99%.' },
+              { n: 'Orthostatic Vitals', c: false, r: 'Not indicated.' },
+              { n: 'Fecal Occult Blood', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Electrolytes', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Na 132 (Mild hyponatremia due to Cerebral Salt Wasting/SIADH). K 4.0. BUN 15, Cr 0.9.' },
+              { n: 'Serum Osmolality', c: true, r: '275 mOsm/kg (Low).' },
+              { n: 'Serum Lactate', c: false, r: 'Normal.' },
+              { n: 'Serum Lipase', c: false, r: 'Normal.' },
+              { n: 'Ammonia', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'WBC 12k (Mild stress elevation). Hb 14.0.' },
+              { n: 'Type and Screen', c: true, r: 'O Positive. (Pre-op for endovascular coiling/clipping).' },
+              { n: 'Peripheral Smear', c: false, r: 'Not indicated.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Not indicated.' },
+              { n: 'ESR', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
+              { n: 'Coagulation Panel (PT/INR, aPTT)', c: true, r: 'Normal. (Crucial to ensure no underlying bleeding diathesis before IR).' },
+              { n: 'Fibrinogen', c: false, r: 'Normal.' },
+              { n: 'D-Dimer', c: false, r: 'Not indicated.' },
+              { n: 'Bleeding Time', c: false, r: 'Not indicated.' },
+              { n: 'TEG', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: true, r: 'Sinus tachycardia. Diffuse deep T-wave inversions (Cerebral T-waves, caused by massive sympathetic surge from brain injury).' },
+              { n: 'High-Sensitivity Troponin', c: true, r: 'Mildly elevated (Neurogenic stunned myocardium).' },
+              { n: 'Echocardiogram', c: false, r: 'Not priority.' },
+              { n: 'BNP', c: false, r: 'Normal.' },
+              { n: 'Stress Test', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Radiography', icon: '🩻', tests: [
+              { n: 'Chest X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Abdominal X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Pelvic X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Bone Scan', c: false, r: 'Irrelevant.' },
+              { n: 'Mammogram', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Blood Cultures', c: false, r: 'Not indicated. Afebrile.' },
+              { n: 'CSF Culture', c: false, r: 'Only if LP is done to rule out meningitis, but CT proved SAH.' },
+              { n: 'Urine Culture', c: false, r: 'Not indicated.' },
+              { n: 'Sputum Culture', c: false, r: 'Not indicated.' },
+              { n: 'Throat Swab', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH', c: false, r: 'Normal.' },
+              { n: 'Cortisol', c: false, r: 'Normal.' },
+              { n: 'HbA1c', c: false, r: 'Normal.' },
+              { n: 'Prolactin', c: false, r: 'Normal.' },
+              { n: 'Growth Hormone', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Toxicology', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: true, r: 'Negative. (Cocaine can cause aneurysm rupture).' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Acetaminophen', c: false, r: 'Normal.' },
+              { n: 'Salicylate', c: false, r: 'Normal.' },
+              { n: 'Heavy Metals', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Blood Gas', icon: '💉', tests: [
+              { n: 'Venous Blood Gas', c: false, r: 'Normal.' },
+              { n: 'Arterial Blood Gas', c: false, r: 'Not indicated.' },
+              { n: 'Lactate (POC)', c: false, r: 'Normal.' },
+              { n: 'Carboxyhemoglobin', c: false, r: 'Normal.' },
+              { n: 'Methemoglobin', c: false, r: 'Normal.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Subarachnoid Hemorrhage (Ruptured Aneurysm)', c: true },
+          { t: 'Bacterial Meningitis', c: false },
+          { t: 'Migraine Headache', c: false },
+          { t: 'Ischemic Stroke', c: false },
+          { t: 'Tension Headache', c: false },
+          { t: 'Cervical Artery Dissection', c: false },
+          { t: 'Intraparenchymal Hemorrhage', c: false },
+          { t: 'Venous Sinus Thrombosis', c: false },
+          { t: 'Cluster Headache', c: false },
+          { t: 'Acute Angle-Closure Glaucoma', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Vasospasm Prophylaxis (Crucial)', icon: '💊', treats: [
+              { n: 'Oral Nimodipine (Calcium Channel Blocker specific to cerebral vessels)', c: true },
+              { n: 'IV Amlodipine', c: false },
+              { n: 'Oral Verapamil', c: false },
+              { n: 'IV Magnesium', c: false },
+              { n: 'Wait for symptoms of vasospasm before treating', c: false }
+            ]
+          },
+          {
+            name: 'Surgical & Endovascular Interventions', icon: '🔪', treats: [
+              { n: 'Neuro-Interventional Radiology for Endovascular Coiling', c: true },
+              { n: 'Neurosurgery for Surgical Clipping (If coiling not feasible)', c: true },
+              { n: 'Immediate Decompressive Craniectomy', c: false },
+              { n: 'Lumbar Drain', c: false },
+              { n: 'Conservative medical management only', c: false }
+            ]
+          },
+          {
+            name: 'Blood Pressure Management', icon: '🩸', treats: [
+              { n: 'IV Labetalol or Nicardipine (Strictly maintain Systolic BP < 160 to prevent rebleeding)', c: true },
+              { n: 'Permissive Hypertension (Keep BP high)', c: false },
+              { n: 'Give IV Nitroglycerin', c: false },
+              { n: 'Start Oral Lisinopril', c: false },
+              { n: 'Give IV Epinephrine', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Sedation', icon: '🌡️', treats: [
+              { n: 'IV Fentanyl or Morphine (Adequate pain control prevents BP spikes)', c: true },
+              { n: 'Avoid all pain meds', c: false },
+              { n: 'Oral Ibuprofen (NSAIDs increase bleeding risk)', c: false },
+              { n: 'Ketamine', c: false },
+              { n: 'Propofol Infusion', c: false }
+            ]
+          },
+          {
+            name: 'Seizure Prophylaxis', icon: '🧠', treats: [
+              { n: 'IV Levetiracetam (Keppra) - controversial but frequently used in severe SAH', c: true },
+              { n: 'IV Lorazepam', c: false },
+              { n: 'IV Phenytoin', c: false },
+              { n: 'IV Valproic Acid', c: false },
+              { n: 'Oral Carbamazepine', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids', icon: '💧', treats: [
+              { n: 'IV Normal Saline (Euvolemia is critical to prevent vasospasm)', c: true },
+              { n: 'Strict Fluid Restriction (Trap! Worsens vasospasm)', c: false },
+              { n: 'IV Dextrose 5% in Water', c: false },
+              { n: 'Aggressive 4L Fluid Bolus', c: false },
+              { n: 'IV Albumin', c: false }
+            ]
+          },
+          {
+            name: 'Airway & Oxygenation Support', icon: '🫁', treats: [
+              { n: 'Room air observation (GCS is 15)', c: true },
+              { n: 'Immediate Intubation (RSI)', c: false },
+              { n: 'BiPAP', c: false },
+              { n: 'Supplemental O2 via Face Mask', c: false },
+              { n: 'Nebulized Albuterol', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'No antibiotics indicated (Aseptic meningitis from blood irritation)', c: true },
+              { n: 'IV Ceftriaxone + Vancomycin', c: false },
+              { n: 'Oral Amoxicillin', c: false },
+              { n: 'Acyclovir', c: false },
+              { n: 'Topical Antibiotics', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic & Electrolyte', icon: '🧪', treats: [
+              { n: 'Monitor Sodium closely (Treat hyponatremia with Hypertonic Saline, NOT fluid restriction)', c: true },
+              { n: 'Fluid restriction for hyponatremia', c: false },
+              { n: 'IV Potassium', c: false },
+              { n: 'Insulin', c: false },
+              { n: 'Sodium Bicarbonate', c: false }
+            ]
+          },
+          {
+            name: 'Antithrombotic Therapy', icon: '🩸', treats: [
+              { n: 'REVERSE all anticoagulants and HOLD all antiplatelets', c: true },
+              { n: 'IV Heparin Drip', c: false },
+              { n: 'Aspirin', c: false },
+              { n: 'tPA (Thrombolytics)', c: false },
+              { n: 'Clopidogrel', c: false }
+            ]
+          },
+          {
+            name: 'Reversal Agents', icon: '🚫', treats: [
+              { n: 'No intervention (She is not on blood thinners)', c: true },
+              { n: 'Vitamin K', c: false },
+              { n: 'Prothrombin Complex Concentrate (PCC)', c: false },
+              { n: 'Idarucizumab', c: false },
+              { n: 'Andexanet alfa', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit to Neuro ICU for q1h neuro checks', c: true },
+              { n: 'Discharge home with sumatriptan for migraine', c: false },
+              { n: 'Transfer to Psychiatry', c: false },
+              { n: 'Admit to general medical floor', c: false },
+              { n: 'Schedule Outpatient MRI', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Subarachnoid Hemorrhage (SAH)',
+          sub: 'Rupture of a berry aneurysm at the base of the brain, causing high-pressure arterial blood to rapidly fill the subarachnoid space.',
+          clues: 'The "Thunderclap" headache—maximum intensity at the exact moment of onset. Often triggered by exertion (weightlifting, sex, defecation) which spikes intracranial pressure. Nuchal rigidity occurs because the blood acts as a severe chemical irritant to the meninges. Polycystic Kidney Disease is a major systemic association.',
+          tests: 'A Non-Contrast CT Head is the first step. If the CT is done within 6 hours, it is 99% sensitive for SAH ("Star of Death" sign). If the CT is NEGATIVE but the story is classic, you MUST do a Lumbar Puncture to look for Xanthochromia (yellowish CSF due to bilirubin from broken-down RBCs).',
+          mgmt: 'Admit to the Neuro ICU. Keep Systolic BP < 160 to prevent the aneurysm from re-rupturing before it is fixed. Consult Neuro-IR for endovascular coiling. Start Nimodipine immediately to prevent cerebral vasospasm (a deadly complication occurring days 3-14 where the irritated arteries clamp shut, causing massive ischemic strokes).',
+          pitfalls: '1. Diagnosing a "Migraine" and discharging her home. A thunderclap headache is SAH until proven otherwise. 2. Fluid restricting the patient for hyponatremia. SAH causes Cerebral Salt Wasting; fluid restriction will dry her out, collapse her cerebral vessels, and cause fatal vasospasm. 3. Withholding pain meds; severe pain spikes the BP and pops the aneurysm.',
+          other: 'Meningitis features a gradual onset of fever, headache, and neck stiffness. Migraines have a gradual aura and build over hours. Ischemic stroke features focal neurological deficits rather than explosive headache and neck stiffness.',
+          testRationale: 'Terson syndrome (subhyaloid retinal hemorrhage) occurs because the massive spike in intracranial pressure prevents venous drainage from the eye, causing the retinal veins to burst.',
+          treatSeq: '1. CT Head (Non-Con) → 2. Control BP < 160 & Give Fentanyl → 3. CTA Head → 4. Nimodipine → 5. IR Coiling/Surgical Clipping.',
+          traps: 'Assuming the negative CT Head means she is fine. If the headache happened 12 hours ago, the blood may have washed away. You must do an LP if the CT is negative.',
+          learning: 'Thunderclap Headache = Subarachnoid Hemorrhage. Order Non-Con CT. If negative, DO AN LP to check for Xanthochromia. Give Nimodipine to stop vasospasm. Control BP < 160. Call Neuro-IR for coiling.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 94. NEUROLOGY — Level 1: Status Epilepticus
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'neuro3', name: 'Neurology: Level 1', color: '#8b5cf6', emoji: '⚡', waitDays: 1,
+        caseTitle: 'Continuous, unremitting convulsions for over 10 minutes',
+        caseDesc: 'A 24-year-old male with known epilepsy is brought in actively seizing. He has been seizing for 15 minutes without regaining consciousness. Navigate the stepwise algorithmic escalation from Benzodiazepines to Fosphenytoin to Propofol intubation.',
+        patient: { name: 'David', gender: 'Male', age: '24 Y', weight: '75 kg', complaint: 'Actively seizing, will not stop' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '38.2°C (Hyperthermia from muscle activity)' },
+          { icon: '❤️', label: 'Heart Rate', val: '145 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '155/90 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: 'Irregular/Apneic during seizure' },
+          { icon: '💧', label: 'SpO2', val: '88% on room air (Desaturating)' }
+        ],
+        history: [
+          '1. Found seizing on the sidewalk by bystanders. EMS arrived and noted generalized tonic-clonic activity.',
+          '2. Total duration of active seizing is now approaching 15 minutes.',
+          '3. He has NOT regained consciousness at any point during this timeframe.',
+          '4. Wallet contains a medical alert card for "Epilepsy".',
+          '5. EMS gave one dose of IM Midazolam 5 minutes ago with no effect.',
+          '6. He is incontinent of urine.',
+          '7. He is biting his tongue, with bloody froth at the mouth.',
+          '8. Unknown if he has been taking his home anti-epileptic medications.',
+          '9. Unknown history of drug or alcohol use.',
+          '10. No visible signs of severe head trauma.'
+        ],
+        physExam: [
+          '1. General: Actively seizing. Violent, rhythmic jerking of all four extremities.',
+          '2. Vitals: Tachycardic, mildly hypertensive, hypoxic.',
+          '3. Neurological: Unresponsive to verbal command. Eyes deviated upwards and to the right.',
+          '4. Neurological: Continuous generalized tonic-clonic motor activity.',
+          '5. Airway: Jaw is clenched tight (trismus). Bloody secretions in the oropharynx.',
+          '6. Lungs: Difficult to auscultate over the motor activity. Breathing is shallow and irregular.',
+          '7. Skin: Hot, sweaty. No petechial rash.',
+          '8. Cardiovascular: Tachycardic.',
+          '9. Abdomen: Tense due to muscle contractions.',
+          '10. Extremities: Rigidity alternating with rhythmic jerking.'
+        ],
+        testCats: [
+          {
+            name: 'Point-of-Care & Clinical Scores (STAT)', icon: '🩺', tests: [
+              { n: 'Point-of-Care Capillary Glucose', c: true, r: '105 mg/dL. (Crucial first step: Severe hypoglycemia is a rapidly reversible cause of status epilepticus).' },
+              { n: 'Pulse Oximetry', c: true, r: '88%. (Patient is hypoxic from failure to ventilate during the seizure).' },
+              { n: 'Continuous ECG Telemetry', c: true, r: 'Sinus tachycardia.' },
+              { n: 'Orthostatic Vitals', c: false, r: 'Patient is unconscious and seizing.' },
+              { n: 'Fecal Occult Blood', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Electroencephalography (EEG)', icon: '⚡', tests: [
+              { n: 'Continuous Video EEG (cEEG)', c: true, r: 'Ordered. (Crucial to ensure the seizure actually stops, especially if the patient is paralyzed and intubated to hide the motor movements).' },
+              { n: 'Routine 30-minute EEG', c: false, r: 'Not sufficient for monitoring status epilepticus.' },
+              { n: 'Sleep-Deprived EEG', c: false, r: 'Not indicated.' },
+              { n: 'Evoked Potentials', c: false, r: 'Not indicated.' },
+              { n: 'EMG', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Toxicology (The Triggers)', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Na 138 (Normal - rules out severe hyponatremia as cause). K 4.0. BUN 18.' },
+              { n: 'Serum Lactate', c: true, r: '8.5 mmol/L (Massively elevated due to continuous muscle contraction/anaerobic metabolism. Will clear when seizure stops).' },
+              { n: 'Creatine Kinase (CK)', c: true, r: '4,500 U/L (Elevated due to rhabdomyolysis from prolonged seizing).' },
+              { n: 'Serum Magnesium & Calcium', c: true, r: 'Normal.' },
+              { n: 'Urine Toxicology Screen', c: true, r: 'Negative for Cocaine/Amphetamines.' }
+            ]
+          },
+          {
+            name: 'Anti-Epileptic Drug (AED) Levels', icon: '💊', tests: [
+              { n: 'Serum Levetiracetam (Keppra) Level', c: true, r: 'Undetectable. (Patient has been non-compliant with his home meds).' },
+              { n: 'Serum Phenytoin Level', c: true, r: 'Undetectable.' },
+              { n: 'Serum Valproic Acid Level', c: true, r: 'Undetectable.' },
+              { n: 'Digoxin Level', c: false, r: 'Not indicated.' },
+              { n: 'Lithium Level', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Advanced Cross-Sectional Imaging', icon: '📷', tests: [
+              { n: 'CT Head WITHOUT Contrast', c: true, r: 'Ordered for AFTER the seizure stops. (To rule out an intracranial hemorrhage, tumor, or stroke as the structural cause of the new seizure).' },
+              { n: 'MRI Brain', c: false, r: 'Patient is actively seizing, will cause massive motion artifact and is unsafe in the scanner.' },
+              { n: 'CT Angiography', c: false, r: 'Not priority.' },
+              { n: 'CT Cervical Spine', c: false, r: 'Only if trauma suspected.' },
+              { n: 'PET Scan', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'WBC 14k (Stress demargination). Hb 14.5.' },
+              { n: 'Type and Screen', c: false, r: 'Not actively bleeding.' },
+              { n: 'Peripheral Smear', c: false, r: 'Not indicated.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Not indicated.' },
+              { n: 'ESR', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Invasive Diagnostics', icon: '🔍', tests: [
+              { n: 'Lumbar Puncture (CSF Analysis)', c: true, r: 'Deferred. (Only perform if patient remains encephalopathic after seizure stops, to rule out Meningitis/Encephalitis, but do NOT do it while seizing).' },
+              { n: 'Diagnostic Laparoscopy', c: false, r: 'Irrelevant.' },
+              { n: 'Endoscopy', c: false, r: 'Irrelevant.' },
+              { n: 'Bone Marrow Biopsy', c: false, r: 'Irrelevant.' },
+              { n: 'Arthrocentesis', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Coagulation Studies', icon: '⏱️', tests: [
+              { n: 'PT/INR, aPTT', c: false, r: 'Normal.' },
+              { n: 'D-Dimer', c: false, r: 'Not indicated.' },
+              { n: 'Fibrinogen', c: false, r: 'Normal.' },
+              { n: 'Bleeding Time', c: false, r: 'Not indicated.' },
+              { n: 'TEG', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Artifact from muscle movement.' },
+              { n: 'Echocardiogram', c: false, r: 'Not indicated.' },
+              { n: 'Troponin', c: false, r: 'Not indicated.' },
+              { n: 'BNP', c: false, r: 'Not indicated.' },
+              { n: 'Stress Test', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Radiography', icon: '🩻', tests: [
+              { n: 'Chest X-Ray', c: true, r: 'Ordered post-intubation to confirm tube placement and rule out aspiration pneumonia.' },
+              { n: 'Abdominal X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Pelvic X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Bone Scan', c: false, r: 'Irrelevant.' },
+              { n: 'C-Spine X-Ray', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH', c: false, r: 'Normal.' },
+              { n: 'Cortisol', c: false, r: 'Normal.' },
+              { n: 'HbA1c', c: false, r: 'Normal.' },
+              { n: 'Prolactin', c: true, r: 'Elevated (Confirming true epileptic seizure vs pseudoseizure, though not acutely useful).' },
+              { n: 'Growth Hormone', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Blood Gas', icon: '💉', tests: [
+              { n: 'Arterial Blood Gas (ABG)', c: true, r: 'pH 7.15, pCO2 55, HCO3 18. (Mixed respiratory and metabolic acidosis due to apnea and lactic acid from seizing).' },
+              { n: 'Venous Blood Gas', c: false, r: 'ABG preferred.' },
+              { n: 'Lactate (POC)', c: true, r: 'High.' },
+              { n: 'Carboxyhemoglobin', c: false, r: 'Normal.' },
+              { n: 'Methemoglobin', c: false, r: 'Normal.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Status Epilepticus', c: true },
+          { t: 'Psychogenic Non-Epileptic Seizure (Pseudoseizure)', c: false },
+          { t: 'Hypoglycemic Seizure', c: false },
+          { t: 'Eclampsia', c: false },
+          { t: 'Bacterial Meningitis', c: false },
+          { t: 'Ischemic Stroke', c: false },
+          { t: 'Tetanus', c: false },
+          { t: 'Cocaine Toxicity', c: false },
+          { t: 'Hyponatremic Seizure', c: false },
+          { t: 'Meningioma', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'First-Line AEDs (0-5 Minutes)', icon: '⏱️', treats: [
+              { n: 'IV Lorazepam (Ativan) 4mg push, repeat once if no effect', c: true },
+              { n: 'IM Midazolam (If no IV access)', c: true },
+              { n: 'Oral Levetiracetam', c: false },
+              { n: 'IV Phenytoin (Not a first-line abortive)', c: false },
+              { n: 'Wait for it to stop spontaneously', c: false }
+            ]
+          },
+          {
+            name: 'Second-Line AEDs (5-20 Minutes)', icon: '💊', treats: [
+              { n: 'IV Fosphenytoin (Loading Dose) or IV Valproic Acid or IV Keppra', c: true },
+              { n: 'Continuous IV Lorazepam drip', c: false },
+              { n: 'Oral Carbamazepine', c: false },
+              { n: 'IV Magnesium Sulfate (Only for eclampsia, useless here)', c: false },
+              { n: 'IV Haloperidol', c: false }
+            ]
+          },
+          {
+            name: 'Third-Line AEDs / Refractory (20+ Minutes)', icon: '🧠', treats: [
+              { n: 'Intubate and start IV Propofol or Midazolam continuous infusion', c: true },
+              { n: 'IV Pentobarbital coma (Last resort)', c: true },
+              { n: 'Electroconvulsive Therapy (ECT)', c: false },
+              { n: 'Vagus Nerve Stimulator', c: false },
+              { n: 'More IV Lorazepam boluses (Trap! Will just cause respiratory arrest without stopping the brain seizure)', c: false }
+            ]
+          },
+          {
+            name: 'Airway & Oxygenation Support', icon: '🫁', treats: [
+              { n: 'Immediate RSI Intubation (For airway protection and to initiate Propofol coma)', c: true },
+              { n: 'Place a bite block or tongue depressor in his mouth (LETHAL TRAP - will break teeth and cause aspiration)', c: false },
+              { n: 'Supplemental O2 via Face Mask', c: true },
+              { n: 'BiPAP', c: false },
+              { n: 'Room air observation', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids & Resuscitation', icon: '💧', treats: [
+              { n: 'IV Normal Saline (To flush out myoglobin and prevent AKI from rhabdomyolysis)', c: true },
+              { n: 'Aggressive 3L fluid bolus', c: false },
+              { n: 'Strict Fluid Restriction', c: false },
+              { n: 'IV Dextrose 5% in Water', c: false },
+              { n: 'IV Albumin', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic & Electrolyte Correction', icon: '🧪', treats: [
+              { n: 'Give IV Dextrose 50% ONLY IF Point-of-Care Glucose is low (It is normal here, so withhold)', c: true },
+              { n: 'Empiric IV Thiamine (If alcoholism is suspected)', c: true },
+              { n: 'IV Sodium Bicarbonate (Lactate will clear when seizure stops, do not treat the pH)', c: false },
+              { n: 'IV Calcium', c: false },
+              { n: 'IV Potassium', c: false }
+            ]
+          },
+          {
+            name: 'Patient Positioning & Safety', icon: '🛏️', treats: [
+              { n: 'Roll patient to the Left Lateral Decubitus position (To prevent vomiting/aspiration)', c: true },
+              { n: 'Pad the bed rails', c: true },
+              { n: 'Physically restrain his arms and legs to stop the shaking (TRAP - will cause dislocations/fractures)', c: false },
+              { n: 'Trendelenburg position', c: false },
+              { n: 'Supine position', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Sedation', icon: '🌡️', treats: [
+              { n: 'Propofol (Serves as both a sedative for intubation and a potent anti-epileptic)', c: true },
+              { n: 'IV Morphine', c: false },
+              { n: 'Ketorolac', c: false },
+              { n: 'Epidural', c: false },
+              { n: 'Local Lidocaine', c: false }
+            ]
+          },
+          {
+            name: 'Surgical Interventions', icon: '🔪', treats: [
+              { n: 'No acute surgical intervention indicated', c: true },
+              { n: 'Emergency Craniotomy', c: false },
+              { n: 'Resective Epilepsy Surgery', c: false },
+              { n: 'Deep Brain Stimulator placement', c: false },
+              { n: 'Burr Hole', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular Medications', icon: '❤️', treats: [
+              { n: 'No intervention (Tachycardia is from motor exertion)', c: true },
+              { n: 'Beta-blockers', c: false },
+              { n: 'Vasopressors', c: false },
+              { n: 'Atropine', c: false },
+              { n: 'Nitroglycerin', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'No antibiotics indicated currently', c: true },
+              { n: 'IV Ceftriaxone + Vancomycin + Ampicillin (Give empirically ONLY IF meningitis is strongly suspected)', c: false },
+              { n: 'Oral Amoxicillin', c: false },
+              { n: 'Acyclovir', c: false },
+              { n: 'Topical Mupirocin', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit to Neuro Intensive Care Unit (NICU) on continuous EEG', c: true },
+              { n: 'Discharge home on oral Keppra', c: false },
+              { n: 'Transfer to Psychiatry', c: false },
+              { n: 'Admit to general medical floor', c: false },
+              { n: 'Schedule Outpatient MRI', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Status Epilepticus',
+          sub: 'Continuous clinical or electrographic seizure activity lasting > 5 minutes, or recurrent seizures without full recovery of consciousness between them.',
+          clues: 'The patient has been actively seizing for 15 minutes. This is a medical emergency. Prolonged seizing causes permanent neuronal necrosis, massive lactic acidosis, and rhabdomyolysis.',
+          tests: 'A Point-of-Care Glucose is the absolute first test to rule out severe hypoglycemia. Continuous Video EEG is required if the patient is intubated and paralyzed, because neuromuscular blockers stop the *physical* shaking, but the brain may still be actively seizing (Non-Convulsive Status Epilepticus).',
+          mgmt: 'Follow the strict algorithmic timeline: \n0-5 Mins: ABCs, Fingerstick Glucose, and IV Lorazepam (Ativan). \n5-20 Mins: If still seizing, push a loading dose of IV Fosphenytoin, Valproic Acid, or Levetiracetam. \n20+ Mins: If still seizing (Refractory Status), Intubate the patient and start a continuous infusion of Propofol or Midazolam to induce a pharmacologic coma.',
+          pitfalls: '1. Giving paralytics (like Rocuronium) to "stop the shaking" without treating the brain. The brain will fry itself while the body lies still. 2. Sticking objects in the mouth to "protect the tongue." 3. Restraining the patient\'s limbs forcefully (causes fractures). 4. Continuing to push Lorazepam endlessly—after 2 doses, the GABA receptors internalize and benzos stop working. You must escalate to Fosphenytoin/Propofol.',
+          other: 'Pseudoseizures lack the post-ictal state, elevated lactate, and elevated prolactin. Eclampsia occurs in pregnant women. Meningitis requires fever and nuchal rigidity.',
+          testRationale: 'Fosphenytoin is preferred over standard Phenytoin because it can be infused three times faster and does not cause "Purple Glove Syndrome" (severe tissue necrosis if the IV line infiltrates).',
+          treatSeq: '1. Fingerstick Glucose + O2 → 2. IV Lorazepam x2 → 3. IV Fosphenytoin Load → 4. Intubate + Propofol Drip → 5. Continuous EEG.',
+          traps: 'Failing to give IV Normal Saline for hydration. The intense muscle breakdown (CK > 4000) will clog the kidneys with myoglobin; hydration prevents acute renal failure.',
+          learning: 'Seizure > 5 mins = Status Epilepticus. Step 1: Lorazepam. Step 2: Fosphenytoin. Step 3: Intubate + Propofol. Check glucose immediately. Put patient on their side. Get a continuous EEG if paralyzed.'
+        },
+        xp: 40
+      },
+      // ─────────────────────────────────────────────────────────────
+      // 95. NEUROLOGY — Level 1: Myasthenia Gravis Crisis
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'neuro4', name: 'Neurology: Level 1', color: '#3b82f6', emoji: '🫁', waitDays: 2,
+        caseTitle: 'Drooping eyelids, slurred speech, and gasping for air',
+        caseDesc: 'A 32-year-old female presents with worsening muscle weakness, ptosis, and impending respiratory failure after a recent UTI. Recognize the myasthenic crisis, secure the airway based on forced vital capacity (FVC), and initiate IVIG or Plasmapheresis.',
+        patient: { name: 'Sarah', gender: 'Female', age: '32 Y', weight: '65 kg', complaint: 'I can hardly breathe or swallow' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.4°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '118 bpm (Tachycardic)' },
+          { icon: '📈', label: 'Blood Pressure', val: '135/85 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '28/min (Shallow)' },
+          { icon: '💧', label: 'SpO2', val: '92% on room air' }
+        ],
+        history: [
+          '1. Diagnosed with Myasthenia Gravis 2 years ago, maintained on oral Pyridostigmine.',
+          '2. Developed a Urinary Tract Infection (UTI) 3 days ago and was prescribed Ciprofloxacin at an urgent care.',
+          '3. Since starting the Cipro, her weakness has rapidly and dangerously worsened.',
+          '4. Complains of double vision (diplopia) and drooping eyelids (ptosis) that get worse as the day goes on.',
+          '5. Has become increasingly unable to swallow her own saliva (Bulbar weakness).',
+          '6. Her voice has become nasal and slurred.',
+          '7. Mother notes she is taking rapid, shallow breaths and using her neck muscles to breathe.',
+          '8. Weakness involves her proximal arms and legs, making it hard to stand from a chair.',
+          '9. No history of recent travel, tick bites, or eating home-canned foods.',
+          '10. Has never had a thymectomy.'
+        ],
+        physExam: [
+          '1. General: Anxious, sitting upright, speaking in short, breathy 2-word bursts.',
+          '2. Vitals: Tachypneic with shallow tidal volumes. Mildly hypoxic.',
+          '3. Neurological (Cranial Nerves): Bilateral asymmetric ptosis. Weak eye closure. Restricted extraocular movements.',
+          '4. Neurological (Bulbar): Dysarthria (nasal speech). Pooling of secretions in the posterior pharynx. Weak gag reflex.',
+          '5. Neurological (Motor): 3/5 strength in proximal shoulders and hips. Normal distal grip strength.',
+          '6. Neurological (Reflexes): Deep tendon reflexes are 2+ and symmetric (Normal - rules out Guillain-Barré).',
+          '7. Respiratory: Paradoxical abdominal breathing pattern (diaphragmatic fatigue). Accessory muscle use.',
+          '8. Lungs: Clear to auscultation, but air entry is poor due to weak effort.',
+          '9. Sensation: Completely intact to pinprick and vibration.',
+          '10. Cardiovascular: Tachycardic, no murmurs.'
+        ],
+        testCats: [
+          {
+            name: 'Pulmonary Function (Crucial STAT)', icon: '🫁', tests: [
+              { n: 'Negative Inspiratory Force (NIF)', c: true, r: '-15 cmH2O (Critically poor. Normal is < -60. Indicates impending respiratory failure).' },
+              { n: 'Forced Vital Capacity (FVC)', c: true, r: '12 mL/kg (Critically low. Intubation threshold is < 15-20 mL/kg).' },
+              { n: 'Peak Expiratory Flow Rate (PEFR)', c: false, r: 'More useful for asthma, not neuromuscular weakness.' },
+              { n: 'Arterial Blood Gas (ABG)', c: true, r: 'pH 7.31, pCO2 52, pO2 65. (Respiratory Acidosis from hypoventilation).' },
+              { n: 'Polysomnography (Sleep Study)', c: false, r: 'Irrelevant in acute crisis.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Clinical Scores', icon: '🩺', tests: [
+              { n: 'Ice Pack Test', c: true, r: 'Positive. Placing an ice pack on the drooping eyelid for 2 minutes dramatically improves the ptosis (Cold inhibits acetylcholinesterase).' },
+              { n: 'Point-of-Care Capillary Glucose', c: true, r: '105 mg/dL.' },
+              { n: 'Tensilon (Edrophonium) Test', c: false, r: 'TRAP! Outdated and dangerous in a crisis due to risk of severe bradycardia and cardiac arrest.' },
+              { n: 'Pulse Oximetry', c: true, r: '92%.' },
+              { n: 'Fecal Occult Blood', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Neuroimmunology Panel', icon: '🧬', tests: [
+              { n: 'Acetylcholine Receptor (AChR) Antibodies', c: true, r: 'Markedly elevated. (Confirms MG, though results take days).' },
+              { n: 'Anti-MuSK Antibodies', c: true, r: 'Pending. (Checked if AChR is negative).' },
+              { n: 'Anti-Voltage Gated Calcium Channel (VGCC) Antibodies', c: false, r: 'Tests for Lambert-Eaton Myasthenic Syndrome (LEMS), not typical MG.' },
+              { n: 'Anti-GQ1b Antibodies', c: false, r: 'Testing for Miller Fisher variant of GBS.' },
+              { n: 'Oligoclonal Bands (CSF)', c: false, r: 'Testing for MS, not indicated.' }
+            ]
+          },
+          {
+            name: 'Radiography & Cross-Sectional Imaging', icon: '📷', tests: [
+              { n: 'CT Chest WITH Contrast', c: true, r: 'Reveals an anterior mediastinal mass suspicious for a Thymoma. (10-15% of MG patients have a thymoma).' },
+              { n: 'Chest X-Ray', c: true, r: 'Clear lung fields. No consolidation (Rules out pneumonia as the trigger).' },
+              { n: 'CT Head without contrast', c: false, r: 'Not indicated. Symptoms are neuromuscular, not central.' },
+              { n: 'MRI Brain', c: false, r: 'Not indicated for peripheral neuromuscular junction disease.' },
+              { n: 'CT Cervical Spine', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Electrodiagnostic Testing', icon: '⚡', tests: [
+              { n: 'Repetitive Nerve Stimulation (RNS)', c: true, r: 'Shows a decremental response (>10% drop) in compound muscle action potential amplitude. (Diagnostic for MG).' },
+              { n: 'Single-Fiber EMG', c: true, r: 'Shows increased "jitter." (Most sensitive test for MG, but hard to do in crisis).' },
+              { n: 'Routine EEG', c: false, r: 'Patient is not seizing.' },
+              { n: 'Visual Evoked Potentials', c: false, r: 'Tests for MS.' },
+              { n: 'Nerve Conduction Velocity (NCV)', c: false, r: 'Normal (Rules out neuropathies like GBS).' }
+            ]
+          },
+          {
+            name: 'Chemistry & Inflammatory', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Normal electrolytes. BUN 15, Cr 0.8.' },
+              { n: 'Serum Magnesium', c: true, r: '1.9 mg/dL. (Crucial to check, as hypermagnesemia worsens MG weakness).' },
+              { n: 'Serum Lactate', c: false, r: 'Normal.' },
+              { n: 'C-Reactive Protein (CRP)', c: false, r: 'Normal.' },
+              { n: 'Serum Lipase', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: true, r: 'WBC 12k (Mild elevation due to UTI). Hb 13.5.' },
+              { n: 'Type and Screen', c: false, r: 'Not bleeding.' },
+              { n: 'Peripheral Smear', c: false, r: 'Not indicated.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Not indicated.' },
+              { n: 'ESR', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Urinalysis & Urine Culture', c: true, r: 'Positive for Leukocyte Esterase, Nitrites, and >50 WBCs. Culture pending E. coli. (Confirms the UTI trigger).' },
+              { n: 'Blood Cultures', c: false, r: 'Not indicated, afebrile.' },
+              { n: 'Sputum Culture', c: false, r: 'Not indicated, CXR clear.' },
+              { n: 'CSF Culture (LP)', c: false, r: 'Contraindicated.' },
+              { n: 'Wound Swab', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: true, r: 'Sinus tachycardia.' },
+              { n: 'Echocardiogram', c: false, r: 'Not indicated.' },
+              { n: 'Troponin', c: false, r: 'Not indicated.' },
+              { n: 'BNP', c: false, r: 'Not indicated.' },
+              { n: 'Stress Test', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH / Free T4', c: true, r: 'Normal. (Checked because MG is associated with other autoimmune diseases like Hashimoto\'s).' },
+              { n: 'Cortisol', c: false, r: 'Normal.' },
+              { n: 'HbA1c', c: false, r: 'Normal.' },
+              { n: 'Prolactin', c: false, r: 'Normal.' },
+              { n: 'Growth Hormone', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Toxicology', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Acetaminophen', c: false, r: 'Normal.' },
+              { n: 'Salicylate', c: false, r: 'Normal.' },
+              { n: 'Heavy Metals', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Coagulation', icon: '⏱️', tests: [
+              { n: 'PT/INR, aPTT', c: false, r: 'Normal.' },
+              { n: 'D-Dimer', c: false, r: 'Normal.' },
+              { n: 'Fibrinogen', c: false, r: 'Normal.' },
+              { n: 'Bleeding Time', c: false, r: 'Not indicated.' },
+              { n: 'TEG', c: false, r: 'Not indicated.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Myasthenic Crisis', c: true },
+          { t: 'Cholinergic Crisis', c: false },
+          { t: 'Guillain-Barré Syndrome', c: false },
+          { t: 'Botulism', c: false },
+          { t: 'Amyotrophic Lateral Sclerosis (ALS)', c: false },
+          { t: 'Lambert-Eaton Myasthenic Syndrome', c: false },
+          { t: 'Brainstem Stroke', c: false },
+          { t: 'Multiple Sclerosis Flare', c: false },
+          { t: 'Acute Asthma Exacerbation', c: false },
+          { t: 'Tick Paralysis', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Airway & Oxygenation (Immediate)', icon: '🫁', treats: [
+              { n: 'Elective Intubation & Mechanical Ventilation (Due to FVC < 15 mL/kg and bulbar weakness)', c: true },
+              { n: 'BiPAP (Non-Invasive Ventilation) as a bridge', c: true },
+              { n: 'Supplemental O2 via Nasal Cannula only', c: false },
+              { n: 'Avoid intubation at all costs', c: false },
+              { n: 'Nebulized Albuterol', c: false }
+            ]
+          },
+          {
+            name: 'Immunomodulatory Therapy (Gold Standard)', icon: '🩸', treats: [
+              { n: 'Intravenous Immunoglobulin (IVIG) - Rapid onset (Days)', c: true },
+              { n: 'Plasmapheresis (Plasma Exchange / PLEX) - Rapid onset (Days)', c: true },
+              { n: 'Oral Prednisone only', c: false },
+              { n: 'Start long-term Azathioprine right now', c: false },
+              { n: 'Start long-term Rituximab right now', c: false }
+            ]
+          },
+          {
+            name: 'Cholinesterase Inhibitors (Trap Zone)', icon: '⚠️', treats: [
+              { n: 'HOLD oral Pyridostigmine while intubated (Prevents excessive airway secretions)', c: true },
+              { n: 'Increase dose of oral Pyridostigmine (Mestinon)', c: false },
+              { n: 'Start IV Neostigmine', c: false },
+              { n: 'Start Oral Donepezil', c: false },
+              { n: 'Start Physostigmine', c: false }
+            ]
+          },
+          {
+            name: 'Medications to AVOID in MG', icon: '🚫', treats: [
+              { n: 'STOP Ciprofloxacin (Fluoroquinolones block the NMJ and trigger crisis)', c: true },
+              { n: 'Avoid Aminoglycosides (Gentamicin)', c: true },
+              { n: 'Avoid IV Magnesium Sulfate', c: true },
+              { n: 'Avoid Beta-blockers', c: true },
+              { n: 'Avoid Succinylcholine during intubation (Unpredictable response)', c: true }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy (For the UTI Trigger)', icon: '🦠', treats: [
+              { n: 'Switch to IV Ceftriaxone (Safe in MG)', c: true },
+              { n: 'Switch to IV Gentamicin', c: false },
+              { n: 'Continue Ciprofloxacin', c: false },
+              { n: 'Start IV Levofloxacin', c: false },
+              { n: 'Oral Macrodantin', c: false }
+            ]
+          },
+          {
+            name: 'Surgical Interventions', icon: '🔪', treats: [
+              { n: 'Elective Thymectomy (To be scheduled AFTER she recovers from crisis)', c: true },
+              { n: 'STAT Emergency Thymectomy today', c: false },
+              { n: 'Tracheostomy today', c: false },
+              { n: 'Thyroidectomy', c: false },
+              { n: 'Chest Tube', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids & Resuscitation', icon: '💧', treats: [
+              { n: 'IV Normal Saline maintenance', c: true },
+              { n: 'Aggressive 3L fluid bolus', c: false },
+              { n: 'Strict Fluid Restriction', c: false },
+              { n: 'IV Albumin', c: false },
+              { n: 'Hypertonic Saline', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Sedation', icon: '🌡️', treats: [
+              { n: 'Propofol for sedation during intubation', c: true },
+              { n: 'Use Succinylcholine for RSI', c: false },
+              { n: 'Epidural', c: false },
+              { n: 'IV Morphine', c: false },
+              { n: 'Local Lidocaine', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular Medications', icon: '❤️', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Vasopressors', c: false },
+              { n: 'Beta-blockers (Trap!)', c: false },
+              { n: 'Nitroglycerin', c: false },
+              { n: 'Atropine', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic & Electrolyte', icon: '🧪', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'IV Potassium', c: false },
+              { n: 'Sodium Bicarbonate', c: false },
+              { n: 'Insulin', c: false },
+              { n: 'Oral Magnesium (Trap!)', c: false }
+            ]
+          },
+          {
+            name: 'Antithrombotic Therapy', icon: '🩸', treats: [
+              { n: 'Subcutaneous Heparin (DVT prophylaxis while intubated)', c: true },
+              { n: 'Therapeutic IV Heparin', c: false },
+              { n: 'Aspirin', c: false },
+              { n: 'Clopidogrel', c: false },
+              { n: 'Warfarin', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit to Neuro Intensive Care Unit (NICU)', c: true },
+              { n: 'Discharge home with an inhaler', c: false },
+              { n: 'Transfer to Psychiatry', c: false },
+              { n: 'Admit to general medical floor', c: false },
+              { n: 'Schedule Outpatient Pulmonology', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Myasthenic Crisis',
+          sub: 'Autoantibodies destroy post-synaptic Acetylcholine Receptors at the neuromuscular junction, leading to extreme, fatigable muscle weakness and respiratory failure.',
+          clues: 'A patient with known MG presenting with bulbar weakness (cannot swallow/speak), ptosis, and respiratory distress. The critical clue is the trigger: she was given Ciprofloxacin. Fluoroquinolones, Aminoglycosides, and Magnesium all block the neuromuscular junction and can instantly throw an MG patient into a fatal crisis.',
+          tests: 'Do NOT rely on SpO2; it will remain normal until she completely stops breathing. You MUST measure Negative Inspiratory Force (NIF) and Forced Vital Capacity (FVC). An FVC < 15 mL/kg or NIF worse than -20 cmH2O mandates elective intubation before she crashes. A CT Chest with contrast should be ordered to look for a Thymoma.',
+          mgmt: '1. Secure the airway (Intubate/BiPAP). 2. STOP the triggering medication (Cipro). 3. Initiate IVIG or Plasmapheresis (PLEX) to rapidly wash out or neutralize the autoantibodies. 4. COUNTER-INTUITIVE TRAP: Do NOT increase her oral Pyridostigmine. In fact, you HOLD it while she is intubated because it drastically increases airway secretions, causing mucous plugging.',
+          pitfalls: '1. Waiting for hypoxia to intubate. The diaphragm tires out; intubate based on poor NIF/FVC numbers. 2. Using Succinylcholine or long-acting paralytics during intubation (MG patients have unpredictable, prolonged responses to paralytics). 3. Giving Magnesium for any reason.',
+          other: 'Guillain-Barré Syndrome (GBS) features ASCENDING weakness (starts in legs) and absent reflexes. Botulism features DESCENDING weakness and widely dilated, unreactive pupils. Cholinergic crisis looks similar but features massive SLUDGE symptoms (salivation, lacrimation, urination, diarrhea, miosis).',
+          testRationale: 'The Ice Pack test works because cooling the muscle inhibits the local acetylcholinesterase enzyme, allowing the limited remaining acetylcholine to hang around longer in the synapse, temporarily reversing the ptosis.',
+          treatSeq: '1. Check NIF/FVC → 2. Intubate/BiPAP → 3. Stop Cipro / Hold Pyridostigmine → 4. Start IVIG or PLEX → 5. Admit to Neuro ICU.',
+          traps: 'Performing the Tensilon (Edrophonium) test. It is outdated, has a high false-positive rate, and can cause severe vagal bradycardia or asystole in an unstable patient.',
+          learning: 'MG Crisis = Bulbar weakness + Poor NIF/FVC. Intubate early. Treat with IVIG/PLEX. Hold Pyridostigmine to reduce secretions. Avoid Fluoroquinolones, Aminoglycosides, and Magnesium.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 96. NEUROLOGY — Level 1: Bacterial Meningitis
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'neuro5', name: 'Neurology: Level 1', color: '#dc2626', emoji: '🤒', waitDays: 1,
+        caseTitle: 'Fever, stiff neck, and confusion in a college student',
+        caseDesc: 'A 19-year-old male presents with a triad of high fever, nuchal rigidity, and altered mental status. Navigate the strict timing of antibiotics, Dexamethasone, CT imaging, and Lumbar Puncture to save his brain from purulent destruction.',
+        patient: { name: 'Jake', gender: 'Male', age: '19 Y', weight: '75 kg', complaint: 'Terrible headache, fever, and acting weird' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '39.8°C (High Fever)' },
+          { icon: '❤️', label: 'Heart Rate', val: '125 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '100/60 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '22/min' },
+          { icon: '💧', label: 'SpO2', val: '98% on room air' }
+        ],
+        history: [
+          '1. Lives in a crowded college dormitory.',
+          '2. Developed a severe, diffuse headache and high fever 12 hours ago.',
+          '3. Roommate brought him to the ED because he became confused and lethargic.',
+          '4. Complains that the bright lights in the ED hurt his eyes (Photophobia).',
+          '5. Complains of extreme pain when trying to look down at his chest (Neck stiffness).',
+          '6. Began vomiting uncontrollably 2 hours ago.',
+          '7. Has missed several routine vaccinations, including the MenACWY vaccine.',
+          '8. Denies any recent head trauma or neurosurgery.',
+          '9. Roommate noticed a strange, spotty rash on his legs just before leaving for the hospital.',
+          '10. No history of sexually transmitted infections or IV drug use.'
+        ],
+        physExam: [
+          '1. General: Toxic appearing, lethargic, lying in fetal position away from the lights.',
+          '2. Vitals: Highly febrile and tachycardic.',
+          '3. Neurological: GCS 12 (Confused, opening eyes to speech). No focal weakness in limbs.',
+          '4. Neck: Severe nuchal rigidity. Positive Brudzinski\'s sign (neck flexion causes involuntary hip/knee flexion).',
+          '5. Neck: Positive Kernig\'s sign (inability to straighten leg when hip is flexed to 90 degrees).',
+          '6. Eyes (Fundoscopy): Mild blurring of the optic disc margins (Early papilledema/Increased ICP).',
+          '7. Skin: Non-blanching, petechial and purpuric rash scattered over the lower extremities and trunk.',
+          '8. Cardiovascular: Tachycardic, pulses are brisk.',
+          '9. Lungs: Clear to auscultation.',
+          '10. Abdomen: Soft, non-distended.'
+        ],
+        testCats: [
+          {
+            name: 'Advanced Cross-Sectional Imaging (The Gatekeeper)', icon: '📷', tests: [
+              { n: 'CT Head WITHOUT Contrast', c: true, r: 'Normal. No midline shift, no mass effect, no hemorrhage. (Clears the path for a Lumbar Puncture).' },
+              { n: 'MRI Brain', c: false, r: 'Too slow in an acute bacterial emergency.' },
+              { n: 'CT Angiography', c: false, r: 'Not indicated.' },
+              { n: 'CT Head WITH Contrast', c: false, r: 'Contrast adds no value for acute acute bacterial meningitis and delays the LP.' },
+              { n: 'CT Cervical Spine', c: false, r: 'Not indicated without trauma.' }
+            ]
+          },
+          {
+            name: 'Invasive Diagnostics (CSF Analysis)', icon: '🔍', tests: [
+              { n: 'Lumbar Puncture (Opening Pressure)', c: true, r: '28 cm H2O (Elevated).' },
+              { n: 'CSF Cell Count & Differential', c: true, r: 'WBC 4,500/mm3 (Massively elevated) with 92% Neutrophils (Classic bacterial profile).' },
+              { n: 'CSF Protein & Glucose', c: true, r: 'Protein 250 mg/dL (High). Glucose 15 mg/dL (Critically low, bacteria are eating it).' },
+              { n: 'CSF Gram Stain', c: true, r: 'Gram-negative diplococci (Neisseria meningitidis).' },
+              { n: 'CSF Viral PCR Panel', c: false, r: 'Clinical picture is overwhelmingly bacterial, but often sent as part of a meningitis panel.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Blood Cultures (x2 sets)', c: true, r: 'Pending. (Draw BEFORE giving antibiotics, but do not delay antibiotics more than minutes).' },
+              { n: 'Throat Swab / Culture', c: false, r: 'Not priority.' },
+              { n: 'Urine Culture', c: false, r: 'Not priority.' },
+              { n: 'Sputum Culture', c: false, r: 'Not priority.' },
+              { n: 'Skin Biopsy of Rash', c: false, r: 'Takes too long, treat empirically.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Inflammatory', icon: '🧪', tests: [
+              { n: 'Serum Lactate', c: true, r: '4.2 mmol/L (Elevated, indicating sepsis/hypoperfusion).' },
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: true, r: 'Normal electrolytes. BUN 20, Cr 1.1.' },
+              { n: 'C-Reactive Protein (CRP)', c: true, r: '180 mg/L (Markedly elevated).' },
+              { n: 'Procalcitonin', c: true, r: 'Elevated (Highly specific for bacterial infection).' },
+              { n: 'Serum Ammonia', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC) with diff', c: true, r: 'WBC 22k with 20% bands (Severe left shift). Platelets 110k (Mildly low, watch for DIC).' },
+              { n: 'Type and Screen', c: false, r: 'Not actively bleeding.' },
+              { n: 'Coagulation Panel (PT/INR, aPTT)', c: true, r: 'Normal baseline, but monitor closely due to purpuric rash (Meningococcemia causes DIC).' },
+              { n: 'D-Dimer', c: false, r: 'Not indicated.' },
+              { n: 'Fibrinogen', c: true, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Clinical Scores', icon: '🩺', tests: [
+              { n: 'Point-of-Care Capillary Glucose', c: true, r: '110 mg/dL. (Required to compare with the CSF glucose level).' },
+              { n: 'Pulse Oximetry', c: true, r: '98%.' },
+              { n: 'Glass Test (Tumbler Test)', c: true, r: 'Rash is non-blanching under pressure.' },
+              { n: 'Orthostatic Vitals', c: false, r: 'Not indicated.' },
+              { n: 'Fecal Occult Blood', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Radiography', icon: '🩻', tests: [
+              { n: 'Chest X-Ray', c: false, r: 'Lungs are clear, no cough.' },
+              { n: 'Abdominal X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Pelvic X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'C-Spine X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Bone Scan', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Sinus tachycardia.' },
+              { n: 'Echocardiogram', c: false, r: 'Not indicated.' },
+              { n: 'Troponin', c: false, r: 'Not indicated.' },
+              { n: 'BNP', c: false, r: 'Not indicated.' },
+              { n: 'Stress Test', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH', c: false, r: 'Normal.' },
+              { n: 'Cortisol', c: true, r: 'Pending. (Meningococcemia can cause bilateral adrenal hemorrhage - Waterhouse-Friderichsen syndrome).' },
+              { n: 'HbA1c', c: false, r: 'Normal.' },
+              { n: 'Prolactin', c: false, r: 'Normal.' },
+              { n: 'Growth Hormone', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Toxicology', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Acetaminophen', c: false, r: 'Normal.' },
+              { n: 'Salicylate', c: false, r: 'Normal.' },
+              { n: 'Heavy Metals', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Blood Gas', icon: '💉', tests: [
+              { n: 'Venous Blood Gas', c: true, r: 'pH 7.32, pCO2 40, HCO3 20 (Mild metabolic acidosis from sepsis).' },
+              { n: 'Arterial Blood Gas', c: false, r: 'Unnecessary.' },
+              { n: 'Lactate (POC)', c: false, r: 'Normal.' },
+              { n: 'Methemoglobin', c: false, r: 'Normal.' },
+              { n: 'Carboxyhemoglobin', c: false, r: 'Normal.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Bacterial Meningitis (Neisseria meningitidis)', c: true },
+          { t: 'Viral Meningitis', c: false },
+          { t: 'Subarachnoid Hemorrhage', c: false },
+          { t: 'Herpes Simplex Encephalitis', c: false },
+          { t: 'Fungal Meningitis (Cryptococcus)', c: false },
+          { t: 'Brain Abscess', c: false },
+          { t: 'Lyme Disease', c: false },
+          { t: 'Rocky Mountain Spotted Fever', c: false },
+          { t: 'Toxic Shock Syndrome', c: false },
+          { t: 'Henoch-Schönlein Purpura', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Antimicrobial Therapy (Empiric Gold Standard)', icon: '🦠', treats: [
+              { n: 'IV Ceftriaxone + IV Vancomycin', c: true },
+              { n: 'Add IV Ampicillin (If > 50 years old or immunocompromised to cover Listeria - Not needed here, he is 19)', c: false },
+              { n: 'IV Acyclovir (Empiric until HSV PCR negative)', c: true },
+              { n: 'Oral Azithromycin', c: false },
+              { n: 'IV Fluconazole', c: false }
+            ]
+          },
+          {
+            name: 'Systemic Anti-Inflammatories (Crucial Timing)', icon: '🧬', treats: [
+              { n: 'IV Dexamethasone (Must be given 15-20 minutes BEFORE or WITH the first antibiotic dose)', c: true },
+              { n: 'Give Dexamethasone AFTER antibiotics have been running for a few hours', c: false },
+              { n: 'Oral Prednisone', c: false },
+              { n: 'Methotrexate', c: false },
+              { n: 'No steroids indicated', c: false }
+            ]
+          },
+          {
+            name: 'Infection Control & Public Health', icon: '🛡️', treats: [
+              { n: 'Place patient in Droplet Isolation Precautions immediately', c: true },
+              { n: 'Administer Rifampin or Ciprofloxacin prophylaxis to close contacts (Roommate)', c: true },
+              { n: 'Place in Airborne Precautions (N95 mask)', c: false },
+              { n: 'Contact precautions only', c: false },
+              { n: 'No prophylaxis needed for contacts', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids & Resuscitation', icon: '💧', treats: [
+              { n: 'IV Normal Saline (Fluid resuscitation for sepsis)', c: true },
+              { n: 'Strict Fluid Restriction', c: false },
+              { n: 'Aggressive 5L fluid bolus', c: false },
+              { n: 'IV Dextrose 5% in Water', c: false },
+              { n: 'IV Albumin', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Sedation', icon: '🌡️', treats: [
+              { n: 'Acetaminophen (Tylenol) for fever and headache', c: true },
+              { n: 'IV Morphine', c: false },
+              { n: 'Oral Ibuprofen', c: false },
+              { n: 'Ketamine', c: false },
+              { n: 'Propofol', c: false }
+            ]
+          },
+          {
+            name: 'Neurological & ICP Management', icon: '🧠', treats: [
+              { n: 'Elevate head of bed to 30 degrees', c: true },
+              { n: 'IV Mannitol (Only if severe signs of herniation)', c: false },
+              { n: 'Hyperventilation', c: false },
+              { n: 'Emergency Decompressive Craniectomy', c: false },
+              { n: 'Lumbar drain', c: false }
+            ]
+          },
+          {
+            name: 'Surgical Interventions', icon: '🔪', treats: [
+              { n: 'No surgical intervention indicated', c: true },
+              { n: 'Burr Hole', c: false },
+              { n: 'VP Shunt', c: false },
+              { n: 'Appendectomy', c: false },
+              { n: 'Diagnostic Laparoscopy', c: false }
+            ]
+          },
+          {
+            name: 'Airway & Oxygenation Support', icon: '🫁', treats: [
+              { n: 'Room air observation', c: true },
+              { n: 'Immediate Intubation', c: false },
+              { n: 'Supplemental O2', c: false },
+              { n: 'BiPAP', c: false },
+              { n: 'Nebulized Albuterol', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular Medications', icon: '❤️', treats: [
+              { n: 'No intervention needed', c: true },
+              { n: 'Vasopressors', c: false },
+              { n: 'Beta-blockers', c: false },
+              { n: 'Nitroglycerin', c: false },
+              { n: 'Atropine', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic & Electrolyte', icon: '🧪', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'IV Potassium', c: false },
+              { n: 'Sodium Bicarbonate', c: false },
+              { n: 'Insulin', c: false },
+              { n: 'IV Calcium', c: false }
+            ]
+          },
+          {
+            name: 'Antithrombotic Therapy', icon: '🩸', treats: [
+              { n: 'No anticoagulation indicated', c: true },
+              { n: 'IV Heparin Drip', c: false },
+              { n: 'Aspirin', c: false },
+              { n: 'Clopidogrel', c: false },
+              { n: 'Warfarin', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit to Medical/Neuro ICU', c: true },
+              { n: 'Discharge home on oral antibiotics', c: false },
+              { n: 'Transfer to Psychiatry', c: false },
+              { n: 'Admit to general medical floor', c: false },
+              { n: 'Schedule Outpatient MRI', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Bacterial Meningitis (Neisseria meningitidis)',
+          sub: 'Purulent infection of the subarachnoid space and meninges, causing massive inflammation, brain edema, and systemic toxemia.',
+          clues: 'The classic triad is Fever, Nuchal Rigidity, and Altered Mental Status. Living in close quarters (college dorm/military barracks) is a massive risk factor. The presence of a non-blanching petechial/purpuric rash is a red-siren warning for Neisseria meningitidis (Meningococcemia), which can rapidly progress to DIC, adrenal hemorrhage, and death.',
+          tests: 'A Lumbar Puncture is the gold standard (High WBC with neutrophils, Low Glucose, High Protein). However, because this patient has Altered Mental Status (GCS 12) and early papilledema, performing an LP immediately could cause fatal brain herniation. You MUST get a Non-Contrast CT Head FIRST to prove there is no mass effect, then do the LP.',
+          mgmt: 'Rule #1: NEVER delay antibiotics for the CT scan or LP. If the CT is going to take time, draw Blood Cultures and blast them with empiric IV Ceftriaxone + Vancomycin immediately. Crucially, you MUST give IV Dexamethasone 15-20 minutes BEFORE or WITH the first antibiotic dose. When the antibiotics lyse the bacteria, massive inflammation ensues (causing deafness/neurologic damage); Dexamethasone blocks this inflammatory storm.',
+          pitfalls: '1. Delaying antibiotics to get the LP/CT. (Time is brain). 2. Giving Dexamethasone AFTER the antibiotics have already lysed the bacteria (it is useless at that point). 3. Performing an LP on a confused patient without a CT head first. 4. Forgetting to put a mask on the patient and isolating them (Meningococcus is highly contagious via respiratory droplets).',
+          other: 'Viral meningitis usually has a normal glucose level and lymphocyte predominance in the CSF, with a less toxic appearance. Subarachnoid hemorrhage causes a stiff neck but lacks the high fever and purulent CSF. Encephalitis (HSV) affects the brain parenchyma (seizures/aphasia) more than the meninges.',
+          testRationale: 'CSF Glucose is critically low (<40 mg/dL or <0.6 ratio to serum glucose) because the rapidly multiplying bacteria and the massive influx of metabolically active neutrophils consume all the sugar in the spinal fluid.',
+          treatSeq: '1. Blood Cultures + Dexamethasone → 2. IV Ceftriaxone + Vanc → 3. CT Head → 4. Lumbar Puncture → 5. Droplet Isolation / Prophylax Contacts.',
+          traps: 'Adding Ampicillin. Ampicillin covers Listeria, which is only empirically covered in neonates (<1 month), the elderly (>50 years), or immunocompromised patients. A healthy 19-year-old does not need it.',
+          learning: 'Fever + Stiff Neck + Confusion = Meningitis. Rash = Meningococcus. CT Head BEFORE LP if altered/papilledema. DO NOT delay antibiotics. Give Dexamethasone BEFORE antibiotics to prevent hearing loss. Prophylax roommate with Cipro.'
+        },
+        xp: 40
+      },
+
+      // ─────────────────────────────────────────────────────────────
+      // 97. NEUROLOGY — Level 1: Multiple Sclerosis (Acute Flare)
+      // ─────────────────────────────────────────────────────────────
+      {
+        id: 'neuro6', name: 'Neurology: Level 1', color: '#8b5cf6', emoji: '👁️', waitDays: 3,
+        caseTitle: 'Painful vision loss, double vision, and electric shocks down the spine',
+        caseDesc: 'A 28-year-old female presents with acute optic neuritis and internuclear ophthalmoplegia (INO). Recognize the demyelinating plaques separated in space and time, order the MRI, and blast the acute flare with high-dose IV steroids.',
+        patient: { name: 'Jessica', gender: 'Female', age: '28 Y', weight: '62 kg', complaint: 'My right eye hurts and I see double' },
+        vitals: [
+          { icon: '🌡️', label: 'Temperature', val: '37.0°C' },
+          { icon: '❤️', label: 'Heart Rate', val: '80 bpm' },
+          { icon: '📈', label: 'Blood Pressure', val: '115/75 mmHg' },
+          { icon: '🫁', label: 'Respiratory Rate', val: '14/min' },
+          { icon: '💧', label: 'SpO2', val: '100% on room air' }
+        ],
+        history: [
+          '1. Woke up 2 days ago with blurry vision in her right eye, which has rapidly worsened to severe central vision loss.',
+          '2. Endorses sharp pain in her right eye that gets much worse when she moves her eye around (Optic Neuritis).',
+          '3. Complains of double vision (diplopia) when she tries to look to the left.',
+          '4. Endorses Lhermitte\'s sign: an "electric shock" sensation shooting down her spine when she flexes her neck forward.',
+          '5. Endorses Uhthoff\'s phenomenon: her vision and weakness get noticeably worse when she takes a hot shower.',
+          '6. Recall an episode 2 years ago where her left leg went numb for a week, but she ignored it and it resolved.',
+          '7. No history of recent viral infections or tick bites.',
+          '8. Does not smoke, no illicit drug use.',
+          '9. Living in a northern latitude (Seattle).',
+          '10. Family history of autoimmune diseases (aunt has Lupus).'
+        ],
+        physExam: [
+          '1. General: Well-appearing, alert young female. No acute distress.',
+          '2. Vitals: Normal. Afebrile.',
+          '3. Eye (Pupils): Right eye demonstrates a Relative Afferent Pupillary Defect (RAPD / Marcus Gunn pupil) - pupils paradoxically dilate when light swings from the left to the right eye.',
+          '4. Eye (Fundoscopy): Optic disc is swollen and hyperemic on the right (Papillitis).',
+          '5. Neurological (Cranial Nerves): Internuclear Ophthalmoplegia (INO). When asked to look to the left, the right eye fails to adduct (cross the midline), and the left eye exhibits horizontal nystagmus.',
+          '6. Neurological (Motor): 5/5 strength throughout. Mild spasticity in the lower extremities.',
+          '7. Neurological (Reflexes): 3+ hyperreflexia at the patella bilaterally. Positive Babinski sign on the left.',
+          '8. Neurological (Sensory): Decreased vibratory sense in the left lower leg.',
+          '9. Lungs/Heart: Normal.',
+          '10. Cerebellar: Finger-to-nose and heel-to-shin testing intact.'
+        ],
+        testCats: [
+          {
+            name: 'Advanced Cross-Sectional Imaging (Gold Standard)', icon: '📷', tests: [
+              { n: 'MRI Brain and Cervical Spine WITH and WITHOUT Gadolinium', c: true, r: 'Shows multiple hyperintense T2/FLAIR periventricular plaques ("Dawson\'s Fingers") and juxtacortical lesions. Active lesions in the right optic nerve and Medial Longitudinal Fasciculus (MLF) enhance with contrast.' },
+              { n: 'CT Head WITHOUT Contrast', c: false, r: 'Trap. CT is terrible at seeing demyelinating white matter plaques. You must use MRI.' },
+              { n: 'CT Angiography', c: false, r: 'Not indicated. Not a vascular issue.' },
+              { n: 'PET Scan', c: false, r: 'Not indicated.' },
+              { n: 'Ultrasound of the Eye', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Invasive Diagnostics (CSF Analysis)', icon: '🔍', tests: [
+              { n: 'Lumbar Puncture', c: true, r: 'CSF shows Oligoclonal IgG bands (O-bands) that are NOT present in the serum. Myelin Basic Protein is elevated. WBC and glucose are normal.' },
+              { n: 'Brain Biopsy', c: false, r: 'Contraindicated.' },
+              { n: 'Nerve Biopsy', c: false, r: 'MS is a Central Nervous System (CNS) disease, not peripheral.' },
+              { n: 'Endoscopy', c: false, r: 'Irrelevant.' },
+              { n: 'Arthrocentesis', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Electrodiagnostic Testing', icon: '⚡', tests: [
+              { n: 'Visual Evoked Potentials (VEP)', c: true, r: 'Shows delayed latency of the P100 wave in the right eye, confirming demyelination of the optic nerve.' },
+              { n: 'Optical Coherence Tomography (OCT)', c: true, r: 'Shows thinning of the retinal nerve fiber layer (RNFL).' },
+              { n: 'Routine EEG', c: false, r: 'Not indicated for MS. Patient is not seizing.' },
+              { n: 'Nerve Conduction Velocity (NCV)', c: false, r: 'Normal (Because NCV tests the peripheral nervous system, and MS affects the CNS).' },
+              { n: 'EMG', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Chemistry & Inflammatory', icon: '🧪', tests: [
+              { n: 'Comprehensive Metabolic Panel (CMP)', c: false, r: 'Normal.' },
+              { n: 'Erythrocyte Sedimentation Rate (ESR)', c: true, r: 'Normal. (Helps rule out rheumatologic/vasculitic causes of vision loss like Giant Cell Arteritis, though rare in a 28yo).' },
+              { n: 'C-Reactive Protein (CRP)', c: false, r: 'Normal.' },
+              { n: 'Serum Lactate', c: false, r: 'Normal.' },
+              { n: 'Serum Vitamin B12', c: true, r: 'Normal (Rules out B12 deficiency as cause of hyperreflexia/sensory loss).' }
+            ]
+          },
+          {
+            name: 'Neuroimmunology Panel (Blood)', icon: '🧬', tests: [
+              { n: 'Aquaporin-4 (AQP4) Antibodies', c: true, r: 'Pending. (To rule out Neuromyelitis Optica / Devic\'s Disease).' },
+              { n: 'Myelin Oligodendrocyte Glycoprotein (MOG) Antibodies', c: true, r: 'Pending.' },
+              { n: 'ANA & Anti-dsDNA', c: true, r: 'Negative. (Rules out SLE).' },
+              { n: 'RPR / VDRL (Syphilis)', c: true, r: 'Negative. (Neurosyphilis can mimic many neuro diseases).' },
+              { n: 'Anti-AChR Antibodies', c: false, r: 'Not indicated (Testing for Myasthenia Gravis, which does not cause RAPD or pain).' }
+            ]
+          },
+          {
+            name: 'Point-of-Care & Clinical Scores', icon: '🩺', tests: [
+              { n: 'Point-of-Care Glucose', c: true, r: '95 mg/dL.' },
+              { n: 'Pulse Oximetry', c: true, r: '100%.' },
+              { n: 'Orthostatic Vitals', c: false, r: 'Not indicated.' },
+              { n: 'Fecal Occult Blood', c: false, r: 'Not indicated.' },
+              { n: 'Urine Dipstick', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Hematology Base Panel', icon: '🩸', tests: [
+              { n: 'Complete Blood Count (CBC)', c: false, r: 'Normal.' },
+              { n: 'Type and Screen', c: false, r: 'Not bleeding.' },
+              { n: 'Peripheral Smear', c: false, r: 'Not indicated.' },
+              { n: 'Reticulocyte Count', c: false, r: 'Not indicated.' },
+              { n: 'Fibrinogen', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Cardiopulmonary', icon: '❤️', tests: [
+              { n: '12-Lead ECG', c: false, r: 'Normal.' },
+              { n: 'Echocardiogram', c: false, r: 'Not indicated.' },
+              { n: 'Troponin', c: false, r: 'Not indicated.' },
+              { n: 'BNP', c: false, r: 'Not indicated.' },
+              { n: 'Stress Test', c: false, r: 'Contraindicated.' }
+            ]
+          },
+          {
+            name: 'Clinical Microbiology', icon: '🦠', tests: [
+              { n: 'Blood Cultures', c: false, r: 'Not indicated.' },
+              { n: 'CSF Culture', c: false, r: 'No growth.' },
+              { n: 'Lyme Serology', c: true, r: 'Negative. (Lyme can mimic MS).' },
+              { n: 'HIV Screen', c: true, r: 'Negative.' },
+              { n: 'Urine Culture', c: false, r: 'Not indicated.' }
+            ]
+          },
+          {
+            name: 'Radiography', icon: '🩻', tests: [
+              { n: 'Chest X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Abdominal X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Pelvic X-Ray', c: false, r: 'Not indicated.' },
+              { n: 'Bone Scan', c: false, r: 'Irrelevant.' },
+              { n: 'C-Spine X-Ray', c: false, r: 'Irrelevant.' }
+            ]
+          },
+          {
+            name: 'Endocrine', icon: '🧬', tests: [
+              { n: 'TSH', c: false, r: 'Normal.' },
+              { n: 'Cortisol', c: false, r: 'Normal.' },
+              { n: 'HbA1c', c: false, r: 'Normal.' },
+              { n: 'Prolactin', c: false, r: 'Normal.' },
+              { n: 'Growth Hormone', c: false, r: 'Normal.' }
+            ]
+          },
+          {
+            name: 'Toxicology', icon: '🗑️', tests: [
+              { n: 'Urine Toxicology', c: false, r: 'Negative.' },
+              { n: 'Blood Alcohol', c: false, r: 'Negative.' },
+              { n: 'Acetaminophen', c: false, r: 'Normal.' },
+              { n: 'Salicylate', c: false, r: 'Normal.' },
+              { n: 'Heavy Metals', c: false, r: 'Normal.' }
+            ]
+          }
+        ],
+        diagnoses: [
+          { t: 'Multiple Sclerosis (Acute Relapse)', c: true },
+          { t: 'Neuromyelitis Optica (Devic\'s Disease)', c: false },
+          { t: 'Acute Disseminated Encephalomyelitis (ADEM)', c: false },
+          { t: 'Guillain-Barré Syndrome', c: false },
+          { t: 'Myasthenia Gravis', c: false },
+          { t: 'Lyme Disease (Neuroborreliosis)', c: false },
+          { t: 'Brain Tumor (Glioma)', c: false },
+          { t: 'Ischemic Stroke', c: false },
+          { t: 'Vitamin B12 Deficiency', c: false },
+          { t: 'Systemic Lupus Erythematosus (SLE)', c: false }
+        ],
+        dxCount: 1,
+        treatCats: [
+          {
+            name: 'Acute Flare Management (First-Line)', icon: '💊', treats: [
+              { n: 'IV Methylprednisolone (1 gram daily for 3-5 days)', c: true },
+              { n: 'Plasmapheresis (PLEX) - If refractory to steroids', c: true },
+              { n: 'Oral Prednisone monotherapy', c: false },
+              { n: 'IV Immunoglobulin (IVIG)', c: false },
+              { n: 'Start long-term Ocrelizumab immediately in ED', c: false }
+            ]
+          },
+          {
+            name: 'Disease Modifying Therapies (Outpatient)', icon: '🛡️', treats: [
+              { n: 'Ocrelizumab (Anti-CD20) to be started outpatient to prevent future flares', c: true },
+              { n: 'Interferon beta-1a', c: true },
+              { n: 'Natalizumab', c: true },
+              { n: 'Glatiramer acetate', c: true },
+              { n: 'Methotrexate', c: false }
+            ]
+          },
+          {
+            name: 'Symptomatic Management', icon: '😌', treats: [
+              { n: 'Baclofen or Tizanidine (For muscle spasticity)', c: true },
+              { n: 'Oxybutynin (For neurogenic bladder)', c: true },
+              { n: 'Modafinil', c: false },
+              { n: 'Levodopa', c: false },
+              { n: 'Aspirin', c: false }
+            ]
+          },
+          {
+            name: 'Surgical & Procedural', icon: '🔪', treats: [
+              { n: 'No surgical intervention indicated', c: true },
+              { n: 'Thymectomy', c: false },
+              { n: 'Craniotomy for tumor resection', c: false },
+              { n: 'Endarterectomy', c: false },
+              { n: 'Lumbar drain', c: false }
+            ]
+          },
+          {
+            name: 'Intravenous Fluids', icon: '💧', treats: [
+              { n: 'No IV fluids required (Patient can drink)', c: true },
+              { n: 'Aggressive 3L fluid bolus', c: false },
+              { n: 'Strict Fluid Restriction', c: false },
+              { n: 'IV Albumin', c: false },
+              { n: 'Hypertonic Saline', c: false }
+            ]
+          },
+          {
+            name: 'Airway & Oxygenation Support', icon: '🫁', treats: [
+              { n: 'Room air observation', c: true },
+              { n: 'Intubation', c: false },
+              { n: 'BiPAP', c: false },
+              { n: 'Supplemental O2', c: false },
+              { n: 'Nebulized Albuterol', c: false }
+            ]
+          },
+          {
+            name: 'Cardiovascular Medications', icon: '❤️', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'Vasopressors', c: false },
+              { n: 'Beta-blockers', c: false },
+              { n: 'Nitroglycerin', c: false },
+              { n: 'Atropine', c: false }
+            ]
+          },
+          {
+            name: 'Antimicrobial Therapy', icon: '🦠', treats: [
+              { n: 'No antibiotics indicated', c: true },
+              { n: 'IV Ceftriaxone', c: false },
+              { n: 'IV Acyclovir', c: false },
+              { n: 'Oral Doxycycline', c: false },
+              { n: 'Topical Antibiotics', c: false }
+            ]
+          },
+          {
+            name: 'Metabolic & Electrolyte', icon: '🧪', treats: [
+              { n: 'No intervention', c: true },
+              { n: 'IV Potassium', c: false },
+              { n: 'Sodium Bicarbonate', c: false },
+              { n: 'Insulin', c: false },
+              { n: 'IV Calcium', c: false }
+            ]
+          },
+          {
+            name: 'Antithrombotic Therapy', icon: '🩸', treats: [
+              { n: 'No anticoagulation indicated', c: true },
+              { n: 'IV tPA (Alteplase)', c: false },
+              { n: 'Heparin Drip', c: false },
+              { n: 'Aspirin', c: false },
+              { n: 'Clopidogrel', c: false }
+            ]
+          },
+          {
+            name: 'Analgesics & Sedation', icon: '🌡️', treats: [
+              { n: 'No acute analgesics needed (Steroids treat the optic neuritis pain)', c: true },
+              { n: 'IV Morphine', c: false },
+              { n: 'Epidural', c: false },
+              { n: 'Ketamine', c: false },
+              { n: 'Propofol', c: false }
+            ]
+          },
+          {
+            name: 'Discharge & Preventive', icon: '🏥', treats: [
+              { n: 'Admit to Neurology for IV Steroids and MRI', c: true },
+              { n: 'Discharge home with an eyepatch', c: false },
+              { n: 'Transfer to Psychiatry', c: false },
+              { n: 'Admit to general medical floor', c: false },
+              { n: 'Schedule Outpatient Optometry', c: false }
+            ]
+          }
+        ],
+        summary: {
+          dx: 'Multiple Sclerosis (Acute Relapse)',
+          sub: 'Autoimmune demyelination of the Central Nervous System (CNS) white matter, disseminated in time and space.',
+          clues: 'A young female presenting with classic Optic Neuritis (painful monocular vision loss + RAPD pupil) and Internuclear Ophthalmoplegia (INO). INO is highly specific for a lesion in the Medial Longitudinal Fasciculus (MLF). The history of leg numbness 2 years ago fulfills the criteria of being separated in "time" and "space." Symptoms worsen with heat (Uhthoff phenomenon).',
+          tests: 'MRI of the Brain and C-Spine with/without contrast is the gold standard. Active, new plaques will enhance with contrast, while old plaques will not (proving dissemination in time). Classic MRI finding: periventricular Dawson\'s fingers. Lumbar Puncture will show Oligoclonal Bands (IgG) produced locally in the CSF but absent in the serum.',
+          mgmt: 'An acute, debilitating flare (like optic neuritis causing vision loss) is treated aggressively with HIGH-DOSE IV Methylprednisolone for 3-5 days. If the symptoms do not respond to steroids, Plasmapheresis (PLEX) is the next step to filter out the autoantibodies. Long-term Disease Modifying Therapy (like Ocrelizumab) is started outpatient.',
+          pitfalls: 'LETHAL TRAP: Treating acute Optic Neuritis with standard ORAL Prednisone. Clinical trials (ONTT) proved that oral prednisone alone actually INCREASES the risk of recurrent optic neuritis attacks. You MUST use high-dose IV steroids. Another trap is ordering a CT scan, which cannot effectively visualize demyelinating plaques.',
+          other: 'Guillain-Barré is a PERIPHERAL demyelinating disease (absent reflexes, ascending weakness). Myasthenia Gravis causes painless double vision and ptosis, but the pupil exam is normal. Neuromyelitis Optica looks similar but features AQP4 antibodies and spares the brain (hitting only the spine and optic nerve).',
+          testRationale: 'The right eye has an RAPD (Marcus Gunn pupil) because the demyelinated optic nerve cannot effectively transmit light signals to the brain. When a flashlight swings from the healthy eye to the sick eye, the brain perceives a drop in light, causing both pupils to paradoxically dilate.',
+          treatSeq: '1. Recognize CNS localization → 2. MRI Brain/Spine → 3. IV Methylprednisolone → 4. LP for Oligoclonal Bands → 5. Outpatient DMT.',
+          traps: 'Assuming the double vision is a stroke. In a young, healthy female, bilateral INO or isolated cranial nerve deficits should scream MS.',
+          learning: 'Painful vision loss (Optic Neuritis) + INO + Young Female = Multiple Sclerosis. Diagnosis: MRI showing Dawson\'s fingers & LP showing Oligoclonal Bands. Treatment for flare: HIGH DOSE IV STEROIDS. Never use oral steroids alone for optic neuritis.'
         },
         xp: 40
       }
