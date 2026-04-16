@@ -7,64 +7,26 @@
     <meta name="referrer" content="no-referrer">
     <title>MBBS World - Medical Education Resource & Study Portal</title>
     <meta name="description"
-        content="Access high-quality MBBS notes, video lectures, and medical question banks. Specialized resources for Anatomy, Physiology, Pathology, and more to help medical students excel in university exams.">
+        content="Access high-quality MBBS notes, video lectures, and medical question banks. Specialized resources for Anatomy, Physiology, Pathology, and more.">
     <meta name="keywords"
-        content="MBBS World, Medical Education, MBBS notes, Medical Question Bank, Physiology resources, Anatomy study material, Medical students portal">
+        content="MBBS World, Medical Education, MBBS notes, Medical Question Bank, Physiology resources, Anatomy study material">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
 
-    <link rel="stylesheet" href="css/dashboard.css?v=20240317_v3">
+    <link rel="stylesheet" href="css/dashboard.css?v=quantum_v1">
     <link rel="stylesheet" href="css/network-status.css">
-    <style>
-        /* Special Styling for the Live Game Card */
-        .live-quiz-card {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
 
-        .live-quiz-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
-        }
-
-        .live-quiz-card.tutor-card {
-            background: linear-gradient(135deg, #0ea5e9, #0284c7);
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
-            margin-top: 5px;
-        }
-
-        .live-quiz-card.tutor-card:hover {
-            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
-        }
-
-        .live-quiz-info h3 {
-            margin: 0;
-            font-size: 1.2rem;
-        }
-
-        .live-quiz-info p {
-            margin: 5px 0 0;
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-
-        .live-quiz-icon {
-            font-size: 2rem;
-            opacity: 0.8;
-        }
-    </style>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4359263469597920"
         crossorigin="anonymous"></script>
 </head>
@@ -96,15 +58,15 @@
 
     <div id="main-content">
         <div id="landscapeOverlay" class="video-controls-overlay">
-            <button class="overlay-back" onclick="exitLandscape()"><i class="fas fa-arrow-left"></i> Back</button>
-            <div class="speed-row-overlay" id="overlaySpeedRow">
-            </div>
+            <button class="overlay-back cyber-btn" onclick="exitLandscape()"><i class="fas fa-arrow-left"></i>
+                Back</button>
+            <div class="speed-row-overlay" id="overlaySpeedRow"></div>
         </div>
 
         <nav class="navbar">
             <div class="navbar-top">
                 <div class="nav-brand" onclick="navigate('home')">
-                    <i class="fas fa-heartbeat" style="color:#ef4444"></i> MBBS World
+                    <i class="fas fa-heartbeat" style="color:#ef4444; margin-right: 8px;"></i> MBBS World
                 </div>
                 <div class="nav-actions">
                     <a href="https://drive.google.com/uc?export=download&id=1js3B6E_ZAhR6sgAejMgkeulqweRzq9xX"
@@ -116,11 +78,8 @@
                         aria-label="Toggle Search">
                         <i class="fas fa-search"></i>
                     </button>
-                    <button class="search-toggle-btn theme-toggle" onclick="toggleTheme()" title="Theme"
-                        aria-label="Toggle Theme">
-                        <i class="fas fa-moon"></i>
-                    </button>
                     <div id="userProfileBtn" onclick="openProfile()" title="View Activity Profile">
+                        <i class="fas fa-user-circle"></i>
                         <span id="userName"></span>
                     </div>
                 </div>
@@ -140,21 +99,14 @@
             </div>
 
             <div class="main-nav" id="mainNav">
-                <a href="javascript:void(0)" class="nav-link active" id="nav-home" onclick="navigate('home')"><i
-                        class="fas fa-house-medical"></i> Home</a>
-                <a href="javascript:void(0)" class="nav-link" id="nav-videos" onclick="navigate('videos')"><i
-                        class="fas fa-stethoscope"></i> Videos</a>
-                <a href="javascript:void(0)" class="nav-link" id="nav-notes" onclick="navigate('notes')"><i
-                        class="fas fa-clipboard-list"></i> Notes</a>
-                <a href="javascript:void(0)" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')"><i
-                        class="fas fa-microscope"></i> Quizzes</a>
-                <a href="javascript:void(0)" class="nav-link" id="nav-qbank" onclick="navigate('qbank')"><i
-                        class="fas fa-dna"></i>
-                    Q-Bank</a>
-                <a href="atrium.html" class="nav-link" id="nav-atrium"><i class="fas fa-hospital-user"></i> Atrium</a>
+                <a href="javascript:void(0)" class="nav-link active" id="nav-home" onclick="navigate('home')">Home</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-videos" onclick="navigate('videos')">Videos</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-notes" onclick="navigate('notes')">Notes</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-quizzes" onclick="navigate('quizzes')">Quizzes</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-qbank" onclick="navigate('qbank')">Q-Bank</a>
+                <a href="atrium.html" class="nav-link" id="nav-atrium">Atrium</a>
             </div>
         </nav>
-
 
         <div id="watermark-container"></div>
 
@@ -163,9 +115,7 @@
                 <h3>🎮 Live Multiplayer Quiz</h3>
                 <p>Challenge your batchmates in real-time!</p>
             </div>
-            <div class="live-quiz-icon">
-                <i class="fas fa-users"></i>
-            </div>
+            <div class="live-quiz-icon"><i class="fas fa-users"></i></div>
         </a>
 
         <a href="daily-case.html" class="live-quiz-card tutor-card" id="btn-daily-case" style="display: none;">
@@ -173,9 +123,7 @@
                 <h3>🩺 The Daily Case: AI Tutor</h3>
                 <p>Practice clinical diagnosis with our AI patient.</p>
             </div>
-            <div class="live-quiz-icon">
-                <i class="fas fa-robot"></i>
-            </div>
+            <div class="live-quiz-icon"><i class="fas fa-robot"></i></div>
         </a>
 
         <script>
@@ -190,10 +138,9 @@
         </script>
 
         <div class="container">
-            <div id="contentArea">
-            </div>
+            <div id="contentArea"></div>
             <div id="noResults" class="no-results">
-                <i class="fas fa-search-minus"></i>
+                <i class="fas fa-search-minus" style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent);"></i>
                 <p>No results found for your search.</p>
             </div>
         </div>
@@ -216,23 +163,19 @@
         <div id="trustArea" class="trust-section"></div>
     </div>
 
-
-
     <div id="fileModal" class="modal">
         <div class="modal-content">
             <section id="pdfLoader" class="pdf-loader" aria-live="polite">
                 <div class="spinner"></div>
                 <header>
-                    <p style="color: white; font-size: 0.8rem; opacity: 0.7;">Launching Viewer...</p>
+                    <p
+                        style="color: var(--primary); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.1em;">
+                        LAUNCHING VIEWER...</p>
                 </header>
             </section>
             <button class="fullscreen-modal" onclick="togglePdfFullScreen()" title="Toggle Full Screen"
-                style="right: 110px;" aria-label="Toggle Full Screen">
+                aria-label="Toggle Full Screen">
                 <i class="fas fa-expand"></i>
-            </button>
-            <button class="fullscreen-modal" id="focusToggle" onclick="toggleFocusMode()" title="Toggle Focus Mode"
-                style="right: 60px;" aria-label="Toggle Focus Mode">
-                <i class="fas fa-eye"></i>
             </button>
             <button class="close-modal" onclick="closeModal()" title="Close" aria-label="Close Modal">
                 <i class="fas fa-times"></i>
@@ -244,7 +187,7 @@
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="js/dashboard.js?v=20240317_v3"></script>
+    <script src="js/dashboard.js?v=quantum_v1"></script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
@@ -252,14 +195,7 @@
         import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
-            authDomain: "samvad-bafaa.firebaseapp.com",
-            databaseURL: "https://samvad-bafaa-default-rtdb.firebaseio.com",
-            projectId: "samvad-bafaa",
-            storageBucket: "samvad-bafaa.appspot.com",
-            messagingSenderId: "131803431466",
-            appId: "1:131803431466:web:b7b107308ea7197f013953",
-            measurementId: "G-M90SYY2MP9"
+            // ... (keep your existing firebase config)
         };
 
         const app = initializeApp(firebaseConfig);
