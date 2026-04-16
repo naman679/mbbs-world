@@ -269,12 +269,13 @@ body::after {
 @keyframes msgReveal {
     from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translate3d(0, 16px, 0);
+        /* GPU Accelerated */
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate3d(0, 0, 0);
     }
 }
 
@@ -378,17 +379,21 @@ body::after {
     cursor: pointer;
     transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 0.1px;
+    will-change: transform;
+    /* Tells WebView to prepare for animation */
 }
 
 .quick-chip:hover {
     background: rgba(0, 184, 150, 0.14);
     border-color: rgba(0, 184, 150, 0.35);
     box-shadow: 0 2px 12px var(--primary-glow);
-    transform: translateY(-2px);
+    transform: translate3d(0, -2px, 0);
+    /* GPU Accelerated */
 }
 
 .quick-chip:active {
-    transform: scale(0.95) translateY(0);
+    transform: scale3d(0.95, 0.95, 1) translate3d(0, 0, 0);
+    /* GPU Accelerated */
 }
 
 /* ═══════════════════════════════════
