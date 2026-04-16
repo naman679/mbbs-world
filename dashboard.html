@@ -209,6 +209,24 @@
         window.dbUpdate = update;
     </script>
     <script src="js/network-status.js"></script>
+    <div id="quizTutorialModal" class="modal"
+        style="display: none; z-index: 9999; align-items: center; justify-content: center;">
+        <div class="modal-content"
+            style="background: var(--surface); max-width: 800px; width: 90%; padding: 20px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <button onclick="closeQuizTutorial()" title="Close Tutorial"
+                style="position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; font-size: 1.2rem;">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 style="margin-bottom: 15px; color: var(--primary);">How to Play Quizzes</h2>
+
+            <iframe
+                src="https://scribehow.com/embed/How_to_Navigate_and_Submit_a_Pathology_Quiz__sAnxoxmRRrWSWATPxzagMQ?as=scrollable"
+                width="100%" height="500" allow="fullscreen" style="border: 0; border-radius: 8px;"></iframe>
+
+            <button onclick="closeQuizTutorial()" class="cyber-btn" style="margin-top: 15px; width: 100%;">I Got It,
+                Let's Play!</button>
+        </div>
+    </div>
 </body>
 
 </html>
