@@ -255,10 +255,34 @@ window.showMainMenu = (isBack = false) => {
 };
 
 window.filterCategory = (type, isBack = false) => {
+    // --- NEW TUTORIAL CHECK ---
+    // If they clicked 'quizzes' AND they haven't seen the tutorial yet
+    if (type === 'quizzes' && !localStorage.getItem('quiz_tutorial_seen')) {
+        const modal = document.getElementById('quizTutorialModal');
+        if (modal) {
+            modal.style.display = 'flex'; // Show the tutorial
+            return; // Stop the navigation for now
+        }
+    }
+    // --------------------------
+
     if (!isBack) pushNavState();
     currentView = type; currentPlatform = null; currentSubject = null; selectedChapterIdx = null; currentQuizFilter = 'all'; window.activePlayerId = null;
     updateNavActive(type);
     if (type === 'qbank') renderPlatforms(); else renderSubjectList();
+};
+
+// --- NEW FUNCTION TO CLOSE TUTORIAL ---
+window.closeQuizTutorial = () => {
+    // 1. Save that the user has seen it so it never shows again
+    localStorage.setItem('quiz_tutorial_seen', 'true');
+
+    // 2. Hide the modal
+    const modal = document.getElementById('quizTutorialModal');
+    if (modal) modal.style.display = 'none';
+
+    // 3. Continue navigating them to the quizzes page
+    filterCategory('quizzes');
 };
 
 function renderPlatforms() {
