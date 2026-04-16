@@ -104,7 +104,9 @@ async function startNewCase() {
 
     chatInput.disabled = true;
     sendBtn.disabled = true;
-    const loadingId = appendMessage("ai", "Patient is walking in and sitting down...");
+    const loadingId = // Replace the old loadingId line with this:
+        appendMessage("system", "Patient is walking in and taking a seat...");
+
 
     try {
         const tempHistory = [{ role: "user", parts: [{ text: "[PATIENT_ENTRY]" }] }];
@@ -202,7 +204,8 @@ async function handleSend() {
     chatInput.disabled = true;
     sendBtn.disabled = true;
 
-    const loadingId = appendMessage("ai", "Processing...");
+    // Replace the old loadingId line with this:
+    const loadingId = showTypingIndicator();
 
     try {
         const response = await fetch(WORKER_URL, {
@@ -294,4 +297,22 @@ if (window.visualViewport) {
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
     });
+}
+function showTypingIndicator() {
+    const wrapper = document.createElement('div');
+    const uniqueId = 'msg-' + Date.now();
+    wrapper.id = uniqueId;
+    wrapper.className = `message-wrapper ai`;
+
+    wrapper.innerHTML = `
+        <div class="message ai">
+            <div class="ai-header"><i class="fas fa-robot"></i> Sim Engine</div>
+            <div class="typing-indicator">
+                <span></span><span></span><span></span>
+            </div>
+        </div>`;
+
+    chatContainer.appendChild(wrapper);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    return uniqueId;
 }
