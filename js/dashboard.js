@@ -66,12 +66,10 @@ async function fetchSheetData() {
         // If a valid view was requested, load it directly
         if (requestedView && ['videos', 'notes', 'quizzes', 'qbank'].includes(requestedView)) {
             filterCategory(requestedView);
-
-            // Clean up the URL so if the user refreshes, it doesn't get stuck here
-            window.history.replaceState({}, document.title, window.location.pathname);
+            // Note: URL cleanup removed so students can safely refresh the page!
         } else {
-            // Otherwise, show the normal home dashboard
-            showMainMenu();
+            // If they just type dashboard.html with no parameters, kick them to the landing page hub
+            window.location.replace('index.html');
         }
 
     } catch (e) {
@@ -262,9 +260,8 @@ window.handleLogout = () => {
 };
 
 window.showMainMenu = (isBack = false) => {
-    if (!isBack) pushNavState();
-    currentView = 'home'; currentSubject = null; currentPlatform = null; selectedChapterIdx = null; window.activePlayerId = null;
-    updateNavActive('home'); renderHome();
+    // The dashboard home is dead. Teleport back to the landing page hub!
+    window.location.href = 'index.html';
 };
 
 window.filterCategory = (type, isBack = false) => {
