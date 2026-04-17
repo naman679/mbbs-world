@@ -538,15 +538,18 @@ h4,
     letter-spacing: -0.01em;
 }
 
+/* --- VIDEO CONTROLS (Restored Original Mechanics + New UI) --- */
 .video-wrapper {
     position: relative;
     width: 100%;
     height: 0;
     padding-bottom: 56.25%;
+    /* Restored your original layout math */
     background: #000;
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
     overflow: hidden;
+    border-top-left-radius: 24px;
+    /* New UI rounded corners */
+    border-top-right-radius: 24px;
 }
 
 .video-wrapper iframe {
@@ -568,19 +571,22 @@ h4,
     background: transparent;
 }
 
-/* Formatted controls floating over video */
 .custom-controls {
     position: absolute;
+    /* Restored your original positioning */
     bottom: 70px;
+    /* Restored your original positioning */
     left: 50%;
+    /* Restored your original positioning */
     transform: translateX(-50%);
     width: 90%;
     max-width: 450px;
     background: rgba(6, 11, 24, 0.7);
+    /* New UI Glassmorphism */
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 20px;
-    /* Replaced clip-path */
+    /* New UI rounded corners */
     padding: 12px 18px;
     z-index: 10;
     display: flex;
