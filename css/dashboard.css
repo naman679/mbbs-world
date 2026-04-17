@@ -291,3 +291,35 @@ h4,
         gap: 16px;
     }
 }
+
+/* --- WATERMARK STYLES --- */
+#watermark-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    /* Crucial: prevents the text from blocking your mouse clicks */
+    z-index: 90;
+    /* Keeps it under your navbar (100) but above your content */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    overflow: hidden;
+    opacity: 0.04;
+    /* Makes it faint and transparent */
+    user-select: none;
+    /* Prevents users from highlighting the text */
+}
+
+.watermark-item {
+    padding: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    transform: rotate(-25deg);
+    /* Gives it a classic diagonal watermark look */
+    white-space: nowrap;
+}
