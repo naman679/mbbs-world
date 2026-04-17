@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
         rel="stylesheet">
 
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
@@ -32,6 +32,31 @@
 </head>
 
 <body oncontextmenu="return false;">
+    <div
+        style="position: fixed; inset: 0; background-image: linear-gradient(rgba(34,211,238,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.03) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0;">
+    </div>
+
+    <div
+        style="position: fixed; left: -10%; top: 10%; width: 500px; height: 500px; border-radius: 50%; background: #1e40af; filter: blur(100px); opacity: 0.12; pointer-events: none; z-index: 0; animation: floatOrb 7s ease-in-out infinite alternate;">
+    </div>
+    <div
+        style="position: fixed; left: 60%; top: -5%; width: 400px; height: 400px; border-radius: 50%; background: #7c3aed; filter: blur(100px); opacity: 0.12; pointer-events: none; z-index: 0; animation: floatOrb 9s ease-in-out infinite alternate;">
+    </div>
+    <div
+        style="position: fixed; left: 80%; top: 50%; width: 350px; height: 350px; border-radius: 50%; background: #0e7490; filter: blur(100px); opacity: 0.12; pointer-events: none; z-index: 0; animation: floatOrb 11s ease-in-out infinite alternate;">
+    </div>
+
+    <style>
+        @keyframes floatOrb {
+            from {
+                transform: translateY(0px) scale(1);
+            }
+
+            to {
+                transform: translateY(-30px) scale(1.05);
+            }
+        }
+    </style>
 
     <script>
         (function () {
