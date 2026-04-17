@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
 
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
@@ -24,7 +24,7 @@
     <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
 
-    <link rel="stylesheet" href="css/dashboard.css?v=quantum_v1">
+    <link rel="stylesheet" href="css/dashboard.css?v=quantum_v2">
     <link rel="stylesheet" href="css/network-status.css">
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4359263469597920"
@@ -33,25 +33,33 @@
 
 <body oncontextmenu="return false;">
 
+    <div class="bg-grid"></div>
+    <div class="orb"
+        style="left: -10%; top: 10%; width: 500px; height: 500px; background: #1e40af; animation: floatOrb 7s ease-in-out infinite alternate;">
+    </div>
+    <div class="orb"
+        style="left: 60%; top: -5%; width: 400px; height: 400px; background: #7c3aed; animation: floatOrb 9s ease-in-out infinite alternate;">
+    </div>
+    <div class="orb"
+        style="left: 80%; top: 50%; width: 350px; height: 350px; background: #0e7490; animation: floatOrb 11s ease-in-out infinite alternate;">
+    </div>
+
     <script>
         (function () {
             const savedUser = localStorage.getItem('mbbs_saved_user');
             const savedId = localStorage.getItem('mbbs_device_id');
 
-            // If data is missing, stop everything and go back to login instantly
             if (!savedUser || !savedId) {
                 console.warn("No active session found. Redirecting to login...");
                 window.location.replace("login.html");
                 return;
             }
 
-            // Pre-fill UI names to prevent blank headers during loading
             window.addEventListener('DOMContentLoaded', () => {
                 const nameDisplay = document.getElementById('userName');
-                const modalName = document.getElementById('welcomeNameModal');
-
-                if (nameDisplay) nameDisplay.innerText = savedUser.toUpperCase();
-                if (modalName) modalName.innerText = savedUser.toUpperCase();
+                const navInitial = document.getElementById('navInitial');
+                if (nameDisplay) nameDisplay.innerText = savedUser;
+                if (navInitial) navInitial.innerText = savedUser.charAt(0).toUpperCase();
             });
         })();
     </script>
@@ -63,10 +71,15 @@
             <div class="speed-row-overlay" id="overlaySpeedRow"></div>
         </div>
 
-        <nav class="navbar">
+        <nav class="navbar" id="navbar">
             <div class="navbar-top">
                 <div class="nav-brand" onclick="window.location.href='index.html'">
-                    <i class="fas fa-heartbeat" style="color:#ef4444; margin-right: 8px;"></i> MBBS World
+                    <div
+                        style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #22d3ee, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 8px;">
+                        🩺</div>
+                    <span
+                        style="background: linear-gradient(90deg, #22d3ee, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MBBS
+                        World</span>
                 </div>
                 <div class="nav-actions">
                     <a href="https://drive.google.com/uc?export=download&id=1js3B6E_ZAhR6sgAejMgkeulqweRzq9xX"
@@ -74,13 +87,14 @@
                         <i class="fas fa-mobile-alt"></i>
                         <span>Get App</span>
                     </a>
-                    <button class="search-toggle-btn" onclick="toggleSearch()" title="Search"
-                        aria-label="Toggle Search">
+                    <button class="search-toggle-btn" onclick="toggleSearch()" title="Search">
                         <i class="fas fa-search"></i>
                     </button>
                     <div id="userProfileBtn" onclick="openProfile()" title="View Activity Profile">
-                        <i class="fas fa-user-circle"></i>
-                        <span id="userName"></span>
+                        <div id="navInitial"
+                            style="width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #22d3ee, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff;">
+                            U</div>
+                        <span id="userName" style="font-size: 13px; color: #22d3ee; font-weight: 600;">User</span>
                     </div>
                 </div>
             </div>
@@ -88,13 +102,9 @@
             <div class="search-container" id="searchBar">
                 <div class="search-bar-wrapper">
                     <i class="fas fa-search"></i>
-                    <label for="globalSearch"
-                        style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);">Search
-                        subjects</label>
                     <input type="text" id="globalSearch" placeholder="Search subjects or topics..."
-                        onkeyup="handleSearch()" aria-label="Search subjects or topics">
-                    <i class="fas fa-times-circle" id="clearSearch" onclick="clearSearch()" title="Clear search"
-                        aria-label="Clear Search Input" role="button" tabindex="0"></i>
+                        onkeyup="handleSearch()">
+                    <i class="fas fa-times-circle" id="clearSearch" onclick="clearSearch()" title="Clear search"></i>
                 </div>
             </div>
 
@@ -140,7 +150,7 @@
         <div class="container">
             <div id="contentArea"></div>
             <div id="noResults" class="no-results">
-                <i class="fas fa-search-minus" style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent);"></i>
+                <i class="fas fa-search-minus" style="font-size: 3rem; margin-bottom: 1rem; color: #22d3ee;"></i>
                 <p>No results found for your search.</p>
             </div>
         </div>
@@ -169,17 +179,13 @@
                 <div class="spinner"></div>
                 <header>
                     <p
-                        style="color: var(--primary); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.1em;">
+                        style="color: #22d3ee; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; letter-spacing: 0.1em;">
                         LAUNCHING VIEWER...</p>
                 </header>
             </section>
-            <button class="fullscreen-modal" onclick="togglePdfFullScreen()" title="Toggle Full Screen"
-                aria-label="Toggle Full Screen">
-                <i class="fas fa-expand"></i>
-            </button>
-            <button class="close-modal" onclick="closeModal()" title="Close" aria-label="Close Modal">
-                <i class="fas fa-times"></i>
-            </button>
+            <button class="fullscreen-modal" onclick="togglePdfFullScreen()" title="Toggle Full Screen"><i
+                    class="fas fa-expand"></i></button>
+            <button class="close-modal" onclick="closeModal()" title="Close"><i class="fas fa-times"></i></button>
             <iframe id="fileViewer" style="width:100%; height:100%; border:none;" src=""
                 allow="autoplay; fullscreen; clipboard-read; clipboard-write"
                 onload="document.getElementById('pdfLoader').style.display='none'; this.focus();"></iframe>
@@ -187,16 +193,15 @@
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="js/dashboard.js?v=quantum_v1"></script>
+    <script src="js/dashboard.js?v=quantum_v2"></script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
         import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-        const firebaseConfig = {
-            // ... (keep your existing firebase config)
-        };
+        const firebaseConfig = { /* Keep your existing config here */ };
+        // NOTE: Make sure to paste your actual Firebase config above before deploying!
 
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
@@ -209,20 +214,18 @@
         window.dbUpdate = update;
     </script>
     <script src="js/network-status.js"></script>
+
     <div id="quizTutorialModal" class="modal"
         style="display: none; z-index: 9999; align-items: center; justify-content: center;">
         <div class="modal-content"
-            style="background: var(--surface); max-width: 800px; width: 90%; padding: 20px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <button onclick="closeQuizTutorial()" title="Close Tutorial"
-                style="position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; font-size: 1.2rem;">
-                <i class="fas fa-times"></i>
-            </button>
-            <h2 style="margin-bottom: 15px; color: var(--primary);">How to Play Quizzes</h2>
-
+            style="background: var(--card-bg); max-width: 800px; width: 90%; padding: 20px; border-radius: 24px; text-align: center; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <button onclick="closeQuizTutorial()" class="close-modal"
+                style="position: absolute; top: 15px; right: 15px;"><i class="fas fa-times"></i></button>
+            <h2 style="margin-bottom: 15px; color: var(--primary); font-family: 'Syne', sans-serif;">How to Play Quizzes
+            </h2>
             <iframe
                 src="https://scribehow.com/embed/How_to_Navigate_and_Submit_a_Pathology_Quiz__sAnxoxmRRrWSWATPxzagMQ?as=scrollable"
-                width="100%" height="500" allow="fullscreen" style="border: 0; border-radius: 8px;"></iframe>
-
+                width="100%" height="500" allow="fullscreen" style="border: 0; border-radius: 12px;"></iframe>
             <button onclick="closeQuizTutorial()" class="cyber-btn" style="margin-top: 15px; width: 100%;">I Got It,
                 Let's Play!</button>
         </div>
