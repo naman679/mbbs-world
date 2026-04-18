@@ -19,9 +19,16 @@ const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oD0BX4Whh
 
 async function fetchSheetData() {
     try {
+        // --- ADD THIS LINE HERE ---
+        showSkeletonLoading();
+
         const response = await fetch(SHEET_URL);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         let text = await response.text();
+
+        // ... rest of your existing code stays exactly the same
+        text = text.replace(/^\uFEFF/, '');
+        // ...
 
         text = text.replace(/^\uFEFF/, '');
         if (text.includes('<!DOCTYPE html>') || text.includes('<html>')) {
@@ -970,3 +977,21 @@ window.addEventListener('load', () => {
         }, 1500);
     }
 });
+function showSkeletonLoading() {
+    const area = document.getElementById('contentArea');
+
+    // Creates a fake grid that mimics your portal cards while loading
+    area.innerHTML = `
+        <div class="welcome-section" style="padding: 1rem 0;">
+            <div class="skeleton-box skel-title"></div>
+        </div>
+        <div class="portal-grid" style="margin-top:1rem;">
+            ${Array(6).fill().map(() => `
+                <div class="skeleton-box skel-card">
+                    <div class="skeleton-box skel-icon"></div>
+                    <div class="skeleton-box skel-text"></div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
