@@ -6,9 +6,8 @@
         const localUser = localStorage.getItem('mbbs_saved_user');
         if (localUser && localUser !== 'undefined' && localUser !== 'null') {
             sessionStorage.setItem('mbbs_user', localUser);
-        } else {
-            window.location.replace('login.html');
         }
+        // Removed global login redirect here
     }
 })();
 
@@ -272,6 +271,14 @@ window.showMainMenu = (isBack = false) => {
 };
 
 window.filterCategory = (type, isBack = false) => {
+    // --- VIDEO LOGIN INTERCEPTOR ---
+    if (type === 'videos') {
+        let user = sessionStorage.getItem('mbbs_user') || localStorage.getItem('mbbs_saved_user');
+        if (!user || user === 'undefined' || user === 'null') {
+            window.location.href = 'login.html?redirect=videos';
+            return;
+        }
+    }
     // --- NEW TUTORIAL CHECK ---
     // If they clicked 'quizzes' AND they haven't seen the tutorial yet
     if (type === 'quizzes' && !localStorage.getItem('quiz_tutorial_seen')) {
@@ -330,75 +337,73 @@ window.onload = () => {
     updateThemeIcon(savedTheme);
 
     let savedUser = sessionStorage.getItem('mbbs_user');
+    let isLoggedIn = savedUser && savedUser !== 'undefined' && savedUser !== 'null' && savedUser.trim() !== '';
 
-    if (!savedUser || savedUser === 'undefined' || savedUser === 'null' || savedUser.trim() === '') {
-        handleLogout();
-        return;
+    if (isLoggedIn) {
+        if (window.AndroidApp) {
+            window.AndroidApp.loginUser(savedUser);
+        }
+        window.userSessionName = savedUser.split('_')[0] || "Student";
+    } else {
+        window.userSessionName = "Guest";
     }
-    // ---> PASTE THIS HERE <---
-    // This dynamically passes the actual logged-in student's name to your Android App
-    if (window.AndroidApp) {
-        window.AndroidApp.loginUser(savedUser);
-    }
-    // -------------------------
 
-    window.userSessionName = savedUser.split('_')[0] || "Student";
     updateUserMenu();
-
     fetchSheetData();
     injectWatermark();
 
+    // Only run security checks and tracking for actual logged-in students
+    if (isLoggedIn) {
+        // --- UPDATED BACKGROUND DATABASE CHECK ---
+        fetch(`https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec?name=${encodeURIComponent(savedUser)}`)
+            .then(r => r.json())
+            .then(async data => {
+                if (data.allowed) {
+                    if (savedUser.toLowerCase() !== 'naveen' && localStorage.getItem('mbbs_admin_device') !== 'true') {
+                        try {
+                            const safeName = savedUser.toLowerCase().replace(/[.#$\[\]]/g, '_');
+                            const dbUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}.json`;
+                            const dbData = await (await fetch(dbUrl)).json();
 
+                            // Check against the correct new slot (app_id or web_id)
+                            const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
+                            const slotName = isInsideApp ? "app_id" : "web_id";
+                            const localId = localStorage.getItem('mbbs_device_id');
 
-    // --- UPDATED BACKGROUND DATABASE CHECK ---
-    fetch(`https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec?name=${encodeURIComponent(savedUser)}`)
-        .then(r => r.json())
-        .then(async data => {
-            if (data.allowed) {
-                if (savedUser.toLowerCase() !== 'naveen' && localStorage.getItem('mbbs_admin_device') !== 'true') {
-                    try {
-                        const safeName = savedUser.toLowerCase().replace(/[.#$\[\]]/g, '_');
-                        const dbUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}.json`;
-                        const dbData = await (await fetch(dbUrl)).json();
+                            if (dbData && typeof dbData === 'object' && dbData[slotName] !== localId) {
+                                console.error("Device mismatch detected.");
+                                handleLogout();
+                            }
+                        } catch (e) { console.error('BG verify error', e); }
+                    }
+                } else { handleLogout(); }
+            }).catch(e => console.error('Sheet check fail', e));
 
-                        // Check against the correct new slot (app_id or web_id)
-                        const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
-                        const slotName = isInsideApp ? "app_id" : "web_id";
-                        const localId = localStorage.getItem('mbbs_device_id');
+        if (savedUser.toLowerCase() !== 'naveen') {
+            const safeName = savedUser.toLowerCase().replace(/[.#$\[\]]/g, '_');
+            const activityUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}/activityStats.json`;
+            fetch(activityUrl).then(r => r.json()).then(data => {
+                if (data) { window.activityStats.videos = data.videos || 0; window.activityStats.notes = data.notes || 0; window.activityStats.quizzes = data.quizzes || 0; }
+            }).catch(e => console.error(e));
 
-                        if (dbData && typeof dbData === 'object' && dbData[slotName] !== localId) {
-                            console.error("Device mismatch detected.");
-                            handleLogout();
-                        }
-                    } catch (e) { console.error('BG verify error', e); }
+            activityTimer = setInterval(() => {
+                if (!document.hasFocus()) return;
+                let isVideoPlaying = false;
+                if (window.activePlayerId && players[window.activePlayerId] && typeof players[window.activePlayerId].getPlayerState === 'function') {
+                    if (players[window.activePlayerId].getPlayerState() === 1) isVideoPlaying = true;
                 }
-            } else { handleLogout(); }
-        }).catch(e => console.error('Sheet check fail', e));
-
-    if (savedUser.toLowerCase() !== 'naveen') {
-        const safeName = savedUser.toLowerCase().replace(/[.#$\[\]]/g, '_');
-        const activityUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}/activityStats.json`;
-        fetch(activityUrl).then(r => r.json()).then(data => {
-            if (data) { window.activityStats.videos = data.videos || 0; window.activityStats.notes = data.notes || 0; window.activityStats.quizzes = data.quizzes || 0; }
-        }).catch(e => console.error(e));
-
-        activityTimer = setInterval(() => {
-            if (!document.hasFocus()) return;
-            let isVideoPlaying = false;
-            if (window.activePlayerId && players[window.activePlayerId] && typeof players[window.activePlayerId].getPlayerState === 'function') {
-                if (players[window.activePlayerId].getPlayerState() === 1) isVideoPlaying = true;
-            }
-            if (isVideoPlaying) window.activityStats.videos += 5;
-            else {
-                const f = document.getElementById('fileModal');
-                if (f && f.style.display === 'block') {
-                    if (currentView === 'notes') window.activityStats.notes += 5;
-                    else if (currentView === 'quizzes' || currentView === 'qbank') window.activityStats.quizzes += 5;
+                if (isVideoPlaying) window.activityStats.videos += 5;
+                else {
+                    const f = document.getElementById('fileModal');
+                    if (f && f.style.display === 'block') {
+                        if (currentView === 'notes') window.activityStats.notes += 5;
+                        else if (currentView === 'quizzes' || currentView === 'qbank') window.activityStats.quizzes += 5;
+                    }
                 }
-            }
-        }, 5000);
-        syncTimer = setInterval(() => { fetch(activityUrl, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(window.activityStats) }); }, 60000);
-    }
+            }, 5000);
+            syncTimer = setInterval(() => { fetch(activityUrl, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(window.activityStats) }); }, 60000);
+        }
+    } // End of isLoggedIn check
 };
 
 window.updateUserMenu = () => {
