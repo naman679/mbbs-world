@@ -70,7 +70,12 @@
             const savedId = localStorage.getItem('mbbs_device_id');
             if (savedUser && savedId) {
                 sessionStorage.setItem('mbbs_user', savedUser); // Sync memory
-                window.location.replace("dashboard.html");
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('redirect') === 'videos') {
+                    window.location.replace("dashboard.html?view=videos");
+                } else {
+                    window.location.replace("dashboard.html");
+                }
             }
         });
 
@@ -152,14 +157,21 @@
 
         function finalizeLogin(name) {
             localStorage.setItem('mbbs_saved_user', name);
-            sessionStorage.setItem('mbbs_user', name); // Crucial for stopping the loop
-            // ---> PASTE THIS HERE <---
+            sessionStorage.setItem('mbbs_user', name);
+
             if (window.AndroidApp) {
                 window.AndroidApp.loginUser(name);
             }
-            // -------------------------
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirect = urlParams.get('redirect');
+
             setTimeout(() => {
-                window.location.replace("dashboard.html");
+                if (redirect === 'videos') {
+                    window.location.replace("dashboard.html?view=videos");
+                } else {
+                    window.location.replace("dashboard.html");
+                }
             }, 150);
         }
     </script>

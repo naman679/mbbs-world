@@ -569,9 +569,11 @@
         });
         // Feature links naturally point to dashboard.html?view=..., so they are fine!
       } else {
-        // User is NOT logged in: Lock down feature cards
+        // User is NOT logged in: Lock down ONLY the videos feature card
         featureLinks.forEach(link => {
-          link.href = "login.html";
+          if (link.href.includes('view=videos')) {
+            link.href = "login.html?redirect=videos";
+          }
         });
       }
 

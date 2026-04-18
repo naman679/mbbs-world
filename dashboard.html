@@ -47,19 +47,18 @@
     <script>
         (function () {
             const savedUser = localStorage.getItem('mbbs_saved_user');
-            const savedId = localStorage.getItem('mbbs_device_id');
-
-            if (!savedUser || !savedId) {
-                console.warn("No active session found. Redirecting to login...");
-                window.location.replace("login.html");
-                return;
-            }
 
             window.addEventListener('DOMContentLoaded', () => {
                 const nameDisplay = document.getElementById('userName');
                 const navInitial = document.getElementById('navInitial');
-                if (nameDisplay) nameDisplay.innerText = savedUser;
-                if (navInitial) navInitial.innerText = savedUser.charAt(0).toUpperCase();
+
+                if (savedUser && savedUser !== 'null' && savedUser !== 'undefined') {
+                    if (nameDisplay) nameDisplay.innerText = savedUser;
+                    if (navInitial) navInitial.innerText = savedUser.charAt(0).toUpperCase();
+                } else {
+                    if (nameDisplay) nameDisplay.innerText = "Guest";
+                    if (navInitial) navInitial.innerText = "G";
+                }
             });
         })();
     </script>
