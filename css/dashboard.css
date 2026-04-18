@@ -41,6 +41,71 @@ body {
     -webkit-touch-callout: none;
 }
 
+/* --- 1. SMOOTH SCROLLING & PERFORMANCE --- */
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    /* Momentum scrolling for iOS */
+}
+
+/* Hardware acceleration to prevent lag from your floating animations */
+.orb,
+.bg-grid {
+    will-change: transform;
+}
+
+/* --- 2. SKELETON LOADING ANIMATIONS --- */
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.skeleton-box {
+    /* Matches your dark glassmorphism theme */
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 25%, rgba(34, 211, 238, 0.08) 50%, rgba(255, 255, 255, 0.02) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 2s infinite linear;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+/* Specific Skeleton Shapes */
+.skel-title {
+    height: 32px;
+    width: 200px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+}
+
+.skel-card {
+    height: 180px;
+    border-radius: 24px;
+    border: 1.5px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+}
+
+.skel-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-bottom: 16px;
+}
+
+.skel-text {
+    height: 20px;
+    width: 60%;
+    border-radius: 8px;
+}
+
 /* --- ANIMATED BACKGROUND ELEMENTS (From Index) --- */
 .bg-grid {
     position: fixed;
