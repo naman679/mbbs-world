@@ -48,11 +48,11 @@
 
     @keyframes floatOrb {
       from {
-        transform: translateY(0px) scale(1);
+        transform: translateY(0px) scale(1) translateZ(0);
       }
 
       to {
-        transform: translateY(-30px) scale(1.05);
+        transform: translateY(-30px) scale(1.05) translateZ(0);
       }
     }
 
@@ -119,10 +119,15 @@
     .orb {
       position: fixed;
       border-radius: 50%;
-      filter: blur(100px);
+      filter: blur(60px);
+      /* Optimized for WebView */
       opacity: 0.12;
       pointer-events: none;
       z-index: 0;
+      /* Force Hardware Acceleration */
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      will-change: transform;
     }
 
     /* Navigation */
@@ -131,7 +136,6 @@
       top: 0;
       left: 0;
       right: 0;
-      zIndex: 100;
       padding: 16px 32px;
       display: flex;
       align-items: center;
@@ -193,76 +197,16 @@
       transform: translateY(0);
     }
 
-    /* ── Floating Cards Animations ─────────────────────────────────── */
-    @keyframes float0 {
+    /* ── Optimized Floating Cards Animation ───────────────────────── */
+    @keyframes floatCards {
 
       0%,
       100% {
-        transform: translateY(0px) rotate(-2deg)
+        transform: translate3d(0, 0, 0) rotate(-1deg);
       }
 
       50% {
-        transform: translateY(-18px) rotate(-1deg)
-      }
-    }
-
-    @keyframes float1 {
-
-      0%,
-      100% {
-        transform: translateY(0px) rotate(1.5deg)
-      }
-
-      50% {
-        transform: translateY(-22px) rotate(2.5deg)
-      }
-    }
-
-    @keyframes float2 {
-
-      0%,
-      100% {
-        transform: translateY(0px) rotate(-1deg)
-      }
-
-      50% {
-        transform: translateY(-14px) rotate(0deg)
-      }
-    }
-
-    @keyframes float3 {
-
-      0%,
-      100% {
-        transform: translateY(-8px) rotate(2deg)
-      }
-
-      50% {
-        transform: translateY(-24px) rotate(1deg)
-      }
-    }
-
-    @keyframes float4 {
-
-      0%,
-      100% {
-        transform: translateY(0px) rotate(-2.5deg)
-      }
-
-      50% {
-        transform: translateY(-16px) rotate(-1.5deg)
-      }
-    }
-
-    @keyframes float5 {
-
-      0%,
-      100% {
-        transform: translateY(-4px) rotate(1deg)
-      }
-
-      50% {
-        transform: translateY(-20px) rotate(2deg)
+        transform: translate3d(0, -15px, 0) rotate(1deg);
       }
     }
 
@@ -302,11 +246,14 @@
       color: inherit;
       display: block;
       transition: filter 0.3s, transform 0.3s;
+      /* Let WebView know this element will move */
+      will-change: transform;
     }
 
     .fcard:hover {
       filter: brightness(1.12);
       transform: scale(1.03) !important;
+      /* Keep hover override */
     }
 
     .fcard-shine {
@@ -388,7 +335,7 @@
   </div>
 
   <div id="progress-bar"
-    style="position: fixed; top: 0; left: 0; height: 3px; z-index: 200; width: 0%; background: linear-gradient(90deg, #22d3ee, #a78bfa, #f472b6); transition: width 0.1s; box-shadow: 0 0 10px rgba(34,211,238,0.7);">
+    style="position: fixed; top: 0; left: 0; height: 3px; z-index: 200; width: 0%; background: linear-gradient(90deg, #22d3ee, #a78bfa, #f472b6); transition: width 0.1s; will-change: width;">
   </div>
 
   <nav id="navbar">
@@ -397,7 +344,7 @@
         style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #22d3ee, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 18px;">
         🩺</div>
       <span
-        style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; background: linear-gradient(90deg, #22d3ee, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MBBS
+        style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; background: linear-gradient(90deg, #22d3ee, #a78bfa); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;">MBBS
         World</span>
     </div>
 
@@ -429,7 +376,7 @@
     <h1
       style="font-family: 'Syne', sans-serif; font-size: clamp(40px, 7.5vw, 82px); font-weight: 800; line-height: 1.1; letter-spacing: -0.04em; max-width: 860px; margin-bottom: 24px; animation: fadeSlideUp 0.7s ease both;">
       Study Smarter. <span
-        style="background: linear-gradient(90deg, #22d3ee 0%, #a78bfa 50%, #f472b6 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 3s linear infinite;">Rank
+        style="background: linear-gradient(90deg, #22d3ee 0%, #a78bfa 50%, #f472b6 100%); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; animation: shimmer 3s linear infinite;">Rank
         Higher.</span><br />
       <span style="font-size: 0.72em; color: rgba(203,213,225,0.55);">Your MBBS. Your World.</span>
     </h1>
@@ -442,7 +389,7 @@
 
     <div
       style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; animation: fadeSlideUp 0.7s ease 0.3s both;">
-      <a href="login.html" class="cta-btn btn-primary auth-link">🚀 Enter MBBS World</a>
+      <a href="#features" class="cta-btn btn-primary auth-link">🚀 Enter MBBS World</a>
       <a href="#features" class="cta-btn btn-outline">See Features ↓</a>
     </div>
   </section>
@@ -456,7 +403,7 @@
         style="font-family:'Syne',sans-serif; font-size:clamp(30px,5vw,50px); font-weight:800; letter-spacing:-0.03em;">
         Everything you need,
         <span
-          style="background:linear-gradient(90deg,#22d3ee,#a78bfa); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+          style="background:linear-gradient(90deg,#22d3ee,#a78bfa); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;">
           one tap away</span>
       </h2>
     </div>
@@ -464,7 +411,7 @@
     <div class="floating-cards-grid">
 
       <a href="dashboard.html?view=videos" class="fcard feature-link"
-        style="background:linear-gradient(135deg,rgba(34,211,238,0.18),rgba(14,116,144,0.25)); border:1.5px solid rgba(34,211,238,0.3); animation:float0 5.5s ease-in-out infinite; box-shadow:0 20px 60px rgba(34,211,238,0.12);">
+        style="background:linear-gradient(135deg,rgba(34,211,238,0.18),rgba(14,116,144,0.25)); border:1.5px solid rgba(34,211,238,0.3); animation:floatCards 5.5s ease-in-out infinite; box-shadow:0 20px 60px rgba(34,211,238,0.12);">
         <div class="fcard-shine"></div>
         <div class="fcard-label" style="color:#22d3ee;">Lectures</div>
         <span class="fcard-icon">🎥</span>
@@ -475,7 +422,7 @@
       </a>
 
       <a href="dashboard.html?view=notes" class="fcard feature-link"
-        style="background:linear-gradient(135deg,rgba(167,139,250,0.18),rgba(109,40,217,0.25)); border:1.5px solid rgba(167,139,250,0.3); animation:float1 6.2s ease-in-out infinite; box-shadow:0 20px 60px rgba(167,139,250,0.12);">
+        style="background:linear-gradient(135deg,rgba(167,139,250,0.18),rgba(109,40,217,0.25)); border:1.5px solid rgba(167,139,250,0.3); animation:floatCards 6.2s ease-in-out infinite 0.5s; box-shadow:0 20px 60px rgba(167,139,250,0.12);">
         <div class="fcard-shine"></div>
         <div class="fcard-label" style="color:#a78bfa;">Study Material</div>
         <span class="fcard-icon">📖</span>
@@ -486,7 +433,7 @@
       </a>
 
       <a href="dashboard.html?view=quizzes" class="fcard feature-link"
-        style="background:linear-gradient(135deg,rgba(52,211,153,0.18),rgba(16,185,129,0.25)); border:1.5px solid rgba(52,211,153,0.3); animation:float2 5.8s ease-in-out infinite; box-shadow:0 20px 60px rgba(52,211,153,0.12);">
+        style="background:linear-gradient(135deg,rgba(52,211,153,0.18),rgba(16,185,129,0.25)); border:1.5px solid rgba(52,211,153,0.3); animation:floatCards 5.8s ease-in-out infinite 1s; box-shadow:0 20px 60px rgba(52,211,153,0.12);">
         <div class="fcard-shine"></div>
         <div class="fcard-label" style="color:#34d399;">Practice</div>
         <span class="fcard-icon">📝</span>
@@ -497,7 +444,7 @@
       </a>
 
       <a href="live-game.html" class="fcard feature-link"
-        style="background:linear-gradient(135deg,rgba(244,114,182,0.18),rgba(219,39,119,0.25)); border:1.5px solid rgba(244,114,182,0.3); animation:float3 6.8s ease-in-out infinite; box-shadow:0 20px 60px rgba(244,114,182,0.12);">
+        style="background:linear-gradient(135deg,rgba(244,114,182,0.18),rgba(219,39,119,0.25)); border:1.5px solid rgba(244,114,182,0.3); animation:floatCards 6.8s ease-in-out infinite 0.2s; box-shadow:0 20px 60px rgba(244,114,182,0.12);">
         <div class="fcard-shine"></div>
         <div class="fcard-label" style="color:#f472b6;">Live Battle</div>
         <span class="fcard-icon">🎮</span>
@@ -508,7 +455,7 @@
       </a>
 
       <a href="daily-case.html" class="fcard feature-link"
-        style="background:linear-gradient(135deg,rgba(251,191,36,0.18),rgba(217,119,6,0.25)); border:1.5px solid rgba(251,191,36,0.3); animation:float4 5.2s ease-in-out infinite; box-shadow:0 20px 60px rgba(251,191,36,0.12);">
+        style="background:linear-gradient(135deg,rgba(251,191,36,0.18),rgba(217,119,6,0.25)); border:1.5px solid rgba(251,191,36,0.3); animation:floatCards 5.2s ease-in-out infinite 0.7s; box-shadow:0 20px 60px rgba(251,191,36,0.12);">
         <div class="fcard-shine"></div>
         <div class="fcard-label" style="color:#fbbf24;">Clinical Skills</div>
         <span class="fcard-icon">🩺</span>
@@ -519,7 +466,7 @@
       </a>
 
       <a href="atrium.html" class="fcard feature-link"
-        style="background:linear-gradient(135deg,rgba(251,146,60,0.18),rgba(234,88,12,0.25)); border:1.5px solid rgba(251,146,60,0.3); animation:float5 6.5s ease-in-out infinite; box-shadow:0 20px 60px rgba(251,146,60,0.12);">
+        style="background:linear-gradient(135deg,rgba(251,146,60,0.18),rgba(234,88,12,0.25)); border:1.5px solid rgba(251,146,60,0.3); animation:floatCards 6.5s ease-in-out infinite 1.2s; box-shadow:0 20px 60px rgba(251,146,60,0.12);">
         <div class="fcard-shine"></div>
         <div class="fcard-label" style="color:#fb923c;">Simulator</div>
         <span class="fcard-icon">🏛️</span>
@@ -543,7 +490,7 @@
         Ready to ace your MBBS?</h2>
       <p style="color: rgba(203,213,225,0.65); font-size: 16px; margin-bottom: 36px;">Join the world built just for you.
         Open the app and start today.</p>
-      <a href="login.html" class="cta-btn btn-primary auth-link">🚀 Open MBBS World</a>
+      <a href="#features" class="cta-btn btn-primary auth-link">🚀 Open MBBS World</a>
     </div>
   </section>
 
@@ -567,7 +514,6 @@
           link.href = "#features";
           link.textContent = "🚀 Choose a Module ↓";
         });
-        // Feature links naturally point to dashboard.html?view=..., so they are fine!
       } else {
         // User is NOT logged in: Lock down ONLY the videos feature card
         featureLinks.forEach(link => {
@@ -577,19 +523,29 @@
         });
       }
 
-      // 2. Scroll Progress Bar & Navbar Blur
-      window.addEventListener("scroll", () => {
-        // Progress Bar
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        document.getElementById("progress-bar").style.width = (winScroll / height) * 100 + "%";
+      // 2. Scroll Progress Bar & Navbar Blur (Optimized with requestAnimationFrame)
+      let ticking = false;
 
-        // Navbar Blur
-        const nav = document.getElementById("navbar");
-        if (window.scrollY > 40) {
-          nav.classList.add("scrolled");
-        } else {
-          nav.classList.remove("scrolled");
+      window.addEventListener("scroll", () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            // Progress Bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+
+            // Navbar Blur
+            const nav = document.getElementById("navbar");
+            if (window.scrollY > 40) {
+              nav.classList.add("scrolled");
+            } else {
+              nav.classList.remove("scrolled");
+            }
+
+            ticking = false;
+          });
+          ticking = true;
         }
       });
 
