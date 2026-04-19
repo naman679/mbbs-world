@@ -119,9 +119,8 @@
     .orb {
       position: fixed;
       border-radius: 50%;
-      filter: blur(60px);
-      /* Optimized for WebView */
-      opacity: 0.12;
+      /* Optimized for WebView: Removed heavy blur filter, increased opacity slightly */
+      opacity: 0.15;
       pointer-events: none;
       z-index: 0;
       /* Force Hardware Acceleration */
@@ -145,8 +144,8 @@
     }
 
     nav.scrolled {
-      background: rgba(6, 11, 24, 0.85);
-      backdrop-filter: blur(20px);
+      /* Made background slightly darker to compensate for no backdrop blur */
+      background: rgba(6, 11, 24, 0.95);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
@@ -241,7 +240,7 @@
       padding: 28px 26px 24px;
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(18px);
+      /* Removed backdrop-filter */
       text-decoration: none;
       color: inherit;
       display: block;
@@ -325,13 +324,13 @@
 
   <div class="bg-grid"></div>
   <div class="orb"
-    style="left: -10%; top: 10%; width: 500px; height: 500px; background: #1e40af; animation: floatOrb 7s ease-in-out infinite alternate;">
+    style="left: -10%; top: 10%; width: 500px; height: 500px; background: radial-gradient(circle, #1e40af 0%, transparent 70%); animation: floatOrb 7s ease-in-out infinite alternate;">
   </div>
   <div class="orb"
-    style="left: 60%; top: -5%; width: 400px; height: 400px; background: #7c3aed; animation: floatOrb 9s ease-in-out infinite alternate;">
+    style="left: 60%; top: -5%; width: 400px; height: 400px; background: radial-gradient(circle, #7c3aed 0%, transparent 70%); animation: floatOrb 9s ease-in-out infinite alternate;">
   </div>
   <div class="orb"
-    style="left: 80%; top: 50%; width: 350px; height: 350px; background: #0e7490; animation: floatOrb 11s ease-in-out infinite alternate;">
+    style="left: 80%; top: 50%; width: 350px; height: 350px; background: radial-gradient(circle, #0e7490 0%, transparent 70%); animation: floatOrb 11s ease-in-out infinite alternate;">
   </div>
 
   <div id="progress-bar"
@@ -481,7 +480,7 @@
 
   <section class="reveal" style="position: relative; z-index: 10; padding: 0 24px 100px;">
     <div
-      style="max-width: 860px; margin: 0 auto; background: linear-gradient(135deg, rgba(34,211,238,0.1), rgba(124,58,237,0.15)); border: 1.5px solid rgba(34,211,238,0.2); border-radius: 28px; padding: 60px 48px; text-align: center; backdrop-filter: blur(20px);">
+      style="max-width: 860px; margin: 0 auto; background: linear-gradient(135deg, rgba(34,211,238,0.15), rgba(124,58,237,0.2)); border: 1.5px solid rgba(34,211,238,0.2); border-radius: 28px; padding: 60px 48px; text-align: center;">
       <div
         style="font-size: 48px; margin-bottom: 16px; display: inline-block; animation: pulseRing 2.5s ease-in-out infinite;">
         🩺</div>
