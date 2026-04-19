@@ -1025,3 +1025,26 @@ h4,
 .video-controls-overlay.visible {
     display: flex;
 }
+
+/* Update your existing custom-controls to add transitions */
+.custom-controls {
+    /* ... your existing properties remain the same ... */
+    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Add this new hidden class for the fade-out effect */
+.custom-controls.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    /* Prevents clicking buttons when invisible */
+    transform: translateX(-50%) translateY(10px);
+    /* Optional: adds a slight drop down effect when hiding */
+}
+
+/* Add a pointer cursor to the shield so users know it's clickable */
+.glass-shield {
+    cursor: pointer;
+}
