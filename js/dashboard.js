@@ -594,6 +594,46 @@ function renderItems() {
         container.appendChild(card);
     });
 }
+// Global object to store timers for multiple players
+window.playerControlTimers = {};
+
+// Function to reset the 5-second countdown
+window.resetControlsTimer = (uid) => {
+    const controls = document.getElementById(`controls-${uid}`);
+    if (!controls) return;
+
+    // 1. Make controls visible
+    controls.classList.remove('hidden');
+
+    // 2. Clear any existing timer
+    if (window.playerControlTimers[uid]) {
+        clearTimeout(window.playerControlTimers[uid]);
+    }
+
+    // 3. Set a new 5-second timer ONLY if the video is currently playing
+    if (players[uid] && players[uid].getPlayerState && players[uid].getPlayerState() === YT.PlayerState.PLAYING) {
+        window.playerControlTimers[uid] = setTimeout(() => {
+            controls.classList.add('hidden');
+        }, 5000);
+    }
+};
+
+// Function to handle when the user taps the video screen
+window.handleVideoTap = (uid) => {
+    const controls = document.getElementById(`controls-${uid}`);
+    if (!controls) return;
+
+    if (controls.classList.contains('hidden')) {
+        // If hidden: Show them and restart the timer
+        resetControlsTimer(uid);
+    } else {
+        // If visible: Hide them immediately (standard tap-to-hide UX)
+        controls.classList.add('hidden');
+        if (window.playerControlTimers[uid]) {
+            clearTimeout(window.playerControlTimers[uid]);
+        }
+    }
+};
 
 // --- ADVANCED VIDEO CONTROLS INTEGRATION ---
 function renderVideoCard(container, video, index) {
@@ -607,9 +647,11 @@ function renderVideoCard(container, video, index) {
             <div id="thumb-${uid}" style="position: absolute; top:0; left:0; width:100%; height:100%; background-image: url('https://img.youtube.com/vi/${cleanVidId}/hqdefault.jpg'); background-size: cover; background-position: center; z-index: 2; transition: opacity 0.4s ease;"></div>
             
             <div id="${uid}" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1;"></div>
-            <div class="glass-shield" style="z-index: 3;"></div>
+            
+            <div class="glass-shield" style="z-index: 3;" onclick="handleVideoTap('${uid}')"></div>
         </div>
-        <div class="custom-controls" style="z-index: 99;">
+        
+        <div class="custom-controls" id="controls-${uid}" style="z-index: 99;" onclick="resetControlsTimer('${uid}')" ontouchstart="resetControlsTimer('${uid}')">
             <div class="timeline-container">
                 <input type="range" class="timeline" id="seek-${uid}" min="0" value="0" step="0.1" oninput="userSeek('${uid}', this.value)">
                 <span class="time-display" id="time-${uid}">0:00 / 0:00</span>
@@ -690,6 +732,9 @@ function onStateChange(e, uid) {
         updateOrientation();
         updatePlayPauseIcon(uid, true);
 
+        // --- ADDED THIS LINE: Start auto-hide timer when video plays ---
+        resetControlsTimer(uid);
+
         // FADE OUT THE CUSTOM THUMBNAIL SEAMLESSLY
         const thumbEl = document.getElementById(`thumb-${uid}`);
         if (thumbEl) {
@@ -711,6 +756,11 @@ function onStateChange(e, uid) {
     } else {
         if (players[uid].timer) clearInterval(players[uid].timer);
         updatePlayPauseIcon(uid, false);
+
+        // --- ADDED THESE LINES: Keep controls visible when paused ---
+        if (window.playerControlTimers[uid]) clearTimeout(window.playerControlTimers[uid]);
+        const controls = document.getElementById(`controls-${uid}`);
+        if (controls) controls.classList.remove('hidden');
     }
 }
 
