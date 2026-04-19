@@ -50,6 +50,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
@@ -63,6 +64,7 @@
 
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
+        const analytics = getAnalytics(app);
 
         // 1. AUTO-LOGIN CHECK
         window.addEventListener('DOMContentLoaded', () => {
