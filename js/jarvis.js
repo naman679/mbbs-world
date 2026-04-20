@@ -1,4 +1,4 @@
-// jarvis.js - Pure Voice Conversational MBBS AI (Memory Enabled)
+// jarvis.js - Pure Voice Conversational MBBS AI (Memory & Teleport Enabled)
 (function () {
     // ⚠️ REPLACE THIS with the exact URL Cloudflare gave you for your worker
     const WORKER_URL = "https://jarvis-brain.namanjain5359v.workers.dev/";
@@ -75,40 +75,22 @@
             // 1. Speak the reply
             speak(aiData.spoken_reply);
 
-            // 2. Smart Navigation & Action (Only if she decides to)
+            // 2. Smart Navigation logic (Checking if on Index or Dashboard)
             if (aiData.action && aiData.action !== "none") {
-                executeJarvisCommand(aiData.action);
+                const isOnDashboard = typeof window.filterCategory === "function";
 
-                if (aiData.search_query) {
-                    setTimeout(() => {
-                        let query = aiData.search_query.toLowerCase().trim();
-                        query = query.replace(/^(open|show|play|start|dikha|dikhao)\s+/i, '').trim();
-
-                        let isSubjectFound = false;
-                        if (typeof mbbsData !== "undefined") {
-                            for (let key in mbbsData) {
-                                if (key.replace(/_/g, ' ') === query || key === query) {
-                                    if (typeof setSubject === "function") {
-                                        setSubject(key);
-                                        isSubjectFound = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        if (!isSubjectFound) {
-                            const searchInput = document.getElementById('globalSearch');
-                            const searchBar = document.getElementById('searchBar');
-                            if (searchInput) {
-                                if (searchBar) searchBar.classList.add('active');
-                                searchInput.value = query;
-                                if (typeof window.handleSearch === "function") {
-                                    window.handleSearch();
-                                }
-                            }
-                        }
-                    }, 500);
+                if (isOnDashboard) {
+                    // We are ALREADY on the dashboard
+                    executeJarvisCommand(aiData.action);
+                    runSearchLogic(aiData.search_query);
+                } else {
+                    // We are on INDEX.HTML! We need to teleport.
+                    if (aiData.search_query) {
+                        // Save the subject in memory so the next page remembers it
+                        sessionStorage.setItem('jarvis_teleport_query', aiData.search_query);
+                    }
+                    // Redirect to the right tab
+                    window.location.href = `dashboard.html?view=${aiData.action}`;
                 }
             }
 
@@ -117,6 +99,40 @@
             speak("Bhai thoda network issue lag raha hai, ek baar check kar le.");
             stopListeningState();
         }
+    }
+
+    // Extracted Search Logic to use across pages
+    function runSearchLogic(searchQuery) {
+        if (!searchQuery) return;
+        setTimeout(() => {
+            let query = searchQuery.toLowerCase().trim();
+            query = query.replace(/^(open|show|play|start|dikha|dikhao)\s+/i, '').trim();
+
+            let isSubjectFound = false;
+            if (typeof mbbsData !== "undefined") {
+                for (let key in mbbsData) {
+                    if (key.replace(/_/g, ' ') === query || key === query) {
+                        if (typeof setSubject === "function") {
+                            setSubject(key);
+                            isSubjectFound = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!isSubjectFound) {
+                const searchInput = document.getElementById('globalSearch');
+                const searchBar = document.getElementById('searchBar');
+                if (searchInput) {
+                    if (searchBar) searchBar.classList.add('active');
+                    searchInput.value = query;
+                    if (typeof window.handleSearch === "function") {
+                        window.handleSearch();
+                    }
+                }
+            }
+        }, 500);
     }
 
     // 3. Setup Speech Recognition (Ears)
@@ -138,8 +154,10 @@
             console.log("User said:", transcript);
 
             // Show thinking state on the UI
-            micIcon.className = "fas fa-spinner fa-spin";
-            micIcon.style.color = "#a78bfa";
+            if (micIcon) {
+                micIcon.className = "fas fa-spinner fa-spin";
+                micIcon.style.color = "#a78bfa";
+            }
 
             await processVoiceCommand(transcript);
         };
@@ -147,8 +165,10 @@
         recognition.onerror = (event) => {
             console.error("Jarvis Mic Error:", event.error);
             if (event.error === 'not-allowed') {
-                micIcon.className = "fas fa-microphone-slash";
-                micIcon.style.color = "#ff4b4b";
+                if (micIcon) {
+                    micIcon.className = "fas fa-microphone-slash";
+                    micIcon.style.color = "#ff4b4b";
+                }
                 alert("Bhai, mic ki permission toh de de. Settings mein jaake allow kar.");
             }
             stopListeningState();
@@ -168,7 +188,8 @@
     function stopListeningState() {
         if (!micIcon || !listeningRing) return;
         micIcon.className = "fas fa-microphone";
-        micIcon.style.color = "var(--text-main)";
+        // Fixed: Using direct hex color instead of CSS variable so it shows on index.html too
+        micIcon.style.color = "#cbd5e1";
         listeningRing.style.display = "none";
     }
 
@@ -198,8 +219,19 @@
         }
     }
 
-    // 5. Dynamic Time-Based Greeting on initial load
+    // 5. Initial Load Actions (Time Greeting & Teleport Checks)
     window.addEventListener('load', () => {
+        // --- A. Teleportation Catch (Coming from index.html) ---
+        const pendingQuery = sessionStorage.getItem('jarvis_teleport_query');
+        if (pendingQuery && typeof window.filterCategory === "function") {
+            // Give dashboard data 1.5s to load from spreadsheet, then execute the search
+            setTimeout(() => {
+                runSearchLogic(pendingQuery);
+                sessionStorage.removeItem('jarvis_teleport_query'); // Clear it so it doesn't run again
+            }, 1500);
+        }
+
+        // --- B. Dynamic Time-Based Greeting ---
         if (!sessionStorage.getItem('jarvis_greeted')) {
             setTimeout(() => {
                 const hour = new Date().getHours();
@@ -217,7 +249,6 @@
                 else if (hour < 17) {
                     const afternoonGreetings = [
                         "Good afternoon boss! Bata, aaj kaise help karun teri?",
-
                     ];
                     timeGreeting = afternoonGreetings[Math.floor(Math.random() * afternoonGreetings.length)];
                 }
