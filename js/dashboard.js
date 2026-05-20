@@ -910,20 +910,29 @@ window.toggleFullScreen = (btn) => {
     if (!isFullscreen) {
         let req = c.requestFullscreen || c.webkitRequestFullscreen || c.mozRequestFullScreen || c.msRequestFullscreen;
         if (req) {
+            let promise = req.call(c);
             window.isFullscreenState = true;
             history.pushState({ isFullscreenTrap: true }, '');
-            let promise = req.call(c);
             if (promise && promise.then) {
                 promise.then(() => {
                     tryLockLandscape();
+                    c.classList.add('fullscreen-mode');
                     updateOrientation();
                 }).catch(e => console.error(e));
             } else {
                 setTimeout(() => {
                     tryLockLandscape();
+                    c.classList.add('fullscreen-mode');
                     updateOrientation();
                 }, 100);
             }
+        } else {
+            // Fallback for iOS Safari or browsers that do not support Fullscreen API
+            window.isFullscreenState = true;
+            history.pushState({ isFullscreenTrap: true }, '');
+            c.classList.add('fullscreen-mode');
+            tryLockLandscape();
+            updateOrientation();
         }
     } else {
         let ext = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
@@ -989,11 +998,28 @@ function updateOverlaySpeedButtons() {
 
 function updateOrientation() {
     const overlay = document.getElementById('landscapeOverlay');
-    if (window.innerHeight < window.innerWidth && window.activePlayerId) {
+    const isLandscape = window.innerHeight < window.innerWidth;
+    
+    if (isLandscape && window.activePlayerId) {
         overlay.classList.add('visible');
         updateOverlaySpeedButtons();
     } else {
         overlay.classList.remove('visible');
+    }
+    
+    // Automatically apply fullscreen mode styles if we are in landscape and looking at a video!
+    const activeVideoCard = document.querySelector('.video-wrapper');
+    if (activeVideoCard) {
+        const c = activeVideoCard.closest('.card');
+        if (c) {
+            if (isLandscape) {
+                c.classList.add('fullscreen-mode');
+            } else {
+                if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+                    c.classList.remove('fullscreen-mode');
+                }
+            }
+        }
     }
 }
 window.addEventListener('resize', updateOrientation); window.addEventListener('orientationchange', updateOrientation);
