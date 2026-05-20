@@ -27,9 +27,6 @@ async function fetchSheetData() {
 
         // ... rest of your existing code stays exactly the same
         text = text.replace(/^\uFEFF/, '');
-        // ...
-
-        text = text.replace(/^\uFEFF/, '');
         if (text.includes('<!DOCTYPE html>') || text.includes('<html>')) {
             throw new Error("Invalid CSV format.");
         }
@@ -918,8 +915,54 @@ function formatDriveLink(url) {
     const match = url.match(/\/d\/([^\/?#]+)|id=([^\/&#?]+)/);
     return (match && (match[1] || match[2])) ? `https://drive.google.com/file/d/${match[1] || match[2]}/preview` : url;
 }
-window.openQuiz = (url) => { pushNavState(); document.getElementById('fileViewer').src = formatDriveLink(url); document.getElementById('fileModal').style.display = 'block'; document.body.style.overflow = 'hidden'; };
-window.openFile = (urlOrContent) => { pushNavState(); document.getElementById('fileViewer').src = urlOrContent.startsWith('http') ? formatDriveLink(urlOrContent) : urlOrContent; document.getElementById('fileModal').style.display = 'block'; document.body.style.overflow = 'hidden'; };
+function checkNetworkSpeedAndWarn() {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (connection && ['slow-2g', '2g', '3g'].includes(connection.effectiveType)) {
+        showSlowNetworkToast();
+    }
+}
+
+function showSlowNetworkToast() {
+    let notification = document.getElementById('network-status-notification');
+    if (!notification) {
+        notification = document.createElement('div');
+        notification.id = 'network-status-notification';
+        document.body.appendChild(notification);
+    }
+    notification.className = 'show';
+    notification.style.backgroundColor = '#fff3cd';
+    notification.style.color = '#856404';
+    notification.style.borderColor = '#ffeeba';
+    notification.innerHTML = `
+        <div class="icon"><i class="fas fa-wifi"></i></div>
+        <div class="message">Weak connection detected. Loading this resource may take longer.</div>
+        <button class="close-btn" aria-label="Close notification" onclick="this.parentElement.classList.remove('show')">&times;</button>
+    `;
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 5000);
+}
+
+window.openQuiz = (url) => { 
+    pushNavState(); 
+    const loader = document.getElementById('pdfLoader');
+    if (loader) loader.style.display = 'flex';
+    checkNetworkSpeedAndWarn();
+    document.getElementById('fileViewer').src = formatDriveLink(url); 
+    document.getElementById('fileModal').style.display = 'block'; 
+    document.body.style.overflow = 'hidden'; 
+};
+
+window.openFile = (urlOrContent) => { 
+    pushNavState(); 
+    const loader = document.getElementById('pdfLoader');
+    if (loader) loader.style.display = 'flex';
+    checkNetworkSpeedAndWarn();
+    document.getElementById('fileViewer').src = urlOrContent.startsWith('http') ? formatDriveLink(urlOrContent) : urlOrContent; 
+    document.getElementById('fileModal').style.display = 'block'; 
+    document.body.style.overflow = 'hidden'; 
+};
+
 window.closeModal = () => { if (navHistory.length > 0) goBack(); else { cleanupIframes(); if (window.uiTimer) clearInterval(window.uiTimer); document.getElementById('fileModal').style.display = 'none'; document.body.style.overflow = 'auto'; } };
 
 window.addEventListener('message', function (e) {
