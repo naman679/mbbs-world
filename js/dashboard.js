@@ -72,8 +72,8 @@ async function fetchSheetData() {
             filterCategory(requestedView);
             // Note: URL cleanup removed so students can safely refresh the page!
         } else {
-            // If they just type dashboard.html with no parameters, kick them to the landing page hub
-            window.location.replace('index.html');
+            // No ?view= param — render the dashboard home page
+            renderHome();
         }
 
     } catch (e) {
@@ -760,22 +760,22 @@ function onPlayerError(e, uid) {
         if (!card) return;
 
         const cleanVidId = players[uid] ? players[uid].videoId : "";
-        const videoTitle = card.querySelector('.card-title') ? card.querySelector('.card-title').innerText : 'Medical Lecture';
-
-        // Swap the card's inner HTML with the beautiful custom warning
         card.innerHTML = `
             <div class="video-wrapper" style="background-color: #050505;">
                 <div style="position: absolute; top:0; left:0; width:100%; height:100%; background-image: url('https://img.youtube.com/vi/${cleanVidId}/hqdefault.jpg'); background-size: cover; background-position: center; filter: blur(15px) brightness(0.25); z-index: 1;"></div>
                 
                 <div style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 5%; box-sizing: border-box;">
-                    <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(239, 68, 68, 0.2); border: 2px solid #ef4444; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; font-size: 18px;">🔞</div>
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(239, 68, 68, 0.2); border: 2px solid #ef4444; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; font-size: 18px;">⚠️</div>
                     <h3 style="font-family: 'Syne', sans-serif; font-weight: 800; color: #ffffff; font-size: clamp(14px, 4vw, 16px); margin: 0 0 4px 0; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">18+ Age Restricted Lecture</h3>
                     <p style="color: #cbd5e1; font-size: clamp(11px, 3vw, 13px); line-height: 1.3; margin: 0 0 12px 0; max-width: 95%; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">
                         Age-restricted by YouTube. Open directly in the app to verify your age.
                     </p>
                     <a href="https://www.youtube.com/watch?v=${cleanVidId}" target="_blank" style="background: #ef4444; color: #ffffff; padding: 8px 16px; font-size: clamp(12px, 3.5vw, 14px); font-weight: 600; text-decoration: none; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); border: none;">
-            };
-        }
+                        ▶ Open in YouTube
+                    </a>
+                </div>
+            </div>
+        `;
     }
 }
 
