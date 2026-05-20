@@ -271,8 +271,8 @@ window.showMainMenu = (isBack = false) => {
 window.filterCategory = (type, isBack = false) => {
     // --- VIDEO LOGIN INTERCEPTOR ---
     if (type === 'videos') {
-        let user = sessionStorage.getItem('mbbs_user') || localStorage.getItem('mbbs_saved_user');
-        if (!user || user === 'undefined' || user === 'null') {
+        const isAuthorized = localStorage.getItem('mbbs_video_authorized');
+        if (isAuthorized !== 'true') {
             window.location.href = 'login.html?redirect=videos';
             return;
         }
