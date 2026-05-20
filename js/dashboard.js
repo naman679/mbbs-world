@@ -53,7 +53,8 @@ async function fetchSheetData() {
 
             if (!mbbsData[subKey]) mbbsData[subKey] = { videos: [], keyPoints: [], notes: [], qbank: [], quizzes: [] };
 
-            const item = { Subject: subjRaw, title: titleRaw, link: linkRaw, platform: platformRaw, Type: typeKey, subjectName: cleanSubject, isPremium };
+            const isRestricted = linkRaw.includes('#restricted') || platformRaw.toLowerCase().includes('restricted');
+            const item = { Subject: subjRaw, title: titleRaw, link: linkRaw, platform: platformRaw, Type: typeKey, subjectName: cleanSubject, isPremium, isRestricted };
 
             if (typeKey === 'videos' || typeKey === 'video') mbbsData[subKey].videos.push({ ...item, link: getYoutubeVideoId(linkRaw) });
             else if (typeKey === 'notes') mbbsData[subKey].notes.push(item);
@@ -639,6 +640,38 @@ function renderVideoCard(container, video, index) {
     const cleanVidId = getYoutubeVideoId(vid);
     const uid = `yt-${index}`;
 
+    if (video.isRestricted) {
+        card.innerHTML = `
+            <div class="video-wrapper" style="background: linear-gradient(135deg, #060b18 0%, #0a0f22 50%, #080c1e 100%); display: flex; align-items: center; justify-content: center; position: relative;">
+                <div style="position: absolute; inset:0; background-image: url('https://img.youtube.com/vi/${cleanVidId}/hqdefault.jpg'); background-size: cover; background-position: center; filter: blur(8px) brightness(0.25); z-index: 1;"></div>
+                
+                <div style="z-index: 2; text-align: center; padding: 24px; max-width: 440px;">
+                    <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(239, 68, 68, 0.15); border: 2px solid #ef4444; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 24px;">🔞</div>
+                    <h3 style="font-family: 'Syne', sans-serif; font-weight: 800; color: #f1f5f9; font-size: 18px; margin-bottom: 8px; letter-spacing: -0.01em;">18+ Age Restricted Lecture</h3>
+                    <p style="color: #94a3b8; font-size: 13px; line-height: 1.6; margin-bottom: 20px;">
+                        This medical educational video is age-restricted by YouTube. To play it, you must open it directly in the YouTube app or website where your Google account is verified.
+                    </p>
+                    <a href="https://www.youtube.com/watch?v=${cleanVidId}" target="_blank" class="cta-btn btn-primary" style="padding: 10px 24px; font-size: 14px; text-decoration: none; border-radius: 12px; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fab fa-youtube"></i> Open in YouTube App
+                    </a>
+                </div>
+            </div>
+            <div class="card-content"><div class="card-title">${video.title}</div></div>
+        `;
+        container.appendChild(card);
+        
+        // Also log this as watched if they click the button!
+        const btn = card.querySelector('a');
+        if (btn) {
+            btn.onclick = () => {
+                const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
+                localStorage.setItem('completed_' + currentUser + '_' + cleanVidId, 'true');
+                logStudentActivity(currentSubject, video.title);
+            };
+        }
+        return;
+    }
+
     card.innerHTML = `
         <div class="video-wrapper">
             <div id="thumb-${uid}" style="position: absolute; top:0; left:0; width:100%; height:100%; background-image: url('https://img.youtube.com/vi/${cleanVidId}/hqdefault.jpg'); background-size: cover; background-position: center; z-index: 2; transition: opacity 0.4s ease;"></div>
@@ -693,9 +726,60 @@ function createPlayer(uid, vid) {
             'playsinline': 1,
             'origin': window.location.origin
         },
-        events: { 'onReady': (e) => onReady(e, uid), 'onStateChange': (e) => onStateChange(e, uid) }
+        events: { 
+            'onReady': (e) => onReady(e, uid), 
+            'onStateChange': (e) => onStateChange(e, uid),
+            'onError': (e) => onPlayerError(e, uid)
+        }
     });
     players[uid].videoId = cleanVidId;
+}
+
+function onPlayerError(e, uid) {
+    console.warn(`YouTube player error caught for player ${uid} (Code: ${e.data})`);
+    
+    // Code 101/150: Age-restricted or embedding disabled
+    // Code 100: Removed/private
+    // Code 5: General HTML5 loading error
+    if (e.data === 101 || e.data === 150 || e.data === 100 || e.data === 5) {
+        const playerElement = document.getElementById(uid);
+        if (!playerElement) return;
+
+        const card = playerElement.closest('.card');
+        if (!card) return;
+
+        const cleanVidId = players[uid] ? players[uid].videoId : "";
+        const videoTitle = card.querySelector('.card-title') ? card.querySelector('.card-title').innerText : 'Medical Lecture';
+
+        // Swap the card's inner HTML with the beautiful custom warning
+        card.innerHTML = `
+            <div class="video-wrapper" style="background: linear-gradient(135deg, #060b18 0%, #0a0f22 50%, #080c1e 100%); display: flex; align-items: center; justify-content: center; position: relative;">
+                <div style="position: absolute; inset:0; background-image: url('https://img.youtube.com/vi/${cleanVidId}/hqdefault.jpg'); background-size: cover; background-position: center; filter: blur(8px) brightness(0.25); z-index: 1;"></div>
+                
+                <div style="z-index: 2; text-align: center; padding: 24px; max-width: 440px;">
+                    <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(239, 68, 68, 0.15); border: 2px solid #ef4444; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 24px;">🔞</div>
+                    <h3 style="font-family: 'Syne', sans-serif; font-weight: 800; color: #f1f5f9; font-size: 18px; margin-bottom: 8px; letter-spacing: -0.01em;">18+ Age Restricted Lecture</h3>
+                    <p style="color: #94a3b8; font-size: 13px; line-height: 1.6; margin-bottom: 20px;">
+                        This medical educational video is age-restricted by YouTube. To play it, you must open it directly in the YouTube app or website where your Google account is verified.
+                    </p>
+                    <a href="https://www.youtube.com/watch?v=${cleanVidId}" target="_blank" class="cta-btn btn-primary" style="padding: 10px 24px; font-size: 14px; text-decoration: none; border-radius: 12px; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fab fa-youtube"></i> Open in YouTube App
+                    </a>
+                </div>
+            </div>
+            <div class="card-content"><div class="card-title">${videoTitle}</div></div>
+        `;
+
+        // Log completion/activity when clicked!
+        const btn = card.querySelector('a');
+        if (btn) {
+            btn.onclick = () => {
+                const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
+                localStorage.setItem('completed_' + currentUser + '_' + cleanVidId, 'true');
+                logStudentActivity(currentSubject, videoTitle);
+            };
+        }
+    }
 }
 
 function onReady(e, uid) {
