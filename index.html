@@ -554,10 +554,13 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
+    import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
+    // Centralized config — keep in sync with firebase-config.js
     const firebaseConfig = {
       apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
       authDomain: "samvad-bafaa.firebaseapp.com",
+      databaseURL: "https://samvad-bafaa-default-rtdb.firebaseio.com",
       projectId: "samvad-bafaa",
       storageBucket: "samvad-bafaa.appspot.com",
       messagingSenderId: "131803431466",
@@ -567,6 +570,49 @@
 
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+
+    // Silent Anonymous Visitor Tracker
+    try {
+        const db = getDatabase(app);
+        let visitorId = localStorage.getItem('mbbs_visitor_id');
+        const isInsideApp = navigator.userAgent.includes("MBBSWorldApp") || !!window.injectedAppId;
+        const platform = isInsideApp ? "Mobile App" : "Web Browser";
+        const now = new Date().toISOString();
+
+        if (!visitorId) {
+            visitorId = 'visitor_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('mbbs_visitor_id', visitorId);
+            
+            set(ref(db, 'visitors/' + visitorId), {
+                visitor_id: visitorId,
+                first_visit: now,
+                last_visit: now,
+                platform: platform,
+                page_views: 1
+            });
+        } else {
+            const visitorRef = ref(db, 'visitors/' + visitorId);
+            get(visitorRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    update(visitorRef, {
+                        last_visit: now,
+                        page_views: (data.page_views || 0) + 1
+                    });
+                } else {
+                    set(visitorRef, {
+                        visitor_id: visitorId,
+                        first_visit: now,
+                        last_visit: now,
+                        platform: platform,
+                        page_views: 1
+                    });
+                }
+            }).catch(err => console.error("Visitor tracking sync failed:", err));
+        }
+    } catch (e) {
+        console.error("Visitor tracking failed to initialize:", e);
+    }
   </script>
 
   <script src="js/jarvis.js"></script>

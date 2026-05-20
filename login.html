@@ -63,9 +63,11 @@
         import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
 
+        // Centralized config — keep in sync with firebase-config.js
         const firebaseConfig = {
             apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
             authDomain: "samvad-bafaa.firebaseapp.com",
+            databaseURL: "https://samvad-bafaa-default-rtdb.firebaseio.com",
             projectId: "samvad-bafaa",
             storageBucket: "samvad-bafaa.appspot.com",
             messagingSenderId: "131803431466",
