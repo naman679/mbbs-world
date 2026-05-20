@@ -352,30 +352,33 @@ window.onload = () => {
 
     // Only run security checks and tracking for actual logged-in students
     if (isLoggedIn) {
-        // --- UPDATED BACKGROUND DATABASE CHECK ---
-        fetch(`https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec?name=${encodeURIComponent(savedUser)}`)
-            .then(r => r.json())
-            .then(async data => {
-                if (data.allowed) {
-                    if (savedUser.toLowerCase() !== 'naveen' && localStorage.getItem('mbbs_admin_device') !== 'true') {
-                        try {
-                            const safeName = savedUser.toLowerCase().replace(/[.#$\[\]]/g, '_');
-                            const dbUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}.json`;
-                            const dbData = await (await fetch(dbUrl)).json();
+        // --- UPDATED BACKGROUND DATABASE CHECK (ONLY for video authorized users) ---
+        const isAuthorized = localStorage.getItem('mbbs_video_authorized') === 'true';
+        if (isAuthorized) {
+            fetch(`https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec?name=${encodeURIComponent(savedUser)}`)
+                .then(r => r.json())
+                .then(async data => {
+                    if (data.allowed) {
+                        if (savedUser.toLowerCase() !== 'naveen' && localStorage.getItem('mbbs_admin_device') !== 'true') {
+                            try {
+                                const safeName = savedUser.toLowerCase().replace(/[.#$\[\]]/g, '_');
+                                const dbUrl = `https://samvad-bafaa-default-rtdb.firebaseio.com/users/${encodeURIComponent(safeName)}.json`;
+                                const dbData = await (await fetch(dbUrl)).json();
 
-                            // Check against the correct new slot (app_id or web_id)
-                            const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
-                            const slotName = isInsideApp ? "app_id" : "web_id";
-                            const localId = localStorage.getItem('mbbs_device_id');
+                                // Check against the correct new slot (app_id or web_id)
+                                const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
+                                const slotName = isInsideApp ? "app_id" : "web_id";
+                                const localId = localStorage.getItem('mbbs_device_id');
 
-                            if (dbData && typeof dbData === 'object' && dbData[slotName] !== localId) {
-                                console.error("Device mismatch detected.");
-                                handleLogout();
-                            }
-                        } catch (e) { console.error('BG verify error', e); }
-                    }
-                } else { handleLogout(); }
-            }).catch(e => console.error('Sheet check fail', e));
+                                if (dbData && typeof dbData === 'object' && dbData[slotName] !== localId) {
+                                    console.error("Device mismatch detected.");
+                                    handleLogout();
+                                }
+                            } catch (e) { console.error('BG verify error', e); }
+                        }
+                    } else { handleLogout(); }
+                }).catch(e => console.error('Sheet check fail', e));
+        }
 
         if (savedUser.toLowerCase() !== 'naveen') {
             const safeName = savedUser.toLowerCase().replace(/[.#$\[\]]/g, '_');
