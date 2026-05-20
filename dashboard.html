@@ -301,6 +301,52 @@
         </div>
     </div>
     <script src="js/jarvis.js"></script>
+
+    <!-- Global Name Tracking Modal -->
+    <div id="globalNameModal" class="modal" style="display: none; z-index: 99999; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); position: fixed; inset: 0;">
+        <div class="modal-content" style="background: linear-gradient(135deg, #0a0f22 0%, #080c1e 100%); max-width: 400px; width: 90%; padding: 30px; border-radius: 20px; border: 1px solid rgba(34, 211, 238, 0.2); text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(34, 211, 238, 0.1); border: 2px solid #22d3ee; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px; color: #22d3ee;">
+                <i class="fas fa-user-md"></i>
+            </div>
+            <h2 style="color: #f1f5f9; font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 10px; font-size: 1.5rem;">Welcome to MBBS World</h2>
+            <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;">Please enter your full name to start studying. This helps us track your progress.</p>
+            <input type="text" id="globalNameInput" placeholder="Enter your full name" style="width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; font-size: 1rem; margin-bottom: 20px; box-sizing: border-box; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='#22d3ee'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+            <button onclick="saveGlobalName()" style="width: 100%; padding: 14px; border-radius: 12px; background: #22d3ee; color: #060b18; border: none; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.2s, background 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">Start Studying</button>
+            <p id="globalNameError" style="color: #ef4444; font-size: 0.85rem; margin-top: 15px; display: none;">Please enter a valid name.</p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('mbbs_saved_user')) {
+                document.getElementById('globalNameModal').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+        function saveGlobalName() {
+            const name = document.getElementById('globalNameInput').value.trim();
+            if (!name || name.length < 2) {
+                document.getElementById('globalNameError').style.display = 'block';
+                return;
+            }
+            let cleanName = name.replace(/[.#$\[\]]/g, '_');
+            if (!cleanName.endsWith('_temp')) {
+                cleanName += '_temp';
+            }
+            localStorage.setItem('mbbs_saved_user', cleanName);
+            sessionStorage.setItem('mbbs_user', cleanName);
+            document.getElementById('globalNameModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            const navName = document.getElementById("nav-name");
+            if (navName) {
+                navName.textContent = cleanName;
+            }
+            const navInit = document.getElementById("nav-initial");
+            if (navInit) {
+                navInit.textContent = cleanName.charAt(0).toUpperCase();
+            }
+        }
+    </script>
 </body>
 
 </html>

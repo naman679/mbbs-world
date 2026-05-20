@@ -82,8 +82,13 @@
         // 1. AUTO-LOGIN CHECK
         window.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('mbbs_saved_user');
-            const savedId = localStorage.getItem('mbbs_device_id');
-            if (savedUser && savedId) {
+            const isAuthorized = localStorage.getItem('mbbs_video_authorized');
+            
+            if (savedUser) {
+                document.getElementById('student-name').value = savedUser;
+            }
+            
+            if (savedUser && isAuthorized === 'true') {
                 sessionStorage.setItem('mbbs_user', savedUser); // Sync memory
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.get('redirect') === 'videos') {
@@ -111,35 +116,48 @@
 
             errorDiv.style.display = 'none';
             loginBtn.disabled = true;
-            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying...';
-
-            let currentDeviceId;
-            let slotName = 'web_id';
-
-            // Use the same User-Agent check as your dashboard
-            const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
-
-            if (isInsideApp) {
-                slotName = 'app_id';
-                currentDeviceId = localStorage.getItem('mbbs_device_id');
-                // If there's no ID, or if an old web_id got stuck, generate a fresh app_id
-                if (!currentDeviceId || currentDeviceId.startsWith('web_')) {
-                    currentDeviceId = 'app_' + Math.random().toString(36).substr(2, 9);
-                    localStorage.setItem('mbbs_device_id', currentDeviceId);
-                }
-            } else {
-                slotName = 'web_id';
-                currentDeviceId = localStorage.getItem('mbbs_device_id');
-                // If there's no ID, or if an old app_id got stuck, generate a fresh web_id
-                if (!currentDeviceId || currentDeviceId.startsWith('app_')) {
-                    currentDeviceId = 'web_' + Math.random().toString(36).substr(2, 9);
-                    localStorage.setItem('mbbs_device_id', currentDeviceId);
-                }
-            }
-            const userRef = ref(database, 'users/' + userName);
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Verifying Approval...';
 
             try {
+                // STEP 1: Verify Google Sheets Approval
+                const sheetResponse = await fetch(`https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec?name=${encodeURIComponent(userName)}`);
+                const sheetData = await sheetResponse.json();
+
+                if (!sheetData.allowed) {
+                    errorDiv.style.display = 'block';
+                    errorDiv.innerHTML = `Access Denied: Pending Approval.<br><span style="font-size:0.85rem;color:#a0aec0;display:block;margin-top:5px;">Please register using the "Request a Username" link below.</span>`;
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
+                    return; // Stop here, do not hit Firebase!
+                }
+
+                // STEP 2: Firebase Device Lock (Run only if approved)
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Securing Device...';
+                
+                let currentDeviceId;
+                let slotName = 'web_id';
+
+                const isInsideApp = navigator.userAgent.includes("MBBSWorldApp");
+
+                if (isInsideApp) {
+                    slotName = 'app_id';
+                    currentDeviceId = localStorage.getItem('mbbs_device_id');
+                    if (!currentDeviceId || currentDeviceId.startsWith('web_')) {
+                        currentDeviceId = 'app_' + Math.random().toString(36).substr(2, 9);
+                        localStorage.setItem('mbbs_device_id', currentDeviceId);
+                    }
+                } else {
+                    slotName = 'web_id';
+                    currentDeviceId = localStorage.getItem('mbbs_device_id');
+                    if (!currentDeviceId || currentDeviceId.startsWith('app_')) {
+                        currentDeviceId = 'web_' + Math.random().toString(36).substr(2, 9);
+                        localStorage.setItem('mbbs_device_id', currentDeviceId);
+                    }
+                }
+                
+                const userRef = ref(database, 'users/' + userName);
                 const snapshot = await get(userRef);
+                
                 if (snapshot.exists()) {
                     const userData = snapshot.val();
                     const savedSlotId = userData[slotName];
@@ -161,10 +179,11 @@
                     });
                     finalizeLogin(userName);
                 }
+
             } catch (error) {
                 console.error(error);
                 errorDiv.style.display = 'block';
-                errorDiv.innerText = "Database Error. Check your internet.";
+                errorDiv.innerText = "Network Error. Please check your internet.";
                 loginBtn.disabled = false;
                 loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Access Portal';
             }
@@ -173,6 +192,7 @@
         function finalizeLogin(name) {
             localStorage.setItem('mbbs_saved_user', name);
             sessionStorage.setItem('mbbs_user', name);
+            localStorage.setItem('mbbs_video_authorized', 'true');
 
             if (window.AndroidApp) {
                 window.AndroidApp.loginUser(name);
