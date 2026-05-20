@@ -536,6 +536,7 @@ function renderContent() {
                 if (isWatched) {
                     item.style.backgroundColor = '#d1fae5';
                     item.style.borderColor = '#10b981';
+                    item.style.color = '#065f46';
                 }
 
                 item.onclick = () => { logStudentActivity(currentSubject, v.title); pushNavState(); selectedChapterIdx = idx; renderContent(); };
@@ -574,6 +575,7 @@ function renderItems() {
         if (isCompleted) {
             card.style.backgroundColor = '#d1fae5';
             card.style.borderColor = '#10b981';
+            card.style.color = '#065f46';
         }
 
         card.onclick = () => {
