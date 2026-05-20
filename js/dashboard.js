@@ -406,7 +406,11 @@ window.onload = () => {
         }
     } // End of isLoggedIn check
 
-    renderHome();
+    // Only render home if no ?view= param — fetchSheetData handles routing when view param is present
+    const _initParams = new URLSearchParams(window.location.search);
+    if (!_initParams.get('view')) {
+        renderHome();
+    }
 };
 
 window.updateUserMenu = () => {
