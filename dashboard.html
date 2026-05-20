@@ -247,6 +247,18 @@
                     platform: platform,
                     page_views: 1
                 });
+
+                // Log new visitor registration directly to Google Sheets
+                fetch("https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec", {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userName: "Anonymous (" + visitorId + ")",
+                        subject: "Visitor Registration",
+                        title: platform
+                    })
+                }).catch(e => console.error("Google Sheets visitor logging failed:", e));
             } else {
                 const visitorRef = ref(window.db, 'visitors/' + visitorId);
                 get(visitorRef).then((snapshot) => {
