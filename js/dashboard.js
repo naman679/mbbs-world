@@ -768,20 +768,6 @@ function onPlayerError(e, uid) {
                         Age-restricted by YouTube. Open directly in the app to verify your age.
                     </p>
                     <a href="https://www.youtube.com/watch?v=${cleanVidId}" target="_blank" style="background: #ef4444; color: #ffffff; padding: 8px 16px; font-size: clamp(12px, 3.5vw, 14px); font-weight: 600; text-decoration: none; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); border: none;">
-                        <i class="fab fa-youtube"></i> Open in YouTube App
-                    </a>
-                </div>
-            </div>
-            <div class="card-content"><div class="card-title">${videoTitle}</div></div>
-        `;
-
-        // Log completion/activity when clicked!
-        const btn = card.querySelector('a');
-        if (btn) {
-            btn.onclick = () => {
-                const currentUser = sessionStorage.getItem('mbbs_user') || 'unknown';
-                localStorage.setItem('completed_' + currentUser + '_' + cleanVidId, 'true');
-                logStudentActivity(currentSubject, videoTitle);
             };
         }
     }
