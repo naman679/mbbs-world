@@ -46,6 +46,7 @@ body {
     height: 100dvh;
     overflow: hidden;
     position: relative;
+    overscroll-behavior-y: contain;
 }
 
 /* Ambient background texture */
@@ -248,6 +249,7 @@ body::after {
     /* Custom scrollbar */
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 184, 150, 0.15) transparent;
+    overscroll-behavior-y: contain;
 }
 
 .clinical-workspace::-webkit-scrollbar {
