@@ -33,6 +33,7 @@
       overflow-x: hidden;
       position: relative;
       min-height: 100vh;
+      overscroll-behavior-y: contain;
     }
 
     /* Animations */
@@ -671,6 +672,21 @@
               document.getElementById("nav-initial").textContent = cleanName.charAt(0).toUpperCase();
           }
       }
+  </script>
+
+  <!-- Service Worker Registration for Offline Mode -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((registration) => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          })
+          .catch((err) => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
+    }
   </script>
 </body>
 
