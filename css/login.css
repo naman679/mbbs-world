@@ -42,6 +42,7 @@ body {
     overflow: hidden;
     position: relative;
     color: var(--text-main);
+    overscroll-behavior-y: contain;
 }
 
 /* === ANIMATED AMBIENT BACKGROUND === */
