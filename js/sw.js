@@ -1,19 +1,19 @@
-const CACHE_NAME = 'mbbs-world-cache-v1';
+const CACHE_NAME = 'mbbs-world-cache-v2';
 
 // We want to cache the core files needed to start the app.
 const CORE_ASSETS = [
-    '/',
-    '/index.html',
-    '/dashboard.html',
-    '/login.html',
-    '/css/dashboard.css',
-    '/css/login.css',
-    '/css/daily-case.css',
-    '/css/network-status.css',
-    '/js/dashboard.js',
-    '/js/login.js',
-    '/js/daily-case.js',
-    '/js/network-status.js'
+    './',
+    './index.html',
+    './dashboard.html',
+    './login.html',
+    './css/dashboard.css',
+    './css/login.css',
+    './css/daily-case.css',
+    './css/network-status.css',
+    './js/dashboard.js',
+    './js/login.js',
+    './js/daily-case.js',
+    './js/network-status.js'
 ];
 
 self.addEventListener('install', (event) => {
