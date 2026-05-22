@@ -38,10 +38,6 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
-    overscroll-behavior: none;
-}
-
 body {
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
     background: var(--bg-dark);
@@ -50,6 +46,7 @@ body {
     height: 100dvh;
     overflow: hidden;
     position: relative;
+    overscroll-behavior-y: contain;
 }
 
 /* Ambient background texture */
