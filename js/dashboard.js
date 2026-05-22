@@ -770,7 +770,7 @@ function onPlayerError(e, uid) {
                     <p style="color: #cbd5e1; font-size: clamp(11px, 3vw, 13px); line-height: 1.3; margin: 0 0 12px 0; max-width: 95%; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">
                         Age-restricted by YouTube. Open directly in the app to verify your age.
                     </p>
-                    <a href="https://www.youtube.com/watch?v=${cleanVidId}" target="_blank" style="background: #ef4444; color: #ffffff; padding: 8px 16px; font-size: clamp(12px, 3.5vw, 14px); font-weight: 600; text-decoration: none; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); border: none;">
+                    <a href="https://www.youtube.com/watch?v=${cleanVidId}" style="background: #ef4444; color: #ffffff; padding: 8px 16px; font-size: clamp(12px, 3.5vw, 14px); font-weight: 600; text-decoration: none; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); border: none;">
                         ▶ Open in YouTube
                     </a>
                 </div>
@@ -1200,3 +1200,43 @@ function showSkeletonLoading() {
         </div>
     `;
 }
+
+// -----------------------------------------------------------------------------
+// MOBILE PULL-TO-REFRESH PREVENTION
+// Prevents Android WebViews (SwipeRefreshLayout) from refreshing the page.
+// -----------------------------------------------------------------------------
+let _touchStartY = 0;
+document.addEventListener('touchstart', e => {
+    if (e.touches.length > 0) {
+        _touchStartY = e.touches[0].pageY;
+    }
+}, { passive: true });
+
+document.addEventListener('touchmove', e => {
+    if (e.touches.length === 0) return;
+    const y = e.touches[0].pageY;
+    const isDraggingDown = y > _touchStartY;
+    
+    if (isDraggingDown) {
+        // Find if we are actively scrolling a nested element that is NOT at the top
+        let el = e.target;
+        let isAtTop = true;
+        
+        while (el && el !== document.body && el !== document.documentElement) {
+            const style = window.getComputedStyle(el);
+            const overflowY = style.overflowY;
+            if (overflowY === 'auto' || overflowY === 'scroll') {
+                if (el.scrollTop > 0) {
+                    isAtTop = false; // We are scrolling inside a container, allow it!
+                    break;
+                }
+            }
+            el = el.parentElement;
+        }
+        
+        // If we reached the top of all scrollable containers, block the pull-to-refresh
+        if (isAtTop && window.scrollY <= 0) {
+            e.preventDefault();
+        }
+    }
+}, { passive: false });
