@@ -26,14 +26,14 @@
     box-sizing: border-box;
 }
 
-body {
+html, body {
     background: linear-gradient(135deg, #060b18 0%, #0a0f22 50%, #080c1e 100%);
     color: var(--text-main);
     font-family: var(--font-body);
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
-    overscroll-behavior-y: contain;
+    overscroll-behavior: none !important;
 
     -webkit-user-select: none;
     -moz-user-select: none;
