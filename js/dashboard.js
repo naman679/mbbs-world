@@ -560,14 +560,31 @@ function renderContent() {
           selectedChapterIdx = idx;
           renderContent();
         };
-        let checkIcon = isWatched
-          ? '<i class="fas fa-check-circle" style="color:#059669; margin-left:10px; font-size:1.1rem;"></i>'
-          : "";
-        const isOffline = window.AndroidApp && window.AndroidApp.isVideoDownloaded ? window.AndroidApp.isVideoDownloaded(videoId) : false;
-        if (isOffline) {
-            checkIcon += '<i class="fas fa-download" style="color:#3b82f6; margin-left:10px; font-size:1.0rem;" title="Available Offline"></i>';
-        }
-        item.innerHTML = `<div class="chapter-icon"><i class="fas fa-play" style="${isWatched ? "color:#10b981;" : ""}"></i></div><div style="flex-grow:1; font-weight:500; display:flex; justify-content:space-between; align-items:center;"><span>Chapter ${idx + 1}: ${v.title}</span> ${checkIcon}</div>`;
+const isOffline = window.AndroidApp && window.AndroidApp.isVideoDownloaded ? window.AndroidApp.isVideoDownloaded(videoId) : false;
+const isDownloading = window.activeDownloads && window.activeDownloads[videoId] !== undefined;
+const progress = isDownloading ? window.activeDownloads[videoId] : 0;
+
+let actionHTML = "";
+if (isOffline) {
+    actionHTML = `<i class="fas fa-hdd" style="color:#3b82f6; font-size:1.2rem; margin-right:12px;" title="Downloaded"></i>`;
+} else if (isDownloading) {
+    actionHTML = `
+        <div class="circular-progress" id="prog-${videoId}" style="background: conic-gradient(#3b82f6 ${progress}%, rgba(255,255,255,0.1) 0); margin-right:12px;">
+            <span>${Math.round(progress)}%</span>
+        </div>
+    `;
+} else {
+    actionHTML = `<i class="fas fa-cloud-download-alt download-action-btn" style="margin-right:12px;" onclick="event.stopPropagation(); triggerListDownload('${videoId}')" title="Download"></i>`;
+}
+
+const checkIcon = isWatched ? `<i class="fas fa-check-circle" style="color:#059669; font-size:1.1rem;"></i>` : "";
+
+item.innerHTML = `
+    <div class="chapter-icon"><i class="fas fa-play" style="${isWatched ? "color:#10b981;" : ""}"></i></div>
+    <div style="flex-grow:1; font-weight:500; display:flex; justify-content:space-between; align-items:center;">
+        <span>Chapter ${idx+1}: ${v.title}</span> 
+        <div style="display:flex; align-items:center;">${actionHTML}${checkIcon}</div>
+    </div>`;
         list.appendChild(item);
       });
       area.appendChild(list);
@@ -731,9 +748,7 @@ function renderVideoCard(container, video, index) {
                     <button class="speed-btn" onclick="changeSpeed(1.5, '${uid}')">1.5x</button>
                     <button class="speed-btn" onclick="changeSpeed(2, '${uid}')">2x</button>
                 </div>
-                <button class="ctrl-btn" onclick="triggerDownload('${cleanVidId}')" title="Download for Offline">
-                    <i class="fas fa-download"></i>
-                </button>
+
                 <button class="ctrl-btn" onclick="toggleFullScreen(this)">
                     <i class="fas fa-expand"></i>
                 </button>
@@ -1220,12 +1235,29 @@ function showSkeletonLoading() {
     .join("")}\n        </div>\n    `;
 }
 
-window.triggerDownload = (youtubeId) => {
+if(!window.activeDownloads) window.activeDownloads = {};
+
+window.triggerListDownload = (youtubeId) => {
     if (window.AndroidApp && window.AndroidApp.downloadVideo) {
+        window.activeDownloads[youtubeId] = 0;
+        renderContent(); 
         window.AndroidApp.downloadVideo(youtubeId);
-        setTimeout(() => renderContent(), 1500);
     } else {
         alert("Offline downloads are only supported in the MBBS World Android App.");
     }
+};
+
+window.updateDownloadProgress = (youtubeId, progress) => {
+    window.activeDownloads[youtubeId] = progress;
+    const progDiv = document.getElementById('prog-' + youtubeId);
+    if (progDiv) {
+        progDiv.style.background = `conic-gradient(#3b82f6 ${progress}%, rgba(255,255,255,0.1) 0)`;
+        progDiv.querySelector('span').innerText = Math.round(progress) + '%';
+    }
+};
+
+window.onDownloadComplete = (youtubeId, success) => {
+    delete window.activeDownloads[youtubeId];
+    renderContent(); // Refresh UI to show the final solid icon (if success) or cloud icon (if failed)
 };
 
