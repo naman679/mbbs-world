@@ -563,7 +563,7 @@ function renderContent() {
         let checkIcon = isWatched
           ? '<i class="fas fa-check-circle" style="color:#059669; margin-left:10px; font-size:1.1rem;"></i>'
           : "";
-        const isOffline = localStorage.getItem("offline_" + currentUser + "_" + videoId) === "true";
+        const isOffline = window.AndroidApp && window.AndroidApp.isVideoDownloaded ? window.AndroidApp.isVideoDownloaded(videoId) : false;
         if (isOffline) {
             checkIcon += '<i class="fas fa-download" style="color:#3b82f6; margin-left:10px; font-size:1.0rem;" title="Available Offline"></i>';
         }
@@ -686,7 +686,7 @@ function renderVideoCard(container, video, index) {
     return;
   }
   
-  const isOffline = localStorage.getItem("offline_" + (sessionStorage.getItem("mbbs_user") || "unknown") + "_" + cleanVidId) === "true";
+  const isOffline = window.AndroidApp && window.AndroidApp.isVideoDownloaded ? window.AndroidApp.isVideoDownloaded(cleanVidId) : false;
   if (isOffline && window.AndroidApp) {
       card.innerHTML = `
           <div class="video-wrapper">
@@ -1223,8 +1223,6 @@ function showSkeletonLoading() {
 window.triggerDownload = (youtubeId) => {
     if (window.AndroidApp && window.AndroidApp.downloadVideo) {
         window.AndroidApp.downloadVideo(youtubeId);
-        const currentUser = sessionStorage.getItem("mbbs_user") || "unknown";
-        localStorage.setItem("offline_" + currentUser + "_" + youtubeId, "true");
         setTimeout(() => renderContent(), 1500);
     } else {
         alert("Offline downloads are only supported in the MBBS World Android App.");
