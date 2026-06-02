@@ -571,29 +571,29 @@ function renderContent() {
           selectedChapterIdx = idx;
           renderContent();
         };
-const isOffline = window.AndroidApp && window.AndroidApp.isVideoDownloaded ? window.AndroidApp.isVideoDownloaded(videoId) : false;
-const isDownloading = window.activeDownloads && window.activeDownloads[videoId] !== undefined;
-const progress = isDownloading ? window.activeDownloads[videoId] : 0;
+        const isOffline = window.AndroidApp && window.AndroidApp.isVideoDownloaded ? window.AndroidApp.isVideoDownloaded(videoId) : false;
+        const isDownloading = window.activeDownloads && window.activeDownloads[videoId] !== undefined;
+        const progress = isDownloading ? window.activeDownloads[videoId] : 0;
 
-let actionHTML = "";
-if (isOffline) {
-    actionHTML = `<i class="fas fa-hdd" style="color:#3b82f6; font-size:1.2rem; margin-right:12px;" title="Downloaded"></i>`;
-} else if (isDownloading) {
-    actionHTML = `
+        let actionHTML = "";
+        if (isOffline) {
+          actionHTML = `<i class="fas fa-hdd" style="color:#3b82f6; font-size:1.2rem; margin-right:12px;" title="Downloaded"></i>`;
+        } else if (isDownloading) {
+          actionHTML = `
         <div class="circular-progress" id="prog-${videoId}" style="background: conic-gradient(#3b82f6 ${progress}%, rgba(255,255,255,0.1) 0); margin-right:12px;">
             <span>${Math.round(progress)}%</span>
         </div>
     `;
-} else {
-    actionHTML = `<i class="fas fa-cloud-download-alt download-action-btn" style="margin-right:12px;" onclick="event.stopPropagation(); triggerListDownload('${videoId}')" title="Download"></i>`;
-}
+        } else {
+          actionHTML = `<i class="fas fa-cloud-download-alt download-action-btn" style="margin-right:12px;" onclick="event.stopPropagation(); triggerListDownload('${videoId}')" title="Download"></i>`;
+        }
 
-const checkIcon = isWatched ? `<i class="fas fa-check-circle" style="color:#059669; font-size:1.1rem;"></i>` : "";
+        const checkIcon = isWatched ? `<i class="fas fa-check-circle" style="color:#059669; font-size:1.1rem;"></i>` : "";
 
-item.innerHTML = `
+        item.innerHTML = `
     <div class="chapter-icon"><i class="fas fa-play" style="${isWatched ? "color:#10b981;" : ""}"></i></div>
     <div style="flex-grow:1; font-weight:500; display:flex; justify-content:space-between; align-items:center;">
-        <span>Chapter ${idx+1}: ${v.title}</span> 
+        <span>Chapter ${idx + 1}: ${v.title}</span> 
         <div style="display:flex; align-items:center;">${actionHTML}${checkIcon}</div>
     </div>`;
         list.appendChild(item);
@@ -713,7 +713,7 @@ function renderVideoCard(container, video, index) {
     }
     return;
   }
-  
+
   const currentUser = sessionStorage.getItem("mbbs_user") || "unknown";
   const isOffline = window.AndroidApp && window.AndroidApp.isVideoDownloaded ? window.AndroidApp.isVideoDownloaded(cleanVidId) : false;
 
@@ -727,32 +727,32 @@ function renderVideoCard(container, video, index) {
 
   // --- RENDER NATIVE PLAYER IF OFFLINE & NETWORK WEAK ---
   if (playFromLocal && window.AndroidApp) {
-      card.innerHTML = `
-          <div class="cyber-video-wrapper">
-              <video id="offlineVideoElement" src="https://appassets.androidplatform.net/internal/${cleanVidId}.mp4" width="100%" style="display:block;"
-                  ontimeupdate="if(this.currentTime>5) localStorage.setItem('completed_' + (sessionStorage.getItem('mbbs_user') || 'unknown') + '_${cleanVidId}', 'true');"
-                  onended="localStorage.setItem('completed_' + (sessionStorage.getItem('mbbs_user') || 'unknown') + '_${cleanVidId}', 'true');"></video>
-              <div class="cyber-controls">
-                  <button id="offPlayBtn" class="neon-btn"><i class="fas fa-play"></i></button>
-                  <div class="neon-text" id="offCurrentTime">0:00</div>
-                  <input type="range" id="offTimeline" class="neon-slider" min="0" max="100" value="0">
-                  <div class="neon-text" id="offDuration">0:00</div>
-                  <button id="offSpeedBtn" class="neon-btn">1x</button>
-              </div>
-          </div>
-          <div class="card-title">
-              <span style="color:#3b82f6;"><i class="fas fa-hdd"></i> Offline Mode:</span> ${video.title}
-          </div>
-          <p class="card-desc">${video.description || "Medical lecture available offline."}</p>
-      `;
-      
-      // Initialize the custom player logic immediately after rendering
-      setTimeout(() => {
-          initCustomOfflinePlayer();
-      }, 100);
+    card.innerHTML =
+      '<div class="cyber-video-wrapper">' +
+      '<video id="offlineVideoElement" src="https://appassets.androidplatform.net/internal/' + cleanVidId + '.mp4" width="100%" style="display:block;" ' +
+      'ontimeupdate="if(this.currentTime>5) localStorage.setItem(\'completed_\' + (sessionStorage.getItem(\'mbbs_user\') || \'unknown\') + \'_' + cleanVidId + '\', \'true\');" ' +
+      'onended="localStorage.setItem(\'completed_\' + (sessionStorage.getItem(\'mbbs_user\') || \'unknown\') + \'_' + cleanVidId + '\', \'true\');">' +
+      '</video>' +
+      '<div class="cyber-controls">' +
+      '<button id="offPlayBtn" class="neon-btn"><i class="fas fa-play"></i></button>' +
+      '<div class="neon-text" id="offCurrentTime">0:00</div>' +
+      '<input type="range" id="offTimeline" class="neon-slider" min="0" max="100" value="0">' +
+      '<div class="neon-text" id="offDuration">0:00</div>' +
+      '<button id="offSpeedBtn" class="neon-btn">1x</button>' +
+      '</div>' +
+      '</div>' +
+      '<div class="card-title">' +
+      '<span style="color:#3b82f6;"><i class="fas fa-hdd"></i> Offline Mode:</span> ' + video.title +
+      '</div>' +
+      '<p class="card-desc">' + (video.description || "Medical lecture available offline.") + '</p>';
 
-      container.appendChild(card);
-      return;
+    // Initialize the custom player logic immediately after rendering
+    setTimeout(() => {
+      initCustomOfflinePlayer();
+    }, 100);
+
+    container.appendChild(card);
+    return;
   }
 
   card.innerHTML = `
@@ -919,7 +919,7 @@ window.changeSpeed = (rate, uid) => {
         btn.classList.toggle(
           "active",
           parseFloat(btn.innerText) === rate ||
-            (rate === 1 && btn.innerText === "Normal"),
+          (rate === 1 && btn.innerText === "Normal"),
         );
       });
     }
@@ -1271,96 +1271,98 @@ function showSkeletonLoading() {
     .join("")}\n        </div>\n    `;
 }
 
-if(!window.activeDownloads) window.activeDownloads = {};
+if (!window.activeDownloads) window.activeDownloads = {};
 
 window.triggerListDownload = (youtubeId) => {
-    if (window.AndroidApp && window.AndroidApp.downloadVideo) {
-        window.activeDownloads[youtubeId] = 0;
-        renderContent(); 
-        window.AndroidApp.downloadVideo(youtubeId);
-    } else {
-        alert("Offline downloads are only supported in the MBBS World Android App.");
-    }
+  if (window.AndroidApp && window.AndroidApp.downloadVideo) {
+    window.activeDownloads[youtubeId] = 0;
+    renderContent();
+    window.AndroidApp.downloadVideo(youtubeId);
+  } else {
+    alert("Offline downloads are only supported in the MBBS World Android App.");
+  }
 };
 
 window.updateDownloadProgress = (youtubeId, progress) => {
-    window.activeDownloads[youtubeId] = progress;
-    const progDiv = document.getElementById('prog-' + youtubeId);
-    if (progDiv) {
-        progDiv.style.background = `conic-gradient(#3b82f6 ${progress}%, rgba(255,255,255,0.1) 0)`;
-        progDiv.querySelector('span').innerText = Math.round(progress) + '%';
-    }
+  window.activeDownloads[youtubeId] = progress;
+  const progDiv = document.getElementById('prog-' + youtubeId);
+  if (progDiv) {
+    progDiv.style.background = `conic-gradient(#3b82f6 ${progress}%, rgba(255,255,255,0.1) 0)`;
+    progDiv.querySelector('span').innerText = Math.round(progress) + '%';
+  }
 };
 
 window.onDownloadComplete = (youtubeId, success) => {
-    delete window.activeDownloads[youtubeId];
-    renderContent(); // Refresh UI to show the final solid icon (if success) or cloud icon (if failed)
+  delete window.activeDownloads[youtubeId];
+  renderContent(); // Refresh UI to show the final solid icon (if success) or cloud icon (if failed)
 };
 
 window.initCustomOfflinePlayer = () => {
-    const video = document.getElementById('offlineVideoElement');
-    const playBtn = document.getElementById('offPlayBtn');
-    const timeline = document.getElementById('offTimeline');
-    const currentTimeDisplay = document.getElementById('offCurrentTime');
-    const durationDisplay = document.getElementById('offDuration');
-    const speedBtn = document.getElementById('offSpeedBtn');
+  const video = document.getElementById('offlineVideoElement');
+  const playBtn = document.getElementById('offPlayBtn');
+  const timeline = document.getElementById('offTimeline');
+  const currentTimeDisplay = document.getElementById('offCurrentTime');
+  const durationDisplay = document.getElementById('offDuration');
+  const speedBtn = document.getElementById('offSpeedBtn');
 
-    if (!video) return;
+  if (!video) return;
 
-    let isScrubbing = false;
+  let isScrubbing = false;
 
-    // Time Formatter
-    const formatTime = (seconds) => {
-        if (isNaN(seconds)) return "0:00";
-        const m = Math.floor(seconds / 60);
-        const s = Math.floor(seconds % 60);
-        return ":${s < 10 ? '0' : ''}${s}";
-    };
+  // Time Formatter
+  // Time Formatter (Fixed String Concatenation)
+  const formatTime = (seconds) => {
+    if (isNaN(seconds)) return "0:00";
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    const paddedS = s < 10 ? "0" + s : s;
+    return m + ":" + paddedS;
+  };
 
-    // Play / Pause
-    playBtn.addEventListener('click', () => {
-        if (video.paused) {
-            video.play();
-            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        } else {
-            video.pause();
-            playBtn.innerHTML = '<i class="fas fa-play"></i>';
-        }
-    });
+  // Play / Pause
+  playBtn.addEventListener('click', () => {
+    if (video.paused) {
+      video.play();
+      playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    } else {
+      video.pause();
+      playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    }
+  });
 
-    // Duration Setup
-    video.addEventListener('loadedmetadata', () => {
-        timeline.max = Math.floor(video.duration);
-        durationDisplay.innerText = formatTime(video.duration);
-    });
+  // Duration Setup
+  video.addEventListener('loadedmetadata', () => {
+    timeline.max = Math.floor(video.duration);
+    durationDisplay.innerText = formatTime(video.duration);
+  });
 
-    // Timeline Scrubbing (Debounced to protect backend)
-    timeline.addEventListener('input', () => {
-        isScrubbing = true; // Visual update only while dragging
-        currentTimeDisplay.innerText = formatTime(timeline.value);
-    });
+  // Timeline Scrubbing (Debounced to protect backend)
+  timeline.addEventListener('input', () => {
+    isScrubbing = true; // Visual update only while dragging
+    currentTimeDisplay.innerText = formatTime(timeline.value);
+  });
 
-    timeline.addEventListener('change', () => {
-        video.currentTime = timeline.value; // Send exact network request on drop
-        isScrubbing = false;
-    });
+  timeline.addEventListener('change', () => {
+    video.currentTime = timeline.value; // Send exact network request on drop
+    isScrubbing = false;
+  });
 
-    // Live Timeline Tracking
-    video.addEventListener('timeupdate', () => {
-        if (!isScrubbing) {
-            timeline.value = Math.floor(video.currentTime);
-            currentTimeDisplay.innerText = formatTime(video.currentTime);
-        }
-    });
+  // Live Timeline Tracking
+  video.addEventListener('timeupdate', () => {
+    if (!isScrubbing) {
+      timeline.value = Math.floor(video.currentTime);
+      currentTimeDisplay.innerText = formatTime(video.currentTime);
+    }
+  });
 
-    // Speed Controller
-    let currentSpeed = 1;
-    speedBtn.addEventListener('click', () => {
-        if (currentSpeed === 1) currentSpeed = 1.5;
-        else if (currentSpeed === 1.5) currentSpeed = 2;
-        else currentSpeed = 1;
-        
-        video.playbackRate = currentSpeed;
-        speedBtn.innerText = currentSpeed + 'x';
-    });
+  // Speed Controller
+  let currentSpeed = 1;
+  speedBtn.addEventListener('click', () => {
+    if (currentSpeed === 1) currentSpeed = 1.5;
+    else if (currentSpeed === 1.5) currentSpeed = 2;
+    else currentSpeed = 1;
+
+    video.playbackRate = currentSpeed;
+    speedBtn.innerText = currentSpeed + 'x';
+  });
 };
