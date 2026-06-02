@@ -16,8 +16,8 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <link rel="stylesheet" href="css/login.css?v=1.6" />
-    <link rel="stylesheet" href="css/network-status.css?v=1.6" />
+    <link rel="stylesheet" href="css/login.css?v=1.9" />
+    <link rel="stylesheet" href="css/network-status.css?v=1.9" />
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4359263469597920"
@@ -201,11 +201,11 @@
                 overlay.style.textAlign = 'center';
                 overlay.style.padding = '20px';
                 
-                overlay.innerHTML = 
-                    <i class="fas fa-tools" style="font-size: 4rem; color: #ff0055; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,0,85,0.5); animation: cyberPulse 1.5s infinite ease-in-out;"></i>
-                    <h1 style="color: #00ffcc; font-family: 'Syne', sans-serif; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0,255,204,0.3);">System Offline</h1>
-                    <p style="color: #a0aec0; font-size: 1.1rem; max-width: 400px; line-height: 1.6;">${data.message || '??? MBBS World is currently undergoing server upgrades. Please check back soon!'}</p>
-                ;
+                overlay.innerHTML = `
+                  <i class="fas fa-tools" style="font-size: 4rem; color: #ff0055; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,0,85,0.5); animation: cyberPulse 1.5s infinite ease-in-out;"></i>
+                      <h1 style="color: #00ffcc; font-family: 'Syne', sans-serif; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0,255,204,0.3);">System Offline</h1>
+                      <p style="color: #a0aec0; font-size: 1.1rem; max-width: 400px; line-height: 1.6;">${data.message || '🛠️ MBBS World is currently undergoing server upgrades. Please check back soon!'}</p>
+              `;
                 document.body.appendChild(overlay);
                 return;
             }
@@ -269,6 +269,6 @@
         }
       });
     </script>
-    <script src="js/network-status.js?v=1.6"></script>
+    <script src="js/network-status.js?v=1.9"></script>
   </body>
 </html>
