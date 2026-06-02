@@ -703,8 +703,19 @@ function renderVideoCard(container, video, index) {
     return;
   }
   
+  const currentUser = sessionStorage.getItem("mbbs_user") || "unknown";
   const isOffline = window.AndroidApp && window.AndroidApp.isVideoDownloaded ? window.AndroidApp.isVideoDownloaded(cleanVidId) : false;
-  if (isOffline && window.AndroidApp) {
+
+  // --- SMART NETWORK DETECTION ---
+  const isOnline = navigator.onLine;
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const isNetworkStrong = isOnline && (!connection || !['slow-2g', '2g', '3g'].includes(connection.effectiveType));
+
+  // Play from local storage ONLY if it's downloaded AND the network is disconnected or weak
+  const playFromLocal = isOffline && !isNetworkStrong;
+
+  // --- RENDER NATIVE PLAYER IF OFFLINE & NETWORK WEAK ---
+  if (playFromLocal && window.AndroidApp) {
       card.innerHTML = `
           <div class="video-wrapper">
               <video width="100%" height="100%" controls controlsList="nodownload" style="object-fit: contain; background: #000;"
