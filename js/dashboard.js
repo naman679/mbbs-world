@@ -13,26 +13,37 @@ const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vSC_oD0BX4WhhLDL6e6WybIEXmvbiroBMBiGASJ2r-HdxlIOmDFqaWpUEMdDydPUHVOQNsOGGbgJR6O/pub?output=csv";
 async function fetchSheetData() {
   try {
-    showSkeletonLoading();
-    let text;
-    try {
-      const response = await fetch(SHEET_URL);
-      if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-      text = await response.text();
-      text = text.replace(/^\uFEFF/, "");
-      if (text.includes("<!DOCTYPE html>") || text.includes("<html>")) {
-        throw new Error("Invalid CSV format.");
-      }
-      localStorage.setItem('mbbs_cached_data', JSON.stringify(text));
-    } catch (fetchError) {
-      const cached = localStorage.getItem('mbbs_cached_data');
-      if (cached) {
-        text = JSON.parse(cached);
-      } else {
-        throw fetchError;
-      }
+    const cached = localStorage.getItem('mbbs_cached_data');
+    if (!cached) showSkeletonLoading();
+
+    // 1. Start fetching fresh data in the background (Do NOT await it yet)
+    const fetchPromise = fetch(SHEET_URL)
+        .then(res => res.ok ? res.text() : null)
+        .catch(() => null);
+
+    let textToUse;
+    
+    // 2. If we have cached data, use it INSTANTLY for zero-delay loading
+    if (cached) {
+        textToUse = JSON.parse(cached);
+        
+        // Silently update the cache in the background for the NEXT time they open the app
+        fetchPromise.then(freshText => {
+            if (freshText && !freshText.includes("<!DOCTYPE html>")) {
+                localStorage.setItem('mbbs_cached_data', JSON.stringify(freshText.replace(/^\uFEFF/, "")));
+            }
+        });
+    } else {
+        // 3. First-time user (No cache): We MUST wait for the network
+        const freshText = await fetchPromise;
+        if (!freshText) throw new Error("Network error and no cache available.");
+        textToUse = freshText.replace(/^\uFEFF/, "");
+        if (textToUse.includes("<!DOCTYPE html>")) throw new Error("Invalid CSV format.");
+        localStorage.setItem('mbbs_cached_data', JSON.stringify(textToUse));
     }
-    const lines = text.split(/\r?\n/).filter((line) => line.trim() !== "");
+
+    // --- CONTINUE WITH EXISTING PARSING LOGIC ---
+    const lines = textToUse.split(/\r?\n/).filter((line) => line.trim() !== "");
     if (lines.length < 2) throw new Error("Spreadsheet is empty.");
     allData = lines.slice(1);
     mbbsData = {};
