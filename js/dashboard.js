@@ -717,13 +717,8 @@ function renderVideoCard(container, video, index) {
   const currentUser = sessionStorage.getItem("mbbs_user") || "unknown";
   const isOffline = window.AndroidApp && window.AndroidApp.isVideoDownloaded ? window.AndroidApp.isVideoDownloaded(cleanVidId) : false;
 
-  // --- SMART NETWORK DETECTION ---
-  const isOnline = navigator.onLine;
-  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  const isNetworkStrong = isOnline && (!connection || !['slow-2g', '2g', '3g'].includes(connection.effectiveType));
-
-  // Play from local storage ONLY if it's downloaded AND the network is disconnected or weak
-  const playFromLocal = isOffline && !isNetworkStrong;
+  // ALWAYS play from local storage if downloaded to save user's internet data!
+  const playFromLocal = isOffline;
 
   // --- RENDER NATIVE PLAYER IF OFFLINE & NETWORK WEAK ---
   if (playFromLocal && window.AndroidApp) {
