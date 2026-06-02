@@ -14,12 +14,23 @@ const SHEET_URL =
 async function fetchSheetData() {
   try {
     showSkeletonLoading();
-    const response = await fetch(SHEET_URL);
-    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-    let text = await response.text();
-    text = text.replace(/^\uFEFF/, "");
-    if (text.includes("<!DOCTYPE html>") || text.includes("<html>")) {
-      throw new Error("Invalid CSV format.");
+    let text;
+    try {
+      const response = await fetch(SHEET_URL);
+      if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+      text = await response.text();
+      text = text.replace(/^\uFEFF/, "");
+      if (text.includes("<!DOCTYPE html>") || text.includes("<html>")) {
+        throw new Error("Invalid CSV format.");
+      }
+      localStorage.setItem('mbbs_cached_data', JSON.stringify(text));
+    } catch (fetchError) {
+      const cached = localStorage.getItem('mbbs_cached_data');
+      if (cached) {
+        text = JSON.parse(cached);
+      } else {
+        throw fetchError;
+      }
     }
     const lines = text.split(/\r?\n/).filter((line) => line.trim() !== "");
     if (lines.length < 2) throw new Error("Spreadsheet is empty.");
