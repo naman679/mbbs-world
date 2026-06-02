@@ -727,32 +727,22 @@ function renderVideoCard(container, video, index) {
 
   // --- RENDER NATIVE PLAYER IF OFFLINE & NETWORK WEAK ---
   if (playFromLocal && window.AndroidApp) {
-    card.innerHTML =
-      '<div class="cyber-video-wrapper">' +
-      '<video id="offlineVideoElement" src="https://appassets.androidplatform.net/internal/' + cleanVidId + '.mp4" width="100%" style="display:block;" ' +
-      'ontimeupdate="if(this.currentTime>5) localStorage.setItem(\'completed_\' + (sessionStorage.getItem(\'mbbs_user\') || \'unknown\') + \'_' + cleanVidId + '\', \'true\');" ' +
-      'onended="localStorage.setItem(\'completed_\' + (sessionStorage.getItem(\'mbbs_user\') || \'unknown\') + \'_' + cleanVidId + '\', \'true\');">' +
-      '</video>' +
-      '<div class="cyber-controls">' +
-      '<button id="offPlayBtn" class="neon-btn"><i class="fas fa-play"></i></button>' +
-      '<div class="neon-text" id="offCurrentTime">0:00</div>' +
-      '<input type="range" id="offTimeline" class="neon-slider" min="0" max="100" value="0">' +
-      '<div class="neon-text" id="offDuration">0:00</div>' +
-      '<button id="offSpeedBtn" class="neon-btn">1x</button>' +
-      '</div>' +
-      '</div>' +
-      '<div class="card-title">' +
-      '<span style="color:#3b82f6;"><i class="fas fa-hdd"></i> Offline Mode:</span> ' + video.title +
-      '</div>' +
-      '<p class="card-desc">' + (video.description || "Medical lecture available offline.") + '</p>';
-
-    // Initialize the custom player logic immediately after rendering
-    setTimeout(() => {
-      initCustomOfflinePlayer();
-    }, 100);
-
-    container.appendChild(card);
-    return;
+      card.innerHTML = 
+          '<div class="cyber-video-wrapper" style="cursor:pointer;" onclick="window.AndroidApp.playNativeVideo(\'' + cleanVidId + '\')">' +
+              '<div style="position: relative; width: 100%; padding-top: 56.25%; background-color: #0a0a0c; border-radius: 8px; overflow: hidden;">' +
+                  '<img src="https://img.youtube.com/vi/' + cleanVidId + '/hqdefault.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">' +
+                  '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">' +
+                      '<i class="fas fa-play-circle" style="font-size: 4.5rem; color: #00ffcc; text-shadow: 0 0 20px rgba(0,255,204,0.6); transition: transform 0.2s ease;"></i>' +
+                  '</div>' +
+              '</div>' +
+          '</div>' +
+          '<div class="card-title">' +
+              '<span style="color:#3b82f6;"><i class="fas fa-hdd"></i> Offline Mode:</span> ' + video.title +
+          '</div>' +
+          '<p class="card-desc">Tap to open in your device\'s native video player.</p>';
+      
+      container.appendChild(card);
+      return;
   }
 
   card.innerHTML = `
