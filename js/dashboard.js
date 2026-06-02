@@ -1330,11 +1330,16 @@ window.initCustomOfflinePlayer = () => {
     }
   });
 
-  // Duration Setup
-  video.addEventListener('loadedmetadata', () => {
-    timeline.max = Math.floor(video.duration);
-    durationDisplay.innerText = formatTime(video.duration);
-  });
+  // Duration Setup (Safely handles WebView calculation delays)
+  const updateDuration = () => {
+    if (video.duration && isFinite(video.duration)) {
+      timeline.max = Math.floor(video.duration);
+      durationDisplay.innerText = formatTime(video.duration);
+    }
+  };
+  
+  video.addEventListener('loadedmetadata', updateDuration);
+  video.addEventListener('durationchange', updateDuration);
 
   // Timeline Scrubbing (Debounced to protect backend)
   timeline.addEventListener('input', () => {
