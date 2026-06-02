@@ -144,3 +144,22 @@ body, #main-content {
 .portal-footer {
     flex-shrink: 0;
 }
+
+@media screen and (max-width: 768px) {
+    #fileModal.modal {
+        padding: 0 !important;
+    }
+    #fileModal .modal-content {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+    }
+}
