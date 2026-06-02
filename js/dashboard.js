@@ -364,6 +364,20 @@ function renderPlatforms() {
   document.getElementById("contentArea").innerHTML =
     `\n        <div class="welcome-section" style="padding: 1rem 0;">\n            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>\n            <h1><i class="fas fa-layer-group"></i> Select Platform</h1>\n        </div>\n        <div class="portal-grid" style="margin-top:1rem;">\n            ${pList.map((p) => `<div class="portal-card" onclick="setPlatform('${p}')"><i class="fas fa-university"></i><h3>${p}</h3></div>`).join("")}\n        </div>\n    `;
 }
+function showSkeletonLoading() {
+    const container = document.getElementById('contentArea');
+    if (!container) return;
+    
+    // Inject 4 glowing skeleton cards
+    container.innerHTML = `
+        <div style="padding-top: 20px;">
+            <div class="cyber-skeleton-card"></div>
+            <div class="cyber-skeleton-card"></div>
+            <div class="cyber-skeleton-card"></div>
+            <div class="cyber-skeleton-card"></div>
+        </div>
+    `;
+  }
 window.setPlatform = (platform) => {
   pushNavState();
   currentPlatform = platform;
@@ -1244,18 +1258,7 @@ window.addEventListener("load", () => {
     }, 1500);
   }
 });
-function showSkeletonLoading() {
-  const area = document.getElementById("contentArea");
-  area.innerHTML = `\n        <div class="welcome-section" style="padding: 1rem 0;">\n            <div class="skeleton-box skel-title"></div>\n        </div>\n        <div class="portal-grid" style="margin-top:1rem;">\n            ${Array(
-    6,
-  )
-    .fill()
-    .map(
-      () =>
-        `\n                <div class="skeleton-box skel-card">\n                    <div class="skeleton-box skel-icon"></div>\n                    <div class="skeleton-box skel-text"></div>\n                </div>\n            `,
-    )
-    .join("")}\n        </div>\n    `;
-}
+
 
 if (!window.activeDownloads) window.activeDownloads = {};
 
