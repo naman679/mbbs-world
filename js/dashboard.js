@@ -1212,16 +1212,6 @@ function launchGuidedTour() {
         },
       },
       {
-        element: "#btn-daily-case",
-        popover: {
-          title: "AI Clinical Tutor 🤖",
-          description:
-            "Practice history taking and diagnosis with our realistic AI patient simulator.",
-          side: "top",
-          align: "center",
-        },
-      },
-      {
         element: "#mainNav",
         popover: {
           title: "Resource Library",
