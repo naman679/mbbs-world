@@ -730,7 +730,7 @@ function renderVideoCard(container, video, index) {
       card.innerHTML = 
           '<div class="cyber-video-wrapper" style="cursor:pointer;" onclick="window.AndroidApp.playNativeVideo(\'' + cleanVidId + '\')">' +
               '<div style="position: relative; width: 100%; padding-top: 56.25%; background-color: #0a0a0c; border-radius: 8px; overflow: hidden;">' +
-                  '<img src="https://img.youtube.com/vi/' + cleanVidId + '/hqdefault.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">' +
+                  '<img src="https://appassets.androidplatform.net/internal/' + cleanVidId + '.jpg" onerror="this.style.display=\'none\'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">' +
                   '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">' +
                       '<i class="fas fa-play-circle" style="font-size: 4.5rem; color: #00ffcc; text-shadow: 0 0 20px rgba(0,255,204,0.6); transition: transform 0.2s ease;"></i>' +
                   '</div>' +
