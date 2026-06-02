@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBBS World | Command Center</title>
+    <style>
+        /* CYBER-TECHNICAL THEME */
+        :root {
+            --bg-color: #050508;
+            --panel-bg: rgba(15, 15, 25, 0.9);
+            --neon-cyan: #00ffcc;
+            --neon-red: #ff3366;
+            --text-main: #e0e0ff;
+            --border-glow: 0 0 10px rgba(0, 255, 204, 0.2);
+        }
+        body, html {
+            margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-color); color: var(--text-main);
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+        .header {
+            text-align: center; padding: 20px; border-bottom: 1px solid var(--neon-cyan);
+            box-shadow: var(--border-glow); text-transform: uppercase; letter-spacing: 3px;
+        }
+        .header h1 { margin: 0; color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); }
+        .container { flex: 1; display: flex; flex-wrap: wrap; padding: 20px; gap: 20px; }
+        .panel {
+            flex: 1; min-width: 300px; background: var(--panel-bg); 
+            border: 1px solid rgba(0, 255, 204, 0.3); border-radius: 10px; padding: 20px;
+        }
+        .panel h2 { color: var(--neon-cyan); border-bottom: 1px dashed var(--neon-cyan); padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { color: var(--neon-cyan); }
+        .btn {
+            background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
+            padding: 5px 10px; cursor: pointer; border-radius: 4px; transition: 0.3s;
+        }
+        .btn:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 10px var(--neon-cyan); }
+        .btn-danger { border-color: var(--neon-red); color: var(--neon-red); }
+        .btn-danger:hover { background: var(--neon-red); color: #fff; box-shadow: 0 0 10px var(--neon-red); }
+        .input-box {
+            width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid var(--neon-cyan);
+            color: white; margin-bottom: 10px; box-sizing: border-box;
+        }
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color); z-index: 999; display: flex;
+            justify-content: center; align-items: center; flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <h1 style="color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan);">SYSTEM LOCKED</h1>
+        <input type="password" id="admin-pass" class="input-box" style="width: 300px; text-align: center;" placeholder="Enter Admin Credential">
+        <button class="btn" onclick="checkAuth()">Initialize Dashboard</button>
+    </div>
+
+    <div id="dashboard" style="display: none;">
+        <div class="header">
+            <h1>God Mode Activated</h1>
+            <p>MBBS World System Architecture</p>
+        </div>
+
+        <div class="container">
+            <div class="panel">
+                <h2>System Overrides</h2>
+                
+                <p>Global Maintenance Mode (Locks all users out):</p>
+                <button id="maint-btn" class="btn" onclick="toggleMaintenance()">Loading...</button>
+                
+                <br><br><br>
+                <p>Global App Broadcast (Shows at top of app):</p>
+                <input type="text" id="announcement-input" class="input-box" placeholder="Type message...">
+                <button class="btn" onclick="updateAnnouncement()">Broadcast Message</button>
+            </div>
+
+            <div class="panel">
+                <h2>Live Data Stream</h2>
+                <div style="height: 300px; overflow-y: auto;">
+                    <table>
+                        <thead><tr><th>Time</th><th>User</th><th>Action</th></tr></thead>
+                        <tbody id="log-table"><tr><td colspan="3">Decrypting logs...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel" style="flex-basis: 100%;">
+                <h2>User Directory</h2>
+                <table>
+                    <thead><tr><th>Name</th><th>Status</th><th>Last Login</th><th>Action</th></tr></thead>
+                    <tbody id="user-table"><tr><td colspan="4">Fetching user matrix...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // ⚠️ PASTE YOUR NEW APPS SCRIPT URL HERE
+        // ==========================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz7SqCcf5L84nG_nF_KGdvZFByoSU3hd7ngDWVFs8DOXqtJZb95VbO5M0N_sodfIp4UZA/exec';
+        
+        let isMaintenance = false;
+
+        // 1. Security Check
+        function checkAuth() {
+            const pass = document.getElementById('admin-pass').value;
+            if (pass === 'naman_admin') {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                fetchDashboardData();
+            } else {
+                alert('ACCESS DENIED.');
+            }
+        }
+
+        // 2. Load All Data
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=admin_get_data`);
+                const data = await response.json();
+                
+                // Set Overrides
+                isMaintenance = data.maintenanceMode;
+                updateMaintButtonUI();
+                document.getElementById('announcement-input').value = data.announcement;
+
+                // Render Logs
+                const logHTML = data.logs.map(log => `
+                    <tr>
+                        <td>${new Date(log[0]).toLocaleTimeString()}</td>
+                        <td style="color: var(--neon-cyan);">${log[1]}</td>
+                        <td>${log[2]} - ${log[3]}</td>
+                    </tr>
+                `).join('');
+                document.getElementById('log-table').innerHTML = logHTML;
+
+                // Render Users
+                const userHTML = data.users.map(user => {
+                    const name = user['Name'] || user[Object.keys(user)[0]]; 
+                    const status = user['Status'] || user[Object.keys(user)[1]];
+                    const lastLogin = user['LastLogin'] || user[Object.keys(user)[2]] || 'Never';
+                    
+                    const isAllowed = status.toString().trim() === 'Allowed';
+                    const btnClass = isAllowed ? 'btn btn-danger' : 'btn';
+                    const btnText = isAllowed ? 'Block Access' : 'Approve User';
+                    const newStatus = isAllowed ? 'Blocked' : 'Allowed';
+
+                    return `
+                        <tr>
+                            <td style="color: var(--neon-cyan); font-weight: bold;">${name}</td>
+                            <td>${status}</td>
+                            <td>${new Date(lastLogin).toLocaleDateString()}</td>
+                            <td>
+                                <button class="${btnClass}" onclick="updateUser(${user.rowIndex}, '${newStatus}')">
+                                    ${btnText}
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                document.getElementById('user-table').innerHTML = userHTML;
+
+            } catch (error) {
+                alert("Error connecting to database.");
+            }
+        }
+
+        // 3. Admin Actions
+        async function updateUser(rowIndex, newStatus) {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "admin_update", type: "user_status", rowIndex, newStatus })
+            });
+            fetchDashboardData(); // Refresh UI
+        }
+
+        async function toggleMaintenance() {
+            isMaintenance = !isMaintenance;
+            updateMaintButtonUI();
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "admin_update", type: "maintenance", value: isMaintenance })
+            });
+        }
+
+        async function updateAnnouncement() {
+            const text = document.getElementById('announcement-input').value;
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "admin_update", type: "announcement", value: text })
+            });
+            alert("Broadcast Sent!");
+        }
+
+        function updateMaintButtonUI() {
+            const btn = document.getElementById('maint-btn');
+            if (isMaintenance) {
+                btn.className = 'btn btn-danger';
+                btn.innerText = 'SYSTEM OFFLINE (Click to Enable)';
+            } else {
+                btn.className = 'btn';
+                btn.innerText = 'SYSTEM ONLINE (Click to Disable)';
+            }
+        }
+    </script>
+</body>
+</html>
