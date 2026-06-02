@@ -300,7 +300,7 @@ window.logStudentActivity = (subject, title) => {
   const userName = sessionStorage.getItem("mbbs_user");
   if (!userName || !subject || !title) return;
   fetch(
-    "https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec",
+    "https://script.google.com/macros/s/AKfycbz7SqCcf5L84nG_nF_KGdvZFByoSU3hd7ngDWVFs8DOXqtJZb95VbO5M0N_sodfIp4UZA/exec",
     {
       method: "POST",
       mode: "no-cors",
@@ -415,7 +415,7 @@ window.onload = () => {
       localStorage.getItem("mbbs_video_authorized") === "true";
     if (isAuthorized) {
       fetch(
-        `https://script.google.com/macros/s/AKfycbyKKtYO8z3gBk1GiOHSMX8DJV7CikXupAP8sYLRoxASPFBUslRtHIQFoYsqy9ie_v6clQ/exec?name=${encodeURIComponent(savedUser)}`,
+        `https://script.google.com/macros/s/AKfycbz7SqCcf5L84nG_nF_KGdvZFByoSU3hd7ngDWVFs8DOXqtJZb95VbO5M0N_sodfIp4UZA/exec?name=${encodeURIComponent(savedUser)}`,
       )
         .then((r) => r.json())
         .then(async (data) => {
