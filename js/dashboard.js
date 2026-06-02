@@ -1272,7 +1272,7 @@ window.addEventListener("load", () => {
     banner.style.position = 'relative';
     banner.style.zIndex = '9999';
     banner.style.animation = 'cyberPulse 2s infinite ease-in-out';
-    banner.innerHTML = <i class="fas fa-bullhorn" style="margin-right: 10px;"></i>  + announcement +  <i class="fas fa-times" style="position: absolute; right: 20px; top: 12px; cursor: pointer;" onclick="this.parentElement.style.display='none'"></i>;
+    banner.innerHTML = `<i class="fas fa-bullhorn" style="margin-right: 10px;"></i> ` + announcement + ` <i class="fas fa-times" style="position: absolute; right: 20px; top: 12px; cursor: pointer;" onclick="this.parentElement.style.display='none'"></i>`;
     
     document.body.insertBefore(banner, document.body.firstChild);
   }
