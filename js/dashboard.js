@@ -1257,6 +1257,25 @@ window.addEventListener("load", () => {
       localStorage.setItem("mbbs_tour_completed", "true");
     }, 1500);
   }
+  
+  const announcement = localStorage.getItem('mbbs_announcement');
+  if (announcement && announcement.trim() !== "") {
+    const banner = document.createElement('div');
+    banner.style.width = '100%';
+    banner.style.background = 'linear-gradient(90deg, #ff0055, #7c3aed)';
+    banner.style.color = '#fff';
+    banner.style.padding = '10px 20px';
+    banner.style.textAlign = 'center';
+    banner.style.fontWeight = 'bold';
+    banner.style.fontFamily = "'Syne', sans-serif";
+    banner.style.boxShadow = '0 4px 15px rgba(255, 0, 85, 0.4)';
+    banner.style.position = 'relative';
+    banner.style.zIndex = '9999';
+    banner.style.animation = 'cyberPulse 2s infinite ease-in-out';
+    banner.innerHTML = <i class="fas fa-bullhorn" style="margin-right: 10px;"></i>  + announcement +  <i class="fas fa-times" style="position: absolute; right: 20px; top: 12px; cursor: pointer;" onclick="this.parentElement.style.display='none'"></i>;
+    
+    document.body.insertBefore(banner, document.body.firstChild);
+  }
 });
 
 
