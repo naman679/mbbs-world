@@ -717,15 +717,29 @@ function renderVideoCard(container, video, index) {
   // --- RENDER NATIVE PLAYER IF OFFLINE & NETWORK WEAK ---
   if (playFromLocal && window.AndroidApp) {
       card.innerHTML = `
-          <div class="video-wrapper">
-              <video width="100%" height="100%" controls controlsList="nodownload" style="object-fit: contain; background: #000;"
+          <div class="cyber-video-wrapper">
+              <video id="offlineVideoElement" src="https://appassets.androidplatform.net/internal/${cleanVidId}.mp4" width="100%" style="display:block;"
                   ontimeupdate="if(this.currentTime>5) localStorage.setItem('completed_' + (sessionStorage.getItem('mbbs_user') || 'unknown') + '_${cleanVidId}', 'true');"
-                  onended="localStorage.setItem('completed_' + (sessionStorage.getItem('mbbs_user') || 'unknown') + '_${cleanVidId}', 'true');">
-                  <source src="https://appassets.androidplatform.net/internal/${cleanVidId}.mp4" type="video/mp4">
-              </video>
+                  onended="localStorage.setItem('completed_' + (sessionStorage.getItem('mbbs_user') || 'unknown') + '_${cleanVidId}', 'true');"></video>
+              <div class="cyber-controls">
+                  <button id="offPlayBtn" class="neon-btn"><i class="fas fa-play"></i></button>
+                  <div class="neon-text" id="offCurrentTime">0:00</div>
+                  <input type="range" id="offTimeline" class="neon-slider" min="0" max="100" value="0">
+                  <div class="neon-text" id="offDuration">0:00</div>
+                  <button id="offSpeedBtn" class="neon-btn">1x</button>
+              </div>
           </div>
-          <div class="card-content"><div class="card-title">${video.title}</div></div>
+          <div class="card-title">
+              <span style="color:#3b82f6;"><i class="fas fa-hdd"></i> Offline Mode:</span> ${video.title}
+          </div>
+          <p class="card-desc">${video.description || "Medical lecture available offline."}</p>
       `;
+      
+      // Initialize the custom player logic immediately after rendering
+      setTimeout(() => {
+          initCustomOfflinePlayer();
+      }, 100);
+
       container.appendChild(card);
       return;
   }
@@ -1272,3 +1286,70 @@ window.onDownloadComplete = (youtubeId, success) => {
     renderContent(); // Refresh UI to show the final solid icon (if success) or cloud icon (if failed)
 };
 
+window.initCustomOfflinePlayer = () => {
+    const video = document.getElementById('offlineVideoElement');
+    const playBtn = document.getElementById('offPlayBtn');
+    const timeline = document.getElementById('offTimeline');
+    const currentTimeDisplay = document.getElementById('offCurrentTime');
+    const durationDisplay = document.getElementById('offDuration');
+    const speedBtn = document.getElementById('offSpeedBtn');
+
+    if (!video) return;
+
+    let isScrubbing = false;
+
+    // Time Formatter
+    const formatTime = (seconds) => {
+        if (isNaN(seconds)) return "0:00";
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return ":${s < 10 ? '0' : ''}${s}";
+    };
+
+    // Play / Pause
+    playBtn.addEventListener('click', () => {
+        if (video.paused) {
+            video.play();
+            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        } else {
+            video.pause();
+            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        }
+    });
+
+    // Duration Setup
+    video.addEventListener('loadedmetadata', () => {
+        timeline.max = Math.floor(video.duration);
+        durationDisplay.innerText = formatTime(video.duration);
+    });
+
+    // Timeline Scrubbing (Debounced to protect backend)
+    timeline.addEventListener('input', () => {
+        isScrubbing = true; // Visual update only while dragging
+        currentTimeDisplay.innerText = formatTime(timeline.value);
+    });
+
+    timeline.addEventListener('change', () => {
+        video.currentTime = timeline.value; // Send exact network request on drop
+        isScrubbing = false;
+    });
+
+    // Live Timeline Tracking
+    video.addEventListener('timeupdate', () => {
+        if (!isScrubbing) {
+            timeline.value = Math.floor(video.currentTime);
+            currentTimeDisplay.innerText = formatTime(video.currentTime);
+        }
+    });
+
+    // Speed Controller
+    let currentSpeed = 1;
+    speedBtn.addEventListener('click', () => {
+        if (currentSpeed === 1) currentSpeed = 1.5;
+        else if (currentSpeed === 1.5) currentSpeed = 2;
+        else currentSpeed = 1;
+        
+        video.playbackRate = currentSpeed;
+        speedBtn.innerText = currentSpeed + 'x';
+    });
+};
