@@ -18,28 +18,32 @@ async function fetchSheetData() {
 
     // 1. Start fetching fresh data in the background (Do NOT await it yet)
     const fetchPromise = fetch(SHEET_URL)
-        .then(res => res.ok ? res.text() : null)
-        .catch(() => null);
+      .then(res => res.ok ? res.text() : null)
+      .catch(() => null);
 
     let textToUse;
-    
+
     // 2. If we have cached data, use it INSTANTLY for zero-delay loading
     if (cached) {
+      try {
         textToUse = JSON.parse(cached);
-        
-        // Silently update the cache in the background for the NEXT time they open the app
-        fetchPromise.then(freshText => {
-            if (freshText && !freshText.includes("<!DOCTYPE html>")) {
-                localStorage.setItem('mbbs_cached_data', JSON.stringify(freshText.replace(/^\uFEFF/, "")));
-            }
-        });
+      } catch (e) {
+        textToUse = cached; // Fallback for older non-JSON cache format
+      }
+
+      // Silently update the cache in the background for the NEXT time they open the app
+      fetchPromise.then(freshText => {
+        if (freshText && !freshText.includes("<!DOCTYPE html>")) {
+          localStorage.setItem('mbbs_cached_data', JSON.stringify(freshText.replace(/^\uFEFF/, "")));
+        }
+      });
     } else {
-        // 3. First-time user (No cache): We MUST wait for the network
-        const freshText = await fetchPromise;
-        if (!freshText) throw new Error("Network error and no cache available.");
-        textToUse = freshText.replace(/^\uFEFF/, "");
-        if (textToUse.includes("<!DOCTYPE html>")) throw new Error("Invalid CSV format.");
-        localStorage.setItem('mbbs_cached_data', JSON.stringify(textToUse));
+      // 3. First-time user (No cache): We MUST wait for the network
+      const freshText = await fetchPromise;
+      if (!freshText) throw new Error("Network error and no cache available.");
+      textToUse = freshText.replace(/^\uFEFF/, "");
+      if (textToUse.includes("<!DOCTYPE html>")) throw new Error("Invalid CSV format.");
+      localStorage.setItem('mbbs_cached_data', JSON.stringify(textToUse));
     }
 
     // --- CONTINUE WITH EXISTING PARSING LOGIC ---
@@ -365,19 +369,23 @@ function renderPlatforms() {
     `\n        <div class="welcome-section" style="padding: 1rem 0;">\n            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>\n            <h1><i class="fas fa-layer-group"></i> Select Platform</h1>\n        </div>\n        <div class="portal-grid" style="margin-top:1rem;">\n            ${pList.map((p) => `<div class="portal-card" onclick="setPlatform('${p}')"><i class="fas fa-university"></i><h3>${p}</h3></div>`).join("")}\n        </div>\n    `;
 }
 function showSkeletonLoading() {
-    const container = document.getElementById('contentArea');
-    if (!container) return;
-    
-    // Inject 4 glowing skeleton cards
-    container.innerHTML = `
-        <div style="padding-top: 20px;">
-            <div class="cyber-skeleton-card"></div>
-            <div class="cyber-skeleton-card"></div>
-            <div class="cyber-skeleton-card"></div>
-            <div class="cyber-skeleton-card"></div>
+  const container = document.getElementById('contentArea');
+  if (!container) return;
+
+  // Inject the same home-screen grid skeleton
+  container.innerHTML = `
+        <div class="hero-quantum" style="min-height: auto; padding: 4rem 1rem 2rem; text-align: center; width: 100%;">
+            <div class="skeleton-box skel-title" style="margin: 0 auto 3rem auto; width: 250px;"></div>
+            <div class="portal-grid" style="width: 100%; max-width: 1200px; margin: 0 auto;">
+                <div class="skel-card"><div class="skeleton-box skel-icon"></div><div class="skeleton-box skel-text"></div></div>
+                <div class="skel-card"><div class="skeleton-box skel-icon"></div><div class="skeleton-box skel-text"></div></div>
+                <div class="skel-card"><div class="skeleton-box skel-icon"></div><div class="skeleton-box skel-text"></div></div>
+                <div class="skel-card"><div class="skeleton-box skel-icon"></div><div class="skeleton-box skel-text"></div></div>
+                <div class="skel-card"><div class="skeleton-box skel-icon"></div><div class="skeleton-box skel-text"></div></div>
+            </div>
         </div>
     `;
-  }
+}
 window.setPlatform = (platform) => {
   pushNavState();
   currentPlatform = platform;
@@ -747,22 +755,22 @@ function renderVideoCard(container, video, index) {
 
   // --- RENDER NATIVE PLAYER IF OFFLINE & NETWORK WEAK ---
   if (playFromLocal && window.AndroidApp) {
-      card.innerHTML = 
-          '<div class="cyber-video-wrapper" style="cursor:pointer;" onclick="window.AndroidApp.playNativeVideo(\'' + cleanVidId + '\')">' +
-              '<div style="position: relative; width: 100%; padding-top: 56.25%; background-color: #0a0a0c; border-radius: 8px; overflow: hidden;">' +
-                  '<img src="https://appassets.androidplatform.net/internal/' + cleanVidId + '.jpg" onerror="this.style.display=\'none\'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">' +
-                  '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">' +
-                      '<i class="fas fa-play-circle" style="font-size: 4.5rem; color: #00ffcc; text-shadow: 0 0 20px rgba(0,255,204,0.6); transition: transform 0.2s ease;"></i>' +
-                  '</div>' +
-              '</div>' +
-          '</div>' +
-          '<div class="card-title">' +
-              '<span style="color:#3b82f6;"><i class="fas fa-hdd"></i> Offline Mode:</span> ' + video.title +
-          '</div>' +
-          '<p class="card-desc">Tap to open in your device\'s native video player.</p>';
-      
-      container.appendChild(card);
-      return;
+    card.innerHTML =
+      '<div class="cyber-video-wrapper" style="cursor:pointer;" onclick="window.AndroidApp.playNativeVideo(\'' + cleanVidId + '\')">' +
+      '<div style="position: relative; width: 100%; padding-top: 56.25%; background-color: #0a0a0c; border-radius: 8px; overflow: hidden;">' +
+      '<img src="https://appassets.androidplatform.net/internal/' + cleanVidId + '.jpg" onerror="this.style.display=\'none\'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">' +
+      '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">' +
+      '<i class="fas fa-play-circle" style="font-size: 4.5rem; color: #00ffcc; text-shadow: 0 0 20px rgba(0,255,204,0.6); transition: transform 0.2s ease;"></i>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '<div class="card-title">' +
+      '<span style="color:#3b82f6;"><i class="fas fa-hdd"></i> Offline Mode:</span> ' + video.title +
+      '</div>' +
+      '<p class="card-desc">Tap to open in your device\'s native video player.</p>';
+
+    container.appendChild(card);
+    return;
   }
 
   card.innerHTML = `
@@ -1257,7 +1265,7 @@ window.addEventListener("load", () => {
       localStorage.setItem("mbbs_tour_completed", "true");
     }, 1500);
   }
-  
+
   const announcement = localStorage.getItem('mbbs_announcement');
   if (announcement && announcement.trim() !== "") {
     const banner = document.createElement('div');
@@ -1273,7 +1281,7 @@ window.addEventListener("load", () => {
     banner.style.zIndex = '9999';
     banner.style.animation = 'cyberPulse 2s infinite ease-in-out';
     banner.innerHTML = `<i class="fas fa-bullhorn" style="margin-right: 10px;"></i> ` + announcement + ` <i class="fas fa-times" style="position: absolute; right: 20px; top: 12px; cursor: pointer;" onclick="this.parentElement.style.display='none'"></i>`;
-    
+
     document.body.insertBefore(banner, document.body.firstChild);
   }
 });
@@ -1345,7 +1353,7 @@ window.initCustomOfflinePlayer = () => {
       durationDisplay.innerText = formatTime(video.duration);
     }
   };
-  
+
   video.addEventListener('loadedmetadata', updateDuration);
   video.addEventListener('durationchange', updateDuration);
 
