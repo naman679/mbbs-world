@@ -1,403 +1,427 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>MBBS World | Study Smarter</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        margin: 0;
-        width: 100%;
-        background: linear-gradient(
-          135deg,
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MBBS World | Study Smarter</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      width: 100%;
+      background: linear-gradient(135deg,
           #060b18 0,
           #0a0f22 50%,
-          #080c1e 100%
-        );
-        color: #f1f5f9;
-        font-family: "Plus Jakarta Sans", sans-serif;
-        overflow-x: hidden;
-        position: relative;
-        overscroll-behavior-y: contain;
-      }
-      @keyframes fadeSlideUp {
-        from {
-          opacity: 0;
-          transform: translateY(24px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes floatOrb {
-        from {
-          transform: translateY(0) scale(1) translateZ(0);
-        }
-        to {
-          transform: translateY(-30px) scale(1.05) translateZ(0);
-        }
-      }
-      @keyframes pulseRing {
-        0% {
-          transform: scale(0.9);
-          opacity: 0.6;
-        }
-        50% {
-          transform: scale(1.1);
-          opacity: 0.2;
-        }
-        100% {
-          transform: scale(0.9);
-          opacity: 0.6;
-        }
-      }
-      @keyframes shimmer {
-        0% {
-          background-position: -200% center;
-        }
-        100% {
-          background-position: 200% center;
-        }
-      }
-      @keyframes badge-in {
-        from {
-          opacity: 0;
-          transform: scale(0.8) translateY(-10px);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-        }
-      }
-      ::-webkit-scrollbar {
-        width: 6px;
-        background: #0a0f1e;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #1e3a5f;
-        border-radius: 4px;
-      }
-      .bg-grid {
-        position: fixed;
-        inset: 0;
-        background-image:
-          linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
-        background-size: 60px 60px;
-        pointer-events: none;
-        z-index: 0;
-      }
-      .orb {
-        position: fixed;
-        border-radius: 50%;
-        opacity: 0.15;
-        pointer-events: none;
-        z-index: 0;
-        transform: translateZ(0);
-        backface-visibility: hidden;
-        will-change: transform;
-      }
-      nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        padding: 16px 32px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        transition: all 0.3s;
-        z-index: 50;
-      }
-      nav.scrolled {
-        background: rgba(6, 11, 24, 0.95);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      }
-      .cta-btn {
-        display: inline-block;
-        text-decoration: none;
-        border-radius: 14px;
-        font-weight: 700;
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s;
-        cursor: pointer;
-      }
-      .cta-btn:hover {
-        transform: scale(1.04);
-      }
-      .cta-btn:active {
-        transform: scale(0.98);
-      }
-      .btn-primary {
-        background: linear-gradient(135deg, #22d3ee, #7c3aed);
-        color: #fff;
-        padding: 15px 32px;
-        box-shadow: 0 8px 40px rgba(34, 211, 238, 0.35);
-        font-size: 16px;
-      }
-      .btn-outline {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1.5px solid rgba(255, 255, 255, 0.12);
-        color: #f1f5f9;
-        padding: 15px 32px;
-        font-size: 16px;
-        font-weight: 600;
-      }
-      .reveal {
+          #080c1e 100%);
+      color: #f1f5f9;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      overflow-x: hidden;
+      position: relative;
+      overscroll-behavior-y: contain;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
         opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.8s ease;
+        transform: translateY(24px);
       }
-      .reveal.active {
+
+      to {
         opacity: 1;
         transform: translateY(0);
       }
-      @keyframes floatCards {
-        0%,
-        100% {
-          transform: translate3d(0, 0, 0) rotate(-1deg);
-        }
-        50% {
-          transform: translate3d(0, -15px, 0) rotate(1deg);
-        }
+    }
+
+    @keyframes floatOrb {
+      from {
+        transform: translateY(0) scale(1) translateZ(0);
       }
-      .floating-cards-section {
-        position: relative;
-        z-index: 10;
-        padding: 0 24px 120px;
+
+      to {
+        transform: translateY(-30px) scale(1.05) translateZ(0);
       }
-      .floating-cards-grid {
-        max-width: 1100px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 28px;
+    }
+
+    @keyframes pulseRing {
+      0% {
+        transform: scale(0.9);
+        opacity: 0.6;
       }
-      @media (max-width: 900px) {
-        .floating-cards-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
+
+      50% {
+        transform: scale(1.1);
+        opacity: 0.2;
       }
-      @media (max-width: 560px) {
-        .floating-cards-grid {
-          grid-template-columns: 1fr;
-        }
+
+      100% {
+        transform: scale(0.9);
+        opacity: 0.6;
       }
-      .fcard {
-        border-radius: 24px;
-        padding: 28px 26px 24px;
-        position: relative;
-        overflow: hidden;
-        text-decoration: none;
-        color: inherit;
-        display: block;
-        transition:
-          filter 0.3s,
-          transform 0.3s;
-        will-change: transform;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% center;
       }
-      .fcard:hover {
-        filter: brightness(1.12);
-        transform: scale(1.03) !important;
+
+      100% {
+        background-position: 200% center;
       }
-      .fcard-shine {
-        position: absolute;
-        top: -40%;
-        left: -40%;
-        width: 80%;
-        height: 80%;
-        background: radial-gradient(
-          circle,
-          rgba(255, 255, 255, 0.13),
-          transparent 70%
-        );
-        pointer-events: none;
+    }
+
+    @keyframes badge-in {
+      from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-10px);
       }
-      .fcard-label {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        margin-bottom: 12px;
-        opacity: 0.65;
-      }
-      .fcard-icon {
-        font-size: 44px;
-        margin-bottom: 14px;
-        display: block;
-      }
-      .fcard-title {
-        font-family: Syne, sans-serif;
-        font-size: 20px;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        margin-bottom: 8px;
-      }
-      .fcard-desc {
-        font-size: 13px;
-        opacity: 0.72;
-        line-height: 1.55;
-      }
-      .fcard-tag {
-        display: inline-block;
-        margin-top: 16px;
-        font-size: 11px;
-        font-weight: 600;
-        border-radius: 100px;
-        padding: 4px 12px;
-        background: rgba(255, 255, 255, 0.15);
-      }
-      .fcard-arrow {
-        position: absolute;
-        bottom: 20px;
-        right: 22px;
-        font-size: 18px;
-        opacity: 0.45;
-        transition:
-          opacity 0.2s,
-          transform 0.2s;
-      }
-      .fcard:hover .fcard-arrow {
+
+      to {
         opacity: 1;
-        transform: translate(3px, -3px);
+        transform: scale(1) translateY(0);
       }
-      body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        margin: 0;
-        width: 100%;
-        background: linear-gradient(
-          135deg,
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      background: #0a0f1e;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #1e3a5f;
+      border-radius: 4px;
+    }
+
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      will-change: transform;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s;
+      z-index: 50;
+    }
+
+    nav.scrolled {
+      background: rgba(6, 11, 24, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .cta-btn {
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 14px;
+      font-weight: 700;
+      transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .cta-btn:hover {
+      transform: scale(1.04);
+    }
+
+    .cta-btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22d3ee, #7c3aed);
+      color: #fff;
+      padding: 15px 32px;
+      box-shadow: 0 8px 40px rgba(34, 211, 238, 0.35);
+      font-size: 16px;
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      color: #f1f5f9;
+      padding: 15px 32px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes floatCards {
+
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0) rotate(-1deg);
+      }
+
+      50% {
+        transform: translate3d(0, -15px, 0) rotate(1deg);
+      }
+    }
+
+    .floating-cards-section {
+      position: relative;
+      z-index: 10;
+      padding: 0 24px 120px;
+    }
+
+    .floating-cards-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .floating-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .floating-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .fcard {
+      border-radius: 24px;
+      padding: 28px 26px 24px;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition:
+        filter 0.3s,
+        transform 0.3s;
+      will-change: transform;
+    }
+
+    .fcard:hover {
+      filter: brightness(1.12);
+      transform: scale(1.03) !important;
+    }
+
+    .fcard-shine {
+      position: absolute;
+      top: -40%;
+      left: -40%;
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle,
+          rgba(255, 255, 255, 0.13),
+          transparent 70%);
+      pointer-events: none;
+    }
+
+    .fcard-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      opacity: 0.65;
+    }
+
+    .fcard-icon {
+      font-size: 44px;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .fcard-title {
+      font-family: Syne, sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .fcard-desc {
+      font-size: 13px;
+      opacity: 0.72;
+      line-height: 1.55;
+    }
+
+    .fcard-tag {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 100px;
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .fcard-arrow {
+      position: absolute;
+      bottom: 20px;
+      right: 22px;
+      font-size: 18px;
+      opacity: 0.45;
+      transition:
+        opacity 0.2s,
+        transform 0.2s;
+    }
+
+    .fcard:hover .fcard-arrow {
+      opacity: 1;
+      transform: translate(3px, -3px);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      width: 100%;
+      background: linear-gradient(135deg,
           #060b18 0,
           #0a0f22 50%,
-          #080c1e 100%
-        );
-        color: #f1f5f9;
-        font-family: "Plus Jakarta Sans", sans-serif;
-        overflow-x: hidden;
-        position: relative;
-        overscroll-behavior-y: contain;
-      }
-    </style>
-    <script>
-      (async function() {
-          try {
-              const res = await fetch("https://script.google.com/macros/s/AKfycbz7SqCcf5L84nG_nF_KGdvZFByoSU3hd7ngDWVFs8DOXqtJZb95VbO5M0N_sodfIp4UZA/exec?action=check_status");
-              const data = await res.json();
+          #080c1e 100%);
+      color: #f1f5f9;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      overflow-x: hidden;
+      position: relative;
+      overscroll-behavior-y: contain;
+    }
+  </style>
+  <script>
+    (async function () {
+      try {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbz7SqCcf5L84nG_nF_KGdvZFByoSU3hd7ngDWVFs8DOXqtJZb95VbO5M0N_sodfIp4UZA/exec?action=check_status");
+        const data = await res.json();
 
-              if (document.readyState === "loading") {
-                  document.addEventListener("DOMContentLoaded", () => handleStatus(data));
-              } else {
-                  handleStatus(data);
-              }
-          } catch(e) { console.error("Status check failed", e); }
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", () => handleStatus(data));
+        } else {
+          handleStatus(data);
+        }
+      } catch (e) { console.error("Status check failed", e); }
 
-          function handleStatus(data) {
-              if (data.maintenance) {
-                  document.body.style.overflow = "hidden";
-                  const overlay = document.createElement("div");
-                  overlay.style.position = "fixed";
-                  overlay.style.top = "0";
-                  overlay.style.left = "0";
-                  overlay.style.width = "100vw";
-                  overlay.style.height = "100vh";
-                  overlay.style.backgroundColor = "#050508";
-                  overlay.style.zIndex = "9999";
-                  overlay.style.display = "flex";
-                  overlay.style.flexDirection = "column";
-                  overlay.style.justifyContent = "center";
-                  overlay.style.alignItems = "center";
-                  overlay.style.textAlign = "center";
-                  overlay.style.padding = "20px";
+      function handleStatus(data) {
+        if (data.maintenance) {
+          document.body.style.overflow = "hidden";
+          const overlay = document.createElement("div");
+          overlay.style.position = "fixed";
+          overlay.style.top = "0";
+          overlay.style.left = "0";
+          overlay.style.width = "100vw";
+          overlay.style.height = "100vh";
+          overlay.style.backgroundColor = "#050508";
+          overlay.style.zIndex = "9999";
+          overlay.style.display = "flex";
+          overlay.style.flexDirection = "column";
+          overlay.style.justifyContent = "center";
+          overlay.style.alignItems = "center";
+          overlay.style.textAlign = "center";
+          overlay.style.padding = "20px";
 
-                  overlay.innerHTML = `
+          overlay.innerHTML = `
                       <i class="fas fa-tools" style="font-size: 4rem; color: #ff0055; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,0,85,0.5); "></i>
                       <h1 style="color: #00ffcc; font-family: 'Syne', sans-serif; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0,255,204,0.3);">System Offline</h1>
                       <p style="color: #a0aec0; font-size: 1.1rem; max-width: 400px; line-height: 1.6;">` + (data.message || '🛠️ MBBS World is currently undergoing server upgrades. Please check back soon!') + `</p>
                   `;
-                  document.body.appendChild(overlay);
-              } else if (data.announcement && data.announcement.trim() !== "") {
-                  const banner = document.createElement("div");
-                  banner.style.width = "100%";
-                  banner.style.background = "linear-gradient(90deg, #ff0055, #7c3aed)";
-                  banner.style.color = "#fff";
-                  banner.style.padding = "10px 20px";
-                  banner.style.textAlign = "center";
-                  banner.style.fontWeight = "bold";
-                  banner.style.fontFamily = "'Syne', sans-serif";
-                  banner.style.boxShadow = "0 4px 15px rgba(255, 0, 85, 0.4)";
-                  banner.style.position = "relative";
-                  banner.style.zIndex = "9998";
-                  banner
-                  banner.innerHTML = \`<i class="fas fa-bullhorn" style="margin-right: 10px;"></i> \` + data.announcement + \` <i class="fas fa-times" style="position: absolute; right: 20px; top: 12px; cursor: pointer;" onclick="this.parentElement.style.display='none'"></i>\`;
-                  document.body.insertBefore(banner, document.body.firstChild);
-              }
-          }
-      })();
-    </script>
-  </head>
-  <body>
-    <div class="bg-grid"></div>
-    <div
-      class="orb"
-      style="
+          document.body.appendChild(overlay);
+        } else if (data.announcement && data.announcement.trim() !== "") {
+          const banner = document.createElement("div");
+          banner.style.width = "100%";
+          banner.style.background = "linear-gradient(90deg, #ff0055, #7c3aed)";
+          banner.style.color = "#fff";
+          banner.style.padding = "10px 20px";
+          banner.style.textAlign = "center";
+          banner.style.fontWeight = "bold";
+          banner.style.fontFamily = "'Syne', sans-serif";
+          banner.style.boxShadow = "0 4px 15px rgba(255, 0, 85, 0.4)";
+          banner.style.position = "relative";
+          banner.style.zIndex = "9998";
+          banner.innerHTML = `<i class="fas fa-bullhorn" style="margin-right: 10px;"></i> ` + data.announcement + ` <i class="fas fa-times" style="position: absolute; right: 20px; top: 12px; cursor: pointer;" onclick="this.parentElement.style.display='none'"></i>`;
+          document.body.insertBefore(banner, document.body.firstChild);
+        }
+      }
+    })();
+  </script>
+</head>
+
+<body>
+  <div class="bg-grid"></div>
+  <div class="orb" style="
         left: -10%;
         top: 10%;
         width: 500px;
         height: 500px;
         background: radial-gradient(circle, #1e40af 0, transparent 70%);
         
-      "
-    ></div>
-    <div
-      class="orb"
-      style="
+      "></div>
+  <div class="orb" style="
         left: 60%;
         top: -5%;
         width: 400px;
         height: 400px;
         background: radial-gradient(circle, #7c3aed 0, transparent 70%);
         
-      "
-    ></div>
-    <div
-      class="orb"
-      style="
+      "></div>
+  <div class="orb" style="
         left: 80%;
         top: 50%;
         width: 350px;
         height: 350px;
         background: radial-gradient(circle, #0e7490 0, transparent 70%);
         
-      "
-    ></div>
-    <div
-      id="progress-bar"
-      style="
+      "></div>
+  <div id="progress-bar" style="
         position: fixed;
         top: 0;
         left: 0;
@@ -407,12 +431,10 @@
         background: linear-gradient(90deg, #22d3ee, #a78bfa, #f472b6);
         transition: width 0.1s;
         will-change: width;
-      "
-    ></div>
-    <nav id="navbar">
-      <div style="display: flex; align-items: center; gap: 10px">
-        <div
-          style="
+      "></div>
+  <nav id="navbar">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <div style="
             width: 36px;
             height: 36px;
             border-radius: 10px;
@@ -421,12 +443,10 @@
             align-items: center;
             justify-content: center;
             font-size: 18px;
-          "
-        >
-          🩺
-        </div>
-        <span
-          style="
+          ">
+        🩺
+      </div>
+      <span style="
             font-family: Syne, sans-serif;
             font-weight: 800;
             font-size: 20px;
@@ -435,15 +455,10 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             color: transparent;
-          "
-          >MBBS World</span
-        >
-      </div>
-      <div style="display: flex; gap: 12px; align-items: center">
-        <button
-          id="jarvis-mic-btn"
-          title="Talk to Jarvis"
-          style="
+          ">MBBS World</span>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center">
+      <button id="jarvis-mic-btn" title="Talk to Jarvis" style="
             background: 0 0;
             border: none;
             cursor: pointer;
@@ -454,16 +469,9 @@
             align-items: center;
             justify-content: center;
             margin-right: 10px;
-          "
-        >
-          <i
-            id="jarvis-mic-icon"
-            class="fas fa-microphone-slash"
-            style="color: #ff4b4b; font-size: 18px"
-          ></i>
-          <div
-            id="jarvis-listening-ring"
-            style="
+          ">
+        <i id="jarvis-mic-icon" class="fas fa-microphone-slash" style="color: #ff4b4b; font-size: 18px"></i>
+        <div id="jarvis-listening-ring" style="
               display: none;
               position: absolute;
               top: 0;
@@ -473,15 +481,10 @@
               border-radius: 50%;
               border: 2px solid #22d3ee;
               
-            "
-          ></div>
-        </button>
-        <a
-          href="dashboard.html"
-          id="nav-profile"
-          style="display: none; text-decoration: none"
-          ><div
-            style="
+            "></div>
+      </button>
+      <a href="dashboard.html" id="nav-profile" style="display: none; text-decoration: none">
+        <div style="
               display: flex;
               align-items: center;
               gap: 8px;
@@ -489,11 +492,8 @@
               border: 1px solid rgba(34, 211, 238, 0.2);
               border-radius: 100px;
               padding: 7px 14px;
-            "
-          >
-            <div
-              id="nav-initial"
-              style="
+            ">
+          <div id="nav-initial" style="
                 width: 26px;
                 height: 26px;
                 border-radius: 50%;
@@ -504,20 +504,12 @@
                 font-size: 12px;
                 font-weight: 700;
                 color: #fff;
-              "
-            >
-              U
-            </div>
-            <span
-              id="nav-name"
-              style="font-size: 13px; color: #22d3ee; font-weight: 600"
-              >User</span
-            >
-          </div></a
-        ><a
-          href="login.html"
-          id="nav-login"
-          style="
+              ">
+            U
+          </div>
+          <span id="nav-name" style="font-size: 13px; color: #22d3ee; font-weight: 600">User</span>
+        </div>
+      </a><a href="login.html" id="nav-login" style="
             background: 0 0;
             border: 1.5px solid rgba(255, 255, 255, 0.15);
             color: rgba(203, 213, 225, 0.85);
@@ -526,13 +518,10 @@
             border-radius: 10px;
             font-size: 13px;
             font-weight: 600;
-          "
-          >Log In</a
-        >
-      </div>
-    </nav>
-    <section
-      style="
+          ">Log In</a>
+    </div>
+  </nav>
+  <section style="
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -542,10 +531,8 @@
         padding: 120px 24px 80px;
         position: relative;
         z-index: 10;
-      "
-    >
-      <div
-        style="
+      ">
+    <div style="
           display: inline-flex;
           align-items: center;
           gap: 8px;
@@ -555,15 +542,11 @@
           padding: 7px 16px;
           margin-bottom: 32px;
           animation: badge-in 0.6s ease both;
-        "
-      >
-        <span style="font-size: 12px">✨</span>
-        <span style="font-size: 13px; color: #22d3ee; font-weight: 600"
-          >Built by an MBBS student, for MBBS students</span
-        >
-      </div>
-      <h1
-        style="
+        ">
+      <span style="font-size: 12px">✨</span>
+      <span style="font-size: 13px; color: #22d3ee; font-weight: 600">Built by an MBBS student, for MBBS students</span>
+    </div>
+    <h1 style="
           font-family: Syne, sans-serif;
           font-size: clamp(40px, 7.5vw, 82px);
           font-weight: 800;
@@ -572,11 +555,9 @@
           max-width: 860px;
           margin-bottom: 24px;
           animation: fadeSlideUp 0.7s ease both;
-        "
-      >
-        Study Smarter.
-        <span
-          style="
+        ">
+      Study Smarter.
+      <span style="
             background: linear-gradient(
               90deg,
               #22d3ee 0,
@@ -589,80 +570,61 @@
             -webkit-text-fill-color: transparent;
             color: transparent;
             
-          "
-          >Rank Higher.</span
-        ><br /><span style="font-size: 0.72em; color: rgba(203, 213, 225, 0.55)"
-          >Your MBBS. Your World.</span
-        >
-      </h1>
-      <p
-        style="
+          ">Rank Higher.</span><br /><span style="font-size: 0.72em; color: rgba(203, 213, 225, 0.55)">Your MBBS. Your
+        World.</span>
+    </h1>
+    <p style="
           font-size: clamp(16px, 2vw, 20px);
           color: rgba(203, 213, 225, 0.7);
           max-width: 560px;
           line-height: 1.7;
           margin-bottom: 44px;
           animation: fadeSlideUp 0.7s ease 0.2s both;
-        "
-      >
-        Videos, Notes, Quizzes, Multiplayer battles, Daily Cases, OPD Simulator
-        & Atrium — all in one app. Study smarter. Rank higher.
-      </p>
-      <div
-        style="
+        ">
+      Videos, Notes, Quizzes, Multiplayer battles, Daily Cases, OPD Simulator
+      & Atrium — all in one app. Study smarter. Rank higher.
+    </p>
+    <div style="
           display: flex;
           gap: 16px;
           flex-wrap: wrap;
           justify-content: center;
           animation: fadeSlideUp 0.7s ease 0.3s both;
-        "
-      >
-        <a href="#features" class="cta-btn btn-primary auth-link"
-          >🚀 Enter MBBS World</a
-        >
-        <a href="#features" class="cta-btn btn-outline">See Features ↓</a>
-      </div>
-    </section>
-    <section id="features" class="floating-cards-section reveal">
-      <div style="text-align: center; margin-bottom: 64px">
-        <p
-          style="
+        ">
+      <a href="#features" class="cta-btn btn-primary auth-link">🚀 Enter MBBS World</a>
+      <a href="#features" class="cta-btn btn-outline">See Features ↓</a>
+    </div>
+  </section>
+  <section id="features" class="floating-cards-section reveal">
+    <div style="text-align: center; margin-bottom: 64px">
+      <p style="
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 0.15em;
             color: #22d3ee;
             text-transform: uppercase;
             margin-bottom: 12px;
-          "
-        >
-          Explore the App
-        </p>
-        <h2
-          style="
+          ">
+        Explore the App
+      </p>
+      <h2 style="
             font-family: Syne, sans-serif;
             font-size: clamp(30px, 5vw, 50px);
             font-weight: 800;
             letter-spacing: -0.03em;
-          "
-        >
-          Everything you need,
-          <span
-            style="
+          ">
+        Everything you need,
+        <span style="
               background: linear-gradient(90deg, #22d3ee, #a78bfa);
               -webkit-background-clip: text;
               background-clip: text;
               -webkit-text-fill-color: transparent;
               color: transparent;
-            "
-            >one tap away</span
-          >
-        </h2>
-      </div>
-      <div class="floating-cards-grid">
-        <a
-          href="dashboard.html?view=videos"
-          class="fcard feature-link"
-          style="
+            ">one tap away</span>
+      </h2>
+    </div>
+    <div class="floating-cards-grid">
+      <a href="dashboard.html?view=videos" class="fcard feature-link" style="
             background: linear-gradient(
               135deg,
               rgba(34, 211, 238, 0.18),
@@ -671,21 +633,18 @@
             border: 1.5px solid rgba(34, 211, 238, 0.3);
             
             box-shadow: 0 20px 60px rgba(34, 211, 238, 0.12);
-          "
-          ><div class="fcard-shine"></div>
-          <div class="fcard-label" style="color: #22d3ee">Lectures</div>
-          <span class="fcard-icon">🎥</span>
-          <div class="fcard-title">Video Lectures</div>
-          <div class="fcard-desc">
-            Marrow · PrepLadder · Cerebellum · BTR 2.0 — best teachers, one
-            place.
-          </div>
-          <span class="fcard-tag" style="color: #22d3ee">3 Sources</span>
-          <span class="fcard-arrow">↗</span> </a
-        ><a
-          href="dashboard.html?view=notes"
-          class="fcard feature-link"
-          style="
+          ">
+        <div class="fcard-shine"></div>
+        <div class="fcard-label" style="color: #22d3ee">Lectures</div>
+        <span class="fcard-icon">🎥</span>
+        <div class="fcard-title">Video Lectures</div>
+        <div class="fcard-desc">
+          Marrow · PrepLadder · Cerebellum · BTR 2.0 — best teachers, one
+          place.
+        </div>
+        <span class="fcard-tag" style="color: #22d3ee">3 Sources</span>
+        <span class="fcard-arrow">↗</span>
+      </a><a href="dashboard.html?view=notes" class="fcard feature-link" style="
             background: linear-gradient(
               135deg,
               rgba(167, 139, 250, 0.18),
@@ -694,20 +653,17 @@
             border: 1.5px solid rgba(167, 139, 250, 0.3);
             
             box-shadow: 0 20px 60px rgba(167, 139, 250, 0.12);
-          "
-          ><div class="fcard-shine"></div>
-          <div class="fcard-label" style="color: #a78bfa">Study Material</div>
-          <span class="fcard-icon">📖</span>
-          <div class="fcard-title">Complete Notes</div>
-          <div class="fcard-desc">
-            All subjects. Clean structure. Exam-ready for every MBBS paper.
-          </div>
-          <span class="fcard-tag" style="color: #a78bfa">All Subjects</span>
-          <span class="fcard-arrow">↗</span> </a
-        ><a
-          href="dashboard.html?view=quizzes"
-          class="fcard feature-link"
-          style="
+          ">
+        <div class="fcard-shine"></div>
+        <div class="fcard-label" style="color: #a78bfa">Study Material</div>
+        <span class="fcard-icon">📖</span>
+        <div class="fcard-title">Complete Notes</div>
+        <div class="fcard-desc">
+          All subjects. Clean structure. Exam-ready for every MBBS paper.
+        </div>
+        <span class="fcard-tag" style="color: #a78bfa">All Subjects</span>
+        <span class="fcard-arrow">↗</span>
+      </a><a href="dashboard.html?view=quizzes" class="fcard feature-link" style="
             background: linear-gradient(
               135deg,
               rgba(52, 211, 153, 0.18),
@@ -716,20 +672,17 @@
             border: 1.5px solid rgba(52, 211, 153, 0.3);
             
             box-shadow: 0 20px 60px rgba(52, 211, 153, 0.12);
-          "
-          ><div class="fcard-shine"></div>
-          <div class="fcard-label" style="color: #34d399">Practice</div>
-          <span class="fcard-icon">📝</span>
-          <div class="fcard-title">Solo Quiz</div>
-          <div class="fcard-desc">
-            Mixed Q-bank from all top sources. Sharpen every concept solo.
-          </div>
-          <span class="fcard-tag" style="color: #34d399">Q-Bank</span>
-          <span class="fcard-arrow">↗</span> </a
-        ><a
-          href="live-game.html"
-          class="fcard feature-link"
-          style="
+          ">
+        <div class="fcard-shine"></div>
+        <div class="fcard-label" style="color: #34d399">Practice</div>
+        <span class="fcard-icon">📝</span>
+        <div class="fcard-title">Solo Quiz</div>
+        <div class="fcard-desc">
+          Mixed Q-bank from all top sources. Sharpen every concept solo.
+        </div>
+        <span class="fcard-tag" style="color: #34d399">Q-Bank</span>
+        <span class="fcard-arrow">↗</span>
+      </a><a href="live-game.html" class="fcard feature-link" style="
             background: linear-gradient(
               135deg,
               rgba(244, 114, 182, 0.18),
@@ -738,20 +691,17 @@
             border: 1.5px solid rgba(244, 114, 182, 0.3);
             
             box-shadow: 0 20px 60px rgba(244, 114, 182, 0.12);
-          "
-          ><div class="fcard-shine"></div>
-          <div class="fcard-label" style="color: #f472b6">Live Battle</div>
-          <span class="fcard-icon">🎮</span>
-          <div class="fcard-title">Multiplayer Quiz</div>
-          <div class="fcard-desc">
-            Create a room. Invite friends. Beat the clock. Climb desi ranks.
-          </div>
-          <span class="fcard-tag" style="color: #f472b6">Real-time</span>
-          <span class="fcard-arrow">↗</span> </a
-        ><a
-          href="daily-case.html"
-          class="fcard feature-link"
-          style="
+          ">
+        <div class="fcard-shine"></div>
+        <div class="fcard-label" style="color: #f472b6">Live Battle</div>
+        <span class="fcard-icon">🎮</span>
+        <div class="fcard-title">Multiplayer Quiz</div>
+        <div class="fcard-desc">
+          Create a room. Invite friends. Beat the clock. Climb desi ranks.
+        </div>
+        <span class="fcard-tag" style="color: #f472b6">Real-time</span>
+        <span class="fcard-arrow">↗</span>
+      </a><a href="daily-case.html" class="fcard feature-link" style="
             background: linear-gradient(
               135deg,
               rgba(251, 191, 36, 0.18),
@@ -760,20 +710,17 @@
             border: 1.5px solid rgba(251, 191, 36, 0.3);
             
             box-shadow: 0 20px 60px rgba(251, 191, 36, 0.12);
-          "
-          ><div class="fcard-shine"></div>
-          <div class="fcard-label" style="color: #fbbf24">Clinical Skills</div>
-          <span class="fcard-icon">🩺</span>
-          <div class="fcard-title">Daily Cases & OPD</div>
-          <div class="fcard-desc">
-            Real patient scenarios every day. Build instincts that exams demand.
-          </div>
-          <span class="fcard-tag" style="color: #fbbf24">Daily</span>
-          <span class="fcard-arrow">↗</span> </a
-        ><a
-          href="atrium.html"
-          class="fcard feature-link"
-          style="
+          ">
+        <div class="fcard-shine"></div>
+        <div class="fcard-label" style="color: #fbbf24">Clinical Skills</div>
+        <span class="fcard-icon">🩺</span>
+        <div class="fcard-title">Daily Cases & OPD</div>
+        <div class="fcard-desc">
+          Real patient scenarios every day. Build instincts that exams demand.
+        </div>
+        <span class="fcard-tag" style="color: #fbbf24">Daily</span>
+        <span class="fcard-arrow">↗</span>
+      </a><a href="atrium.html" class="fcard feature-link" style="
             background: linear-gradient(
               135deg,
               rgba(251, 146, 60, 0.18),
@@ -782,25 +729,21 @@
             border: 1.5px solid rgba(251, 146, 60, 0.3);
             
             box-shadow: 0 20px 60px rgba(251, 146, 60, 0.12);
-          "
-          ><div class="fcard-shine"></div>
-          <div class="fcard-label" style="color: #fb923c">Simulator</div>
-          <span class="fcard-icon">🏛️</span>
-          <div class="fcard-title">The Atrium</div>
-          <div class="fcard-desc">
-            Manage cases, earn XP, track mastery across every specialty.
-          </div>
-          <span class="fcard-tag" style="color: #fb923c">XP System</span>
-          <span class="fcard-arrow">↗</span></a
-        >
-      </div>
-    </section>
-    <section
-      class="reveal"
-      style="position: relative; z-index: 10; padding: 0 24px 100px"
-    >
-      <div
-        style="
+          ">
+        <div class="fcard-shine"></div>
+        <div class="fcard-label" style="color: #fb923c">Simulator</div>
+        <span class="fcard-icon">🏛️</span>
+        <div class="fcard-title">The Atrium</div>
+        <div class="fcard-desc">
+          Manage cases, earn XP, track mastery across every specialty.
+        </div>
+        <span class="fcard-tag" style="color: #fb923c">XP System</span>
+        <span class="fcard-arrow">↗</span>
+      </a>
+    </div>
+  </section>
+  <section class="reveal" style="position: relative; z-index: 10; padding: 0 24px 100px">
+    <div style="
           max-width: 860px;
           margin: 0 auto;
           background: linear-gradient(
@@ -812,133 +755,162 @@
           border-radius: 28px;
           padding: 60px 48px;
           text-align: center;
-        "
-      >
-        <div
-          style="
+        ">
+      <div style="
             font-size: 48px;
             margin-bottom: 16px;
             display: inline-block;
             
-          "
-        >
-          🩺
-        </div>
-        <h2
-          style="
+          ">
+        🩺
+      </div>
+      <h2 style="
             font-family: Syne, sans-serif;
             font-size: clamp(26px, 4vw, 42px);
             font-weight: 800;
             letter-spacing: -0.03em;
             margin-bottom: 16px;
-          "
-        >
-          Ready to ace your MBBS?
-        </h2>
-        <p
-          style="
+          ">
+        Ready to ace your MBBS?
+      </h2>
+      <p style="
             color: rgba(203, 213, 225, 0.65);
             font-size: 16px;
             margin-bottom: 36px;
-          "
-        >
-          Join the world built just for you. Open the app and start today.
-        </p>
-        <a href="#features" class="cta-btn btn-primary auth-link"
-          >🚀 Open MBBS World</a
-        >
-      </div>
-    </section>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const e = localStorage.getItem("mbbs_saved_user"),
-          t = document.querySelectorAll(".auth-link"),
-          n = document.querySelectorAll(".feature-link");
-        e
-          ? ((document.getElementById("nav-login").style.display = "none"),
-            (document.getElementById("nav-profile").style.display = "block"),
-            (document.getElementById("nav-name").textContent = e),
-            (document.getElementById("nav-initial").textContent = e
-              .charAt(0)
-              .toUpperCase()),
-            t.forEach((e) => {
-              ((e.href = "#features"),
-                (e.textContent = "🚀 Choose a Module ↓"));
-            }))
-          : n.forEach((e) => {
-              e.href.includes("view=videos") &&
-                (e.href = "login.html?redirect=videos");
-            });
-        let o = !1;
-        window.addEventListener("scroll", () => {
-          o ||
-            (window.requestAnimationFrame(() => {
-              const e =
-                ((document.body.scrollTop ||
-                  document.documentElement.scrollTop) /
-                  (document.documentElement.scrollHeight -
-                    document.documentElement.clientHeight)) *
-                100;
-              document.getElementById("progress-bar").style.width = e + "%";
-              const t = document.getElementById("navbar");
-              (window.scrollY > 40
-                ? t.classList.add("scrolled")
-                : t.classList.remove("scrolled"),
-                (o = !1));
-            }),
+          ">
+        Join the world built just for you. Open the app and start today.
+      </p>
+      <a href="#features" class="cta-btn btn-primary auth-link">🚀 Open MBBS World</a>
+    </div>
+  </section>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const e = localStorage.getItem("mbbs_saved_user"),
+        t = document.querySelectorAll(".auth-link"),
+        n = document.querySelectorAll(".feature-link");
+      e
+        ? ((document.getElementById("nav-login").style.display = "none"),
+          (document.getElementById("nav-profile").style.display = "block"),
+          (document.getElementById("nav-name").textContent = e),
+          (document.getElementById("nav-initial").textContent = e
+            .charAt(0)
+            .toUpperCase()),
+          t.forEach((e) => {
+            ((e.href = "#features"),
+              (e.textContent = "🚀 Choose a Module ↓"));
+          }))
+        : n.forEach((e) => {
+          e.href.includes("view=videos") &&
+            (e.href = "login.html?redirect=videos");
+        });
+      let o = !1;
+      window.addEventListener("scroll", () => {
+        o ||
+          (window.requestAnimationFrame(() => {
+            const e =
+              ((document.body.scrollTop ||
+                document.documentElement.scrollTop) /
+                (document.documentElement.scrollHeight -
+                  document.documentElement.clientHeight)) *
+              100;
+            document.getElementById("progress-bar").style.width = e + "%";
+            const t = document.getElementById("navbar");
+            (window.scrollY > 40
+              ? t.classList.add("scrolled")
+              : t.classList.remove("scrolled"),
+              (o = !1));
+          }),
             (o = !0));
-        });
-        const l = document.querySelectorAll(".reveal"),
-          d = new IntersectionObserver(
-            (e) => {
-              e.forEach((e) => {
-                e.isIntersecting && e.target.classList.add("active");
-              });
-            },
-            { threshold: 0.1 },
-          );
-        l.forEach((e) => d.observe(e));
       });
-    </script>
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
-      import {
-        getDatabase,
-        ref,
-        set,
-        get,
-        update,
-      } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
-      const firebaseConfig = {
-          apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
-          authDomain: "samvad-bafaa.firebaseapp.com",
-          databaseURL: "https://samvad-bafaa-default-rtdb.firebaseio.com",
-          projectId: "samvad-bafaa",
-          storageBucket: "samvad-bafaa.appspot.com",
-          messagingSenderId: "131803431466",
-          appId: "1:131803431466:web:b7b107308ea7197f013953",
-          measurementId: "G-M90SYY2MP9",
-        },
-        app = initializeApp(firebaseConfig),
-        analytics = getAnalytics(app);
-    </script>
-    <script src="js/jarvis.js?v=2.1"></script>
-    <script>
-      "serviceWorker" in navigator &&
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("./sw.js")
-            .then((e) => {
-              console.log(
-                "ServiceWorker registration successful with scope: ",
-                e.scope,
-              );
-            })
-            .catch((e) => {
-              console.log("ServiceWorker registration failed: ", e);
+      const l = document.querySelectorAll(".reveal"),
+        d = new IntersectionObserver(
+          (e) => {
+            e.forEach((e) => {
+              e.isIntersecting && e.target.classList.add("active");
             });
-        });
-    </script>
-  </body>
+          },
+          { threshold: 0.1 },
+        );
+      l.forEach((e) => d.observe(e));
+    });
+  </script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
+    import {
+      getDatabase,
+      ref,
+      set,
+      get,
+      update,
+    } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyCMhfZLVHzRMn-poqb-vdvpSpXlOcwjo90",
+      authDomain: "samvad-bafaa.firebaseapp.com",
+      databaseURL: "https://samvad-bafaa-default-rtdb.firebaseio.com",
+      projectId: "samvad-bafaa",
+      storageBucket: "samvad-bafaa.appspot.com",
+      messagingSenderId: "131803431466",
+      appId: "1:131803431466:web:b7b107308ea7197f013953",
+      measurementId: "G-M90SYY2MP9",
+    },
+      app = initializeApp(firebaseConfig),
+      analytics = getAnalytics(app);
+  </script>
+  <script src="js/jarvis.js?v=2.4"></script>
+  <script>
+    "serviceWorker" in navigator &&
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("./sw.js")
+          .then((e) => {
+            console.log(
+              "ServiceWorker registration successful with scope: ",
+              e.scope,
+            );
+          })
+          .catch((e) => {
+            console.log("ServiceWorker registration failed: ", e);
+          });
+      });
+  </script>
+  <div id="legacyUpdateWall"
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,5,8,0.98); z-index:99999; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; font-family:sans-serif;">
+
+    <h1 style="color:#00ffcc; text-shadow:0 0 15px rgba(0,255,204,0.5); margin-bottom: 10px;">
+      Critical App Update
+    </h1>
+
+    <p style="color:#fff; font-size:16px; max-width:80%; margin-bottom: 30px; line-height: 1.5;">
+      Your current version of MBBS World is outdated and cannot sync with the new servers. Please download the latest
+      update (v1.1.7) to continue.
+    </p>
+
+    <a href="https://drive.google.com/uc?export=download&id=13nCtqNoO63uRWoLIvBR6zxALi_6fc68s"
+      style="background:#00ffcc; color:#050508; padding:15px 40px; font-size: 18px; font-weight:bold; border-radius:8px; text-decoration:none; box-shadow:0 0 20px rgba(0,255,204,0.4);">
+      Download Update
+    </a>
+  </div>
+
+  <script>
+    // The "One-Time Bridge" Logic for Version 10
+    setTimeout(function () {
+      // 1. Is the user inside the Android App?
+      if (window.AndroidApp) {
+
+        // 2. Is this an old app? (Undefined OR less than versionCode 10)
+        if (typeof window.MBBS_APP_VERSION === 'undefined' || window.MBBS_APP_VERSION < 10) {
+
+          // 3. Spring the trap. Block the screen.
+          var wall = document.getElementById('legacyUpdateWall');
+          wall.style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+
+        }
+      }
+    }, 1500); // 1.5 second delay to let the app boot up and inject the key
+  </script>
+
+</body>
+
 </html>
